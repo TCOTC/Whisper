@@ -287,11 +287,11 @@
 }
 
 
-#buttonSavor-light,#buttonsalt,#buttonsugar{
+#buttonSimple-light,#buttonsalt,#buttonsugar{
 	display:none!important;
 }
 
-#savorToolbar:after{
+#simpleToolbar:after{
 	height:188px;
 }
 
@@ -300,6 +300,6 @@
 }
 
 
-#buttonSavor-dark.button_on,#buttonSavor-dark.button_off{
-	background:var(--S-Savor-dark-on);
+#buttonSimple-dark.button_on,#buttonSimple-dark.button_off{
+	background:var(--S-Simple-dark-on);
 }

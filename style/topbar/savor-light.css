@@ -312,11 +312,11 @@ body{
 
 
 
-#buttonSavor-dark,#buttonvinegar{
+#buttonSimple-dark,#buttonvinegar{
 	display:none!important;
 }
 
 
-#buttonSavor-light.button_on,#buttonSavor-light.button_off{
-	background:var(--S-Savor-light-on);
+#buttonSimple-light.button_on,#buttonSimple-light.button_off{
+	background:var(--S-Simple-light-on);
 }

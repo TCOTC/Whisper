@@ -1,44 +1,44 @@
 /* 主体结构*/
 
-@import url(/appearance/themes/Savor/style/module/toolbar.css);/* 顶栏 */
+@import url(/appearance/themes/Simple/style/module/toolbar.css);/* 顶栏 */
 
-@import url(/appearance/themes/Savor/style/module/dock.css);/* dock栏 */
+@import url(/appearance/themes/Simple/style/module/dock.css);/* dock栏 */
 
-@import url(/appearance/themes/Savor/style/module/shrink.css);/* 侧栏 */
+@import url(/appearance/themes/Simple/style/module/shrink.css);/* 侧栏 */
 
-@import url(/appearance/themes/Savor/style/module/tab-bar.css);/* 页签 */
+@import url(/appearance/themes/Simple/style/module/tab-bar.css);/* 页签 */
 
-@import url(/appearance/themes/Savor/style/module/status.css);/*  底栏 */
+@import url(/appearance/themes/Simple/style/module/status.css);/*  底栏 */
 
-@import url(/appearance/themes/Savor/style/module/breadcrumb.css);/* 面包屑 */
+@import url(/appearance/themes/Simple/style/module/breadcrumb.css);/* 面包屑 */
 
-@import url(/appearance/themes/Savor/style/module/editor.css);/* 编辑器 */
+@import url(/appearance/themes/Simple/style/module/editor.css);/* 编辑器 */
 
-@import url(/appearance/themes/Savor/style/module/ordered-list.css);/*有序列表*/
+@import url(/appearance/themes/Simple/style/module/ordered-list.css);/*有序列表*/
 
-@import url(/appearance/themes/Savor/style/module/unordered-list.css);/*无序列表*/
+@import url(/appearance/themes/Simple/style/module/unordered-list.css);/*无序列表*/
 
-@import url(/appearance/themes/Savor/style/module/h-reminder.css);/*标题符号*/
+@import url(/appearance/themes/Simple/style/module/h-reminder.css);/*标题符号*/
 
-@import url(/appearance/themes/Savor/style/module/menu.css);/* 菜单、设置相关 */
+@import url(/appearance/themes/Simple/style/module/menu.css);/* 菜单、设置相关 */
 
 /* 引入特性 */
 
-@import url(/appearance/themes/Savor/style/custom/list2map.css);/*列表转导图*/
+@import url(/appearance/themes/Simple/style/custom/list2map.css);/*列表转导图*/
 
-@import url(/appearance/themes/Savor/style/custom/list2table.css);/*列表转表格*/
+@import url(/appearance/themes/Simple/style/custom/list2table.css);/*列表转表格*/
 
-@import url(/appearance/themes/Savor/style/custom/list2board.css);/*列表转看板*/
+@import url(/appearance/themes/Simple/style/custom/list2board.css);/*列表转看板*/
 
-@import url(/appearance/themes/Savor/style/custom/ctrlp.css);/* 搜索分栏*/
+@import url(/appearance/themes/Simple/style/custom/ctrlp.css);/* 搜索分栏*/
 
-@import url(/appearance/themes/Savor/style/custom/bq-callout.css);/*引述样式*/
+@import url(/appearance/themes/Simple/style/custom/bq-callout.css);/*引述样式*/
 
-@import url(/appearance/themes/Savor/style/custom/progress.css);/* 进度条任务列表 */
+@import url(/appearance/themes/Simple/style/custom/progress.css);/* 进度条任务列表 */
 
-@import url(/appearance/themes/Savor/style/custom/list-fold.css);/* 折叠块悬浮弹窗 */
+@import url(/appearance/themes/Simple/style/custom/list-fold.css);/* 折叠块悬浮弹窗 */
 
-@import url(/appearance/themes/Savor/style/custom/setting.css);/* 自定义功能按钮 */
+@import url(/appearance/themes/Simple/style/custom/setting.css);/* 自定义功能按钮 */
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
@@ -375,9 +375,9 @@
 	--S-Plugin-bg4: #d7dfe9;
 	--S-Plugin-c4: #455464;
 
-	/*savor功能按钮*/
-	--S-Savor-light-on:url("data:image/svg+xml;utf8,<svg fill='rgb(235, 87, 87)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.4-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2zM16.267 14c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c0.933 0 1.6 0.8 1.6 1.6s-0.8 1.6-1.6 1.6c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c1.867 0 3.333-1.467 3.333-3.333s-1.467-3.067-3.333-3.067z'/></svg>") no-repeat left 0px top -2px;
-	--S-Savor-light-off:url("data:image/svg+xml;utf8,<svg fill='rgb(55, 53, 47)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.4-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2zM16.267 14c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c0.933 0 1.6 0.8 1.6 1.6s-0.8 1.6-1.6 1.6c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c1.867 0 3.333-1.467 3.333-3.333s-1.467-3.067-3.333-3.067z'/></svg>") no-repeat left 0px top -2px;
+	/*simple功能按钮*/
+	--S-Simple-light-on:url("data:image/svg+xml;utf8,<svg fill='rgb(235, 87, 87)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.4-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2zM16.267 14c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c0.933 0 1.6 0.8 1.6 1.6s-0.8 1.6-1.6 1.6c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c1.867 0 3.333-1.467 3.333-3.333s-1.467-3.067-3.333-3.067z'/></svg>") no-repeat left 0px top -2px;
+	--S-Simple-light-off:url("data:image/svg+xml;utf8,<svg fill='rgb(55, 53, 47)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.4-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2zM16.267 14c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c0.933 0 1.6 0.8 1.6 1.6s-0.8 1.6-1.6 1.6c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c1.867 0 3.333-1.467 3.333-3.333s-1.467-3.067-3.333-3.067z'/></svg>") no-repeat left 0px top -2px;
 	
 	--S-salt-on:url("data:image/svg+xml;utf8,<svg fill='rgb(235, 87, 87)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.267-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2zM16.133 17.2c-1.867-1.067-3.867-2.133-3.867 0s1.733 3.867 3.867 3.867 3.867-1.733 3.867-3.867-2.133 1.067-3.867 0z'/></svg>") no-repeat left 0px top -2px;
 	--S-salt-off:url("data:image/svg+xml;utf8,<svg fill='rgb(55, 53, 47)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.267-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2zM16.133 17.2c-1.867-1.067-3.867-2.133-3.867 0s1.733 3.867 3.867 3.867 3.867-1.733 3.867-3.867-2.133 1.067-3.867 0z'/></svg>") no-repeat left 0px top -2px;
@@ -385,8 +385,8 @@
 	--S-sugar-on:url("data:image/svg+xml;utf8,<svg fill='rgb(235, 87, 87)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-0.267 0-0.533 0-0.8-0.133 2.533-0.133 4.533-2.133 4.533-4.533 0.133-1.067-0.267-2.133-1.067-2.8-0.8-0.8-1.6-1.2-2.8-1.333-0.933-0.133-1.733 0.267-2.4 0.8s-1.067 1.467-1.067 2.267c-0.133 1.467 1.067 2.8 2.533 2.933 1.2 0.133 2.4-0.933 2.4-2.133 0-0.267-0.267-0.533-0.533-0.533s-0.533 0.267-0.533 0.533c0 0.667-0.533 1.2-1.2 1.067-0.933-0.133-1.6-0.8-1.467-1.6 0-0.533 0.267-1.067 0.667-1.467s0.933-0.533 1.6-0.533c0.8 0 1.467 0.267 2 0.933 0.533 0.533 0.8 1.2 0.8 2.133-0.133 2-1.867 3.6-3.867 3.467-1.6-0.133-2.933-0.933-3.733-2.133-0.267-0.8-0.267-1.467-0.267-2.133 0-2.8 2.4-5.2 5.2-5.2s5.2 2.4 5.2 5.2-2.4 5.2-5.2 5.2z'/></svg>") no-repeat left 0px top -2px;
 	--S-sugar-off:url("data:image/svg+xml;utf8,<svg fill='rgb(55, 53, 47)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-0.267 0-0.533 0-0.8-0.133 2.533-0.133 4.533-2.133 4.533-4.533 0.133-1.067-0.267-2.133-1.067-2.8-0.8-0.8-1.6-1.2-2.8-1.333-0.933-0.133-1.733 0.267-2.4 0.8s-1.067 1.467-1.067 2.267c-0.133 1.467 1.067 2.8 2.533 2.933 1.2 0.133 2.4-0.933 2.4-2.133 0-0.267-0.267-0.533-0.533-0.533s-0.533 0.267-0.533 0.533c0 0.667-0.533 1.2-1.2 1.067-0.933-0.133-1.6-0.8-1.467-1.6 0-0.533 0.267-1.067 0.667-1.467s0.933-0.533 1.6-0.533c0.8 0 1.467 0.267 2 0.933 0.533 0.533 0.8 1.2 0.8 2.133-0.133 2-1.867 3.6-3.867 3.467-1.6-0.133-2.933-0.933-3.733-2.133-0.267-0.8-0.267-1.467-0.267-2.133 0-2.8 2.4-5.2 5.2-5.2s5.2 2.4 5.2 5.2-2.4 5.2-5.2 5.2z'/></svg>") no-repeat left 0px top -2px;
 	
-	--S-Savor-dark-on:url("data:image/svg+xml;utf8,<svg fill='rgb(235, 87, 87)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.4-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2zM16.267 14c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c0.933 0 1.6 0.8 1.6 1.6s-0.8 1.6-1.6 1.6c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c1.867 0 3.333-1.467 3.333-3.333s-1.467-3.067-3.333-3.067z'/></svg>") no-repeat left 0px top -2px;
-	--S-Savor-dark-off:url("data:image/svg+xml;utf8,<svg fill='rgb(175, 177, 178)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.4-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2zM16.267 14c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c0.933 0 1.6 0.8 1.6 1.6s-0.8 1.6-1.6 1.6c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c1.867 0 3.333-1.467 3.333-3.333s-1.467-3.067-3.333-3.067z'/></svg>") no-repeat left 0px top -2px;
+	--S-Simple-dark-on:url("data:image/svg+xml;utf8,<svg fill='rgb(235, 87, 87)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.4-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2zM16.267 14c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c0.933 0 1.6 0.8 1.6 1.6s-0.8 1.6-1.6 1.6c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c1.867 0 3.333-1.467 3.333-3.333s-1.467-3.067-3.333-3.067z'/></svg>") no-repeat left 0px top -2px;
+	--S-Simple-dark-off:url("data:image/svg+xml;utf8,<svg fill='rgb(175, 177, 178)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.4-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2zM16.267 14c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c0.933 0 1.6 0.8 1.6 1.6s-0.8 1.6-1.6 1.6c-0.533 0-0.8 0.267-0.8 0.8s0.267 0.8 0.8 0.8c1.867 0 3.333-1.467 3.333-3.333s-1.467-3.067-3.333-3.067z'/></svg>") no-repeat left 0px top -2px;
 	
 	--S-vinegar-on:url("data:image/svg+xml;utf8,<svg fill='rgb(235, 87, 87)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M19.467 18.533c-0.133 0-0.133 0-0.133 0.133-0.4 0.133-0.8 0.133-1.2 0.133-2 0-3.2-1.2-3.2-3.2 0-0.4 0.133-1.067 0.267-1.2v-0.133c0-0.133-0.133-0.133-0.133-0.133s-0.133 0-0.267 0.133c-1.333 0.533-2.267 1.867-2.267 3.467 0 2.133 1.6 3.733 3.867 3.733 1.6 0 2.933-0.933 3.467-2.133 0.133-0.133 0.133-0.133 0.133-0.133-0.4-0.533-0.533-0.667-0.533-0.667zM16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.267-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2z'/></svg>") no-repeat left 0px top -2px;
 	--S-vinegar-off:url("data:image/svg+xml;utf8,<svg fill='rgb(175, 177, 178)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M19.467 18.533c-0.133 0-0.133 0-0.133 0.133-0.4 0.133-0.8 0.133-1.2 0.133-2 0-3.2-1.2-3.2-3.2 0-0.4 0.133-1.067 0.267-1.2v-0.133c0-0.133-0.133-0.133-0.133-0.133s-0.133 0-0.267 0.133c-1.333 0.533-2.267 1.867-2.267 3.467 0 2.133 1.6 3.733 3.867 3.733 1.6 0 2.933-0.933 3.467-2.133 0.133-0.133 0.133-0.133 0.133-0.133-0.4-0.533-0.533-0.667-0.533-0.667zM16 10.667c-3.733 0-6.667 2.933-6.667 6.667 0 3.6 3.067 6.667 6.667 6.667 3.733 0 6.667-3.067 6.667-6.667 0-3.733-3.067-6.667-6.667-6.667zM16 22.533c-2.933 0-5.2-2.267-5.2-5.2s2.267-5.2 5.2-5.2c2.8 0 5.2 2.4 5.2 5.2s-2.4 5.2-5.2 5.2z'/></svg>") no-repeat left 0px top -2px;
@@ -689,10 +689,10 @@ body.body--win32 .fullscreen>.protyle-breadcrumb{
 
 
 
-#savordrag{
+#simpledrag{
 	display: none;
 }
-#savorPlugins{
+#simplePlugins{
 	display: none;
 }
 

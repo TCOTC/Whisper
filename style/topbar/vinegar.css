@@ -271,14 +271,14 @@ body{
 
 
 
-#buttonSavor-light,#buttonsalt,#buttonsugar{
+#buttonSimple-light,#buttonsalt,#buttonsugar{
 	display:none!important;
 }
 
 
 
 
-#savorToolbar:after{
+#simpleToolbar:after{
 	height:188px;
 }
 
@@ -287,6 +287,6 @@ body{
 	background-color: var(--S-dockleft-item-active-background);
 }
 
-#buttonSavor-dark.button_off{
-	background:var(--S-Savor-dark-off);
+#buttonSimple-dark.button_off{
+	background:var(--S-Simple-dark-off);
 }

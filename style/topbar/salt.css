@@ -263,7 +263,7 @@
 }
 
 
-#buttonSavor-dark,#buttonvinegar{
+#buttonSimple-dark,#buttonvinegar{
 	display:none!important;
 }
 
@@ -294,8 +294,8 @@
 	background-color:var(--S-toolbar-item-hover)!important;
 }
 
-#buttonSavor-light.button_off{
-	background:var(--S-Savor-light-off);
+#buttonSimple-light.button_off{
+	background:var(--S-Simple-light-off);
 }
 
 .layout__dockl>.fn__flex:not(.fn__none)+.layout__resize.fn__none{

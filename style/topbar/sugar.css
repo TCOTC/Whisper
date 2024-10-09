@@ -283,10 +283,10 @@
  color:unset;
 }
 
-#buttonSavor-dark,#buttonvinegar{
+#buttonSimple-dark,#buttonvinegar{
 	display:none!important;
 }
 
-#buttonSavor-light.button_off{
-	background:var(--S-Savor-light-off);
+#buttonSimple-light.button_off{
+	background:var(--S-Simple-light-off);
 }
