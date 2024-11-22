@@ -1,6 +1,6 @@
 [English](https://github.com/TCOTC/Whisper/blob/main/README.md)
 
-# 思源笔记 清语主题
+# 思源笔记 浅吟主题
 
 
 
