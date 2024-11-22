@@ -78,7 +78,7 @@ body:not(.body--mobile,.body--window)>#toolbar{
 			& ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ &{
 				right: 434px;
 			}
-		&:not(.fn__none)~#simplePlugins::before{
+		&:not(.fn__none)~#whisperPlugins::before{
 				content: counter(plugin-counter);
 				position: fixed;
 				top: 8px;
@@ -183,15 +183,15 @@ body:not(.body--mobile,.body--window)>#toolbar.toolbar--browser [data-position]{
 #barPlugins svg{
 	pointer-events: visibleFill;
 }
-#simpledrag.fn__none{
+#whisperdrag.fn__none{
 	display:flex!important;
 }
-[data-menu]:not(.fn__none) ~ #simplePlugins{
+[data-menu]:not(.fn__none) ~ #whisperPlugins{
 	display: flex;
 	width: 0px;
 	z-index:8;
 }
-#simpledrag{
+#whisperdrag{
 	display: block!important;
 }
 
@@ -222,11 +222,11 @@ body:not(.body--mobile,.body--window)>#toolbar.toolbar--browser [data-position]{
 	transition: none;
 }
 
-#simpleToolbar,#simpleToolbar::after{
+#whisperToolbar,#whisperToolbar::after{
 	pointer-events: visibleFill;
 	app-region: no-drag;
 }
-#simplePlugins:has(>#Splugin:hover):before,#simplePlugins:has(>#Splugin.button_on):before{
+#whisperPlugins:has(>#Splugin:hover):before,#whisperPlugins:has(>#Splugin.button_on):before{
 	opacity: 0;
 }
 
@@ -294,6 +294,6 @@ body:not(.body--mobile,.body--window)>#toolbar.toolbar--browser [data-position]{
 }
 
 
-#simpleToolbar{
+#whisperToolbar{
 	margin:6px 0px 4px 2px
 }

@@ -1,4 +1,4 @@
-/*body:not(.body--mobile,.body--window)>#toolbar #simpleToolbar:has(>#topBar.button_on)~.toolbar__item[data-position]{
+/*body:not(.body--mobile,.body--window)>#toolbar #whisperToolbar:has(>#topBar.button_on)~.toolbar__item[data-position]{
 	margin: 42px 0 0 226px !important;
     margin-right: -218.5px !important;
 	height: 12px!important;
@@ -9,7 +9,7 @@
 		opacity: 1!important;
 	}
 }
-body:not(.body--mobile,.body--window)>#toolbar.toolbar--browser #simpleToolbar:has(>#topBar.button_on)~.toolbar__item[data-position]{
+body:not(.body--mobile,.body--window)>#toolbar.toolbar--browser #whisperToolbar:has(>#topBar.button_on)~.toolbar__item[data-position]{
 	margin: 42px 0 0 143px !important;
 	margin-right: -135.5px !important;
 }*/

@@ -287,11 +287,11 @@
 }
 
 
-#buttonSimple-light,#buttonsalt,#buttonsugar{
+#buttonWhisper-light,#buttonsalt,#buttonsugar{
 	display:none!important;
 }
 
-#simpleToolbar:after{
+#whisperToolbar:after{
 	height:188px;
 }
 
@@ -300,6 +300,6 @@
 }
 
 
-#buttonSimple-dark.button_on,#buttonSimple-dark.button_off{
-	background:var(--S-Simple-dark-on);
+#buttonWhisper-dark.button_on,#buttonWhisper-dark.button_off{
+	background:var(--S-Whisper-dark-on);
 }

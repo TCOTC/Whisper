@@ -1,3 +1,3 @@
-[中文](https://github.com/TCOTC/Simple/blob/main/README_zh_CN.md)
+[中文](https://github.com/TCOTC/Whisper/blob/main/README_zh_CN.md)
 
-# SiYuan Simple theme
+# SiYuan Whisper theme

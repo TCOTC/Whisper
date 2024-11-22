@@ -1,16 +1,16 @@
 {
-  "name": "Simple",
+  "name": "Whisper",
   "author": "TCOTC",
-  "url": "https://github.com/TCOTC/Simple",
+  "url": "https://github.com/TCOTC/Whisper",
   "version": "0.0.0",
   "minAppVersion": "2.8.8",
   "displayName": {
-    "default": "Simple",
-    "zh_CN": "清语"
+    "default": "Whisper",
+    "zh_CN": "浅吟"
   },
   "description": {
-    "default": "A simple theme",
-    "zh_CN": "一个简单的主题"
+    "default": "Whisper the words of time gently, and let the soul encounter the splendid dream of blooming flowers in tranquility.",
+    "zh_CN": "浅吟时光的絮语，让心灵于静谧中邂逅繁花盛绽的绮梦。"
   },
   "readme": {
     "default": "README.md",
@@ -25,6 +25,6 @@
     "light"
   ],
   "keywords": [
-    "简单"
+    "主题", "theme"
   ]
 }

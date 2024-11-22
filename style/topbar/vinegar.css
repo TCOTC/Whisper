@@ -271,14 +271,14 @@ body{
 
 
 
-#buttonSimple-light,#buttonsalt,#buttonsugar{
+#buttonWhisper-light,#buttonsalt,#buttonsugar{
 	display:none!important;
 }
 
 
 
 
-#simpleToolbar:after{
+#whisperToolbar:after{
 	height:188px;
 }
 
@@ -287,6 +287,6 @@ body{
 	background-color: var(--S-dockleft-item-active-background);
 }
 
-#buttonSimple-dark.button_off{
-	background:var(--S-Simple-dark-off);
+#buttonWhisper-dark.button_off{
+	background:var(--S-Whisper-dark-off);
 }

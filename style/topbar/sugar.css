@@ -283,10 +283,10 @@
  color:unset;
 }
 
-#buttonSimple-dark,#buttonvinegar{
+#buttonWhisper-dark,#buttonvinegar{
 	display:none!important;
 }
 
-#buttonSimple-light.button_off{
-	background:var(--S-Simple-light-off);
+#buttonWhisper-light.button_off{
+	background:var(--S-Whisper-light-off);
 }
