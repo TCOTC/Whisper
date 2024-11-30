@@ -1,6 +1,27 @@
+/* 避免展开文档树误触打开文档：只要箭头变成黑色就能展开下级 */
+.file-tree .b3-list-item {
+	padding-left: 0;
+
+	&[data-type="navigation-root"]  {
+		padding-left: 4px;
+
+		&:hover > .b3-list-item__toggle--hl {
+			color: var(--b3-theme-on-background);
+		}
+	}
+
+	.b3-list-item__toggle {
+		height: 28px;
+		
+		&.b3-list-item__toggle--hl:hover {
+			background-color: unset;
+		}
+	}
+}
+
 /* ————————————————————dock栏———————————————————— */
 .dock{
-	background-color: var(--S-dock-background);
+	/* background-color: var(--S-dock-background);
 	border: none!important;
 	&.dock--vertical{
 	width: var(--S-dock-item-width);
@@ -24,9 +45,9 @@
 			padding: 3px;
 			height: 14px;
 		}
-	}
+	} */
 	& .dock__item{
-		color: var(--S-dock-color);
+		/* color: var(--b3-theme-surface-light);
 		background-color: var(--S-dock-background);
 		padding:5.5px ;
 		svg{
@@ -43,14 +64,13 @@
 			color: var(--b3-theme-on-background);
 			background-color: var(--S-dock-item-active-background-hover);
 			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+		} */
+		&.dock__item--activefocus{ /* 侧栏面板焦点状态的侧栏按钮样式 */
+			background-color: var(--b3-theme-primary-lightest)!important;
+			color:var(--b3-theme-primary)!important;
 		}
-		&.dock__item--activefocus{
-			background-color: var(--S-list-background-activefocus)!important;
-			color:var(--S-dock--item--activefocus)!important;
-			box-shadow: 0 1px 3px var(--S-list-background-activefocus), 0px 0px 1px var(--S-list-background-activefocus);
-		}/*dock焦点状态*/
 	}
-	& .dock__item--active{
+	/* & .dock__item--active{
 		color: var(--b3-theme-on-background);
 		background-color: var(--S-dock-item-active-background-hover);
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.2);
@@ -58,16 +78,16 @@
 	& .dock__item--active:hover{
 		color: var(--b3-theme-on-background);
 		background-color: var(--S-dock-item-active-background-hover);
-	}
+	} */
 }
 
-.b3-list-item__toggle{
+/* .b3-list-item__toggle{
 	margin-left: -4px;
-}
+} */
 
 
 /* 底dock栏 */
-.layout__dockb.layout--float{
+/* .layout__dockb.layout--float{
 	bottom:60px!important;
 	margin-left:32px;
 	margin-right:32px;
@@ -104,4 +124,4 @@
 }	
 #dockBottom .fn__flex-1{
 	flex: 0;
-}
+} */

@@ -1,5 +1,145 @@
+/* 菜单里的链接跟行内链接用同样的颜色 */
+a {
+    color: var(--b3-protyle-inline-link-color);
+}
+
+/* 开关按钮：隐藏悬浮样式 */
+label:hover .b3-switch:checked:not(:disabled)::after, .b3-switch:checked:hover:not(:disabled)::after {
+	background-color: var(--b3-switch-checked);
+}
+.b3-switch::before,
+label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:not(:disabled)::before {
+	background-color: unset;
+}
+
+
+/* 选项菜单 */
+.b3-menu__item {
+	line-height: 27px;
+	min-width: 160px;/* 菜单宽度：选项的宽度 */
+
+	/* 隐藏不常用的块标选项 */
+	&[data-id="jumpToParentNext"],&[data-id="jumpToParentPrev"],&[data-id="jumpToParent"],&[data-id="enterBack"],
+	/* 隐藏不常用的页签菜单选项 */
+	&[data-id="closeOthers"],&[data-id="closeAll"],&[data-id="closeUnmodified"],&[data-id="closeLeft"],&[data-id="closeRight"] {
+		display: none;
+	}
+	&[data-id="docInfo"] .b3-menu__label,&[data-id="updateAndCreatedAt"] .b3-menu__label {
+		line-height: 18px;
+		font-size: 85%;
+	}
+
+	/* 菜单宽度：文本的宽度 */
+	.b3-menu__label {
+		min-width: 25px;
+	}
+}
+
+/* 输入框、下拉框聚焦状态 */
+.b3-text-field:not(.b3-text-field--text):focus,.pcr-app .pcr-interaction .pcr-result:not(.b3-text-field--text):focus,
+.b3-select:focus {
+    box-shadow: inset 0 0 0 .6px var(--b3-theme-on-background);
+}
+
+/* 外观菜单 */
+/* 把 13 号颜色排到默认色正下方 */
+.color__square[style*="--b3-font-color1"],.color__square[style*="--b3-font-background1"] {
+    order: 1;
+}
+.color__square[style*="--b3-font-color2"],.color__square[style*="--b3-font-background2"] {
+    order: 2;
+}
+.color__square[style*="--b3-font-color3"],.color__square[style*="--b3-font-background3"] {
+    order: 3;
+}
+.color__square[style*="--b3-font-color4"],.color__square[style*="--b3-font-background4"] {
+    order: 4;
+}
+.color__square[style*="--b3-font-color5"],.color__square[style*="--b3-font-background5"] {
+    order: 5;
+}
+.color__square[style*="--b3-font-color6"],.color__square[style*="--b3-font-background6"] {
+    order: 6;
+}
+.color__square[style*="--b3-font-color7"],.color__square[style*="--b3-font-background7"] {
+    order: 8;
+}
+.color__square[style*="--b3-font-color8"],.color__square[style*="--b3-font-background8"] {
+    order: 9;
+}
+.color__square[style*="--b3-font-color9"],.color__square[style*="--b3-font-background9"] {
+    order: 10;
+}
+.color__square[style*="--b3-font-color10"],.color__square[style*="--b3-font-background10"] {
+    order: 11;
+}
+.color__square[style*="--b3-font-color11"],.color__square[style*="--b3-font-background11"] {
+    order: 12;
+}
+.color__square[style*="--b3-font-color12"],.color__square[style*="--b3-font-background12"] {
+    order: 13;
+}
+.color__square[style*="--b3-font-color13"],.color__square[style*="--b3-font-background13"] {
+    order: 7;
+}
+
+/* 隐藏闪卡按钮上的图标 */
+.card__icon {
+	display: none;
+}
+
+/* 集市 */
+.b3-button {
+	&:active {
+		box-shadow: unset;
+	}
+	&:not(.b3-button--outline):hover,&:not(.b3-button--outline):focus {
+		box-shadow: unset;
+	}
+	&.b3-button--outline {
+		transition: unset;
+	}
+}
+/* 已下载页面 */
+.config-bazaar__panel[data-type=downloaded] {
+	/* 并列显示 */
+	.config-bazaar__content {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+		margin-right: 16px;
+
+		.b3-card {
+			display: grid;
+			grid-template-columns: 90px 1fr;
+			margin: 16px 0 0 16px;
+	
+			.b3-card__info {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+		
+				.b3-card__desc {
+					display: block;
+				}
+			}
+			.b3-card__actions {
+				position: absolute;
+				bottom: 12px;
+				right: 0px;
+			}
+		}
+	}
+	/* “未找到相关内容” */
+	.fn__hr {
+		display: none;
+	}
+	.b3-list--empty {
+		margin-top: 15px;
+	}
+}
+
 /* ————————————————————弹出菜单&设置菜单———————————————————— */
-.b3-menu{
+/* .b3-menu{
 	animation: menu 0.2s ease-in-out;
 	box-shadow: var(--b3-menu-shadow);
 	background-color:var(--b3-theme-background);
@@ -38,7 +178,7 @@
 .b3-menu__accelerator{
 	color:var(--b3-scroll-color-hover);
 }/*快捷键提示*/
-.b3-menu__accelerator:has(+.b3-menu__icon--arrow){
+/* .b3-menu__accelerator:has(+.b3-menu__icon--arrow){
 	margin-right: 4px;
 }
 .b3-list-item--big{
@@ -49,10 +189,10 @@
 
 .b3-dialog__container{
 	border:none;
-}
+} */
 
 
-.b3-dialog__container .config__panel>.b3-tab-bar .b3-text-field{
+/* .b3-dialog__container .config__panel>.b3-tab-bar .b3-text-field{
 	box-shadow: inset 0 0 0 0.2px var(--b3-theme-on-surface-light);
 
 }
@@ -60,9 +200,6 @@
 .b3-dialog__container .config__panel>.b3-tab-bar .b3-text-field:focus{
 	box-shadow: inset 0 0 0 1px var(--b3-theme-primary),0 0 0 3px var(--b3-theme-primary-lightest);
 }
-/*.b3-dialog__container:not([style*="auto"]){
-	height: 70vh!important;
-}*/
 @media (min-width: 750px){
 .b3-dialog__container .config__panel>.b3-tab-bar{
 	padding:8px 12px;
@@ -81,9 +218,9 @@
 
 .b3-dialog__container .config__panel>.b3-tab-bar .b3-list-item--focus .b3-list-item__graphic{
 	color: var(--b3-theme-on-background)!important;
-}
+} */
 /*快捷键面板*/
-#keymapList .b3-list--background{
+/* #keymapList .b3-list--background{
 	margin:5px 0;
 	border-radius: 3px;
 }
@@ -92,9 +229,9 @@
 }
 #keymapList .b3-list--border .b3-list__panel:before{
 	left: -15px;
-}
+} */
 /* 按钮 */
-.b3-button--outline,.b3-button:not(.b3-button--cancel):not([data-type="av-add-bottom"]),#searchInclude.b3-button:not(.b3-button--cancel){
+/* .b3-button--outline,.b3-button:not(.b3-button--cancel):not([data-type="av-add-bottom"]),#searchInclude.b3-button:not(.b3-button--cancel){
 	font-weight:700;
 	background-color:var(--b3-button);
 	color: var(--b3-theme-background);
@@ -111,18 +248,18 @@
 	border:none;
 	background-color: var(--b3-theme-background);
     box-shadow: 0 4px 9px rgba(0,0,0,.05), 0 1.5px 2.8px rgba(0,0,0,.07), 0 0.3px 0.7px rgba(0,0,0,.12);
-}
+} */
 /*消息确认按钮*/
-.b3-button--cancel{
+/* .b3-button--cancel{
     background-color: var(--b3-theme-background);
     box-shadow: 0 4px 9px rgba(0,0,0,.05), 0 1.5px 2.8px rgba(0,0,0,.07), 0 0.3px 0.7px rgba(0,0,0,.12);
 }
 .b3-button--cancel:hover{
 	background-color: var(--S-fn__flex-shrink-background);
 	box-shadow: 0 4px 9px rgba(0,0,0,.05), 0 1.5px 2.8px rgba(0,0,0,.07), 0 0.3px 0.7px rgba(0,0,0,.12);
-}
+} */
 /* 开关 */
-.b3-switch {
+/* .b3-switch {
 	height: 18px;
 	width: 30px;
 	border-radius: 44px;
@@ -154,9 +291,9 @@
 .b3-switch:checked:after {
   background: var(--b3-theme-background);
   transform: translate(19px,3px);
-}
+} */
 /*引用块弹出框*/
-.block__popover--open{
+/* .block__popover--open{
 	border:none;
 	box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
 	animation: menu 0.2s ease-in-out;
@@ -177,36 +314,36 @@
 }
 .block__icons--menu {
     background-color: var(--S-fn__flex-shrink-background);
-}
+} */
 /* 弹出框钉住 */
-.block__icon--active[data-type='pin'] svg{
+/* .block__icon--active[data-type='pin'] svg{
     color: var(--b3-theme-primary)!important;
 	transition: all 200ms;
 	transform: rotate(-46deg);
-}
+} */
 
 /* 选择下拉菜单 */
-.b3-select{
+/* .b3-select{
 	box-shadow: inset 0 0 0 1px var(--S-list-background);
 	background-color: var(--S-list-background);
-}
+} */
 /* 输入框 */
-.b3-text-field{
+/* .b3-text-field{
 	box-shadow: inset 0 0 0 1px var(--S-list-background);
 }
 .b3-text-field:not(#searchInput):not(.fn__block):not(.fn__size200):not(#whisperSearchInput){
 	background-color: var(--S-list-background);
-}
+} */
 /* 移动文档菜单 */
-#foldList .b3-list-item__icon{
+/* #foldList .b3-list-item__icon{
 	padding-left:18px;
 }
 #foldList .b3-list-item__showall{
 	padding-left:3px;
 	color:var(--b3-theme-on-surface);
-}
+} */
 /*历史面板,集市*/
-.b3-dialog__container .layout-tab-bar{
+/* .b3-dialog__container .layout-tab-bar{
 	height:40px;
 	z-index:unset;
 }
@@ -230,9 +367,9 @@ div#historyContainer{
 }
 .config-bazaar__panel .counter{
 	background-color:var(--S-list-background)!important;
-}
+} */
 /*已下载页面*/
-.config-bazaar__panel[data-type="downloaded"] .fn__flex>.fn__space:first-child{
+/* .config-bazaar__panel[data-type="downloaded"] .fn__flex>.fn__space:first-child{
 	width: 11px;
 }
 
@@ -281,9 +418,9 @@ div#historyContainer{
 	margin-right:76px;
 	width:50px;
 	float:right;
-}
+} */
 /*登录页面*/
-.config-account__center{
+/* .config-account__center{
 	background-color:transparent;
 }
 .config-account__center .b3-chip::before {
@@ -306,13 +443,13 @@ div#historyContainer{
 .config-account__svg svg:hover{
 	opacity:1;
 	transition: all 100ms ease-out;
-}
+} */
 /*最近打开文档*/
-[data-key="⌘E"] .b3-list--background.fn__flex-1 .b3-list-item{
+/* [data-key="⌘E"] .b3-list--background.fn__flex-1 .b3-list-item{
 	margin: 2px 8px;
-}
+} */
 /*集市悬浮样式*/
-.b3-cards{
+/* .b3-cards{
 	margin-top: 2px;
 }
 #configBazaarDownloaded{
@@ -331,9 +468,9 @@ div#historyContainer{
 	box-shadow: rgba(15, 15, 15, 0.04) 0px 0px 0px 1px, rgba(15, 15, 15, 0.03) 0px 3px 6px, rgba(15, 15, 15, 0.06) 0px 9px 24px;
 	background-color:transparent;
 	transform: none;
-}
+} */
 /*pdf*/
-.pdf__outer,#sidebarContainer,#toolbarViewer,#toolbarViewer>.fn__flex-1{
+/* .pdf__outer,#sidebarContainer,#toolbarViewer,#toolbarViewer>.fn__flex-1{
 	background-color:var(--S-fn__flex-shrink-background);
 }
 
@@ -369,9 +506,9 @@ div#historyContainer{
 }
 #sidebarResizer{
 	right: -3px;
-}
+} */
 /* '/'弹出分栏*/
-.hint--menu{
+/* .hint--menu{
 	animation: menu 0.2s ease-in-out;
 	box-shadow: var(--b3-menu-shadow);
     background-color: var(--b3-theme-background);
@@ -383,8 +520,6 @@ div#historyContainer{
 .hint--menu>div{
 	column-width: 180px;
 	column-rule:1px outset var(--b3-border-color);
-	/*column-fill:auto;
-	max-height: 402px !important;*/
 }
 .hint--menu .b3-list-item{
 	margin:0!important;
@@ -445,13 +580,13 @@ div#historyContainer{
 }
 .emojis__item:hover{
 	font-size: 24px;
-}
+} */
 /*文本框选颜色*/
-::selection{
+/* ::selection{
 	background-color:var( --b3-theme-primary-lightest);
 }
 /*滚动条*/
-::-webkit-scrollbar {
+/*::-webkit-scrollbar {
     width : var(--webkit-scrollbar);
 	height: var(--webkit-scrollbar);
 	background-color:var(--b3-scroll-bgcolor);
@@ -485,10 +620,10 @@ div#historyContainer{
 .b3-slider::-webkit-slider-thumb:hover{
 	box-shadow:0px 0px 0px 3px var(--b3-theme-primary),0px 0px 0px 5px var(--b3-theme-primary-lighter)!important;
 	transition:all 300ms;
-}
+} */
 
 /*闪卡*/
-.b3-button--error{
+/* .b3-button--error{
 	background-color:var(--b3-font-color12)!important;
 }
 .b3-button--warning{
@@ -502,15 +637,4 @@ div#historyContainer{
 }
 .card__main.fullscreen{
 	z-index:11;
-}
-
-
-/*.b3-switch {
-    height: 20px;
-    width: 32px;
-    transition-property: background-color,filter;
-    transition-duration: .3s;
-    box-sizing: border-box;
-    border: 1px solid rgba(0,0,0,0);
-    background-color: rgba(127,127,127,.5);
-}
+} */

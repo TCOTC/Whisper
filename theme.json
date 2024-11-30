@@ -22,7 +22,8 @@
     ]
   },
   "modes": [
-    "light"
+    "light",
+    "dark"
   ],
   "keywords": [
     "主题", "theme"

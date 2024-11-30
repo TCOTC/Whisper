@@ -44,6 +44,7 @@ body:not(.body--mobile,.body--window) #barWorkspace {
 		background-color: var(--b3-font-color12);
 	}
 	& .toolbar__text{
+		min-width: 5px;
 		line-height:24px;
 		color:var(--b3-theme-background);
 		text-align:center;
