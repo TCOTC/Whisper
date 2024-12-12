@@ -11,7 +11,7 @@ html[data-theme-mode="light"] {
 	--b3-theme-primary: rgb(126, 121, 0);                            /* 主题色。各种按钮 */
 	--b3-theme-primary-light: rgba(165, 157, 51, .54);
 	--b3-theme-primary-lighter: rgba(165, 157, 51, .38);
-	--b3-theme-primary-lightest: rgba(45, 43, 1, .12);
+	--b3-theme-primary-lightest: rgba(45, 43, 1, .12);               /* 选中块后的高亮 */
 	--b3-theme-secondary: #f3a92f;
 	--b3-theme-background: rgb(249, 248, 245);                       /* 编辑器。 */
 	--b3-theme-background-light: rgb(237, 227, 225);                 /* 侧栏按钮。--b3-theme-surface 与 --b3-list-hover 混合 */
@@ -198,6 +198,7 @@ html[data-theme-mode="light"] {
 
 /* 暗黑主题 */
 /*html[data-theme-mode="dark"] {
+	/* TODO */
 }*/
 
 /* —————————————————————————— 样式 —————————————————————————— */

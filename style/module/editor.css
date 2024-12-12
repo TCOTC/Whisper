@@ -1,5 +1,8 @@
 /* ————————————————————编辑区———————————————————— */
-/*头图、图标*/
+
+/* 编辑器顶部 */
+
+/* 头图、图标 */
 .protyle-background{
 	.protyle-background__icon{
 		margin-bottom:14px;
@@ -38,7 +41,7 @@
 		}
 	}
 }
-/*文档标签*/
+/* 文档标签 */
 .protyle-background__ia .b3-chips{
 	& .b3-button{
 		/* box-shadow: none;
@@ -92,7 +95,50 @@
 	}
 }
 
+/* 代码块 */
 
+/* 缩短代码块上下边距，更紧凑 */
+.b3-typography .code-block:not(pre),
+.protyle-wysiwyg .code-block:not(pre) {
+    margin-top: 6px;
+	margin-bottom: 6px;
+}
+
+/* 代码块滚动时语言和按钮固定在编辑器顶部 修改自 JeffreyChen https://ld246.com/article/1728146248791 */
+.b3-typography div.hljs, .protyle-wysiwyg div.hljs {
+    padding-top: 0;
+}
+/* 明亮模式的颜色 */
+html[data-theme-mode="light"] {
+	.protyle-wysiwyg[contenteditable] .code-block .protyle-action {
+		background-color: rgb(238, 237, 235);
+		position: sticky;
+		top: 0;
+	}
+	/* 代码块高亮时需要调整 .protyle-action 的背景色以避免样式问题 */
+	.protyle-wysiwyg--select.code-block .protyle-action,
+	.protyle-wysiwyg--hl.code-block .protyle-action {
+		background-color: rgb(215, 214, 207);
+	}
+}
+/* 暗黑模式的颜色 */
+html[data-theme-mode="dark"] {
+	/* TODO 需要等暗黑模式的配色考虑好之后再弄 */
+}
+/* 始终显示设置的代码块语言 */
+.b3-typography .code-block:not(pre):not(:hover) .protyle-action__language,
+.protyle-wysiwyg .code-block:not(pre):not(:hover) .protyle-action__language {
+    opacity: .86;
+}
+/* 只有 hover 代码块时才显示代码块语言占位符 */
+.protyle-wysiwyg[data-readonly=false] .code-block:not(:hover) .protyle-action .protyle-action__language:empty::after {
+	opacity: 0;
+}
+/* 代码块语言的左边与代码对齐 */
+.protyle-action__language {
+    position: absolute;
+    left: 1em;
+}
 
 /*头图选项*/
 
@@ -455,14 +501,8 @@
 	padding:0 3px;
 	width:auto;
 } */
-/*代码块*/
-/*.code-block {
-	margin-left:4px!important;
-	margin-right:4px!important;
-}
-.list .code-block {
-	margin-right:0px!important;
-}/*列表里代码块对齐*/
+
+/*列表里代码块对齐*/
 /* .b3-typography .code-block, .protyle-wysiwyg .code-block {
 	background-color:var(--S-code-block-hljs);
 	padding: 34px 10px 22px 10px;
