@@ -108,6 +108,7 @@
 .b3-typography div.hljs, .protyle-wysiwyg div.hljs {
     padding-top: 0;
 }
+/* TODO 要看看在 设置 - 外观 - 代码块主题 选择了主题之后会怎样，需要兼容 */
 /* 明亮模式的颜色 */
 html[data-theme-mode="light"] {
 	.protyle-wysiwyg[contenteditable] .code-block .protyle-action {
