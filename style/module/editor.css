@@ -111,14 +111,14 @@
 /* 明亮模式的颜色 */
 html[data-theme-mode="light"] {
 	.protyle-wysiwyg[contenteditable] .code-block .protyle-action {
-		background-color: rgb(238, 237, 235);
+		background-color: rgb(238, 237, 235); /* 混合 --b3-theme-background 和 rgba(27, 31, 35, .05) */
 		position: sticky;
 		top: 0;
 	}
 	/* 代码块高亮时需要调整 .protyle-action 的背景色以避免样式问题 */
 	.protyle-wysiwyg--select.code-block .protyle-action,
 	.protyle-wysiwyg--hl.code-block .protyle-action {
-		background-color: rgb(215, 214, 207);
+		background-color: rgb(215, 214, 207); /* 二次混合 --b3-theme-primary-lightest 和上面的混合颜色 */
 	}
 }
 /* 暗黑模式的颜色 */
