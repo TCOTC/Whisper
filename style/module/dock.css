@@ -1,4 +1,4 @@
-/* 避免展开文档树误触打开文档：只要箭头变成黑色就能展开下级 */
+/* 避免展开文档树误触打开文档：只要箭头颜色变深就能展开下级 */
 .file-tree .b3-list-item {
 	padding-left: 0;
 
@@ -17,7 +17,19 @@
 			background-color: unset;
 		}
 	}
+
+	/* 已关闭的笔记本 */
+	&[data-type="toggle"] {
+		&:not(:hover) {
+			opacity: 0.6;
+		}
+
+		.b3-list-item__toggle {
+			color: var(--b3-theme-on-background);
+		}
+	}
 }
+
 
 /* ————————————————————dock栏———————————————————— */
 .dock{
