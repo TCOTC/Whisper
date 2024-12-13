@@ -1,5 +1,12 @@
 /* ————————————————————编辑区———————————————————— */
 
+/* 滚动条 */
+
+.av:not(:hover) > .av__container > .av__scroll {
+	--b3-scroll-color: transparent; /* 数据库块未 hover 时隐藏横向滚动条 */
+}
+
+
 /* 编辑器顶部 */
 
 /* 头图、图标 */
@@ -93,6 +100,68 @@
 			font-size:1.1em;
 		}
 	}
+}
+
+
+#layouts div.layout__center div.protyle-content:not([data-fullwidth="true"]) div.protyle-wysiwyg {
+	padding-bottom: 70vh !important; /* 更改编辑器底部高度 */
+}
+
+/* 数据库角标文本颜色 */
+.protyle-attr--av > span{
+	display: contents;
+	font-weight: 500;
+}
+.protyle-attr--av > span:nth-child(4n+1) {
+	color: var(--b3-card-success-color);/* 每组的第1个 */
+	background-color: var(--b3-card-success-background);
+}
+.protyle-attr--av > span:nth-child(4n+2) {
+	color: var(--b3-card-info-color); /* 每组的第2个 */
+	background-color: var(--b3-card-info-background);
+}
+.protyle-attr--av > span:nth-child(4n+3) {
+	color: var(--b3-card-warning-color); /* 每组的第3个 */
+	background-color: var(--b3-card-warning-background);
+}
+.protyle-attr--av > span:nth-child(4n) {
+	color: var( --b3-card-error-color); /* 每组的第4个 */
+	background-color: var(--b3-card-error-background);
+}
+
+
+/* 标题块 */
+
+/* 在标题前添加数字标识 */
+/* 用:not(#preview)排除导出PDF，用.protyle-wysiwyg排除导出预览 */
+div:not(#preview) > .protyle-wysiwyg div[data-subtype^="h"] > div:first-child {
+	padding-left: 10px;
+}
+div:not(#preview) > .protyle-wysiwyg div[data-subtype^="h"] > div:first-child:before {
+	font-size: 0.65em;
+	font-weight: 200;
+	color: rgba(0,0,0,.45);
+	position: absolute; /* 使用绝对定位 */
+	transform: translateY(44%);
+	left: 0;
+}
+div:not(#preview) > .protyle-wysiwyg div[data-subtype="h1"] > div:first-child:before {
+	content: "1";
+}
+div:not(#preview) > .protyle-wysiwyg div[data-subtype="h2"] > div:first-child:before {
+	content: "2";
+}
+div:not(#preview) > .protyle-wysiwyg div[data-subtype="h3"] > div:first-child:before {
+	content: "3";
+}
+div:not(#preview) > .protyle-wysiwyg div[data-subtype="h4"] > div:first-child:before {
+	content: "4";
+}
+div:not(#preview) > .protyle-wysiwyg div[data-subtype="h5"] > div:first-child:before {
+	content: "5";
+}
+div:not(#preview) > .protyle-wysiwyg div[data-subtype="h6"] > div:first-child:before {
+	content: "6";
 }
 
 
