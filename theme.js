@@ -1,13 +1,8 @@
 // 使用立即执行函数表达式（IIFE）来管理变量作用域
 (function() {
-    // 使用 window 对象来存储全局状态
-    window.isBulletMainExecuted = typeof window.isBulletMainExecuted !== 'undefined' ? window.isBulletMainExecuted : false;
-
     window.destroyTheme = () => {
-        if (window.isBulletMainExecuted) {// 仅在 bulletMain 执行后才进行清理
-            // 卸载“跟踪当前所在块”的事件监听器
-            bulletCleanup();
-        }
+        // 卸载“跟踪当前所在块”的事件监听器
+        bulletCleanup();
     }
 
     /**
@@ -50,7 +45,6 @@
     };
 
     const bulletMain = function() {
-        window.isBulletMainExecuted = true; // 标记 bulletMain 已经执行
         // 跟踪当前所在块
         window.addEventListener('mouseup', focusHandler, true);
         window.addEventListener('keyup', focusHandler, true);
@@ -62,8 +56,6 @@
         // 卸载事件监听器
         window.removeEventListener('mouseup', focusHandler, true);
         window.removeEventListener('keyup', focusHandler, true);
-        // 卸载完毕
-        window.isBulletMainExecuted = false;
     };
 
     (async () => {
