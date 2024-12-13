@@ -1,4 +1,4 @@
-
+@import url(/appearance/themes/Whisper/style/module/toolbar.css);       /* 顶栏 */
 @import url(/appearance/themes/Whisper/style/module/dock.css);          /* 侧栏和面板 */
 @import url(/appearance/themes/Whisper/style/module/status.css);        /* 底栏 */
 @import url(/appearance/themes/Whisper/style/module/editor.css);        /* 编辑器 */
@@ -24,7 +24,7 @@ html[data-theme-mode="light"] {
 	/* 文字颜色 */
 	--b3-theme-on-primary: #fff;
 	--b3-theme-on-secondary: #fff;
-	--b3-theme-on-background: #222;
+	--b3-theme-on-background: #222; /* 文本默认颜色 */
 	--b3-theme-on-surface: #5f6368;
 	--b3-theme-on-surface-light: rgba(95, 99, 104, .68);
 	--b3-theme-on-error: #fff;
@@ -103,6 +103,7 @@ html[data-theme-mode="light"] {
 	--b3-font-background11: rgb(186, 206, 253);/*蓝*/
 	--b3-font-background12: rgb(205, 178, 250);/*紫*/
 	--b3-font-background13: rgba(232, 233, 235);/*灰*/
+	--b3-font-background14: rgb(183, 183, 183);/*数据库选项*/
 
 	/* 动画效果 */
 	--b3-transition: all .2s cubic-bezier(0, 0, .2, 1) 0ms;
@@ -205,7 +206,7 @@ html[data-theme-mode="light"] {
 
 /* 主体结构*/
 
-/* @import url(/appearance/themes/Whisper/style/module/toolbar.css);       /* 顶栏 */
+@import url(/appearance/themes/Whisper/style/module/toolbar.css);       /* 顶栏 */
 
 @import url(/appearance/themes/Whisper/style/module/dock.css);          /* 侧栏和面板 */
 

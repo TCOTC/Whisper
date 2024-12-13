@@ -95,6 +95,7 @@
 	}
 }
 
+
 /* 代码块 */
 
 /* 缩短代码块上下边距，更紧凑 */
@@ -109,8 +110,7 @@
     padding-top: 0;
 }
 /* TODO 要看看在 设置 - 外观 - 代码块主题 选择了主题之后会怎样，需要兼容 */
-/* 明亮模式的颜色 */
-html[data-theme-mode="light"] {
+html[data-theme-mode="light"] { /* 明亮模式的颜色 */
 	.protyle-wysiwyg[contenteditable] .code-block .protyle-action {
 		background-color: rgb(238, 237, 235); /* 混合 --b3-theme-background 和 rgba(27, 31, 35, .05) */
 		position: sticky;
@@ -122,8 +122,7 @@ html[data-theme-mode="light"] {
 		background-color: rgb(215, 214, 207); /* 二次混合 --b3-theme-primary-lightest 和上面的混合颜色 */
 	}
 }
-/* 暗黑模式的颜色 */
-html[data-theme-mode="dark"] {
+html[data-theme-mode="dark"] { /* 暗黑模式的颜色 */
 	/* TODO 需要等暗黑模式的配色考虑好之后再弄 */
 }
 /* 始终显示设置的代码块语言 */
@@ -141,6 +140,107 @@ html[data-theme-mode="dark"] {
     left: 1em;
 }
 
+
+/* 数据库 */
+
+.b3-chip {
+	color: var(--b3-theme-on-background) !important; /* 选项字体用默认色 */
+}
+
+.av__row:hover .av__firstcol svg {
+	opacity: 1; /* hover 条目时就显示条目的复选框 */
+}
+
+/* Notion 样式的数据库 CSS片段 */
+.av__container {
+	width: 100%;
+}
+.av__container .av__body {
+	min-width: 100%;
+}
+.av__container .av__body .av__row--header .block__icons {
+	padding: unset;
+	flex-direction: row; /* "添加字段"和"更多"按钮调换顺序 */
+	flex-grow: 1;
+	align-items: stretch; /* 使子元素在垂直方向上填满父容器 */
+}
+.av__container .av__body .av__row--header .block__icons .block__icon {
+	border-radius: unset;
+	padding: 0 10px;
+}
+.av__container .av__body .av__row--header .block__icons .block__icon:nth-child(3) {
+	order: 1; /* "添加字段"按钮放在左边 */
+}
+.av__container .av__body .av__row--header .block__icons .block__icon:nth-child(1) {
+	order: 2; /* "更多"按钮放在右边铺满 */
+	flex-grow: 1;
+}
+.av__container .av__body .av__row--header .block__icons > .fn__space {
+	display: none;
+}
+.av__container .av__body .av__row--util .av__colsticky {
+	width: 100%;
+	flex-direction: column; /* "添加条目"和"加载更多"按钮分成两行显示 */
+}
+.av__container .av__body .av__row--util .av__colsticky > .b3-button {
+	border-radius: unset;
+	margin: unset;
+	padding: unset;
+	height: 2.7em;
+	justify-content: flex-start;
+	border-bottom: 1px solid var(--b3-theme-surface-lighter);
+}
+.av__container .av__body .av__row--util .av__colsticky > .b3-button span {
+	position: sticky;
+	left: 2em;
+}
+.av__container .av__body .av__row--util .av__colsticky > .b3-button svg {
+	position: sticky;
+	left: 0.5em;
+}
+.av__container .av__body .av__row--util .av__colsticky > .b3-button svg[data-type="set-page-size"] {
+	margin-left: auto;
+	padding: 2px 6px;
+	right: 5px;
+}
+.av__container .av__body .av__row--util .av__colsticky > .b3-button svg[data-type="set-page-size"]:hover {
+	background-color: var(--b3-list-hover);
+}
+.av__container .av__body .av__row--util .av__colsticky > .b3-button:last-of-type {
+	order: 1; /* "加载更多"按钮放在上方 */
+}
+.av__container .av__body .av__row--util .av__colsticky > .b3-button:first-of-type {
+	order: 2; /* "添加条目"按钮放在下方 */
+}
+.av__container .av__body .av__row--util .av__colsticky > .fn__space {
+	display: none;
+}
+.av__container .av__body .av__row--footer {
+	border-top: unset;
+}
+
+/* hover 条目时高亮 */
+.av__row--select:not(.av__row--header) .av__cell,
+.av__row--select:not(.av__row--header) .av__firstcol,
+.av__row--hl:not(.av__row--header) .av__cell,
+.av__row--hl:not(.av__row--header) .av__firstcol {
+    background-color: var(--b3-theme-primary-lightest);
+}
+.av__row:not(.av__row--header):hover .av__cell,
+.av__row:not(.av__row--header):hover .av__firstcol {
+    background-color: var(--b3-list-hover);
+}
+html[data-theme-mode="light"] { /* 明亮模式的颜色 */
+	.av__row--select:not(.av__row--header):hover .av__cell,
+	.av__row--select:not(.av__row--header):hover .av__firstcol,
+	.av__row--hl:not(.av__row--header):hover .av__cell,
+	.av__row--hl:not(.av__row--header):hover .av__firstcol {
+		background-color: rgba(8, 8, 3, 0.17); /* --b3-theme-primary-lightest 和 --b3-list-hover 混合 */
+	}
+}
+html[data-theme-mode="dark"] { /* 暗黑模式的颜色 */
+	/* TODO 需要等暗黑模式的配色考虑好之后再弄 */
+}
 /*头图选项*/
 
 /*.protyle-background__img .protyle-icons .protyle-icon{

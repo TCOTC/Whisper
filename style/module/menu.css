@@ -34,6 +34,12 @@ label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:n
 		min-width: 25px;
 	}
 }
+button, input, select, textarea {
+	font-size: 97%;
+}
+.b3-button {
+	transition: unset; /* 按钮不需要过渡 */
+}
 
 /* 输入框、下拉框聚焦状态 */
 .b3-text-field:not(.b3-text-field--text):focus,.pcr-app .pcr-interaction .pcr-result:not(.b3-text-field--text):focus,
@@ -42,7 +48,6 @@ label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:n
 }
 
 /* 外观菜单 */
-/* 把 13 号颜色排到默认色正下方 */
 .color__square[style*="--b3-font-color1"],.color__square[style*="--b3-font-background1"] {
     order: 1;
 }
@@ -80,7 +85,10 @@ label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:n
     order: 13;
 }
 .color__square[style*="--b3-font-color13"],.color__square[style*="--b3-font-background13"] {
-    order: 7;
+    order: 7; /* 把 13 号颜色排到默认色正下方 */
+}
+.color__square[style*="--b3-font-color14"],.color__square[style*="--b3-font-background14"] {
+	order: 14; /* 数据库选项颜色 */
 }
 
 /* 隐藏闪卡按钮上的图标 */
@@ -101,43 +109,79 @@ label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:n
 	}
 }
 /* 已下载页面 */
-.config-bazaar__panel[data-type=downloaded] {
-	/* 并列显示 */
-	.config-bazaar__content {
+.config-bazaar__panel {
+	&[data-type=downloaded] {
+		/* 并列显示 */
+		.config-bazaar__content {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+			margin-right: 16px;
+
+			.b3-card {
+				display: grid;
+				grid-template-columns: 90px 1fr;
+				margin: 16px 0 0 16px;
+
+				.b3-card__info {
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+
+					.b3-card__desc {
+						display: block;
+					}
+				}
+
+				.b3-card__actions {
+					position: absolute;
+					bottom: 12px;
+					right: 0px;
+				}
+			}
+		}
+
+		.fn__hr {
+			display: none; /* “未找到相关内容” */
+		}
+		.b3-list--empty {
+			margin-top: 15px;
+		}
+	}
+
+	.b3-cards {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
 		margin-right: 16px;
+
+		.b3-card--wrap {
+			min-width: unset;
+		}
 
 		.b3-card {
 			display: grid;
 			grid-template-columns: 90px 1fr;
 			margin: 16px 0 0 16px;
-	
 			.b3-card__info {
-				white-space: nowrap;
 				overflow: hidden;
-				text-overflow: ellipsis;
-		
+
 				.b3-card__desc {
-					display: block;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
 				}
-			}
-			.b3-card__actions {
-				position: absolute;
-				bottom: 12px;
-				right: 0px;
 			}
 		}
 	}
-	/* “未找到相关内容” */
-	.fn__hr {
-		display: none;
-	}
-	.b3-list--empty {
-		margin-top: 15px;
-	}
 }
 
+
+/* 设置菜单 */
+
+/* 隐藏唯一的 Tab */
+.layout-tab-bar:has(> .item[data-type="openai"]) {
+	opacity: 0;
+	max-height: 16px;
+	pointer-events: none;
+}
 /* ————————————————————弹出菜单&设置菜单———————————————————— */
 /* .b3-menu{
 	animation: menu 0.2s ease-in-out;
