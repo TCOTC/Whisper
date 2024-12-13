@@ -1,5 +1,21 @@
 /* 文档树 */
 
+/* 笔记本区隔 */
+.sy__file ul.b3-list.b3-list--background {
+	border-radius: var(--b3-border-radius);
+	margin: 1px 4px 6px 4px;
+	outline: 1px solid var(--b3-theme-on-surface-light);
+	/* overflow: hidden; */
+}
+.file-tree .b3-list-item {
+	margin-left: 0;
+	margin-right: 0;
+
+	&[data-type="navigation-root"] {
+		line-height: 30px; /* 笔记本行高 */
+	}
+}
+
 /* 避免展开文档树误触打开文档：只要箭头颜色变深就能展开下级 */
 .file-tree .b3-list-item {
 	padding-left: 0;
