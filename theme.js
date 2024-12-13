@@ -2,7 +2,7 @@
 (function() {
     window.destroyTheme = () => {
         // 卸载“跟踪当前所在块”的事件监听器
-        bulletCleanup();
+        blockTrackCleanup();
     }
 
     /**
@@ -44,13 +44,13 @@
         }
     };
 
-    const bulletMain = function() {
+    const blockTrackMain = function() {
         // 跟踪当前所在块
         window.addEventListener('mouseup', focusHandler, true);
         window.addEventListener('keyup', focusHandler, true);
     };
 
-    const bulletCleanup = function() {
+    const blockTrackCleanup = function() {
         // 移除类名
         document.querySelectorAll('.block-focus').forEach((element) => element.classList.remove('block-focus'));
         // 卸载事件监听器
@@ -59,6 +59,6 @@
     };
 
     (async () => {
-        bulletMain();
+        blockTrackMain();
     })();
 })();
