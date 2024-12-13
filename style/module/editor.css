@@ -10,80 +10,75 @@
 /* ————————————————————编辑器顶部———————————————————— */
 
 /* 头图、图标 */
-.protyle-background{
-	.protyle-background__icon{
-		margin-bottom:14px;
-		border-radius:5px;
-		font-size: 60px;
-		&:not(.fn__none)+.b3-chips{
-			margin-left:80px;
-			margin-top:-40px;
-			transform:none;
-		}
-		&:hover{
-			background-color:var(--b3-list-hover);
-			opacity:1;
-		}
-	}
-	.b3-button{
-		& svg{
-			width:12px;
-			opacity:0.6;
-		}
-		&:hover{
-			opacity: 1;
-		}
-	}
+.protyle-background .protyle-background__icon {
+	margin-bottom: 14px;
+	border-radius: 5px;
+	font-size: 60px;
 }
-/* 文档标签 */
-.protyle-background__ia .b3-chips{
-	& .b3-button{
-		width: 23px;
-		height: 23px;
-		font-size: 0;
-		opacity: 0.6;
-		border-radius: 3px;
-		margin-bottom: inherit !important;
-		&:hover{
-			opacity: 1;
-		}
-		&[data-type="tag"] {
-			margin-left: 2px;
-		}
-		& svg{
-			margin-right: 0px;
-			background-color: transparent;
-			color: var(--b3-theme-on-background);
-		}
+.protyle-background .protyle-background__icon:not(.fn__none) + .b3-chips {
+	margin-left: 80px;
+	margin-top: -40px;
+	transform: none;
+}
+.protyle-background .protyle-background__icon:hover {
+	background-color: var(--b3-list-hover);
+	opacity: 1;
+}
+.protyle-background .b3-button svg {
+	width: 12px;
+	opacity: 0.6;
+}
+.protyle-background .b3-button:hover {
+	opacity: 1;
+}
 
-	}
-	& .fn__space{
-		width: 2px;
-	}
-	& .b3-chip{
-		margin: 3px;
-		border-radius: 3px;
-		padding: 0px 6px 1px;
-		font-size:90%;
-		& .b3-chip__close{
-			width:0;
-		}
-		&:hover .b3-chip__close{
-			width:14px;
-		}
-		&.b3-chip--secondary, &.b3-chip--primary, &.b3-chip--info, &.b3-chip--success, &.b3-chip--warning, &.b3-chip--error, &.b3-chip--pink{
-			background-color: var(--b3-card-success-background);
-			color: var(--b3-card-success-color);
-		}
-		&::before{
-			content: "#";
-			width:10px;
-			height:22px;
-			align-content: center;
-			font-size:1.1em;
-		}
-	}
+/* 文档标签 */
+.protyle-background__ia .b3-chips .b3-button {
+	width: 23px;
+	height: 23px;
+	font-size: 0;
+	opacity: 0.6;
+	border-radius: 3px;
+	margin-bottom: inherit !important;
 }
+.protyle-background__ia .b3-chips .b3-button:hover {
+	opacity: 1;
+}
+.protyle-background__ia .b3-chips .b3-button[data-type="tag"] {
+	margin-left: 2px;
+}
+.protyle-background__ia .b3-chips .b3-button svg {
+	margin-right: 0;
+	background-color: transparent;
+	color: var(--b3-theme-on-background);
+}
+.protyle-background__ia .b3-chips .fn__space {
+	width: 2px;
+}
+.protyle-background__ia .b3-chips .b3-chip {
+	margin: 3px;
+	border-radius: 3px;
+	padding: 0 6px 1px;
+	font-size: 90%;
+}
+.protyle-background__ia .b3-chips .b3-chip .b3-chip__close {
+	width: 0;
+}
+.protyle-background__ia .b3-chips .b3-chip:hover .b3-chip__close {
+	width: 14px;
+}
+.protyle-background__ia .b3-chips .b3-chip.b3-chip--secondary, .protyle-background__ia .b3-chips .b3-chip.b3-chip--primary, .protyle-background__ia .b3-chips .b3-chip.b3-chip--info, .protyle-background__ia .b3-chips .b3-chip.b3-chip--success, .protyle-background__ia .b3-chips .b3-chip.b3-chip--warning, .protyle-background__ia .b3-chips .b3-chip.b3-chip--error, .protyle-background__ia .b3-chips .b3-chip.b3-chip--pink {
+	background-color: var(--b3-card-success-background);
+	color: var(--b3-card-success-color);
+}
+.protyle-background__ia .b3-chips .b3-chip::before {
+	content: "#";
+	width: 10px;
+	height: 22px;
+	align-content: center;
+	font-size: 1.1em;
+}
+
 
 
 #layouts div.layout__center div.protyle-content:not([data-fullwidth="true"]) div.protyle-wysiwyg {
@@ -578,7 +573,7 @@ html[data-theme-mode="dark"] { /* 暗黑模式的颜色 */
 .protyle-wysiwyg span[data-type="tag"] {
 	font-size: 90%;
 	border-radius: 3px;
-	padding:0px 6px 2px 6px;
+	padding:0 6px 2px 6px;
 	color: var( --b3-theme-on-background)!important;
 	border-bottom:none !important; 
 	background-color:var(--b3-font-background7);
