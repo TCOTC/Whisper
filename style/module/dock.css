@@ -48,10 +48,29 @@
 	}
 }
 
-/* 底栏会挡住右下侧栏 */
-#dockRight {
-	padding-bottom: 24px; /* 底栏的高度 */
+
+/* ————————————————————侧栏———————————————————— */
+
+/* 右侧栏 */
+/* 底栏会挡住右下侧栏（如果有底部侧栏的话不会挡住、如果关闭了底栏的话不会挡住） */
+body:has(> #dockBottom.fn__none):has(> #status:not(.fn__none)) #dockRight {
+	padding-bottom: 24px; /* 等于底栏 status 的高度 */
 }
+
+/* 底部侧栏 */
+#dockBottom {
+	padding: 0;
+}
+#dockBottom .dock__item--space {
+	display: none; /* 底部侧栏的左右两边都合并到左边 */
+}
+#dockBottom .dock__item {
+	order: 1;
+}
+#dockBottom .dock__item.dock__item--pin {
+	order: 0; /* 钉住按钮始终放在最左边 */
+}
+
 
 /* ————————————————————dock栏———————————————————— */
 .dock{
@@ -100,8 +119,8 @@
 			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 		} */
 		&.dock__item--activefocus{ /* 侧栏面板焦点状态的侧栏按钮样式 */
-			background-color: var(--b3-theme-primary-lightest)!important;
-			color:var(--b3-theme-primary)!important;
+			background-color: var(--b3-theme-primary-lightest) !important;
+			color: var(--b3-theme-primary) !important;
 		}
 	}
 	/* & .dock__item--active{
@@ -159,3 +178,15 @@
 #dockBottom .fn__flex-1{
 	flex: 0;
 } */
+
+/* 调整侧栏浮窗高度与层级 CSS片段 */
+/* TODO 这部分还需要重新看看是否需要调整 */
+.layout__dockl.layout--float,
+.layout__dockr.layout--float {
+	top: 32px !important;
+	bottom: 24px !important;
+	z-index: 4 !important;
+}
+#dockLeft, #dockRight {
+	z-index: 5;
+}
