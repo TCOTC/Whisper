@@ -290,6 +290,11 @@ html[data-theme-mode="dark"] { /* 暗黑模式的颜色 */
 }
 
 
+/* 列表 */
+.protyle-wysiwyg [data-node-id].li:has(.block-focus) > .protyle-action {
+	color: var(--b3-theme-primary); /* 当前聚焦块路径上的所有列表项元素 */
+}
+
 /*头图选项*/
 
 /*.protyle-background__img .protyle-icons .protyle-icon{
