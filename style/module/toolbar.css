@@ -1,5 +1,14 @@
 /* ————————————————————顶栏———————————————————— */
 
+/* 主菜单 */
+#barWorkspace {
+	min-width: 50px;
+	justify-content: center;
+}
+#barWorkspace:hover {
+	background-color: var(--b3-theme-primary-lightest);
+}
+
 .toolbar > .fn__ellipsis {
 	opacity: 0; /* 不显示文档名 */
 }
@@ -14,13 +23,16 @@
 .dock#dockRight {
 	border-left: unset;
 }
+.dock#dockBottom {
+	border-top: unset;
+}
 .layout__dockl + .layout__resize::after,
 .layout__center + .layout__resize::after{
 	background-color: transparent;
 }
 .layout__resize:hover::after {
 	background-color: var(--b3-scroll-color);
-	width: 1.5px; /* hover 时加粗便于判断 */
+	width: 2px; /* hover 时加粗便于判断 */
 }
 .layout-tab-bar {
 	border-bottom: unset; /* 页签 */
