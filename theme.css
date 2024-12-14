@@ -198,11 +198,20 @@ html[data-theme-mode="light"] {
 }
 
 /* 暗黑主题 */
-/*html[data-theme-mode="dark"] {
-	/* TODO */
-}*/
+/*html[data-theme-mode="dark"] {*/
+/*	!* TODO *!*/
+/*}*/
 
 /* —————————————————————————— 样式 —————————————————————————— */
+
+/* 界面圆角 */
+body:not(.body--mobile,.body--window) #layouts {
+	background-color: var(--b3-theme-surface);
+}
+body:not(.body--mobile,.body--window) #layouts .layout__center {
+	border-radius: var(--b3-border-radius) var(--b3-border-radius) 0 0;
+}
+
 
 /* 主体结构*/
 
