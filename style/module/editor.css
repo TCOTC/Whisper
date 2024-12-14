@@ -5,7 +5,8 @@
 .av:not(:hover) > .av__container > .av__scroll {
 	--b3-scroll-color: transparent; /* 数据库块未 hover 时隐藏横向滚动条 */
 }
-
+/* TODO 侧栏未 hover 时隐藏滚动条 */
+/* TODO 编辑器未 hover 时隐藏滚动条 */
 
 /* ————————————————————编辑器顶部———————————————————— */
 
@@ -244,22 +245,32 @@ html[data-theme-mode="dark"] { /* 暗黑模式的颜色 */
 	border-top: unset;
 }
 
-/* hover 条目时高亮 */
+/* 选择和 hover 条目时的高亮 */
 .av__row--select:not(.av__row--header) .av__cell,
-.av__row--select:not(.av__row--header) .av__firstcol,
-.av__row--hl:not(.av__row--header) .av__cell,
-.av__row--hl:not(.av__row--header) .av__firstcol {
+.av__row--hl:not(.av__row--header) .av__cell {
+    background-color: unset; /* 重置原生的背景色 */
+}
+.av__row--select:not(.av__row--header),
+.av__row--select:not(.av__row--header) .av__colsticky .av__firstcol,
+.av__row--select:not(.av__row--header) .av__colsticky .av__cell,
+.av__row--hl:not(.av__row--header),
+.av__row--hl:not(.av__row--header) .av__colsticky .av__firstcol,
+.av__row--hl:not(.av__row--header) .av__colsticky .av__cell {
     background-color: var(--b3-theme-primary-lightest);
 }
-.av__row:not(.av__row--header):hover .av__cell,
-.av__row:not(.av__row--header):hover .av__firstcol {
-    background-color: var(--b3-list-hover);
+
+.av__row:not(.av__row--header):hover,
+.av__row:not(.av__row--header):hover .av__colsticky .av__firstcol,
+.av__row:not(.av__row--header):hover .av__colsticky .av__cell {
+	background-color: var(--b3-list-hover);
 }
 html[data-theme-mode="light"] { /* 明亮模式的颜色 */
-	.av__row--select:not(.av__row--header):hover .av__cell,
-	.av__row--select:not(.av__row--header):hover .av__firstcol,
-	.av__row--hl:not(.av__row--header):hover .av__cell,
-	.av__row--hl:not(.av__row--header):hover .av__firstcol {
+	.av__row--select:not(.av__row--header):hover,
+	.av__row--select:not(.av__row--header):hover .av__colsticky .av__firstcol,
+	.av__row--select:not(.av__row--header):hover .av__colsticky .av__cell,
+	.av__row--hl:not(.av__row--header):hover,
+	.av__row--hl:not(.av__row--header):hover .av__colsticky .av__firstcol,
+	.av__row--hl:not(.av__row--header):hover .av__colsticky .av__cell {
 		background-color: rgba(8, 8, 3, 0.17); /* --b3-theme-primary-lightest 和 --b3-list-hover 混合 */
 	}
 }
