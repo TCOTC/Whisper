@@ -1,9 +1,9 @@
 /* ———————————————————— 底栏 ———————————————————— */
 #status {
     position: fixed;
-    right: 0px;
-    bottom: 0px;
-	border-radius:6px 0px 0px 0px;
+    right: 0;
+    bottom: 0;
+	border-radius:6px 0 0 0;
 	height: 24px;
 	border:0;
 	padding: 0 48px 0 0;
@@ -13,14 +13,14 @@
 }
 
 .status .toolbar__item:not(.toolbar__item--close) {
-	margin:0px!important;
+	margin:0!important;
 	padding:2px;
 	background-color:rgb(0, 0, 0, 0);
 }
 
 .status .toolbar__item svg{
 	padding:3px 4px;
-	color:var(--b3-dockright-color);
+	/*color:var(--b3-dockright-color);*/
 	width: 12px;
 }
 .body--win32>.fn__flex-1
@@ -30,17 +30,17 @@
 
 .status__counter:not(:empty){
 	border-radius:5px;
-	padding: 0px 0px 0 8px ;
-	margin:0px 2px 0px 0px;
+	padding: 0 0 0 8px ;
+	margin:0 2px 0 0;
 	height:26px;
 	line-height:26px;
 }
 .status__msg:not(:empty){
 	animation: statusmsg 5s ease-in-out;
 	max-width: 140px;
-	padding: 0px 8px;
+	padding: 0 8px;
 	border-radius:5px;
-	margin:0px;
+	margin:0;
 	transition: max-width 300ms,opacity 300ms;
 	transition-delay: 2000ms;
 	position:relative;
@@ -77,15 +77,15 @@
 /*.status #barDock:hover{
 	background-color: var(--S-status-barDock-hover)!important;
 }*/
-.status #statusHelp svg{
-	color:var(--S-dock--item--activefocus);
-}
-.status #barDock svg{
-	color:var(--S-dock--item--activefocus);
-}
+/*.status #statusHelp svg{*/
+/*	color:var(--S-dock--item--activefocus);*/
+/*}*/
+/*.status #barDock svg{*/
+/*	color:var(--S-dock--item--activefocus);*/
+/*}*/
 .status #barDock:before{
 	right:unset!important;
-	left: 0px;
+	left: 0;
 	transform: rotateY(180deg);
 }
 .status #barDock:after{
@@ -95,14 +95,14 @@
 
 .status>.fn__flex-1{
 	position:relative!important;
-	width:0px!important;
-	right:0px;
+	width:0!important;
+	right:0;
 	flex:0;
 }
 
 
 .status__backgroundtask{
-	padding: 0px 0px 0px 8px;
+	padding: 0 0 0 8px;
 	border-radius:5px;
 	height:24px;
 	line-height:26px;
