@@ -5,8 +5,7 @@
 .av:not(:hover) > .av__container > .av__scroll {
 	--b3-scroll-color: transparent; /* 数据库块未 hover 时隐藏横向滚动条 */
 }
-/* TODO 侧栏未 hover 时隐藏滚动条 */
-/* TODO 编辑器未 hover 时隐藏滚动条 */
+/* TODO 侧栏未 hover 时隐藏滚动条（编辑器的滚动条始终保留） */
 
 /* ————————————————————编辑器顶部———————————————————— */
 

@@ -16,7 +16,7 @@ label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:n
 /* 选项菜单 */
 .b3-menu__item {
 	line-height: 27px;
-	min-width: 160px;/* 菜单宽度：选项的宽度 */
+	/*min-width: 160px;!* 菜单宽度：选项的宽度 *!*/
 
 	/* 隐藏不常用的块标选项 */
 	&[data-id="jumpToParentNext"],&[data-id="jumpToParentPrev"],&[data-id="jumpToParent"],&[data-id="enterBack"],
@@ -135,7 +135,7 @@ button, input, select, textarea {
 				.b3-card__actions {
 					position: absolute;
 					bottom: 12px;
-					right: 0px;
+					right: 0;
 				}
 			}
 		}
