@@ -1,0 +1,7 @@
+/* 界面圆角 */
+body:not(.body--mobile,.body--window) #layouts {
+    background-color: var(--b3-theme-surface);
+}
+body:not(.body--mobile,.body--window) #layouts .layout__center {
+    border-radius: var(--b3-border-radius) var(--b3-border-radius) 0 0;
+}

@@ -3,6 +3,7 @@
 @import url(/appearance/themes/Whisper/style/module/status.css);        /* 底栏 */
 @import url(/appearance/themes/Whisper/style/module/editor.css);        /* 编辑器 */
 @import url(/appearance/themes/Whisper/style/module/menu.css);          /* 菜单、浮窗、弹窗 */
+@import url(style/module/layout.css);        /* 布局 */
 
 /* —————————————————————————— 配色 —————————————————————————— */
 /* 明亮主题 */
@@ -204,13 +205,6 @@ html[data-theme-mode="light"] {
 
 /* —————————————————————————— 样式 —————————————————————————— */
 
-/* 界面圆角 */
-body:not(.body--mobile,.body--window) #layouts {
-	background-color: var(--b3-theme-surface);
-}
-body:not(.body--mobile,.body--window) #layouts .layout__center {
-	border-radius: var(--b3-border-radius) var(--b3-border-radius) 0 0;
-}
 
 
 /* 主体结构*/
