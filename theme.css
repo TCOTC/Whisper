@@ -1,26 +1,29 @@
-@import url(/appearance/themes/Whisper/style/module/toolbar.css);       /* 顶栏 */
-@import url(/appearance/themes/Whisper/style/module/dock.css);          /* 侧栏和面板 */
-@import url(/appearance/themes/Whisper/style/module/status.css);        /* 底栏 */
-@import url(/appearance/themes/Whisper/style/module/editor.css);        /* 编辑器 */
-@import url(/appearance/themes/Whisper/style/module/menu.css);          /* 菜单、浮窗、弹窗 */
 @import url(style/module/layout.css);        /* 布局 */
+@import url(style/module/toolbar.css);       /* 顶栏 */
+@import url(style/module/dock.css);          /* 侧栏和面板 */
+@import url(style/module/status.css);        /* 底栏 */
+@import url(style/module/editor.css);        /* 编辑器 */
+@import url(style/module/menu.css);          /* 菜单、浮窗、弹窗 */
+@import url(style/module/tooltip.css);       /* 悬浮提示 */
 
 /* —————————————————————————— 配色 —————————————————————————— */
 /* 明亮主题 */
 html[data-theme-mode="light"] {
 	/* 主色 */
-	--b3-theme-primary: rgb(126, 121, 0);                            /* 主题色。各种按钮 */
+	--b3-theme-primary: rgb(126, 121, 0);                   /* 主题色。各种按钮 */
 	--b3-theme-primary-light: rgba(165, 157, 51, .54);
-	--b3-theme-primary-lighter: rgba(165, 157, 51, .38);
-	--b3-theme-primary-lightest: rgba(45, 43, 1, .12);               /* 选中块后的高亮 */
+	--b3-theme-primary-lighter: rgba(165, 157, 51, .38);    /* 与白色混合为 rgb(221, 218, 177) ，与 --b3-theme-background rgb(249, 248, 245) 混合后为 rgb(217, 213, 171) */
+	--b3-theme-primary-lightest: rgba(45, 43, 1, .12);      /* 选中块后的高亮。与 --b3-theme-background rgb(249, 248, 245) 混合后为 rgb(225, 223, 216) */
 	--b3-theme-secondary: #f3a92f;
-	--b3-theme-background: rgb(249, 248, 245);                       /* 编辑器。 */
-	--b3-theme-background-light: rgb(237, 227, 225);                 /* 侧栏按钮。--b3-theme-surface 与 --b3-list-hover 混合 */
-	--b3-theme-surface: rgb(249, 238, 237);                          /* 侧栏面板。 */
+	--b3-theme-background: rgb(249, 248, 245);              /* 编辑器。 */
+	--b3-theme-background-light: rgb(237, 227, 225);        /* 侧栏按钮。--b3-theme-surface 与 --b3-list-hover 混合 */
+	--b3-theme-surface: rgb(249, 238, 237);                 /* 侧栏面板。 */
 	--b3-theme-surface-light: rgba(243, 243, 243, .86);
 	--b3-theme-surface-lighter: #e0e0e0;
 	--b3-theme-error: #d23f31;
 	--b3-theme-success: #65b84d;
+	/* 混合 */
+	--whisper-mix-theme_primary_background: rgb(225, 223, 216); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245) */
 
 	/* 文字颜色 */
 	--b3-theme-on-primary: #fff;
@@ -78,33 +81,33 @@ html[data-theme-mode="light"] {
 	--b3-card-success-background: #d7eed8;
 
 	/* 自定义文字 */
-	--b3-font-color1: rgb(216, 133, 129);/*浅红*/
-	--b3-font-color2: rgb(217, 154, 81);/*浅橙*/
-	--b3-font-color3: rgb(255, 216, 78);/*浅黄*/
-	--b3-font-color4: rgb(183, 237, 177);/*浅绿*/
-	--b3-font-color5: rgb(186, 206, 253);/*浅蓝*/
-	--b3-font-color6: rgb(205, 178, 250);/*浅紫*/
-	--b3-font-color7: rgb(216, 57, 49);/*红*/
-	--b3-font-color8: rgb(222, 120, 2);/*橙*/
-	--b3-font-color9: rgb(220, 155, 4);/*黄*/
-	--b3-font-color10: rgb(130, 197, 123);/*绿*/
-	--b3-font-color11: rgb(136, 123, 203);/*蓝*/
-	--b3-font-color12: rgb(126, 103, 167);/*紫*/
-	--b3-font-color13: rgb(157, 157, 157);/*灰*/
-	--b3-font-background1: rgb(253, 226, 226);/*浅红*/
-	--b3-font-background2: rgb(254, 234, 210);/*浅橙*/
-	--b3-font-background3: rgb(255, 255, 204);/*浅黄*/
-	--b3-font-background4: rgb(217, 245, 214);/*浅绿*/
-	--b3-font-background5: rgb(225, 234, 255);/*浅蓝*/
-	--b3-font-background6: rgb(236, 226, 254);/*浅紫*/
-	--b3-font-background7: rgb(251, 191, 188);/*红*/
-	--b3-font-background8: rgb(254, 212, 164);/*橙*/
-	--b3-font-background9: rgb(255, 252, 163);/*黄*/
-	--b3-font-background10: rgb(183, 237, 177);/*绿*/
-	--b3-font-background11: rgb(186, 206, 253);/*蓝*/
-	--b3-font-background12: rgb(205, 178, 250);/*紫*/
-	--b3-font-background13: rgba(232, 233, 235);/*灰*/
-	--b3-font-background14: rgb(183, 183, 183);/*数据库选项*/
+	--b3-font-color1: rgb(216, 133, 129);        /*浅红*/
+	--b3-font-color2: rgb(217, 154, 81);         /*浅橙*/
+	--b3-font-color3: rgb(255, 216, 78);         /*浅黄*/
+	--b3-font-color4: rgb(183, 237, 177);        /*浅绿*/
+	--b3-font-color5: rgb(186, 206, 253);        /*浅蓝*/
+	--b3-font-color6: rgb(205, 178, 250);        /*浅紫*/
+	--b3-font-color7: rgb(216, 57, 49);          /*红*/
+	--b3-font-color8: rgb(222, 120, 2);          /*橙*/
+	--b3-font-color9: rgb(220, 155, 4);          /*黄*/
+	--b3-font-color10: rgb(130, 197, 123);       /*绿*/
+	--b3-font-color11: rgb(136, 123, 203);       /*蓝*/
+	--b3-font-color12: rgb(126, 103, 167);       /*紫*/
+	--b3-font-color13: rgb(157, 157, 157);       /*灰*/
+	--b3-font-background1: rgb(253, 226, 226);   /*浅红*/
+	--b3-font-background2: rgb(254, 234, 210);   /*浅橙*/
+	--b3-font-background3: rgb(255, 255, 204);   /*浅黄*/
+	--b3-font-background4: rgb(217, 245, 214);   /*浅绿*/
+	--b3-font-background5: rgb(225, 234, 255);   /*浅蓝*/
+	--b3-font-background6: rgb(236, 226, 254);   /*浅紫*/
+	--b3-font-background7: rgb(251, 191, 188);   /*红*/
+	--b3-font-background8: rgb(254, 212, 164);   /*橙*/
+	--b3-font-background9: rgb(255, 252, 163);   /*黄*/
+	--b3-font-background10: rgb(183, 237, 177);  /*绿*/
+	--b3-font-background11: rgb(186, 206, 253);  /*蓝*/
+	--b3-font-background12: rgb(205, 178, 250);  /*紫*/
+	--b3-font-background13: rgba(232, 233, 235); /*灰*/
+	--b3-font-background14: rgb(183, 183, 183);  /*数据库选项*/
 
 	/* 动画效果 */
 	--b3-transition: all .2s cubic-bezier(0, 0, .2, 1) 0ms;
@@ -209,27 +212,17 @@ html[data-theme-mode="light"] {
 
 /* 主体结构*/
 
-@import url(/appearance/themes/Whisper/style/module/toolbar.css);       /* 顶栏 */
-
-@import url(/appearance/themes/Whisper/style/module/dock.css);          /* 侧栏和面板 */
-
 /* @import url(/appearance/themes/Whisper/style/module/shrink.css);        /* 侧栏 */
 
 /* @import url(/appearance/themes/Whisper/style/module/tab-bar.css);       /* 页签 */
 
-@import url(/appearance/themes/Whisper/style/module/status.css);        /* 底栏 */
-
 /* @import url(/appearance/themes/Whisper/style/module/breadcrumb.css);    /* 面包屑 */
-
-@import url(/appearance/themes/Whisper/style/module/editor.css);        /* 编辑器 */
 
 /* @import url(/appearance/themes/Whisper/style/module/ordered-list.css);  /* 有序列表 */
 
 /* @import url(/appearance/themes/Whisper/style/module/unordered-list.css);/* 无序列表 */
 
 /* @import url(/appearance/themes/Whisper/style/module/h-reminder.css);    /* 标题符号 */
-
-@import url(/appearance/themes/Whisper/style/module/menu.css);          /* 菜单、浮窗、弹窗 */
 
 
 /* 引入特性 */
