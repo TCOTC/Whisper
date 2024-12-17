@@ -1,4 +1,21 @@
-/* 文档树 */
+/* ————————————————————文档树———————————————————— */
+
+/* 布局 */
+.sy__file {
+	&> .block__icons {
+		padding-right: 10px; /* 滚动条的宽度 */
+	}
+
+	&> .fn__flex-1 {
+		scrollbar-gutter: stable;
+	}
+}
+.layout__dockr .sy__file > .fn__flex-1 {
+	padding-left: 8px; /* 跟 .block__icons 对齐 */
+}
+.layout__dockl .sy__file > .block__icons {
+	padding-left: 0; /* 跟下面的笔记本元素对齐 */
+}
 
 /* 笔记本区隔 */
 .sy__file ul.b3-list.b3-list--background {
@@ -7,7 +24,7 @@
 	outline: 1px solid var(--b3-theme-on-surface-light);
 	/* overflow: hidden; */
 }
-.file-tree .b3-list-item {
+.sy__file .b3-list-item {
 	margin-left: 0;
 	margin-right: 0;
 
@@ -17,7 +34,7 @@
 }
 
 /* 避免展开文档树误触打开文档：只要箭头颜色变深就能展开下级 */
-.file-tree .b3-list-item {
+.sy__file .b3-list-item {
 	padding-left: 0;
 
 	&[data-type="navigation-root"]  {
@@ -30,7 +47,8 @@
 
 	.b3-list-item__toggle {
 		height: 28px;
-		
+		border-radius: unset;
+
 		&.b3-list-item__toggle--hl:hover {
 			background-color: unset;
 		}
@@ -45,16 +63,37 @@
 		.b3-list-item__toggle {
 			color: var(--b3-theme-on-background);
 		}
+
+		/* 笔记本 */
+		&+ .fn__flex-1 > .b3-list-item:hover {
+			background-color: var(--b3-list-hover);
+			border-radius: var(--b3-border-radius);
+		}
 	}
 }
 
 
+
 /* ————————————————————侧栏———————————————————— */
+
+/* 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔 */
+.layout__center:has(~ .layout--float > .fn__flex:not(.fn__none)) > .fn__flex-1:last-child {
+	.protyle-content {
+		margin-right: 15px;
+	}
+
+	.protyle-scroll {
+		right: 25px;
+	}
+}
 
 /* 右侧栏 */
 /* 底栏会挡住右下侧栏（如果有底部侧栏的话不会挡住、如果关闭了底栏的话不会挡住） */
-body:has(> #dockBottom.fn__none):has(> #status:not(.fn__none)) #dockRight {
-	padding-bottom: 24px; /* 等于底栏 status 的高度 */
+body:has(> #dockBottom.fn__none):has(> #status:not(.fn__none)) {
+	#dockRight,
+	.layout__dockr .layout__dockresize {
+		padding-bottom: 24px; /* 等于底栏 status 的高度 */
+	}
 }
 
 /* 底部侧栏 */
@@ -174,7 +213,7 @@ body:has(> #dockBottom.fn__none):has(> #status:not(.fn__none)) #dockRight {
 }
 #dockBottom:not(.fn__none)+#status.fn__none #barDock{
 	bottom:-7px;
-}	
+}
 #dockBottom .fn__flex-1{
 	flex: 0;
 } */
