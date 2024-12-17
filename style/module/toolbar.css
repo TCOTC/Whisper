@@ -27,11 +27,15 @@
 	border-top: unset;
 }
 .layout__dockl + .layout__resize::after,
-.layout__center + .layout__resize::after{
+.layout__center + .layout__resize::after {
 	background-color: transparent;
 }
 .layout__resize:hover::after {
 	background-color: var(--b3-scroll-color);
+	height: 2px; /* hover 时加粗便于判断 */
+}
+.layout__resize--lr:hover::after {
+	height: 100%;
 	width: 2px; /* hover 时加粗便于判断 */
 }
 .layout-tab-bar {
