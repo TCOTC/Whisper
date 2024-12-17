@@ -82,7 +82,7 @@
 
                         initTooltipObserver(); // 监听 #tooltip 元素的更新
 
-                        if (node.classList.contains('tooltip--href')) {
+                        if (node.classList.contains('tooltip--href') || node.classList.contains('tooltip--tab_header')) {
                             // 执行初始的添加类名逻辑
                             addClassWithDelay(node);
                         }
@@ -142,7 +142,7 @@
     }
 
     (async () => {
-        // 检查 #tooltip 是否已经存在
+        // 切换主题时 #tooltip 有可能已经存在
         const tooltipElement = document.body.querySelector('#tooltip');
 
         if (tooltipElement) {
