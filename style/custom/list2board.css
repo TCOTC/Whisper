@@ -12,7 +12,7 @@
 /* ————————————————————所有子项目的表格（除去第一列其余的列），包含溢出的空白部分，所以才会有边框—————————————————————— */
 .protyle-wysiwyg *[custom-f~=kb]>.li>.list{
     min-width: var(--kbline-boarditem-minwidth);
-    border-radius: 3px;
+    border-radius: var(--b3-border-radius-s);
     transform: translate(-30px, 0);
 }
 
@@ -20,7 +20,7 @@
 /* ————————————————————对所有子列表项设置格式———————————————————— */
 
 .protyle-wysiwyg *[custom-f~=kb]>.li>.list>.li{
-    border-radius: 3px;
+    border-radius: var(--b3-border-radius-s);
     padding: 0.4em 0.4em 0.1em 0 ;
     margin-bottom: 6px; 
 	background-color:var(--kb--li--background);
@@ -32,7 +32,7 @@
 .protyle-wysiwyg .sb>*[custom-f~=kb] > div > div:nth-child(2)
 {
 	min-width: var(--kbline-boarditem-minwidth);
-    border-radius: 3px;
+    border-radius: var(--b3-border-radius-s);
 	padding:9px 10px 11px 30px;
 	left:-30px;
     margin-bottom: 10px;
@@ -82,7 +82,7 @@
 .protyle-wysiwyg *[custom-f~=kb]>.li>.list>.li>.protyle-action{
     position: absolute;
     top: 5px;
-    border-radius: 3px;
+    border-radius: var(--b3-border-radius-s);
 }
 
 /* 引用计数 */

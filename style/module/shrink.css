@@ -17,7 +17,7 @@
 		.block__icon{
 			padding: 0px;
 			margin:-2px;
-			border-radius: 3px;
+			border-radius: var(--b3-border-radius-s);
 			svg{
 				height: 12px;
 				width: 12px;
@@ -103,7 +103,7 @@
 	line-height: 20px;
 	text-align: center;
 	min-width: 12px;
-	border-radius: 3px;
+	border-radius: var(--b3-border-radius-s);
 	padding: 0 4px;
 	margin-left: 4px;
 }
@@ -285,7 +285,7 @@ v.sy__backlink .protyle-wysiwyg .protyle-breadcrumb__bar{
     height: 10px;
     width: 10px;
     padding: 4px;
-    border-radius: 3px;
+    border-radius: var(--b3-border-radius-s);
 }
 
 .sy__backlink .protyle-breadcrumb__item:not(:first-child).protyle-breadcrumb__item--active>svg {

@@ -3,7 +3,7 @@
 	height: 38px;
 	padding-left: 5px;
 	& .item{
-		border-radius: 3px;
+		border-radius: var(--b3-border-radius-s);
 		min-height:unset;
 		min-width:unset;
 		overflow:visible;

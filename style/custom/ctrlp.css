@@ -38,20 +38,20 @@
 	height: 10px;
     width: 10px;
     padding: 4px;
-    border-radius: 3px;
+    border-radius: var(--b3-border-radius-s);
     background-color: var(--S-list-background);
 }
 
 .fn__flex-column #searchList>.b3-list-item:not([data-type='search-item']):not([data-type="search-new"]){
 	border-radius: 4px 4px 0 0;
-	margin: 6px 6px 0px 6px;
-	box-shadow: rgba(15, 15, 15, 0.08) 0px 0px 0px 1px;
-	padding-left:0px;
+	margin: 6px 6px 0 6px;
+	box-shadow: rgba(15, 15, 15, 0.08) 0 0 0 1px;
+	padding-left:0;
 	background-color: var(--S-list-background);
 }
 
 .fn__flex-column #searchList>.b3-list-item:not([data-type='search-item'])+div [data-type='search-item']{
-	margin: 0px;
+	margin: 0;
 	border-radius: 0;
 	padding-left: 27px!important;
 	height:32px;
@@ -67,7 +67,7 @@
 /*.fn__flex-column #searchList>.b3-list-item:not([data-type='search-item'])+div [data-type='search-item']>.b3-list-item__text{
     margin-left: 20px;
     max-height: 89px ;
-    padding:6px 0px 5px 5px;
+    padding:6px 0 5px 5px;
     overflow-y: auto !important;
     text-overflow: ellipsis !important;
     line-height: 1.3;
@@ -77,7 +77,7 @@
 #searchList>[data-type="search-item"]{
 	flex-wrap: wrap;
 	justify-content: flex-end;
-	padding-right:0px;
+	padding-right:0;
 }
 
 
@@ -85,7 +85,7 @@
     position: absolute;
     margin-top: 8px;
 	left:4px;
-	top:0px;
+	top:0;
 }
 
 #searchList>[data-type="search-item"]>.b3-list-item__graphic+.b3-list-item__graphic{
@@ -123,7 +123,7 @@
 .b3-list-item[data-type="search-new"]{
 	border-radius: 4px;
 	height:40px;
-	margin: 6px 6px 0px 6px;
+	margin: 6px 6px 0 6px;
 	padding:0 16px 0 10px;
 	background-color: var(--b3-bq-background13)!important;
     box-shadow: 0 0 0 2px var(--b3-font-background13) inset!important;
