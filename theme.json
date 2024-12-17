@@ -2,8 +2,8 @@
   "name": "Whisper",
   "author": "TCOTC",
   "url": "https://github.com/TCOTC/Whisper",
-  "version": "0.0.0",
-  "minAppVersion": "2.8.8",
+  "version": "3.1.17",
+  "minAppVersion": "3.1.17",
   "displayName": {
     "default": "Whisper",
     "zh_CN": "浅吟"

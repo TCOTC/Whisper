@@ -5,6 +5,7 @@
 @import url(style/module/editor.css);        /* 编辑器 */
 @import url(style/module/menu.css);          /* 菜单、浮窗、弹窗 */
 @import url(style/module/tooltip.css);       /* 悬浮提示 */
+@import url(style/module/tab-bar.css);       /* 页签 */
 
 /* —————————————————————————— 配色 —————————————————————————— */
 /* 明亮主题 */
@@ -23,7 +24,7 @@ html[data-theme-mode="light"] {
 	--b3-theme-error: #d23f31;
 	--b3-theme-success: #65b84d;
 	/* 混合 */
-	--whisper-mix-theme_primary_background: rgb(225, 223, 216); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245) */
+	--mix-theme_primary_background: rgb(225, 223, 216); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245) */
 
 	/* 文字颜色 */
 	--b3-theme-on-primary: #fff;
@@ -46,6 +47,7 @@ html[data-theme-mode="light"] {
 	/* 线条 */
 	--b3-border-color: var(--b3-theme-surface-lighter);
 	--b3-border-radius: 6px;
+	--b3-border-radius-s: 3px;
 	--b3-border-radius-b: 12px;
 
 	/* 滚动条 */
@@ -213,8 +215,6 @@ html[data-theme-mode="light"] {
 /* 主体结构*/
 
 /* @import url(/appearance/themes/Whisper/style/module/shrink.css);        /* 侧栏 */
-
-/* @import url(/appearance/themes/Whisper/style/module/tab-bar.css);       /* 页签 */
 
 /* @import url(/appearance/themes/Whisper/style/module/breadcrumb.css);    /* 面包屑 */
 
