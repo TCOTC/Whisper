@@ -259,18 +259,13 @@ div:not(#preview) > .protyle-wysiwyg div[data-subtype="h6"] > div:first-child:be
 .av__row:not(.av__row--header):hover .av__colsticky .av__cell {
 	background-color: var(--b3-list-hover);
 }
-html[data-theme-mode="light"] { /* 明亮模式的颜色 */
-	.av__row--select:not(.av__row--header):hover,
-	.av__row--select:not(.av__row--header):hover .av__colsticky .av__firstcol,
-	.av__row--select:not(.av__row--header):hover .av__colsticky .av__cell,
-	.av__row--hl:not(.av__row--header):hover,
-	.av__row--hl:not(.av__row--header):hover .av__colsticky .av__firstcol,
-	.av__row--hl:not(.av__row--header):hover .av__colsticky .av__cell {
-		background-color: rgba(8, 8, 3, 0.17); /* --b3-theme-primary-lightest 和 --b3-list-hover 混合 */
-	}
-}
-html[data-theme-mode="dark"] { /* 暗黑模式的颜色 */
-	/* TODO 需要等暗黑模式的配色考虑好之后再弄 */
+.av__row--select:not(.av__row--header):hover,
+.av__row--select:not(.av__row--header):hover .av__colsticky .av__firstcol,
+.av__row--select:not(.av__row--header):hover .av__colsticky .av__cell,
+.av__row--hl:not(.av__row--header):hover,
+.av__row--hl:not(.av__row--header):hover .av__colsticky .av__firstcol,
+.av__row--hl:not(.av__row--header):hover .av__colsticky .av__cell {
+	background-color: var(--mix-theme_primary_lightest-list-hover);
 }
 
 /* 数据库角标文本颜色 */
@@ -297,8 +292,8 @@ html[data-theme-mode="dark"] { /* 暗黑模式的颜色 */
 
 
 /* 列表 */
-.protyle-wysiwyg [data-node-id].li:has(.block-focus) > .protyle-action {
-	color: var(--b3-theme-primary); /* 当前聚焦块路径上的所有列表项元素 */
+.protyle-wysiwyg [data-node-id].li:not(.protyle-wysiwyg--select):has(.block-focus) > .protyle-action {
+	color: var(--b3-theme-primary); /* 当前聚焦块路径上的所有列表项元素(排除被选中的块，因为这个情况下没用) */
 }
 
 /*头图选项*/

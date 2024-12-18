@@ -7,6 +7,7 @@
 @import url(style/module/tooltip.css);       /* 悬浮提示 */
 @import url(style/module/tab-bar.css);       /* 页签 */
 
+/* TODO 跟最新版的官方主题文件对比一下，把缺少的变量补上 */
 /* —————————————————————————— 配色 —————————————————————————— */
 /* 明亮主题 */
 html[data-theme-mode="light"] {
@@ -28,6 +29,7 @@ html[data-theme-mode="light"] {
 	--mix-theme_primary_background: rgb(225, 223, 216); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245) */
 	--mix-theme_background-protyle_code: rgb(238, 237, 235); /* --b3-theme-background rgb(249, 248, 245) & --b3-protyle-code-background rgba(27, 31, 35, .05) */
 	--mix-theme_primary_lightest-theme_background-protyle_code: rgb(215, 214, 207); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --mix-theme_background-protyle_code rgb(238, 237, 235) */
+	--mix-theme_primary_lightest-list-hover: rgba(8, 8, 3, 0.17); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-list-hover rgba(51, 49, 44, 0.06) */
 
 	/* 文字颜色 */
 	--b3-theme-on-primary: #fff;

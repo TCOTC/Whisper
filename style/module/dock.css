@@ -19,6 +19,8 @@
 /*	margin-left: 3px; !* TODO 这里会导致侧栏面板宽度异常，暂时注释。需要跟进 https://github.com/siyuan-note/siyuan/issues/13516 *!*/
 /*}*/
 
+/* TODO 未钉住的侧栏弹出样式还可以优化，比如圆角、阴影、位置之类的 */
+
 
 /* ————————————————————文档树———————————————————— */
 
@@ -71,6 +73,9 @@
 
 	/* 已关闭的笔记本 */
 	&[data-type="toggle"] {
+		padding-left: 3px; /* 跟 .file-tree > .block__icons 一致 */
+		padding-right: 13px;
+
 		&:not(:hover) {
 			opacity: 0.6;
 		}

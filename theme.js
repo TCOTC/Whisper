@@ -85,14 +85,14 @@
                             root.setAttribute('whisper-last-theme-mode', lastThemeMode);
                         }
 
-                        // 遮罩维持 1s
+                        // 遮罩维持 2s
                         if (overlayTimer) {
                             clearTimeout(overlayTimer);
                         }
                         root.setAttribute('whisper-overlay', 'true');
                         overlayTimer = setTimeout(() => {
                             root.setAttribute('whisper-overlay', 'false');
-                        }, 1000);
+                        }, 2000);
 
                         // 更新 lastThemeMode 为当前值
                         lastThemeMode = currentThemeMode;
@@ -121,12 +121,12 @@
         if (!existingStyle) {
             const style = document.createElement('style');
             style.id = 'whisperThemeSwitchStyle';
-            // background-color 是 --b3-theme-surface，TODO 暗黑模式的配色做了之后要改这里
+            // 明亮模式 background-color 是 --b3-theme-surface，暗黑模式 background-color 是 --b3-theme-background TODO 暗黑模式的配色做了之后要改这里
             style.innerHTML = `
             @keyframes darkFadeOut {
                 from {
-                    background-color: rgb(38, 38, 38);
-                    opacity: .5;
+                    background-color: rgb(30, 30, 30);
+                    opacity: .3;
                 }
                 to {
                     background-color: rgb(249, 238, 237);
@@ -136,10 +136,10 @@
             @keyframes lightFadeOut {
                 from {
                     background-color: rgb(249, 238, 237);
-                    opacity: .5;
+                    opacity: .2;
                 }
                 to {
-                    background-color: rgb(38, 38, 38);
+                    background-color: rgb(30, 30, 30);
                     opacity: 0;
                 }
             }
@@ -152,10 +152,10 @@
                 pointer-events: none;
             }
             :root[data-theme-mode="light"][whisper-last-theme-mode="dark"][data-light-theme="Whisper"][data-dark-theme="Whisper"] body::after {
-                animation: darkFadeOut 0.5s forwards;
+                animation: darkFadeOut 1.8s forwards;
             }
             :root[data-theme-mode="dark"][whisper-last-theme-mode="light"][data-light-theme="Whisper"][data-dark-theme="Whisper"] body::after {
-                animation: lightFadeOut 0.5s forwards;
+                animation: lightFadeOut 1.8s forwards;
             }
             :root[whisper-overlay="false"] body::after {
                 content: none;

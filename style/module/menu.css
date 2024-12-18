@@ -1,3 +1,12 @@
+/* 菜单中的部分输入框默认两行高 */
+.b3-menu__item[data-id="链接"] .b3-text-field,
+.b3-menu__item[data-id="锚文本"] .b3-text-field,
+.b3-menu__item[data-id="标题"] .b3-text-field {
+	height: 50px;
+	/* TODO 图片菜单、链接菜单、数据库资源字段链接菜单 里的选项都没有 data-id，需要 PR 给思源 */
+	/* TODO 参考 https://blog.dkvirus.com/css/css_selector_placeholder_shown/ 排除空输入框，必要时给思源 PR 或者提 issue */
+}
+
 /* 菜单里的链接跟行内链接用同样的颜色 */
 a {
     color: var(--b3-protyle-inline-link-color);

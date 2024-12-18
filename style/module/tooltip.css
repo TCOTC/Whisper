@@ -27,9 +27,9 @@
 }
 .tooltip--tab_header,
 .tooltip--href {
-    overflow: hidden;        /* 隐藏超出元素宽度的内容 */
-    text-overflow: ellipsis; /* 使用省略号表示被截断的文本 */
     white-space: nowrap;     /* 不换行 */
+    overflow: hidden;        /* 隐藏超出部分 */
+    text-overflow: ellipsis; /* 显示省略号 */
     position: absolute;      /* 显示在左下角 */
     top: unset !important;
     left: 0 !important;
@@ -54,7 +54,33 @@
     animation-duration: 300ms;
     animation-delay: 200ms;
     max-width: 350px;              /* 能够使元素添加 .fn__none 之后宽度不变(用于宽度刚好展开一半的情况) */
-    transition: max-width 0s 0.2s; /* 隐藏超过 0.5s 就立即缩回*/
+    transition: max-width 0s 0.3s; /* 隐藏超过 0.3s 就立即缩回*/
 }
 
-/* TODO 数据库资源列的链接、普通的链接可能会有标题，样式需要单独调整 */
+/* 链接可能有标题，样式单独调整 */
+/* TODO 选择器 span 需要跟进 https://github.com/siyuan-note/siyuan/pull/13476 */
+.tooltip--href  {
+    &, &.fn__none {
+        display: flex !important;
+        flex-direction: row;
+
+        span:first-child {
+            order: 3;
+            white-space: nowrap;     /* 不换行 */
+            overflow: hidden;        /* 隐藏超出部分 */
+            text-overflow: ellipsis; /* 显示省略号 */
+        }
+
+        .fn__hr {
+            order: 2;
+            width: 8px;
+        }
+
+        span:last-child {
+            order: 1;
+            white-space: nowrap;     /* 不换行 */
+            overflow: hidden;        /* 隐藏超出部分 */
+            text-overflow: ellipsis; /* 显示省略号 */
+        }
+    }
+}
