@@ -7,9 +7,20 @@
     animation-duration: 10ms; /* 默认动画 zoomIn 更快过渡 */
     animation-delay: 400ms;   /* 延迟显示 */
     pointer-events: none;
+    max-width: 350px;         /* 初始链接宽度(小于这个宽度的情况下字体会变细，很怪) */
+    transition: max-width 0.5s 1.5s;
 }
+
 /* 路径信息的悬浮提示统一显示在左下角 */
+@keyframes tooltipFadeIn {
+    to {
+        opacity: 1;
+    }
+}
 @keyframes tooltipFadeOut {
+    from {
+        opacity: 1;
+    }
     to {
         opacity: 0;
     }
@@ -24,21 +35,26 @@
     left: 0 !important;
     bottom: 0 !important;
     border-radius:0 6px 0 0;
-    max-width: 350px;        /* 初始链接宽度(小于这个宽度的情况下字体会变细，很怪) */
-    animation-name: none;    /* 禁用动画，直接显示 */
+    max-width: 90vw;         /* 最大链接宽度 */
+    animation-name: tooltipFadeIn;
+    animation-duration: 300ms;
+    animation-delay: 200ms;
     animation-fill-mode: both;
 }
-.tooltip__wider {
-    max-width: 1000px;       /* 最大链接宽度 */
-    transition: max-width 0.2s 0.5s; /* 过渡动画 */
+.tooltip.fn__none {
+    transition: max-width 0s 2s;
+    animation-name: tooltipFadeOut;
+    animation-duration: 500ms;
+    animation-delay: 200ms;
 }
 .tooltip--tab_header.fn__none,
 .tooltip--href.fn__none {
-    display: block !important; /* 保持显示直到淡出 */
+    display: block !important;     /* 保持显示直到淡出 */
     animation-name: tooltipFadeOut;
     animation-duration: 300ms;
     animation-delay: 200ms;
-    /*animation-fill-mode: both;*/
-    max-width: 1001px;         /* 能够使元素添加 .fn__none 之后宽度不变(用于宽度刚好展开一半的情况) */
-    transition: max-width 0s 2s;
+    max-width: 350px;              /* 能够使元素添加 .fn__none 之后宽度不变(用于宽度刚好展开一半的情况) */
+    transition: max-width 0s 0.2s; /* 隐藏超过 0.5s 就立即缩回*/
 }
+
+/* TODO 数据库资源列的链接、普通的链接可能会有标题，样式需要单独调整 */
