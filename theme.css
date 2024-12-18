@@ -23,8 +23,11 @@ html[data-theme-mode="light"] {
 	--b3-theme-surface-lighter: #e0e0e0;
 	--b3-theme-error: #d23f31;
 	--b3-theme-success: #65b84d;
+
 	/* 混合 */
 	--mix-theme_primary_background: rgb(225, 223, 216); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245) */
+	--mix-theme_background-protyle_code: rgb(238, 237, 235); /* --b3-theme-background rgb(249, 248, 245) & --b3-protyle-code-background rgba(27, 31, 35, .05) */
+	--mix-theme_primary_lightest-theme_background-protyle_code: rgb(215, 214, 207); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --mix-theme_background-protyle_code rgb(238, 237, 235) */
 
 	/* 文字颜色 */
 	--b3-theme-on-primary: #fff;
