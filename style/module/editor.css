@@ -124,26 +124,30 @@ div:not(#preview) > .protyle-wysiwyg div[data-subtype="h6"] > div:first-child:be
 /* ————————————————————代码块———————————————————— */
 
 /* 缩短代码块上下边距，更紧凑 */
+/* TODO https://github.com/siyuan-note/siyuan/pull/13564 PR 合并后需要移除这部分 */
 .b3-typography .code-block:not(pre),
 .protyle-wysiwyg .code-block:not(pre) {
     margin-top: 6px;
 	margin-bottom: 6px;
 }
 
-/* 代码块滚动时语言和按钮固定在编辑器顶部 修改自 JeffreyChen https://ld246.com/article/1728146248791 */
+/* 代码块滚动时语言和按钮固定在编辑器顶部 CSS片段 */
+/* author by JeffreyChen https://ld246.com/article/1728146248791 */
 .b3-typography div.hljs, .protyle-wysiwyg div.hljs {
     padding-top: 0;
 }
-/* TODO 要看看在 设置 - 外观 - 代码块主题 选择了主题之后会怎样，需要兼容 */
 .protyle-wysiwyg[contenteditable] .code-block .protyle-action {
-	background-color: var(--mix-theme_background-protyle_code); /* 混合 --b3-theme-background 和 rgba(27, 31, 35, .05) */
-	position: sticky;
-	top: 0;
+	background-color: var(--b3-theme-background);
+    position: sticky;
+    top: 0;
 }
-/* 代码块高亮时需要调整 .protyle-action 的背景色以避免样式问题 */
-.protyle-wysiwyg--select.code-block .protyle-action,
-.protyle-wysiwyg--hl.code-block .protyle-action {
-	background-color: var(--mix-theme_primary_lightest-theme_background-protyle_code); /* 二次混合 */
+.protyle-wysiwyg[contenteditable] .code-block .protyle-action::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: var(--b3-protyle-code-background);
+    pointer-events: none;
 }
 
 /* 始终显示设置的代码块语言 */
@@ -156,6 +160,7 @@ div:not(#preview) > .protyle-wysiwyg div[data-subtype="h6"] > div:first-child:be
 	opacity: 0;
 }
 /* 代码块语言的左边与代码对齐 */
+/* TODO 跟进 https://github.com/siyuan-note/siyuan/pull/13564 ，如果 PR 合并的话就可以删掉这部分了 */
 .protyle-action__language {
     position: absolute;
     left: 1em;
