@@ -79,7 +79,11 @@
 	font-size: 1.1em;
 }
 
-
+/* 文档引用计数 */
+.protyle-title .protyle-attr--refcount {
+	color: var(--b3-theme-on-error);
+	background-color: var(--b3-theme-error);
+}
 
 #layouts div.layout__center div.protyle-content:not([data-fullwidth="true"]) div.protyle-wysiwyg {
 	padding-bottom: 70vh !important; /* 更改编辑器底部高度 */
@@ -274,6 +278,7 @@ div:not(#preview) > .protyle-wysiwyg div[data-subtype="h6"] > div:first-child:be
 }
 
 /* 数据库角标文本颜色 */
+/* TODO 感觉只改文本颜色不太好看，还要再想想 */
 .protyle-attr--av > span{
 	display: contents;
 	font-weight: 500;

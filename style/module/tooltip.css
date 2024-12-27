@@ -1,3 +1,7 @@
+/* ————————————————————伪元素提示———————————————————— */
+
+/* TODO 伪元素提示 */
+
 /* ————————————————————悬浮提示———————————————————— */
 
 .tooltip {
@@ -6,9 +10,13 @@
     color: var(--b3-theme-on-background);
     animation-duration: 10ms; /* 默认动画 zoomIn 更快过渡 */
     animation-delay: 400ms;   /* 延迟显示 */
-    pointer-events: none;
     max-width: 350px;         /* 初始链接宽度(小于这个宽度的情况下字体会变细，很怪) */
     transition: max-width 0.5s 1.5s;
+}
+
+/* 无需延迟显示 */
+.tooltip--emoji {
+    animation-delay: unset;
 }
 
 /* 路径信息的悬浮提示统一显示在左下角 */
@@ -27,6 +35,7 @@
 }
 .tooltip--tab_header,
 .tooltip--href {
+    pointer-events: none;    /* 有的悬浮提示会有滚动条需要鼠标交互，所以只有这部分禁止 */
     white-space: nowrap;     /* 不换行 */
     overflow: hidden;        /* 隐藏超出部分 */
     text-overflow: ellipsis; /* 显示省略号 */
