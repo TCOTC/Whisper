@@ -122,6 +122,7 @@
             const style = document.createElement('style');
             style.id = 'whisperThemeSwitchStyle';
             // 明亮模式 background-color 是 --b3-theme-surface，暗黑模式 background-color 是 --b3-theme-background TODO 暗黑模式的配色做了之后要改这里
+            // TODO 试试用 filter: brightness(0.68); 能不能代替 background-color 和 opacity
             style.innerHTML = `
             @keyframes darkFadeOut {
                 from {
@@ -136,7 +137,7 @@
             @keyframes lightFadeOut {
                 from {
                     background-color: rgb(249, 238, 237);
-                    opacity: .2;
+                    opacity: .1;
                 }
                 to {
                     background-color: rgb(30, 30, 30);
@@ -152,10 +153,10 @@
                 pointer-events: none;
             }
             :root[data-theme-mode="light"][whisper-last-theme-mode="dark"][data-light-theme="Whisper"][data-dark-theme="Whisper"] body::after {
-                animation: darkFadeOut 1.8s forwards;
+                animation: darkFadeOut 1.5s forwards;
             }
             :root[data-theme-mode="dark"][whisper-last-theme-mode="light"][data-light-theme="Whisper"][data-dark-theme="Whisper"] body::after {
-                animation: lightFadeOut 1.8s forwards;
+                animation: lightFadeOut 0.8s forwards;
             }
             :root[whisper-overlay="false"] body::after {
                 content: none;
