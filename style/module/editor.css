@@ -1,5 +1,16 @@
 /* ————————————————————编辑区———————————————————— */
 
+/* ————————————————————行级元素———————————————————— */
+
+/* 给被引用的块增加虚线外框 CSS片段 */
+/* author by JeffreyChen https://ld246.com/article/1728407192369 */
+.protyle-wysiwyg [data-node-id][refcount] {
+	outline: 2px dashed rgba(255, 165, 0, .5); /* 橙色虚线 */
+}
+[data-type="NodeBlockQueryEmbed"] [data-node-id][refcount] {
+	outline: none; /* 嵌入块内部不显示 */
+}
+
 /* ————————————————————滚动条———————————————————— */
 
 .av:not(:hover) > .av__container > .av__scroll {
@@ -132,7 +143,7 @@ div:not(#preview) > .protyle-wysiwyg div[data-subtype="h6"] > div:first-child:be
 .b3-typography .code-block:not(pre),
 .protyle-wysiwyg .code-block:not(pre) {
     margin-top: 6px;
-	margin-bottom: 6px;
+    margin-bottom: 6px;
 }
 
 /* 代码块滚动时语言和按钮固定在编辑器顶部 CSS片段 */
