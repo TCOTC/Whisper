@@ -35,6 +35,7 @@
     };
 
     const focusHandler = function() {
+        // TODO 需要排除上层块包含 .protyle-wysiwyg--select 的情况，这种情况下样式会造成干扰。hasClosestByClassName？
         // 获取当前编辑区
         let block = getFocusedBlock(); // 当前光标所在块
         // 当前块已经设置焦点
@@ -65,104 +66,5 @@
 
     (async () => {
         blockTrackMain();
-    })();
-
-    // 外观模式渐变切换
-    (async () => {
-        const root = document.documentElement; // 获取 :root 元素
-        let lastThemeMode = root.getAttribute('data-theme-mode');
-
-        function initRootObserver() {
-            let overlayTimer;
-            const rootObserver = new MutationObserver((mutations) => {
-                mutations.forEach(mutation => {
-                    if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme-mode') {
-                        // 读取 data-theme-mode 属性的值
-                        const currentThemeMode = root.getAttribute('data-theme-mode');
-
-                        // 将上一次的值写入 whisper-last-theme-mode 属性
-                        if (lastThemeMode) {
-                            root.setAttribute('whisper-last-theme-mode', lastThemeMode);
-                        }
-
-                        // 遮罩维持 2s
-                        if (overlayTimer) {
-                            clearTimeout(overlayTimer);
-                        }
-                        root.setAttribute('whisper-overlay', 'true');
-                        overlayTimer = setTimeout(() => {
-                            root.setAttribute('whisper-overlay', 'false');
-                        }, 2000);
-
-                        // 更新 lastThemeMode 为当前值
-                        lastThemeMode = currentThemeMode;
-                    }
-                });
-            });
-
-            // 配置观察者，监听属性变化
-            rootObserver.observe(root, {
-                attributes: true // 只监听属性变化
-            });
-        }
-
-        // 如果 :root 元素不存在 whisper-last-theme-mode 属性，则开始监听属性变化(只添加一次监听，并且不停止)
-        if (!root.hasAttribute('whisper-last-theme-mode')) {
-            // 给 :root 元素添加属性
-            root.setAttribute('whisper-last-theme-mode', '');
-            root.setAttribute('whisper-overlay', 'false');
-            initRootObserver();
-        }
-
-        // 查找 head 中是否存在 id="whisperThemeSwitchStyle" 的元素
-        const existingStyle = document.getElementById('whisperThemeSwitchStyle');
-
-        // 如果不存在，则创建并添加样式(只添加一次，并且不移除)
-        if (!existingStyle) {
-            const style = document.createElement('style');
-            style.id = 'whisperThemeSwitchStyle';
-            // 明亮模式 background-color 是 --b3-theme-surface，暗黑模式 background-color 是 --b3-theme-background TODO 暗黑模式的配色做了之后要改这里
-            // TODO 试试用 filter: brightness(0.68); 能不能代替 background-color 和 opacity
-            style.innerHTML = `
-            @keyframes darkFadeOut {
-                from {
-                    background-color: rgb(30, 30, 30);
-                    opacity: .3;
-                }
-                to {
-                    background-color: rgb(249, 238, 237);
-                    opacity: 0;
-                }
-            }
-            @keyframes lightFadeOut {
-                from {
-                    background-color: rgb(249, 238, 237);
-                    opacity: .1;
-                }
-                to {
-                    background-color: rgb(30, 30, 30);
-                    opacity: 0;
-                }
-            }
-            body::after {
-                content: "";
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                z-index: 6;
-                pointer-events: none;
-            }
-            :root[data-theme-mode="light"][whisper-last-theme-mode="dark"][data-light-theme="Whisper"][data-dark-theme="Whisper"] body::after {
-                animation: darkFadeOut 1.5s forwards;
-            }
-            :root[data-theme-mode="dark"][whisper-last-theme-mode="light"][data-light-theme="Whisper"][data-dark-theme="Whisper"] body::after {
-                animation: lightFadeOut 0.8s forwards;
-            }
-            :root[whisper-overlay="false"] body::after {
-                content: none;
-            }
-        `;
-            document.head.appendChild(style);
-        }
     })();
 })();
