@@ -1,15 +1,15 @@
 /* ————————————————————侧栏面板布局———————————————————— */
 
 .file-tree {
-	&> .block__icons {
+	&>.block__icons {
 		padding-left: 3px; /* 跟下面的 .b3-list 对齐 */
 		padding-right: 13px; /* 滚动条的宽度 + .b3-list 的 margin-right */
 	}
 
-	&> .fn__flex-1 {
+	&>.fn__flex-1 {
 		scrollbar-gutter: stable;
 
-		&> .b3-list {
+		&>.b3-list {
 			margin-left: 3px; /* 尽可能利用空间 */
 			margin-right: 3px;
 		}
