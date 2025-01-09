@@ -1,4 +1,4 @@
-/* ————————————————————布局———————————————————— */
+/* ————————————————————侧栏面板布局———————————————————— */
 
 .file-tree {
 	&> .block__icons {
@@ -19,23 +19,66 @@
 /*	margin-left: 3px; !* TODO 这里会导致侧栏面板宽度异常，暂时注释。需要跟进 https://github.com/siyuan-note/siyuan/issues/13516 *!*/
 /*}*/
 
+/* 调整侧栏浮窗高度与层级 CSS片段 */
 /* TODO 未钉住的侧栏弹出样式还可以优化，比如圆角、阴影、位置之类的 */
+/* 其实可以直接把底栏盖住，更好看也更实用 */
+.layout__dockl.layout--float,
+.layout__dockr.layout--float {
+	top: 32px !important;
+	bottom: 24px !important;
+	z-index: 4 !important;
+}
+#dockLeft, #dockRight {
+	z-index: 5;
+}
+
+/* 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔 */
+.layout__center:has(~ .layout--float > .fn__flex:not(.fn__none)) > .fn__flex-1:last-child {
+	.protyle-content {
+		margin-right: 15px;
+	}
+
+	.protyle-scroll {
+		right: 25px;
+	}
+}
+
+/* 右侧栏 */
+/* 底栏会挡住右下侧栏（如果有底部侧栏的话不会挡住、如果关闭了底栏的话不会挡住） */
+body:has(> #dockBottom.fn__none):has(> #status:not(.fn__none)) {
+	#dockRight,
+	.layout__dockr .layout__dockresize {
+		padding-bottom: 24px; /* 等于底栏 status 的高度 */
+	}
+}
+
+/* 底部侧栏 */
+#dockBottom {
+	padding: 0;
+}
+#dockBottom .dock__item--space {
+	display: none; /* 底部侧栏的左右两边都合并到左边 */
+}
+#dockBottom .dock__item {
+	order: 1;
+}
+#dockBottom .dock__item.dock__item--pin {
+	order: 0; /* 钉住按钮始终放在最左边 */
+}
+
+/* 侧栏面板焦点状态的侧栏按钮样式 */
+.dock .dock__item.dock__item--activefocus{
+	background-color: var(--b3-theme-primary-lightest);
+	color: var(--b3-theme-primary);
+}
 
 
 /* ————————————————————文档树———————————————————— */
 
-/* 布局 */
-/*.layout__dockl .sy__file > .block__icons {*/
-/*	padding-left: 0; !* 跟下面的笔记本元素对齐 *!*/
-/*}*/
-/*.layout__dockr .sy__file > .fn__flex-1 {*/
-/*	padding-left: 0; !* 跟 .block__icons 对齐 *!*/
-/*}*/
-
 /* 笔记本区隔 */
 .sy__file ul.b3-list.b3-list--background {
 	border-radius: var(--b3-border-radius);
-	margin: 1px 4px 6px 4px;
+	margin: 3px 4px 3px 4px;
 	outline: 1px solid var(--b3-theme-on-surface-light);
 	/* overflow: hidden; */
 }
@@ -47,7 +90,33 @@
 		line-height: 30px; /* 笔记本行高 */
 	}
 }
-/* TODO 文档树上的 .dragover 样式有点问题，需要增加宽度并修改位置偏移量 */
+/* 文档树和大纲的 dragover */
+.file-tree .dragover:not([data-type="navigation-root"]):not([data-subtype="h1"])::after { /* TODO PR 合并后移除 https://github.com/siyuan-note/siyuan/pull/13737 */
+	width: calc(100% - var(--file-toggle-width));
+	left: var(--file-toggle-width);
+}
+/* flex 布局避免笔记本外边距合并 */
+.sy__file > .fn__flex-1 {
+	display: flex;
+	flex-direction: column;
+}
+/* 笔记本 dragover */
+.sy__file [data-type="navigation-root"] {
+	.dragover__top::after,
+	.dragover__bottom::after {
+		height: 4px;
+		width: calc(100% - 10px);
+		left: 5px;
+	}
+
+	.dragover__top::after {
+		top: -5px;
+	}
+
+	.dragover__bottom::after {
+		bottom: -5px;
+	}
+}
 
 /* 避免展开文档树误触打开文档：只要箭头颜色变深就能展开下级 */
 .sy__file .b3-list-item {
@@ -91,162 +160,4 @@
 			border-radius: var(--b3-border-radius);
 		}
 	}
-}
-
-
-
-/* ————————————————————侧栏———————————————————— */
-
-/* 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔 */
-.layout__center:has(~ .layout--float > .fn__flex:not(.fn__none)) > .fn__flex-1:last-child {
-	.protyle-content {
-		margin-right: 15px;
-	}
-
-	.protyle-scroll {
-		right: 25px;
-	}
-}
-
-/* 右侧栏 */
-/* 底栏会挡住右下侧栏（如果有底部侧栏的话不会挡住、如果关闭了底栏的话不会挡住） */
-body:has(> #dockBottom.fn__none):has(> #status:not(.fn__none)) {
-	#dockRight,
-	.layout__dockr .layout__dockresize {
-		padding-bottom: 24px; /* 等于底栏 status 的高度 */
-	}
-}
-
-/* 底部侧栏 */
-#dockBottom {
-	padding: 0;
-}
-#dockBottom .dock__item--space {
-	display: none; /* 底部侧栏的左右两边都合并到左边 */
-}
-#dockBottom .dock__item {
-	order: 1;
-}
-#dockBottom .dock__item.dock__item--pin {
-	order: 0; /* 钉住按钮始终放在最左边 */
-}
-
-
-/* ————————————————————dock栏———————————————————— */
-.dock{
-	/* background-color: var(--S-dock-background);
-	border: none!important;
-	&.dock--vertical{
-	width: var(--S-dock-item-width);
-	}
-	&#dockLeft{
-		.dock__item{
-			margin: 10px 3px 10px 7px;
-		}
-	}
-	&#dockRight{
-		padding-bottom:26px;
-		.dock__item{
-			margin: 7px 7px 7px 3px;
-		}
-	}
-	&#dockBottom{
-		height: unset;
-		background-color: var(--S-status-msg-background);
-		.dock__item{
-			margin: 3px 7px 3px 0;
-			padding: 3px;
-			height: 14px;
-		}
-	} */
-	& .dock__item{
-		/* color: var(--b3-theme-surface-light);
-		background-color: var(--S-dock-background);
-		padding:5.5px ;
-		svg{
-			width: 11px;
-			height: 11px;
-		}
-		&:first-child{
-			margin-top: 8px!important;
-		}
-		&:last-child{
-			margin-bottom: 7px!important;
-		}
-		&:hover{
-			color: var(--b3-theme-on-background);
-			background-color: var(--S-dock-item-active-background-hover);
-			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-		} */
-		&.dock__item--activefocus{ /* 侧栏面板焦点状态的侧栏按钮样式 */
-			background-color: var(--b3-theme-primary-lightest) !important;
-			color: var(--b3-theme-primary) !important;
-		}
-	}
-	/* & .dock__item--active{
-		color: var(--b3-theme-on-background);
-		background-color: var(--S-dock-item-active-background-hover);
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.2);
-	}
-	& .dock__item--active:hover{
-		color: var(--b3-theme-on-background);
-		background-color: var(--S-dock-item-active-background-hover);
-	} */
-}
-
-/* .b3-list-item__toggle{
-	margin-left: -4px;
-} */
-
-
-/* 底dock栏 */
-/* .layout__dockb.layout--float{
-	bottom:60px!important;
-	margin-left:32px;
-	margin-right:32px;
-	border-radius:6px;
-	overflow:hidden;
-	box-shadow: 0 4px 9px rgba(0,0,0,.05), 0 1.5px 2.8px rgba(0,0,0,.07), 0 0.3px 0.7px rgba(0,0,0,.12);
-}
-.layout__dockb.layout--float[style*="bottom: 26px"]{
-	bottom:8px!important;
-	margin-left:8px;
-	margin-right:8px;
-}
-.layout__dockb.layout--float[style*="bottom: 59px"]{
-	bottom:40px!important;
-}
-#dockLeft.fn__none + .layout .layout__dockb.layout--float[style*="bottom: 59px"]{
-	margin-left:8px;
-	margin-right:8px;
-}
-#dockBottom:has(.dock__item--active) .dock__item--pin[aria-label="钉住"],#dockBottom:has(.dock__item--active) .dock__item--pin[aria-label="Pin"]{
-	margin: 0 7px 40px 0;
-}
-#dockBottom.fn__none .dock__item--pin{
-	display: none;
-}
-#dockBottom:not(.fn__none):has(+.status.fn__none) [data-title]{
-	margin: 0 7px 7px 0;
-}
-#dockBottom.fn__none:has(+.status.fn__none) .dock__item--active{
-	display: none;
-}
-#dockBottom:not(.fn__none)+#status.fn__none #barDock{
-	bottom:-7px;
-}
-#dockBottom .fn__flex-1{
-	flex: 0;
-} */
-
-/* 调整侧栏浮窗高度与层级 CSS片段 */
-/* TODO 这部分还需要重新看看是否需要调整 */
-.layout__dockl.layout--float,
-.layout__dockr.layout--float {
-	top: 32px !important;
-	bottom: 24px !important;
-	z-index: 4 !important;
-}
-#dockLeft, #dockRight {
-	z-index: 5;
 }
