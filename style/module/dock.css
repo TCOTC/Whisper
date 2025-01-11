@@ -91,9 +91,10 @@ body:has(> #dockBottom.fn__none):has(> #status:not(.fn__none)) {
 	}
 }
 /* 文档树和大纲的 dragover */
-.file-tree .dragover:not([data-type="navigation-root"]):not([data-subtype="h1"])::after { /* TODO PR 合并后移除 https://github.com/siyuan-note/siyuan/pull/13737 */
-	width: calc(100% - var(--file-toggle-width));
-	left: var(--file-toggle-width);
+.sy__file .dragover[data-type="navigation-root"]::after,
+.sy__outline [data-subtype="h1"]::after {
+	width: 100%;
+	left: 0;
 }
 /* flex 布局避免笔记本外边距合并 */
 .sy__file > .fn__flex-1 {
@@ -102,18 +103,18 @@ body:has(> #dockBottom.fn__none):has(> #status:not(.fn__none)) {
 }
 /* 笔记本 dragover */
 .sy__file [data-type="navigation-root"] {
-	.dragover__top::after,
-	.dragover__bottom::after {
+	&.dragover__top::after,
+	&.dragover__bottom::after {
 		height: 4px;
 		width: calc(100% - 10px);
 		left: 5px;
 	}
 
-	.dragover__top::after {
+	&.dragover__top::after {
 		top: -5px;
 	}
 
-	.dragover__bottom::after {
+	&.dragover__bottom::after {
 		bottom: -5px;
 	}
 }
