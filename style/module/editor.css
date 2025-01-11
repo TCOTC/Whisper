@@ -174,6 +174,56 @@
 	outline: none; /* 嵌入块内部不显示 */
 }
 
+/* 数据库角标文本颜色 */
+/* TODO 感觉只改文本颜色不太好看，还要再想想。感觉可以跟标签样式统一一下 (不要 # ) */
+.protyle-attr--av > span{
+	display: contents;
+	font-weight: 500;
+}
+.protyle-attr--av > span:nth-child(4n+1) {
+	color: var(--b3-card-success-color);/* 每组的第1个 */
+	background-color: var(--b3-card-success-background);
+}
+.protyle-attr--av > span:nth-child(4n+2) {
+	color: var(--b3-card-info-color); /* 每组的第2个 */
+	background-color: var(--b3-card-info-background);
+}
+.protyle-attr--av > span:nth-child(4n+3) {
+	color: var(--b3-card-warning-color); /* 每组的第3个 */
+	background-color: var(--b3-card-warning-background);
+}
+.protyle-attr--av > span:nth-child(4n) {
+	color: var( --b3-card-error-color); /* 每组的第4个 */
+	background-color: var(--b3-card-error-background);
+}
+
+
+/* 列表 */
+.protyle-wysiwyg [data-node-id].li:has(.block-focus) > .protyle-action {
+	color: var(--b3-theme-primary);
+}
+.protyle-wysiwyg [data-node-id].li[fold="1"]:has(.block-focus) > .protyle-action::after {
+	background-color: var(--b3-theme-primary-lighter);
+}
+
+/* 折叠的列表项 */
+.protyle-wysiwyg [data-node-id].li[fold="1"] > .protyle-action::after {
+	background-color: var(--custom-list-hover-dark);
+}
+.protyle .protyle-wysiwyg .li[data-subtype=o] > .protyle-action:hover::after,
+.protyle .protyle-wysiwyg .li[data-subtype=u] > .protyle-action:hover::after,
+.protyle .protyle-wysiwyg[data-readonly=false] .li[data-subtype=t] > .protyle-action:hover::after {
+	background-color: var(--custom-list-hover-darker);
+}
+/* TODO 任务列表要用方形 */
+
+.protyle-wysiwyg [data-node-id].li[data-subtype="o"][fold="1"]>.protyle-action::after {
+	left: unset; /* 有序列表 */
+	width: 100%;
+}
+
+/* TODO 折叠的标题前的圆点也不好看，要改一下 */
+
 /* ————————————————————标题块———————————————————— */
 
 /* 在标题前添加数字标识 */
@@ -272,6 +322,38 @@ div:not(#preview) > .protyle-wysiwyg div {
 
 .av__container .av__row:hover .av__firstcol svg {
 	opacity: 1; /* hover 条目时显示条目的复选框 */
+}
+
+/* 关联字段单元格 */
+/* https://github.com/siyuan-note/siyuan/issues/13692 */
+.av__cell:not(.av__cell--header)[data-dtype="relation"] {
+	.av__cell--relation {
+		margin-left: 0.5em;
+
+		&:first-child {
+			margin-left: 0;
+		}
+
+		&>span:first-child {
+			display: none;
+		}
+
+		.av__celltext {
+			&:hover {
+				border-bottom: 2px solid var(--b3-theme-primary-lighter);
+			}
+
+			&::after {
+				content: ",";
+			}
+		}
+
+		&:last-of-type {
+			.av__celltext::after {
+				content: "";
+			}
+		}
+	}
 }
 
 /* Notion 样式的数据库 CSS片段 */
@@ -390,53 +472,3 @@ div:not(#preview) > .protyle-wysiwyg div {
 .av__row--hl:not(.av__row--header):hover .av__colsticky .av__cell {
 	background-color: var(--mix-theme_primary_lightest-list-hover);
 }
-
-/* 数据库角标文本颜色 */
-/* TODO 感觉只改文本颜色不太好看，还要再想想 */
-.protyle-attr--av > span{
-	display: contents;
-	font-weight: 500;
-}
-.protyle-attr--av > span:nth-child(4n+1) {
-	color: var(--b3-card-success-color);/* 每组的第1个 */
-	background-color: var(--b3-card-success-background);
-}
-.protyle-attr--av > span:nth-child(4n+2) {
-	color: var(--b3-card-info-color); /* 每组的第2个 */
-	background-color: var(--b3-card-info-background);
-}
-.protyle-attr--av > span:nth-child(4n+3) {
-	color: var(--b3-card-warning-color); /* 每组的第3个 */
-	background-color: var(--b3-card-warning-background);
-}
-.protyle-attr--av > span:nth-child(4n) {
-	color: var( --b3-card-error-color); /* 每组的第4个 */
-	background-color: var(--b3-card-error-background);
-}
-
-
-/* 列表 */
-.protyle-wysiwyg [data-node-id].li:has(.block-focus) > .protyle-action {
-	color: var(--b3-theme-primary);
-}
-.protyle-wysiwyg [data-node-id].li[fold="1"]:has(.block-focus) > .protyle-action::after {
-	background-color: var(--b3-theme-primary-lighter);
-}
-
-/* 折叠的列表项 */
-.protyle-wysiwyg [data-node-id].li[fold="1"] > .protyle-action::after {
-	background-color: var(--custom-list-hover-dark);
-}
-.protyle .protyle-wysiwyg .li[data-subtype=o] > .protyle-action:hover::after,
-.protyle .protyle-wysiwyg .li[data-subtype=u] > .protyle-action:hover::after,
-.protyle .protyle-wysiwyg[data-readonly=false] .li[data-subtype=t] > .protyle-action:hover::after {
-	background-color: var(--custom-list-hover-darker);
-}
-/* TODO 任务列表要用方形 */
-
-.protyle-wysiwyg [data-node-id].li[data-subtype="o"][fold="1"]>.protyle-action::after {
-	left: unset; /* 有序列表 */
-	width: 100%;
-}
-
-/* TODO 折叠的标题前的圆点也不好看，要改一下 */
