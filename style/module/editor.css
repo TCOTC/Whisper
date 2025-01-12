@@ -316,12 +316,29 @@ div:not(#preview) > .protyle-wysiwyg div {
 
 /* ————————————————————数据库———————————————————— */
 
-.av__container .b3-chip {
-	color: var(--b3-theme-on-background) !important; /* 选项字体用默认色 */
-}
-
 .av__container .av__row:hover .av__firstcol svg {
 	opacity: 1; /* hover 条目时显示条目的复选框 */
+}
+
+/* 主键单元格 */
+.av__cell[data-dtype="block"] [data-type="block-more"] {
+	display: none;
+}
+.av__cell[data-dtype="block"]:hover [data-type="block-more"] {
+	display: block;
+}
+
+/* 单选、多选、资源字段选项 */
+.b3-menu .b3-chip,
+.av__container .b3-chip {
+	color: var(--b3-theme-on-background) !important;
+	outline: 1px solid rgb(from var(--b3-theme-on-surface-light) r g b/0.3);
+	outline-offset: -1px;
+}
+
+/* 筛选 */
+.b3-chip--primary, .b3-chip--current {
+	background-color: var(--custom-theme-primary-lighter);
 }
 
 /* 关联字段单元格 */
@@ -446,29 +463,56 @@ div:not(#preview) > .protyle-wysiwyg div {
 
 
 /* 选择和 hover 条目时的高亮 */
-.av__row--select:not(.av__row--header) .av__cell,
-.av__row--hl:not(.av__row--header) .av__cell {
-    background-color: unset; /* 重置原生的背景色 */
-}
-.av__row--select:not(.av__row--header),
-.av__row--select:not(.av__row--header) .av__colsticky .av__firstcol,
-.av__row--select:not(.av__row--header) .av__colsticky .av__cell,
-.av__row--hl:not(.av__row--header),
-.av__row--hl:not(.av__row--header) .av__colsticky .av__firstcol,
-.av__row--hl:not(.av__row--header) .av__colsticky .av__cell {
-    background-color: var(--b3-theme-primary-lightest); /* TODO 这个颜色太深了，换成侧栏面板的颜色 */
-}
+/* 用伪元素会影响子元素的颜色，所以用背景色 */
+.av__row:not(.av__row--header) {
 
-.av__row:not(.av__row--header):hover,
-.av__row:not(.av__row--header):hover .av__colsticky .av__firstcol,
-.av__row:not(.av__row--header):hover .av__colsticky .av__cell {
-	background-color: var(--b3-list-hover);
+	.av__cell--active {
+		background-color: var(--b3-theme-surface); /* 不能用透明的颜色，会出现不一致 */
+	}
+	
+	&.av__row--select,
+	&.av__row--hl {
+		background-color: var(--b3-theme-surface); /* 侧栏面板的颜色 */
+
+		.av__cell {
+			background-color: unset; /* 重置原生的背景色 */
+		}
+
+		.av__colsticky { /* 固定字段 */
+			.av__firstcol, /* 勾选框 */
+			.av__cell {
+				background-color: var(--b3-theme-surface);
+			}
+		}
+	}
 }
-.av__row--select:not(.av__row--header):hover,
-.av__row--select:not(.av__row--header):hover .av__colsticky .av__firstcol,
-.av__row--select:not(.av__row--header):hover .av__colsticky .av__cell,
-.av__row--hl:not(.av__row--header):hover,
-.av__row--hl:not(.av__row--header):hover .av__colsticky .av__firstcol,
-.av__row--hl:not(.av__row--header):hover .av__colsticky .av__cell {
-	background-color: var(--mix-theme_primary_lightest-list-hover);
+.av__row:not(.av__row--header):hover {
+	background-color: var(--b3-list-hover); /* 条目末尾 */
+
+	.av__cell--active {
+		background-color: var(--b3-theme-background-light); /* 不能用透明的颜色，会出现不一致 */
+	}
+
+	.av__colsticky {
+		.av__firstcol,
+		.av__cell {
+			background-color: var(--b3-list-hover);
+		}
+
+		.av__cell--active {
+			background-color: var(--b3-theme-background-light);
+		}
+	}
+
+	&.av__row--select,
+	&.av__row--hl {
+		background-color: var(--b3-theme-background-light); /* 条目末尾 */
+
+		.av__colsticky {
+			.av__firstcol,
+			.av__cell {
+				background-color: var(--b3-theme-background-light);
+			}
+		}
+	}
 }
