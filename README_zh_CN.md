@@ -7,4 +7,5 @@
 ### 感谢其他项目提供的参考
 
 - [theme-sample](https://github.com/siyuan-note/theme-sample)
-- [notion-theme](https://github.com/royc01/notion-theme)
+- [Savor](https://github.com/royc01/notion-theme)
+- [Asri](https://github.com/mustakshif/Asri)
