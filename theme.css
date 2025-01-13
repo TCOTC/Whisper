@@ -30,10 +30,11 @@ html[data-theme-mode="light"] {
 	--b3-theme-background: rgb(249, 248, 245);              /* 编辑器。 */
 	--b3-theme-background-light: rgb(237, 227, 225);        /* 侧栏按钮。--b3-theme-surface 与 --b3-list-hover 混合 */
 	--b3-theme-surface: rgb(249, 238, 237);                 /* 侧栏面板。 */
-	--b3-theme-surface-light: rgba(243, 243, 243, .86);
+	--b3-theme-surface-light: rgba(249, 238, 237, .86);
 	--b3-theme-surface-lighter: #e0e0e0;
 	--b3-theme-error: #d23f31;
 	--b3-theme-success: #65b84d;
+
 	/* 文字颜色 */
 	--b3-theme-on-primary: #fff;
 	--b3-theme-on-secondary: #fff;
@@ -43,11 +44,11 @@ html[data-theme-mode="light"] {
 	--b3-theme-on-error: #fff;
 
 	/* 字体 */
-	/* --b3-font-family-code: "JetBrainsMono-Regular", mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace, var(--b3-font-family); */
+	/* 字体用默认主题的 */
 
 	/* 顶部工具栏 */
 	--b3-toolbar-background: var(--b3-theme-surface);
-	--b3-toolbar-blur-background: var(--b3-toolbar-background);
+	--b3-toolbar-blur-background: var(--b3-toolbar-background); /* 不需要没聚焦的颜色 */
 	--b3-toolbar-color: var(--b3-theme-on-surface);
 	--b3-toolbar-hover: var(--b3-theme-background-light);
 	--b3-toolbar-left-mac: 69px;
@@ -124,6 +125,11 @@ html[data-theme-mode="light"] {
 	--b3-width-transition: width .2s cubic-bezier(0, 0, .2, 1) 0ms;
 	--b3-color-transition: color .2s cubic-bezier(0, 0, .2, 1) 0ms;
 	--b3-background-transition: background 20ms ease-in 0s;
+
+	/* 高亮 */
+	--b3-highlight-color: #222;
+	--b3-highlight-background: #ffff00;
+	--b3-highlight-current-background: #ff9632;
 
 	/* 下拉菜单 */
 	--b3-select-background: url("data:image/svg+xml;utf8,<svg fill='rgba(95, 99, 104, .68)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>") no-repeat right 2px center var(--b3-theme-background);

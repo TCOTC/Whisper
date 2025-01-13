@@ -329,8 +329,8 @@ div:not(#preview) > .protyle-wysiwyg div {
 }
 
 /* 单选、多选、资源字段选项 */
-.b3-menu .b3-chip,
-.av__container .b3-chip {
+.av__panel .b3-chip,
+.av__row .b3-chip {
 	color: var(--b3-theme-on-background) !important;
 	outline: 1px solid rgb(from var(--b3-theme-on-surface-light) r g b/0.3);
 	outline-offset: -1px;
@@ -464,7 +464,7 @@ div:not(#preview) > .protyle-wysiwyg div {
 
 /* 选择和 hover 条目时的高亮 */
 /* 用伪元素会影响子元素的颜色，所以用背景色 */
-.av__row:not(.av__row--header) {
+.av__container .av__row:not(.av__row--header) {
 
 	.av__cell--active {
 		background-color: var(--b3-theme-surface); /* 不能用透明的颜色，会出现不一致 */
@@ -486,7 +486,7 @@ div:not(#preview) > .protyle-wysiwyg div {
 		}
 	}
 }
-.av__row:not(.av__row--header):hover {
+.av__container .av__row:not(.av__row--header):hover {
 	background-color: var(--b3-list-hover); /* 条目末尾 */
 
 	.av__cell--active {
