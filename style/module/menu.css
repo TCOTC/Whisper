@@ -1,3 +1,7 @@
+.block__icon, .toolbar__item, .protyle-icon {
+	transition: unset !important; /* 按钮感觉不跟手，不要过渡样式 */
+}
+
 /* 菜单中的部分输入框默认两行高 */
 .b3-menu__item[data-id="链接"] .b3-text-field,
 .b3-menu__item[data-id="锚文本"] .b3-text-field,
