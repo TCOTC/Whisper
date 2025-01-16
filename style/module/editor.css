@@ -321,8 +321,23 @@ div:not(#preview) > .protyle-wysiwyg div {
 
 /* ————————————————————数据库———————————————————— */
 
+.av__title + .av__counter { /* X 已选中 */
+	background-color: var(--mix-theme_primary_background);
+	color: var(--b3-theme-on-background);
+}
+
 .av__container .av__row:hover .av__firstcol svg {
 	opacity: 1; /* hover 条目时显示条目的复选框 */
+}
+
+/* 数据库块引下划线 */
+.av__celltext--ref {
+	border-bottom: 0;
+	text-decoration: underline; /* 下划线 */
+	text-decoration-color: rgb(0 202 255 / 85%); /* 浅蓝色 */
+	text-decoration-thickness: calc(1em / 8);
+	text-underline-offset: calc(1em / 16 * 3);
+	text-decoration-skip-ink: none;
 }
 
 /* 主键单元格 */
@@ -362,7 +377,7 @@ div:not(#preview) > .protyle-wysiwyg div {
 
 		.av__celltext {
 			&:hover {
-				border-bottom: 2px solid var(--b3-theme-primary-lighter);
+				border-bottom: medium solid var(--b3-theme-primary-lighter);
 			}
 
 			&::after {
@@ -471,6 +486,7 @@ div:not(#preview) > .protyle-wysiwyg div {
 /* 用伪元素会影响子元素的颜色，所以用背景色 */
 .av__container .av__row:not(.av__row--header) {
 
+	.av__cell--select,
 	.av__cell--active {
 		background-color: var(--b3-theme-surface); /* 不能用透明的颜色，会出现不一致 */
 	}
@@ -494,6 +510,7 @@ div:not(#preview) > .protyle-wysiwyg div {
 .av__container .av__row:not(.av__row--header):hover {
 	background-color: var(--b3-list-hover); /* 条目末尾 */
 
+	.av__cell--select,
 	.av__cell--active {
 		background-color: var(--b3-theme-background-light); /* 不能用透明的颜色，会出现不一致 */
 	}
