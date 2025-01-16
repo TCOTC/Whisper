@@ -1,3 +1,8 @@
+// 另一种混合颜色的方式：用函数 color-mix() 和相对值语法 rgb(from <color> R G B[ / A]) 实现自动混合两种颜色(这个颜色跟JS算出来的是不同的，因为原理不同)，例如：
+// --color-mix-theme_primary_background: color-mix(in srgb, rgb(from var(--b3-theme-primary-lightest) calc(r * alpha + 255 * (1 - alpha)) calc(g * alpha + 255 * (1 - alpha)) calc(b * alpha + 255 * (1 - alpha)) / none), var(--b3-theme-background));
+// https://developer.mozilla.org/zh-CN/docs/Web/CSS/color_value/color-mix
+// https://developer.mozilla.org/zh-CN/docs/Web/CSS/color_value/rgb#%E8%AF%AD%E6%B3%95
+
 // 用于混合两种颜色
 
 function parseColor(colorString) {
@@ -56,7 +61,7 @@ function mixAndLogColors() {
     }
 }
 
-// 输入颜色字符串
+// 输入颜色字符串，带透明通道的颜色填入 foregroundString
 const foregroundString = "(165, 157, 51, .54)"; // 形式为 (165, 157, 51, .54),(165, 157, 51, 0.54),(165, 157, 51)
 const backgroundString = "(165, 157, 51, .38)";
 mixAndLogColors();
