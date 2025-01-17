@@ -2,6 +2,29 @@
 
 /* 在顶上放滚动条，hover 时才显示 */
 
+/*自定义页签最小宽度 CSS片段 （Savor主题自用）*/
+.layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] {
+	min-width: 105px; /* 调整页签的最小宽度，只改这个值就可以了，其他代码不需要动 */
+}
+
+/* 调整叉号样式 */
+.layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] .item__text {
+	padding-right: 28px; /* 调整叉号与标题文本间的最小距离 */
+	-webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 0) 24px, var(--b3-theme-on-surface) 32px); /* 标题文本渐变，使叉号不与标题文本重叠 */
+}
+.layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] .item__close {
+	position: absolute; /* 让叉号靠右 */
+	right: 0px;
+	padding: 4px 6px 4px 6px; /* 扩大叉号点击范围 */
+}
+.layout-tab-bar .item:hover .item__close svg, .layout-tab-bar .item .item__close svg {
+	opacity: .68; /* 始终显示页签叉号 */
+}
+
+/* 给页签添加背景色 */
+.layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] {
+	background-color: var(--b3-theme-surface);
+}
 
 /* TODO 下面这些只用需要的，没用的就注释删除 */
 .layout-tab-bar{
