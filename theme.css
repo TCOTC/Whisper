@@ -5,7 +5,7 @@
 @import url(style/menu.css);          /* 菜单、浮窗、弹窗 */
 @import url(style/tooltip.css);       /* 悬浮提示 */
 @import url(style/tab-bar.css);       /* 页签 */
-@import url(style/preview.css);       /* 导出 */
+/*@import url(style/preview.css);       !* 导出 *!*/
 
 /* TODO 偶尔需要跟最新版的默认主题文件对比一下，跟进变量的变更 */
 /* —————————————————————————— 配色 —————————————————————————— */

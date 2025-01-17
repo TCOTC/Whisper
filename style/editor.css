@@ -428,43 +428,46 @@ div:not(#preview) > .protyle-wysiwyg div {
 /* TODO https://github.com/siyuan-note/siyuan/pull/13564 PR 合并后需要移除这部分 */
 .b3-typography .code-block:not(pre),
 .protyle-wysiwyg .code-block:not(pre) {
-    margin-top: 6px;
-    margin-bottom: 6px;
+	margin: 2px 0;
 }
 
 /* 代码块滚动时语言和按钮固定在编辑器顶部 CSS片段 */
 /* author by JeffreyChen https://ld246.com/article/1728146248791 */
-.b3-typography div.hljs, .protyle-wysiwyg div.hljs {
-    padding-top: 0;
-}
-.protyle-wysiwyg[contenteditable] .code-block .protyle-action {
-	background-color: var(--b3-theme-background);
-    position: sticky;
-    top: 0;
-}
-.protyle-wysiwyg[contenteditable] .code-block .protyle-action::after {
-    content: "";
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-color: var(--b3-protyle-code-background);
-    pointer-events: none;
+/* NOTE 用:not(#preview)排除导出PDF，用.protyle-wysiwyg排除导出预览，.protyle-wysiwyg[data-readonly="true"]是只读模式 */
+/* NOTE 导出预览的代码块没有 .protyle-action */
+div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
+	.protyle-action {
+		background-color: var(--b3-theme-background);
+		position: sticky;
+		top: 0;
+
+		&::after {
+			content: "";
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			background-color: var(--b3-protyle-code-background);
+			pointer-events: none;
+		}
+	}
+	.hljs {
+		padding-top: 0;
+	}
 }
 
 /* 始终显示设置的代码块语言 */
-.b3-typography .code-block:not(pre):not(:hover) .protyle-action__language,
 .protyle-wysiwyg .code-block:not(pre):not(:hover) .protyle-action__language {
-    opacity: .86;
+	opacity: .86;
 }
 /* 只有 hover 代码块时才显示代码块语言占位符 */
-.protyle-wysiwyg[data-readonly=false] .code-block:not(:hover) .protyle-action .protyle-action__language:empty::after {
+.protyle-wysiwyg[data-readonly=false] .code-block:not(pre):not(:hover) .protyle-action .protyle-action__language:empty::after {
 	opacity: 0;
 }
 /* 代码块语言的左边与代码对齐 */
 /* TODO 跟进 https://github.com/siyuan-note/siyuan/pull/13564 ，如果 PR 合并的话就可以删掉这部分了 */
 .protyle-action__language {
-    position: absolute;
-    left: 1em;
+	position: absolute;
+	left: 1em;
 }
 
 
@@ -663,7 +666,7 @@ div:not(#preview) > .protyle-wysiwyg div {
 	.av__cell--active {
 		background-color: var(--b3-theme-surface); /* 不能用透明的颜色，会出现不一致 */
 	}
-	
+
 	&.av__row--select,
 	&.av__row--hl {
 		background-color: var(--b3-theme-surface); /* 侧栏面板的颜色 */
