@@ -505,12 +505,6 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 		opacity: 1;
 	}
 }
-.protyle-wysiwyg [data-node-id] span[data-type~=block-ref]:not(.av__celltext)::selection,
-.protyle-wysiwyg [data-node-id] span[data-type~=file-annotation-ref]::selection,
-[data-node-id] span[data-type~=block-ref]:not(.av__celltext)::selection,
-[data-node-id] span[data-type~=file-annotation-ref]::selection {
-	box-shadow: var(--custom-blockref-box-shadow_blue);
-}
 
 /* 主键单元格 */
 .av__cell[data-dtype="block"] [data-type="block-more"] {

@@ -2,6 +2,8 @@
 
 #### 下划线
 
+需要同时应用于相应元素的 ::selection 上
+
 ```
 border-bottom: 0;
 text-decoration: underline;
