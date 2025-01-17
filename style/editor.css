@@ -523,6 +523,11 @@ div:not(#preview) > .protyle-wysiwyg div {
 	color: var(--b3-theme-on-background) !important;
 	outline: 1px solid rgb(from var(--b3-theme-on-surface-light) r g b/0.3);
 	outline-offset: -1px;
+
+	&[style*="background-color:var(--b3-font-background13)"] {
+		color: var(--custom-database-color13);
+		background-color: var(--custom-database-background13) !important;
+	}
 }
 
 /* 资源字段的标题宽度 */

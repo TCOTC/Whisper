@@ -2,6 +2,11 @@
 	transition: unset !important; /* 按钮感觉不跟手，不要过渡样式 */
 }
 
+/* 工具栏 */
+.protyle-toolbar {
+	transition: none; /* 禁用工具栏平移效果 */
+}
+
 /* 菜单中的部分输入框默认两行高 */
 .b3-menu__item[data-id="链接"] .b3-text-field,
 .b3-menu__item[data-id="锚文本"] .b3-text-field,
@@ -61,47 +66,62 @@ button, input, select, textarea {
 }
 
 /* 外观菜单 */
-.color__square[style*="--b3-font-color1"],.color__square[style*="--b3-font-background1"] {
-    order: 1;
-}
-.color__square[style*="--b3-font-color2"],.color__square[style*="--b3-font-background2"] {
-    order: 2;
-}
-.color__square[style*="--b3-font-color3"],.color__square[style*="--b3-font-background3"] {
-    order: 3;
-}
-.color__square[style*="--b3-font-color4"],.color__square[style*="--b3-font-background4"] {
-    order: 4;
-}
-.color__square[style*="--b3-font-color5"],.color__square[style*="--b3-font-background5"] {
-    order: 5;
-}
-.color__square[style*="--b3-font-color6"],.color__square[style*="--b3-font-background6"] {
-    order: 6;
-}
-.color__square[style*="--b3-font-color7"],.color__square[style*="--b3-font-background7"] {
-    order: 8;
-}
-.color__square[style*="--b3-font-color8"],.color__square[style*="--b3-font-background8"] {
-    order: 9;
-}
-.color__square[style*="--b3-font-color9"],.color__square[style*="--b3-font-background9"] {
-    order: 10;
-}
-.color__square[style*="--b3-font-color10"],.color__square[style*="--b3-font-background10"] {
-    order: 11;
-}
-.color__square[style*="--b3-font-color11"],.color__square[style*="--b3-font-background11"] {
-    order: 12;
-}
-.color__square[style*="--b3-font-color12"],.color__square[style*="--b3-font-background12"] {
-    order: 13;
-}
-.color__square[style*="--b3-font-color13"],.color__square[style*="--b3-font-background13"] {
-    order: 7; /* 把 13 号颜色排到默认色正下方 */
-}
-.color__square[style*="--b3-font-color14"],.color__square[style*="--b3-font-background14"] {
-	order: 14; /* 数据库选项颜色 */
+.color__square{
+	&[data-type="color"],&[data-type="style1"] {
+		font-size: 18px;
+		font-weight: bold; /* 字体加粗更清晰 */
+	}
+	&[style*="--b3-font-color1"],&[style*="--b3-font-background1"] {
+		order: 1;
+	}
+	&[style*="--b3-font-color1"],&[style*="--b3-font-background1"] {
+		order: 1;
+	}
+	&[style*="--b3-font-color2"],&[style*="--b3-font-background2"] {
+		order: 2;
+	}
+	&[style*="--b3-font-color3"],&[style*="--b3-font-background3"] {
+		order: 3;
+	}
+	&[style*="--b3-font-color4"],&[style*="--b3-font-background4"] {
+		order: 4;
+	}
+	&[style*="--b3-font-color5"],&[style*="--b3-font-background5"] {
+		order: 5;
+	}
+	&[style*="--b3-font-color6"],&[style*="--b3-font-background6"] {
+		order: 6;
+	}
+	&[style*="--b3-font-color7"],&[style*="--b3-font-background7"] {
+		order: 8;
+	}
+	&[style*="--b3-font-color8"],&[style*="--b3-font-background8"] {
+		order: 9;
+	}
+	&[style*="--b3-font-color9"],&[style*="--b3-font-background9"] {
+		order: 10;
+	}
+	&[style*="--b3-font-color10"],&[style*="--b3-font-background10"] {
+		order: 11;
+	}
+	&[style*="--b3-font-color11"],&[style*="--b3-font-background11"] {
+		order: 12;
+	}
+	&[style*="--b3-font-color12"],&[style*="--b3-font-background12"] {
+		order: 13;
+	}
+	&[style*="--b3-font-color13"],&[style*="--b3-font-background13"] {
+		order: 7; /* 把 13 号颜色排到默认色正下方 */
+
+		&[data-type="color"]{
+			color: var(--b3-theme-on-background) !important;
+			-webkit-text-stroke: .1px var(--b3-theme-on-background);
+			-webkit-text-fill-color: transparent;
+		}
+	}
+	&[style*="--b3-font-color14"],&[style*="--b3-font-background14"] {
+		order: 14; /* 数据库选项颜色 */
+	}
 }
 
 /* 隐藏闪卡按钮上的图标 */
