@@ -1,0 +1,197 @@
+.block__icon, .toolbar__item, .protyle-icons, .protyle-icon {
+	transition: unset !important; /* 按钮感觉不跟手，不要过渡样式 */
+}
+
+/* 菜单中的部分输入框默认两行高 */
+.b3-menu__item[data-id="链接"] .b3-text-field,
+.b3-menu__item[data-id="锚文本"] .b3-text-field,
+.b3-menu__item[data-id="标题"] .b3-text-field {
+	height: 50px;
+	/* TODO 图片菜单、链接菜单、数据库资源字段链接菜单 里的选项都没有 data-id，需要 PR 给思源 */
+	/* TODO 参考 https://blog.dkvirus.com/css/css_selector_placeholder_shown/ 排除空输入框，必要时给思源 PR 或者提 issue */
+}
+
+/* 菜单里的链接跟行内链接用同样的颜色 */
+a {
+    color: var(--b3-protyle-inline-link-color);
+}
+
+/* 开关按钮：隐藏悬浮样式 */
+label:hover .b3-switch:checked:not(:disabled)::after, .b3-switch:checked:hover:not(:disabled)::after {
+	background-color: var(--b3-switch-checked);
+}
+.b3-switch::before,
+label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:not(:disabled)::before {
+	background-color: unset;
+}
+
+
+/* 选项菜单 */
+.b3-menu__item {
+	line-height: 27px;
+	min-width: 100px;
+
+	/* 隐藏不常用的块标选项 */
+	&[data-id="jumpToParentNext"],&[data-id="jumpToParentPrev"],&[data-id="jumpToParent"],&[data-id="enterBack"],
+	/* 隐藏不常用的页签菜单选项 */
+	&[data-id="closeOthers"],&[data-id="closeAll"],&[data-id="closeUnmodified"],&[data-id="closeLeft"],&[data-id="closeRight"] {
+		display: none;
+	}
+	&[data-id="docInfo"] .b3-menu__label,&[data-id="updateAndCreatedAt"] .b3-menu__label {
+		line-height: 18px;
+		font-size: 85%;
+	}
+
+	/* 菜单宽度：文本的宽度 */
+	.b3-menu__label {
+		min-width: 25px;
+	}
+}
+button, input, select, textarea {
+	font-size: 97%;
+}
+.b3-button {
+	transition: unset; /* 按钮不需要过渡 */
+}
+
+/* 输入框、下拉框聚焦状态 */
+.b3-text-field:not(.b3-text-field--text):focus,.pcr-app .pcr-interaction .pcr-result:not(.b3-text-field--text):focus,
+.b3-select:focus {
+    box-shadow: inset 0 0 0 .6px var(--b3-theme-on-background);
+}
+
+/* 外观菜单 */
+.color__square[style*="--b3-font-color1"],.color__square[style*="--b3-font-background1"] {
+    order: 1;
+}
+.color__square[style*="--b3-font-color2"],.color__square[style*="--b3-font-background2"] {
+    order: 2;
+}
+.color__square[style*="--b3-font-color3"],.color__square[style*="--b3-font-background3"] {
+    order: 3;
+}
+.color__square[style*="--b3-font-color4"],.color__square[style*="--b3-font-background4"] {
+    order: 4;
+}
+.color__square[style*="--b3-font-color5"],.color__square[style*="--b3-font-background5"] {
+    order: 5;
+}
+.color__square[style*="--b3-font-color6"],.color__square[style*="--b3-font-background6"] {
+    order: 6;
+}
+.color__square[style*="--b3-font-color7"],.color__square[style*="--b3-font-background7"] {
+    order: 8;
+}
+.color__square[style*="--b3-font-color8"],.color__square[style*="--b3-font-background8"] {
+    order: 9;
+}
+.color__square[style*="--b3-font-color9"],.color__square[style*="--b3-font-background9"] {
+    order: 10;
+}
+.color__square[style*="--b3-font-color10"],.color__square[style*="--b3-font-background10"] {
+    order: 11;
+}
+.color__square[style*="--b3-font-color11"],.color__square[style*="--b3-font-background11"] {
+    order: 12;
+}
+.color__square[style*="--b3-font-color12"],.color__square[style*="--b3-font-background12"] {
+    order: 13;
+}
+.color__square[style*="--b3-font-color13"],.color__square[style*="--b3-font-background13"] {
+    order: 7; /* 把 13 号颜色排到默认色正下方 */
+}
+.color__square[style*="--b3-font-color14"],.color__square[style*="--b3-font-background14"] {
+	order: 14; /* 数据库选项颜色 */
+}
+
+/* 隐藏闪卡按钮上的图标 */
+.card__icon {
+	display: none;
+}
+
+/* 集市 */
+.b3-button {
+	&:active {
+		box-shadow: unset;
+	}
+	&:not(.b3-button--outline):hover,&:not(.b3-button--outline):focus {
+		box-shadow: unset;
+	}
+	&.b3-button--outline {
+		transition: unset;
+	}
+}
+/* 已下载页面 */
+.config-bazaar__panel {
+	&[data-type=downloaded] {
+		/* 并列显示 */
+		.config-bazaar__content {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+			margin-right: 16px;
+
+			.b3-card {
+				display: grid;
+				grid-template-columns: 90px 1fr;
+				margin: 16px 0 0 16px;
+
+				.b3-card__info {
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+
+					.b3-card__desc {
+						display: block;
+					}
+				}
+
+				.b3-card__actions {
+					position: absolute;
+					bottom: 12px;
+					right: 0;
+				}
+			}
+		}
+
+		.fn__hr {
+			display: none; /* “未找到相关内容” */
+		}
+		.b3-list--empty {
+			margin-top: 15px;
+		}
+	}
+
+	.b3-cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+		margin-right: 16px;
+
+		.b3-card--wrap {
+			min-width: unset;
+		}
+
+		.b3-card {
+			display: grid;
+			grid-template-columns: 90px 1fr;
+			margin: 16px 0 0 16px;
+			.b3-card__info {
+				overflow: hidden;
+
+				.b3-card__desc {
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+				}
+			}
+		}
+	}
+}
+
+
+/* 设置菜单 */
+
+/* 隐藏唯一的 Tab */
+.layout-tab-bar:has(> .item[data-type="openai"]) {
+	opacity: 0;
+	max-height: 16px;
+	pointer-events: none;
+}
