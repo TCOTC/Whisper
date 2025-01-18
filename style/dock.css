@@ -16,8 +16,15 @@
 	}
 }
 /*.layout__dockr > .fn__flex-1:not(.fn__none) {*/
-/*	margin-left: 3px; !* TODO 这里会导致侧栏面板宽度异常，暂时注释。需要跟进 https://github.com/siyuan-note/siyuan/issues/13516 *!*/
+/*	margin-left: 3px; !* TODO 这里会导致侧栏面板宽度异常，暂时用下面的 min-width 解决。需要跟进 https://github.com/siyuan-note/siyuan/issues/13516 *!*/
 /*}*/
+.layout__dockr .file-tree {
+	margin-left: 3px;
+}
+.layout__dockl:not(.layout--float):has(> .fn__flex-1:not(.fn__none)),
+.layout__dockr:not(.layout--float):has(> .fn__flex-1:not(.fn__none)) {
+	min-width: 232px;
+}
 
 /* 调整侧栏浮窗高度与层级 CSS片段 */
 /* TODO 未钉住的侧栏弹出样式还可以优化，比如圆角、阴影、位置之类的 */
@@ -25,8 +32,14 @@
 .layout__dockl.layout--float,
 .layout__dockr.layout--float {
 	top: 32px !important;
-	bottom: 24px !important;
+	bottom: 0 !important;
 	z-index: 4 !important;
+	border: unset;
+	border-radius: unset;
+
+	.file-tree > .fn__flex-1 {
+		padding-bottom: 24px !important; /* 避开底栏 */
+	}
 }
 #dockLeft, #dockRight {
 	z-index: 5;
