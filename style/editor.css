@@ -5,6 +5,7 @@
 /* 在编辑器里和属性面板里，行级元素的上层都有 [data-node-id] */
 
 /* TODO 这些样式需要跟进原生样式的变更 */
+/* .b3-typography导出预览，[data-node-id]导出PDF/图片/大纲面板，.protyle-wysiwyg编辑器*/
 .b3-typography, [data-node-id], .protyle-wysiwyg [data-node-id] {
 	/* 行级标记。放在最前面用于覆盖原生的颜色 */
 	mark,
@@ -341,11 +342,9 @@
 	}
 }
 
-/* 数据库角标文本颜色 */
-/* TODO 感觉只改文本颜色不太好看，还要再想想。感觉可以跟标签样式统一一下 (不要 # ) */
+/* 数据库角标样式 */
 .protyle-attr--av > span{
-	display: contents;
-	font-weight: 500;
+	border-radius: var(--b3-border-radius-s);
 }
 .protyle-attr--av > span:nth-child(4n+1) {
 	color: var(--b3-card-success-color);/* 每组的第1个 */
