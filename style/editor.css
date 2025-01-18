@@ -139,6 +139,15 @@
 			border-bottom: unset;
 		}
 	}
+
+	.img {
+		img {
+			border-radius: var(--b3-border-radius); /* 图片圆角 */
+		}
+		.protyle-action__title:has(> span:empty) {
+			display: none; /* 隐藏空标题 */
+		}
+	}
 }
 
 /* ————————————————————滚动条———————————————————— */
