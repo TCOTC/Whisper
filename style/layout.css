@@ -57,5 +57,3 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
     opacity: 0; /* 不显示文档名 */
 }
 
-
-/* TODO 滚动条样式 */
