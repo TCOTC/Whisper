@@ -206,7 +206,21 @@ button, input, select, textarea {
 	}
 }
 
+/* 表情选择器 */
+.emojis__panel {
+	/*overflow-x: hidden;*/
 
+	.emojis__title[data-type="0"] + .emojis__content {
+		max-height: 68px; /* 最近使用的表情只显示两行 */
+		/*width: calc(100% + 10px);*/
+		overflow: hidden;
+	}
+
+	.emojis__title[data-type="1"]:not(:has(+ .emojis__content > .emojis__item)),
+	.emojis__title[data-type="1"] + .emojis__content:not(:has(> .emojis__item)) {
+		display: none; /* 如果没有自定义表情就隐藏 */
+	}
+}
 /* 设置菜单 */
 
 /* 隐藏唯一的 Tab */
