@@ -45,6 +45,15 @@
 	z-index: 5;
 }
 
+.layout--float.layout__dockr > .layout__dockresize--lr:hover {
+	border-left: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
+	transition: var(--b3-transition);
+}
+.layout--float.layout__dockl > .layout__dockresize--lr:hover {
+	border-right: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
+	transition: var(--b3-transition);
+}
+
 /* 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔 */
 .layout__center:has(~ .layout--float > .fn__flex:not(.fn__none)) > .fn__flex-1:last-child {
 	.protyle-content {
