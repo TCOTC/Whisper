@@ -52,6 +52,10 @@
 		color: var(--b3-protyle-inline-s-color);
 		text-decoration: line-through;
 	}
+	/* 已完成的任务列表项 */
+	.protyle-task--done > [data-node-id] > [spellcheck] > span[data-type~="s"] {
+		color: rgb(from var(--b3-protyle-inline-s-color) r g b / .5);
+	}
 
 	strong,
 	span[data-type~="strong"] {
