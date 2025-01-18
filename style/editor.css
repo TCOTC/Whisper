@@ -297,6 +297,15 @@
 
 /* ————————————————————内容块———————————————————— */
 
+/* 分隔线 */
+.protyle-wysiwyg [data-node-id].hr>div:after {
+	height: .2em;
+	top: calc(14px - .2em); /* 与块标对齐 */
+}
+.b3-typography hr {
+	border-bottom-width: .2em;
+}
+
 /* 给被引用的块增加虚线外框 CSS片段 */
 /* author by JeffreyChen https://ld246.com/article/1728407192369 */
 .protyle-wysiwyg [data-node-id][refcount] {
