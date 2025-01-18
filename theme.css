@@ -13,13 +13,14 @@
 html[data-theme-mode="light"] {
 
 	/* 自定义、混合 */
-	--custom-theme-primary-lighter: rgb(225, 222, 155);
-	--custom-list-hover-dark: rgba(51, 49, 44, 0.15);
-	--custom-list-hover-darker: rgba(51, 49, 44, 0.2);
-	--custom-blockref-box-shadow_blue: 0 .1em 0 0 rgb(0 202 255 / 85%);
-	--custom-blockref-box-shadow_primary-lighter: 0 .1em 0 0 var(--b3-theme-primary-lighter);
+	--custom-inline-box-shadow: 0 .1em 0 0;
+
+	--b3-font-background14: rgb(183, 183, 183);  /* 数据库选项专用 */
 	--custom-database-color13: rgb(157, 157, 157); /* 在数据库选项里显示为灰色 */
 	--custom-database-background13: rgba(232, 233, 235); /* 在数据库选项里显示为灰色 */
+	--custom-color-blue-light: rgba(0, 202, 255, .85);
+	--custom-list-hover-dark: rgba(51, 49, 44, .15);
+	--custom-list-hover-darker: rgba(51, 49, 44, .2);
 	--mix-theme_primary_background: rgb(225, 223, 216); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245) */
 	/*--mix-theme_background-protyle_code: rgb(238, 237, 235); !* --b3-theme-background rgb(249, 248, 245) & --b3-protyle-code-background rgba(27, 31, 35, .05) *!*/
 	/*--mix-theme_primary_lightest-theme_background-protyle_code: rgb(215, 214, 207); !* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --mix-theme_background-protyle_code rgb(238, 237, 235) *!*/
@@ -108,7 +109,7 @@ html[data-theme-mode="light"] {
 	--b3-font-color10: rgb(130, 197, 123);       /*绿*/
 	--b3-font-color11: rgb(136, 123, 203);       /*蓝*/
 	--b3-font-color12: rgb(126, 103, 167);       /*紫*/
-	/*--b3-font-color13: rgb(157, 157, 157);       !*灰*!*/
+	--b3-font-color13: var(--b3-theme-background);
 	--b3-font-background1: rgb(253, 226, 226);   /*浅红*/
 	--b3-font-background2: rgb(254, 234, 210);   /*浅橙*/
 	--b3-font-background3: rgb(255, 255, 204);   /*浅黄*/
@@ -121,8 +122,7 @@ html[data-theme-mode="light"] {
 	--b3-font-background10: rgb(183, 237, 177);  /*绿*/
 	--b3-font-background11: rgb(186, 206, 253);  /*蓝*/
 	--b3-font-background12: rgb(205, 178, 250);  /*紫*/
-	/*--b3-font-background13: rgba(232, 233, 235); !*灰*!*/
-	--b3-font-background14: rgb(183, 183, 183);  /*数据库选项*/
+	--b3-font-background13: var(--b3-theme-on-background);
 
 	/* 动画效果 */
 	--b3-transition: all .2s cubic-bezier(0, 0, .2, 1) 0ms;

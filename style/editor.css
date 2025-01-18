@@ -11,7 +11,7 @@
 	span[data-type~="mark"] {
 		background: inherit;
 		color: inherit;
-		box-shadow: 0 -0.7em 0 0 inset var(--b3-protyle-inline-mark-background),0 .1em 0 0 var(--b3-protyle-inline-mark-background);
+		box-shadow: 0 -0.7em 0 0 inset var(--b3-protyle-inline-mark-background), var(--custom-inline-box-shadow) var(--b3-protyle-inline-mark-background);
 
 		&.mark--hl {
 			background-color: var(--b3-theme-primary-lighter);
@@ -484,7 +484,7 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 
 /* 筛选 */
 .b3-chip--primary, .b3-chip--current {
-	background-color: var(--custom-theme-primary-lighter);
+	background-color: var(--b3-list-hover);
 }
 .block__icon--active:hover {
 	background-color: var(--b3-theme-primary-lightest) !important;
@@ -499,14 +499,14 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	opacity: 1; /* hover 条目时显示条目的复选框 */
 }
 
-/* 数据库块引下划线 */
+/* 块引、数据库块引下划线 */
 .protyle-wysiwyg [data-node-id] span[data-type~=block-ref]:not(.av__celltext),
 .protyle-wysiwyg [data-node-id] span[data-type~=file-annotation-ref],
 [data-node-id] span[data-type~=block-ref]:not(.av__celltext),
 [data-node-id] span[data-type~=file-annotation-ref],
 .av__celltext--ref {
 	opacity: 0.86;
-	box-shadow: var(--custom-blockref-box-shadow_blue);
+	box-shadow: var(--custom-inline-box-shadow) var(--custom-color-blue-light);
 	color: inherit;
 	transition: unset;
 
@@ -557,7 +557,7 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 
 		.av__celltext {
 			&:not([data-type="block-ref"]):hover {
-				box-shadow: var(--custom-blockref-box-shadow_primary-lighter);
+				box-shadow: var(--custom-inline-box-shadow) var(--b3-theme-primary-lighter);
 			}
 
 			&::after {
