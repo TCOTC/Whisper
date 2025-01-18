@@ -1,3 +1,5 @@
+/* TODO 需要确保布局不会跟全屏模式冲突：编辑器全屏、关系图全屏 */
+
 /* 界面圆角 */
 body:not(.body--mobile,.body--window) #layouts {
     background-color: var(--b3-theme-surface);
@@ -6,9 +8,14 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
     border-radius: var(--b3-border-radius) var(--b3-border-radius) 0 0;
 }
 
-/* 隐藏边框 https://github.com/siyuan-note/siyuan/issues/12970 */
+#layouts .fn__flex-1 {
+    overflow-x: hidden; /* 有的情况下会出现横向滚动条。TODO 跟进 https://github.com/siyuan-note/siyuan/issues/12264 */
+}
+
+/* 隐藏 border 边框 https://github.com/siyuan-note/siyuan/issues/12970 */
 .toolbar {
     border-bottom: unset;
+    z-index: 5; /* 高于侧栏面板的阴影效果 */
 }
 .dock#dockLeft {
     border-right: unset;
@@ -49,3 +56,6 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
 .toolbar > .fn__ellipsis {
     opacity: 0; /* 不显示文档名 */
 }
+
+
+/* TODO 滚动条样式 */
