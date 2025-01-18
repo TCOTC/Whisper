@@ -1,0 +1,164 @@
+/* 搜索窗口、搜索页签的布局和样式 */
+/* 原始样式来自 Savor 主题 v5.2.9 https://github.com/royc01/notion-theme/blob/27ee462ef0eb2e1ff244f860d317014fa56ac75c/style/module/search.css */
+.b3-dialog--open[data-key="dialog-search"] .b3-dialog__container .fn__flex-column,
+.b3-dialog--open[data-key="dialog-replace"] .b3-dialog__container .fn__flex-column,
+.b3-dialog--open[data-key="dialog-globalsearch"] .b3-dialog__container .fn__flex-column,
+.fn__flex-column:has(+ #searchAssets), #searchAssets, #searchUnRefPanel {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--b3-theme-surface);
+
+    & > .block__icons {
+        order: 2;
+        min-height: 28px;
+
+        .resize__move {
+            cursor: grab; /* 表示可拖拽窗口 */
+        }
+    }
+
+    .b3-form__icon.search__header { /* 搜索 */
+        order: 1;
+        border-top: none;
+
+        &:not(:has(+.b3-form__icon.search__header:not(.fn__none))) {
+            border-radius: 0 0 var(--b3-border-radius-b) var(--b3-border-radius-b); /* 输入框的圆角 */
+        }
+
+        .block__icon { /* 输入框上的按钮 */
+            padding: 6px; /* 跟查询条件按钮一致 */
+
+            svg {
+                color: var(--b3-theme-on-background);
+            }
+        }
+
+        &+.b3-form__icon.search__header { /* 替换 */
+            border-top: 1px solid var(--b3-theme-surface-lighter);
+
+            .b3-button { /* 两个替换按钮 */
+                padding: 5px 7px; /* 跟查询条件按钮一致 */
+                line-height: unset;
+            }
+        }
+
+        .search__history-icon {
+            margin-left: 5px;
+
+            .search__arrowdown{
+                margin-left: 3px;
+            }
+        }
+
+        input {
+            padding: 5px 8px 5px 52px !important;
+            border-bottom-left-radius: 10px;
+        }
+    }
+
+    .search__layout { /* 搜索结果 */
+        order: 4;
+        border-top: none;
+
+        &:not(.search__layout--row) { /* 上下布局 */
+            #searchList {
+                border-top: none;
+            }
+
+            #searchAssetList {
+                border-radius: var(--b3-border-radius-b) var(--b3-border-radius-b) 0 0;
+                border-top: none;
+            }
+
+            .search__drag { /* 拖拽线 */
+                &:hover::after {
+                    background-color: var(--b3-scroll-color);
+                    height: 2px;
+                }
+            }
+        }
+
+        &.search__layout--row { /* 左右布局 */
+            /*border-radius: var(--b3-border-radius-b) var(--b3-border-radius-b) 0 0;*/
+
+            #searchAssetList {
+                border-radius: var(--b3-border-radius-b) 0 0 0;
+            }
+
+            #searchAssetPreview {
+                border-radius: 0 var(--b3-border-radius-b) 0 0;
+            }
+
+            .search__drag { /* 拖拽线 */
+                &:hover::after {
+                    background-color: var(--b3-scroll-color);
+                    height: 100%;
+                    width: 2px;
+                }
+            }
+        }
+    }
+
+    #searchUnRefPanel {
+        & > .block__icons {
+            border-radius: 0;
+        }
+    }
+
+    .search__empty {
+        box-shadow: none !important;
+    }
+
+    #criteria {
+        order: 3;
+        border-top: none;
+        border-radius: var(--b3-border-radius-b) var(--b3-border-radius-b) 0 0;
+
+        .b3-chip { /* 查询条件按钮 */
+            padding: 5px 7px;
+            transition: unset;
+
+            .b3-chip__close {
+                transition: unset;
+                height: 12px;
+                width: 12px;
+            }
+        }
+
+        .b3-button {
+            padding: 5px 7px; /* 跟查询条件按钮一致 */
+            line-height: unset;
+        }
+    }
+
+    .search__tip { /* 底部快捷键提示 */
+        order: 5;
+        border: none;
+    }
+}
+
+/* 搜素类型和替换类型弹窗 */
+[data-key="dialog-searchtype"] .b3-dialog__content,
+[data-key="dialog-replacetype"] .b3-dialog__content {
+    display: grid;
+    gap: 0 40px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+    .b3-label {
+        padding: 10px 10px;
+        border-bottom: none;
+
+        &+.fn__space {
+            display: none;
+        }
+    }
+
+    .fn__flex-1:last-child {
+        overflow: visible;
+
+        .b3-label__text {
+            padding: 0 10px 10px 0;
+            word-break: break-word;
+        }
+    }
+}
