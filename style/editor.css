@@ -460,7 +460,7 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 		}
 	}
 	.hljs {
-		padding-top: 0;
+		padding: 0 1em 1em;
 	}
 }
 
