@@ -15,6 +15,10 @@
 		}
 	}
 }
+.sy__backlink > .fn__flex-1 > .b3-list {
+	margin: 0; /* 反链面板编辑器尽可能宽 */
+}
+
 /*.layout__dockr > .fn__flex-1:not(.fn__none) {*/
 /*	margin-left: 3px; !* TODO 这里会导致侧栏面板宽度异常，暂时用下面的 min-width 解决。需要跟进 https://github.com/siyuan-note/siyuan/issues/13516 *!*/
 /*}*/
@@ -182,5 +186,47 @@ body:has(> #dockBottom.fn__none):has(> #status:not(.fn__none)) {
 			background-color: var(--b3-list-hover);
 			border-radius: var(--b3-border-radius);
 		}
+	}
+}
+
+/* 反链、提及面板固定文档名称 CSS片段 */
+/* author by JeffreyChen https://ld246.com/article/1737207365006 */
+/* TODO 需要跟进 https://github.com/siyuan-note/siyuan/issues/13679 修改*/
+.backlinkMList .b3-list-item,
+.backlinkList .b3-list-item {
+	position: sticky;
+	top: 0;
+	padding: 0;
+	margin: 0;
+	z-index: 4; /* 高于选中块的伪元素高亮 */
+	background-color: var(--b3-theme-surface) !important;
+	border-radius: unset;
+
+	&:hover {
+		&::after {
+			content: "";
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			background-color: var(--b3-list-hover);
+			border-radius: var(--b3-border-radius);
+			pointer-events: none;
+		}
+
+		&>.b3-list-item__toggle {
+			color: var(--b3-theme-on-background); /* 只要箭头颜色变深就代表能展开 */
+		}
+	}
+
+	&>.b3-list-item__toggle {
+		margin-left: 4px;
+
+		&:hover {
+			background: unset;
+		}
+	}
+
+	&>.counter {
+		margin-right: 4px;
 	}
 }
