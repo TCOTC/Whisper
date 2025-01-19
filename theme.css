@@ -182,7 +182,7 @@ html[data-theme-mode="light"] {
 	--b3-protyle-search-current-background: #a5d3fe;
 
 	/* 代码片段背景 */
-	--b3-protyle-code-background: rgba(27, 31, 35, .05);
+	--b3-protyle-code-background: rgba(27, 31, 35, .05); /* 代码块背景 */
 
 	/* 所见即所得行内元素颜色 */
 	--b3-protyle-inline-strong-color: inherit;

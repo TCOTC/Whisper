@@ -129,7 +129,7 @@ button, input, select, textarea {
 	display: none;
 }
 
-/* 集市 */
+/* ————————————————————集市———————————————————— */
 .b3-button {
 	&:active {
 		box-shadow: unset;
@@ -203,6 +203,139 @@ button, input, select, textarea {
 				}
 			}
 		}
+	}
+}
+/* 集市 README */
+#configBazaarReadme .item__main {
+	.item__preview {
+		border-radius: var(--b3-border-radius-b);
+		transition: unset;
+	}
+
+	.b3-typography > blockquote:first-child {
+		border-radius: var(--b3-border-radius-b);
+		padding: 12px 20px;
+		color: rgb(from var(--b3-theme-on-background) r g b / .85);
+		font-weight: bold;
+		font-size: 120%;
+		outline: 2px solid var(--b3-theme-on-surface-light);
+		outline-offset: -2px;
+
+		&::before {
+			content: unset;
+		}
+	}
+}
+/* 给 TCOTC 的插件和主题的 README 加点特效 */
+/* 原始样式来源于 https://www.bilibili.com/video/BV1b44y1e7Wx/ https://codepen.io/stevenlei/pen/ZEJxXGL */
+#configBazaarReadme.config-bazaar__readme--show:has(> .item__side[data-obj*="TCOTC"]) {
+	background: var(--b3-theme-surface);
+
+	&::before {
+		content: '';
+		display: block;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		border-radius: var(--b3-border-radius-b);
+		background-color: rgba(228, 147, 208, .5);
+		background-image:
+				radial-gradient(closest-side, rgba(235, 105, 78, .5), rgba(235, 105, 78, 0)),
+				radial-gradient(closest-side, rgba(243, 11, 164, .5), rgba(243, 11, 164, 0)),
+				radial-gradient(closest-side, rgba(254, 234, 131, .5), rgba(254, 234, 131, 0)),
+				radial-gradient(closest-side, rgba(170, 142, 245, .5), rgba(170, 142, 245, 0)),
+				radial-gradient(closest-side, rgba(248, 192, 147, .5), rgba(248, 192, 147, 0));
+		background-size:
+				130vmax 130vmax,
+				80vmax 80vmax,
+				90vmax 90vmax,
+				110vmax 110vmax,
+				90vmax 90vmax;
+		background-position:
+				-80vmax -80vmax,
+				60vmax -30vmax,
+				10vmax 10vmax,
+				-30vmax -10vmax,
+				50vmax 50vmax;
+		background-repeat: no-repeat;
+		animation: 10s movement linear infinite;
+	}
+
+	&::after {
+		content: '';
+		display: block;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		border-radius: var(--b3-border-radius-b);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+	}
+
+	.item__side, .item__main {
+		z-index: 1;
+	}
+}
+@keyframes movement {
+	0%, 100% {
+		background-size:
+				130vmax 130vmax,
+				80vmax 80vmax,
+				90vmax 90vmax,
+				110vmax 110vmax,
+				90vmax 90vmax;
+		background-position:
+				-80vmax -80vmax,
+				60vmax -30vmax,
+				10vmax 10vmax,
+				-30vmax -10vmax,
+				50vmax 50vmax;
+	}
+	25% {
+		background-size:
+				100vmax 100vmax,
+				90vmax 90vmax,
+				100vmax 100vmax,
+				90vmax 90vmax,
+				60vmax 60vmax;
+		background-position:
+				-60vmax -90vmax,
+				50vmax -40vmax,
+				0 -20vmax,
+				-40vmax -20vmax,
+				40vmax 60vmax;
+	}
+	50% {
+		background-size:
+				80vmax 80vmax,
+				110vmax 110vmax,
+				80vmax 80vmax,
+				60vmax 60vmax,
+				80vmax 80vmax;
+		background-position:
+				-50vmax -70vmax,
+				40vmax -30vmax,
+				10vmax 0,
+				20vmax 10vmax,
+				30vmax 70vmax;
+	}
+	75% {
+		background-size:
+				90vmax 90vmax,
+				90vmax 90vmax,
+				100vmax 100vmax,
+				90vmax 90vmax,
+				70vmax 70vmax;
+		background-position:
+				-50vmax -40vmax,
+				50vmax -30vmax,
+				20vmax 0,
+				-10vmax 10vmax,
+				40vmax 60vmax;
 	}
 }
 

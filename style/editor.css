@@ -313,6 +313,12 @@
 
 /* ————————————————————内容块———————————————————— */
 
+/* 代码块 */
+.b3-typography .code-block, .protyle-wysiwyg .code-block, .item__readme .hljs {
+	background: var(--b3-protyle-code-background) !important;
+	border-radius: var(--b3-border-radius);
+}
+
 /* 分隔线 */
 .protyle-wysiwyg [data-node-id].hr>div:after {
 	height: .2em;
