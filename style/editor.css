@@ -66,28 +66,27 @@
 
 	/* TODO 行级标签。导出预览是纯文本所以没有行级标签样式 */
 	span[data-type~="tag"] {
-		/*opacity: 0.86;*/
 		position: relative;
-		font-size: 85%;
+		font-size: .75em;
+		bottom: .1em;
 		border-bottom: unset;
 		border-radius: var(--b3-border-radius);
-		padding: .2em .4em;
+		padding: .1em .2em;
 		margin: 0 1px;
 		color: var(--b3-card-success-color);
 		background-color: rgb(from var(--b3-card-success-background) r g b / .65);
 
 		&:hover {
-			/*opacity: 0.99;*/
 			background: var(--b3-card-success-background);
 		}
 
-		&::before{
+		&::before {
 			content: "#";
 			color: var(--b3-theme-primary);
 			padding-right: 0.1em;
 		}
 	}
-	.export-img span[data-type~="tag"] + span[data-type~="tag"]::before{
+	.export-img span[data-type~="tag"] + span[data-type~="tag"]::before {
 		content: none; /* TODO 导出图片时的行级元素有问题，等待 issue 解决之后修改 https://github.com/siyuan-note/siyuan/issues/13856 */
 	}
 
