@@ -1,7 +1,5 @@
 /* ————————————————————页签———————————————————— */
-
-/* 在顶上放滚动条，hover 时才显示 */
-
+/* TODO 下面这些一个个检查过去，相关的样式合并到一起 */
 /*自定义页签最小宽度 CSS片段 （Savor主题自用）*/
 .layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] {
 	min-width: 105px; /* 调整页签的最小宽度，只改这个值就可以了，其他代码不需要动 */
@@ -14,7 +12,7 @@
 }
 .layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] .item__close {
 	position: absolute; /* 让叉号靠右 */
-	right: 0px;
+	right: 0;
 	padding: 4px 6px 4px 6px; /* 扩大叉号点击范围 */
 }
 .layout-tab-bar .item:hover .item__close svg, .layout-tab-bar .item .item__close svg {
@@ -25,8 +23,6 @@
 .layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] {
 	background-color: var(--b3-theme-surface);
 }
-
-/* TODO 下面这些只用需要的，没用的就注释删除 */
 .layout-tab-bar {
 	height: 38px;
 	padding-left: 5px;
@@ -50,21 +46,21 @@
 		}
 
 
-		& .item__text{
+		.item__text {
 			padding: 2px 6px; 
-			-webkit-mask-image:none;
+			-webkit-mask-image: none;
 		}
-		& .item__close{
+		.item__close {
 			padding: 4px 2px 4px 2px;
 			svg{
 				height: 12px;
 				width: 12px;
 			}
 		}
-		&.item.item--focus .item__close svg{
+		&.item.item--focus .item__close svg {
 			/*opacity: 0;*/
 		}
-		&.item.item--focus:hover .item__close svg{
+		&.item.item--focus:hover .item__close svg {
 			opacity: 1;
 		}
 	}
@@ -76,52 +72,52 @@
 	.item:not(.item--readonly):hover {
 		background-color: var(--b3-theme-background-light) !important;
 	}
-	.item--readonly{
-		margin:7px 0 0 7px;		
+	.item--readonly {
+		margin: 7px 0 0 7px;
 	}
 }
-.layout-tab-bar .item--focus::after{
+.layout-tab-bar .item--focus::after {
 	height: 2px;
 	bottom: -5px;
-	pointer-events: none;
+	pointer-events: none; /* 伪元素会影响悬浮提示 */
 }
-.layout-tab-bar .item--focus.item--full::after{
+.layout-tab-bar .item--focus.item--full::after {
 	background-color: transparent;
 	box-shadow: var(--b3-theme-background-light) 0 6px 0;
 }
-body.body--blur .layout__wnd--active .layout-tab-bar .item--focus{
-	box-shadow: none!important;
+body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
+	box-shadow: none !important;
 }
-.layout-tab-bar .item--pin{
-	& .item__icon{
+.layout-tab-bar .item--pin {
+	.item__icon {
 		padding: 0 5px;
 	}
-	& .item__graphic{
-		padding:4px;
+	.item__graphic {
+		padding: 4px;
 	}
-	&:nth-child(4n-3){
-		background-color:var(--b3-card-error-background);
+	&:nth-child(4n-3) {
+		background-color: var(--b3-card-error-background);
 
 		&:hover {
 			background-color: color-mix(in srgb, var(--b3-card-error-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
 		}
 	}
-	&:nth-child(4n-2){
-		background-color:var(--b3-card-warning-background);
+	&:nth-child(4n-2) {
+		background-color: var(--b3-card-warning-background);
 
 		&:hover {
 			background-color: color-mix(in srgb, var(--b3-card-warning-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
 		}
 	}
-	&:nth-child(4n-1){
-		background-color:var(--b3-card-info-background);
+	&:nth-child(4n-1) {
+		background-color: var(--b3-card-info-background);
 
 		&:hover {
 			background-color: color-mix(in srgb, var(--b3-card-info-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
 		}
 	}
-	&:nth-child(4n){
-		background-color:var(--b3-card-success-background);
+	&:nth-child(4n) {
+		background-color: var(--b3-card-success-background);
 
 		&:hover {
 			background-color: color-mix(in srgb, var(--b3-card-success-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
