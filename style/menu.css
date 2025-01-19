@@ -301,6 +301,7 @@ button, input, select, textarea {
 		border-radius: var(--b3-border-radius-b);
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
+		pointer-events: none;
 	}
 
 	.item__side, .item__main {
@@ -381,8 +382,16 @@ button, input, select, textarea {
 		display: none; /* 如果没有自定义表情就隐藏 */
 	}
 }
-/* 设置菜单 */
 
+
+/* 设置菜单 */
+.config__tab-title.resize__move {
+	cursor: grab; /* 表示可拖拽窗口 */
+
+	&+.b3-form__icon +.config__tab-hr {
+		display: none; /* 隐藏分隔线 */
+	}
+}
 /* 隐藏唯一的 Tab */
 .layout-tab-bar:has(> .item[data-type="openai"]) {
 	opacity: 0;
