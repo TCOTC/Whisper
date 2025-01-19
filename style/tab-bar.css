@@ -27,16 +27,29 @@
 }
 
 /* TODO 下面这些只用需要的，没用的就注释删除 */
-.layout-tab-bar{
+.layout-tab-bar {
 	height: 38px;
 	padding-left: 5px;
-	& .item{
+
+	.item { /* 页签、数据库视图 */
 		border-radius: var(--b3-border-radius-s);
-		min-height:unset;
-		min-width:unset;
-		overflow:visible;
+		min-height: unset;
+		min-width: unset;
+		overflow: visible;
 		height: 26px;
-		margin:0 3px;
+		margin: 0 3px;
+		transition: unset;
+
+		&[style*="max-width: 0"] { /* 关闭页签时的宽度缩小渐变动画 */
+			transition: var(--b3-transition);
+			min-width: unset !important;
+
+			.item__close svg {
+				opacity: 0;
+			}
+		}
+
+
 		& .item__text{
 			padding: 2px 6px; 
 			-webkit-mask-image:none;
@@ -49,26 +62,32 @@
 			}
 		}
 		&.item.item--focus .item__close svg{
-			opacity: 0;
+			/*opacity: 0;*/
 		}
 		&.item.item--focus:hover .item__close svg{
 			opacity: 1;
 		}
 	}
-	& .item:not(.item--readonly):hover{
-		background-color:var(--S-list-background)!important;
+
+	.item__text {
+		transition: unset;
 	}
-	& .item--readonly{
+
+	.item:not(.item--readonly):hover {
+		background-color: var(--b3-theme-background-light) !important;
+	}
+	.item--readonly{
 		margin:7px 0 0 7px;		
 	}
 }
-.layout-tab-bar .item--full.item--focus:after{
+.layout-tab-bar .item--focus::after{
+	height: 2px;
+	bottom: -5px;
+	pointer-events: none;
+}
+.layout-tab-bar .item--focus.item--full::after{
 	background-color: transparent;
 	box-shadow: var(--b3-theme-background-light) 0 6px 0;
-}
-.layout__wnd--active .layout-tab-bar .item--focus::after{
-	background-color: transparent;
-	box-shadow: var(--S-item-focus) 0 6px 0;
 }
 body.body--blur .layout__wnd--active .layout-tab-bar .item--focus{
 	box-shadow: none!important;
@@ -82,23 +101,30 @@ body.body--blur .layout__wnd--active .layout-tab-bar .item--focus{
 	}
 	&:nth-child(4n-3){
 		background-color:var(--b3-card-error-background);
+
+		&:hover {
+			background-color: color-mix(in srgb, var(--b3-card-error-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+		}
 	}
 	&:nth-child(4n-2){
 		background-color:var(--b3-card-warning-background);
+
+		&:hover {
+			background-color: color-mix(in srgb, var(--b3-card-warning-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+		}
 	}
 	&:nth-child(4n-1){
 		background-color:var(--b3-card-info-background);
+
+		&:hover {
+			background-color: color-mix(in srgb, var(--b3-card-info-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+		}
 	}
 	&:nth-child(4n){
 		background-color:var(--b3-card-success-background);
+
+		&:hover {
+			background-color: color-mix(in srgb, var(--b3-card-success-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+		}
 	}
 }
-
-
-
-/*body:not(.body--mobile,.body--window){*/
-/*	& .layout-tab-bar:not(.layout-tab-bar--readonly), & .b3-menu, & .b3-menu__submenu, & .protyle-hint, & .block__popover, & .b3-dialog__body, & .block__icons>.block__icon, & .block__icons>.search__label, & .search__header, & .layout--float, & .protyle-breadcrumb .block__icon, & .protyle-breadcrumb__item, & .protyle-breadcrumb button, & .b3-snackbar, & .protyle-toolbar, & .protyle-util, & .dock__item {*/
-/*    app-region: no-drag;*/
-/*}*/
-/*}*/
-
