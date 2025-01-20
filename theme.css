@@ -15,6 +15,8 @@ html[data-theme-mode="light"] {
 
 	/* 自定义、混合 */
 	--custom-inline-box-shadow: 0 .1em 0 0;
+	--custom-theme-on-shadow: 1px 1px 1px rgb(from var(--b3-theme-on-background) r g b / .2);
+	--custom-link-shadow: 1px 1px 1px rgb(from var(--b3-protyle-inline-link-color) r g b / .2);
 
 	--b3-font-background14: rgb(183, 183, 183);  /* 数据库选项专用 */
 	--custom-database-color13: rgb(157, 157, 157); /* 在数据库选项里显示为灰色 */
@@ -23,9 +25,6 @@ html[data-theme-mode="light"] {
 	--custom-list-hover-dark: rgba(51, 49, 44, .15);
 	--custom-list-hover-darker: rgba(51, 49, 44, .2);
 	--mix-theme_primary_background: rgb(225, 223, 216); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245) */
-	/*--mix-theme_background-protyle_code: rgb(238, 237, 235); !* --b3-theme-background rgb(249, 248, 245) & --b3-protyle-code-background rgba(27, 31, 35, .05) *!*/
-	/*--mix-theme_primary_lightest-theme_background-protyle_code: rgb(215, 214, 207); !* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --mix-theme_background-protyle_code rgb(238, 237, 235) *!*/
-	/*--mix-theme_primary_lightest-list-hover: rgba(8, 8, 2, 0.17); !* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-list-hover rgba(51, 49, 44, 0.06) *!*/
 
 	/* 主色 */
 	--b3-theme-primary: rgb(126, 121, 0);                   /* 主题色。各种按钮 */
@@ -194,7 +193,7 @@ html[data-theme-mode="light"] {
 	--b3-protyle-inline-mark-color: inherit; /* 原来是 #202124 */
 	--b3-protyle-inline-tag-color: #5f6368;
 	--b3-protyle-inline-blockref-color: #8957e5;
-	--b3-protyle-inline-fileref-color: #21862e;
+	--b3-protyle-inline-fileref-color: rgb(27, 97, 36); /* 原来是 #21862e */
 
 	/* PDF */
 	--b3-pdf-selection: #d0e9c8;
@@ -222,7 +221,22 @@ html[data-theme-mode="light"] {
 	--b3-parent-background: var(--b3-theme-background);
 }
 
-/* 暗黑主题 */
-/*html[data-theme-mode="dark"] {*/
-/*	!* TODO *!*/
-/*}*/
+/* TODO 暗黑主题 */
+html[data-theme-mode="dark"] {
+	/* 自定义、混合 */
+	--custom-inline-box-shadow: 0 .1em 0 0;
+	--custom-theme-on-shadow: 1px 1px 1px rgb(from var(--b3-theme-on-background) r g b / .5);
+	--custom-link-shadow: 1px 1px 1px rgb(from var(--b3-protyle-inline-link-color) r g b / .5);
+
+	--b3-font-background14: rgb(183, 183, 183);  /* 数据库选项专用 */
+	--custom-database-color13: rgb(157, 157, 157); /* 在数据库选项里显示为灰色 */
+	--custom-database-background13: rgba(232, 233, 235); /* 在数据库选项里显示为灰色 */
+	--custom-color-blue-light: rgba(0, 202, 255, .85);
+	--custom-list-hover-dark: rgba(51, 49, 44, .15);
+	--custom-list-hover-darker: rgba(51, 49, 44, .2);
+	--mix-theme_primary_background: rgb(225, 223, 216); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245) */ /* TODO */
+
+	/* 代码片段背景 */
+	--b3-protyle-code-background: rgba(126, 129, 133, .3); /* 代码块背景 */
+}
+
