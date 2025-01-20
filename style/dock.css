@@ -45,10 +45,9 @@
 		padding-bottom: 24px !important; /* 避开底栏 */
 	}
 }
-#dockLeft, #dockRight {
-	z-index: 5;
+.fn__flex:not(:has(.fullscreen)) :is(#dockLeft, #dockRight) {
+	z-index: 5; /* 全屏时需要恢复 */
 }
-
 .layout--float.layout__dockr > .layout__dockresize--lr:hover {
 	border-left: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
 	transition: var(--b3-transition);
