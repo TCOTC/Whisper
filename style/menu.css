@@ -307,6 +307,10 @@ button, input, select, textarea {
 	.item__side, .item__main {
 		z-index: 1;
 	}
+
+	.item__title {
+		text-shadow: 0 0 1em var(--b3-protyle-inline-mark-background), 0 0 0.2em var(--b3-protyle-inline-mark-background); /* 标题文本光晕 */
+	}
 }
 @keyframes movement {
 	0%, 100% {
