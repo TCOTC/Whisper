@@ -76,16 +76,16 @@ button, input, select, textarea {
 }
 /* 隐藏 字体效果 */
 .protyle-font > div:has(+ .fn__hr--small + .fn__flex > .protyle-font__style),
-.protyle-font > div:has(+ .fn__hr--small + .fn__flex > .protyle-font__style) + .fn__hr--small,
-.protyle-font > div:has(+ .fn__hr--small + .fn__flex > .protyle-font__style) + .fn__hr--small + .fn__flex,
-.protyle-font > div:has(+ .fn__hr--small + .fn__flex > .protyle-font__style) + .fn__hr--small + .fn__flex + .fn__hr {
+.protyle-font > div:has(+ .fn__flex > .protyle-font__style),
+.protyle-font > div:has(> .protyle-font__style),
+.protyle-font > div:has(> .protyle-font__style) + .fn__hr {
 	display: none;
 }
 /* 隐藏 字号 */
 .protyle-font > div:has(+ .fn__hr--small + .fn__flex > .b3-select),
-.protyle-font > div:has(+ .fn__hr--small + .fn__flex > .b3-select) + .fn__hr--small,
-.protyle-font > div:has(+ .fn__hr--small + .fn__flex > .b3-select) + .fn__hr--small + .fn__flex,
-.protyle-font > div:has(+ .fn__hr--small + .fn__flex > .b3-select) + .fn__hr--small + .fn__flex + .fn__hr--b {
+.protyle-font > div:has(+ .fn__flex > .b3-select),
+.protyle-font > div:has(> .b3-select),
+.protyle-font > div:has(> .b3-select) + .fn__hr--b {
 	display: none;
 }
 .protyle-font {
