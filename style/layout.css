@@ -13,9 +13,9 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
 }
 
 /* 隐藏 border 边框 https://github.com/siyuan-note/siyuan/issues/12970 */
-.toolbar {
+.toolbar:not(:has(+ .fn__flex .fullscreen)) {
     border-bottom: unset;
-    z-index: 5; /* 高于侧栏面板的阴影效果 */
+    z-index: 5; /* 高于侧栏面板的阴影效果，全屏时需要恢复 */
 }
 .dock#dockLeft {
     border-right: unset;
