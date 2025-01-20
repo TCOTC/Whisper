@@ -1,6 +1,7 @@
 /* ————————————————————页签———————————————————— */
 /* TODO 下面这些一个个检查过去，相关的样式合并到一起 */
 /*自定义页签最小宽度 CSS片段 （Savor主题自用）*/
+/* TODO 这个宽度还需要微调看看 */
 .layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] {
 	min-width: 105px; /* 调整页签的最小宽度，只改这个值就可以了，其他代码不需要动 */
 }

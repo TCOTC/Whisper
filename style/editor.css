@@ -6,7 +6,7 @@
 
 /* TODO 这些样式需要跟进原生样式的变更 */
 /* .b3-typography导出预览，[data-node-id]导出PDF/图片/大纲面板，.protyle-wysiwyg编辑器*/
-.b3-typography, [data-node-id], .protyle-wysiwyg [data-node-id] {
+:is(.b3-typography, [data-node-id], .protyle-wysiwyg [data-node-id]) {
 	/* 行级标记。放在最前面用于覆盖原生的颜色 */
 	mark,
 	span[data-type~="mark"] {
@@ -134,18 +134,51 @@
 
 	a,
 	span[data-type~="a"] {
-		opacity: 0.86;
+		/*opacity: 0.86;*/
+		opacity: 1;
 		transition: unset;
 
 		&:hover {
-			opacity: 1;
+			/*opacity: 1;*/
 			/*border-bottom: 0.1em solid;*/
-			border-bottom: unset;
+			border-bottom: unset; /* 简约，不必要下划线 */
+			text-shadow: var(--custom-link-shadow); /* 代替 opacity 变化 */
 		}
 	}
 
-	span[data-type="virtual-block-ref"] {
+	/* 虚拟引用 */
+	span[data-type~="virtual-block-ref"] {
 		transition: unset;
+	}
+
+	/* 块引、数据库块引下划线 */
+	span[data-type~=block-ref]:not(.av__celltext),
+	.av__celltext--ref {
+		opacity: 1;
+		/*box-shadow: var(--custom-inline-box-shadow) var(--custom-color-blue-light);*/ /* 跟标记样式冲突 */
+		border-bottom: 0.15em solid var(--custom-color-blue-light); /* 直接覆盖下划线样式 */
+		color: inherit;
+		transition: unset;
+
+		&:hover {
+			text-shadow: var(--custom-theme-on-shadow); /* 代替 opacity 变化 */
+		}
+	}
+	/* 块引用静态锚文本用虚线下划线 */
+	/* TODO 跟进锚文本类型修复 https://github.com/siyuan-note/siyuan/issues/13889 */
+	span[data-type~=block-ref][data-subtype="s"]:not(.av__celltext),
+	.av__celltext--ref[data-subtype="s"] {
+		border-bottom: 0.15em dashed var(--custom-color-blue-light);
+	}
+
+	/* PDF 标注 */
+	span[data-type~=file-annotation-ref] {
+		opacity: 1;
+		transition: unset;
+
+		&:hover {
+			text-shadow: var(--custom-theme-on-shadow); /* 代替 opacity 变化 */
+		}
 	}
 
 	.img {
@@ -536,22 +569,6 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	opacity: 1; /* hover 条目时显示条目的复选框 */
 }
 
-/* 块引、数据库块引下划线 */
-.protyle-wysiwyg [data-node-id] span[data-type~=block-ref]:not(.av__celltext),
-.protyle-wysiwyg [data-node-id] span[data-type~=file-annotation-ref],
-[data-node-id] span[data-type~=block-ref]:not(.av__celltext),
-[data-node-id] span[data-type~=file-annotation-ref],
-.av__celltext--ref {
-	opacity: 0.86;
-	box-shadow: var(--custom-inline-box-shadow) var(--custom-color-blue-light);
-	color: inherit;
-	transition: unset;
-
-	&:hover {
-		opacity: 1;
-	}
-}
-
 /* 主键单元格 */
 .av__cell[data-dtype="block"] [data-type="block-more"] {
 	display: none;
@@ -594,7 +611,8 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 
 		.av__celltext {
 			&:not([data-type="block-ref"]):hover {
-				box-shadow: var(--custom-inline-box-shadow) var(--b3-theme-primary-lighter);
+				/*box-shadow: var(--custom-inline-box-shadow) var(--b3-theme-primary-lighter);*/
+				border-bottom: 0.15em solid var(--b3-theme-primary-lighter);
 			}
 
 			&::after {
