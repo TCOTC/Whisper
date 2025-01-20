@@ -65,7 +65,37 @@ button, input, select, textarea {
     box-shadow: inset 0 0 0 .6px var(--b3-theme-on-background);
 }
 
-/* 外观菜单 */
+/* 隐藏闪卡按钮上的图标 */
+.card__icon {
+	display: none;
+}
+
+/* 设置窗口 */
+.b3-dialog--open[data-key="dialog-setting"] .config__tab-title.resize__move {
+	cursor: grab; /* 表示可拖拽窗口 */
+
+	&+.b3-form__icon +.config__tab-hr {
+		display: none; /* 隐藏分隔线 */
+	}
+}
+
+/* 按钮样式 */
+.b3-button {
+	&:active {
+		box-shadow: unset;
+	}
+
+	&:not(.b3-button--outline):hover,&:not(.b3-button--outline):focus {
+		box-shadow: unset;
+	}
+
+	&.b3-button--outline {
+		transition: unset;
+	}
+}
+
+
+/* ————————————————————外观菜单———————————————————— */
 /* TODO 需要给标题元素 PR 不同的属性 (否则如果有插件在菜单里添加元素的话可能会冲突) */
 /* 隐藏 最近使用 */
 .protyle-font > div.fn__flex:first-child,
@@ -151,23 +181,8 @@ button, input, select, textarea {
 	}
 }
 
-/* 隐藏闪卡按钮上的图标 */
-.card__icon {
-	display: none;
-}
 
 /* ————————————————————集市———————————————————— */
-.b3-button {
-	&:active {
-		box-shadow: unset;
-	}
-	&:not(.b3-button--outline):hover,&:not(.b3-button--outline):focus {
-		box-shadow: unset;
-	}
-	&.b3-button--outline {
-		transition: unset;
-	}
-}
 /* 已下载页面 */
 .config-bazaar__panel {
 	&[data-type=downloaded] {
@@ -232,6 +247,7 @@ button, input, select, textarea {
 		}
 	}
 }
+
 /* 集市 README */
 #configBazaarReadme .item__main {
 	.item__preview {
@@ -385,20 +401,4 @@ button, input, select, textarea {
 	.emojis__title[data-type="1"] + .emojis__content:not(:has(> .emojis__item)) {
 		display: none; /* 如果没有自定义表情就隐藏 */
 	}
-}
-
-
-/* 设置菜单 */
-.config__tab-title.resize__move {
-	cursor: grab; /* 表示可拖拽窗口 */
-
-	&+.b3-form__icon +.config__tab-hr {
-		display: none; /* 隐藏分隔线 */
-	}
-}
-/* 隐藏唯一的 Tab */
-.layout-tab-bar:has(> .item[data-type="openai"]) {
-	opacity: 0;
-	max-height: 16px;
-	pointer-events: none;
 }
