@@ -96,7 +96,7 @@ button, input, select, textarea {
 
 
 /* ————————————————————外观菜单———————————————————— */
-/* TODO 需要给标题元素 PR 不同的属性 (否则如果有插件在菜单里添加元素的话可能会冲突) */
+/* TODO 需要给标题元素 PR 不同的属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器) */
 /* 隐藏 最近使用 */
 .protyle-font > div.fn__flex:first-child,
 .protyle-font > div.fn__flex:first-child + .fn__hr--small,

@@ -25,6 +25,7 @@
 .layout__dockr .file-tree {
 	margin-left: 3px;
 }
+/* TODO 需要考虑使用 :has 选择器以外的方案 */
 .layout__dockl:not(.layout--float):has(> .fn__flex-1:not(.fn__none)),
 .layout__dockr:not(.layout--float):has(> .fn__flex-1:not(.fn__none)) {
 	min-width: 232px;
@@ -45,9 +46,10 @@
 		padding-bottom: 24px !important; /* 避开底栏 */
 	}
 }
-.fn__flex:not(:has(.fullscreen)) :is(#dockLeft, #dockRight) {
-	z-index: 5; /* 全屏时需要恢复 */
-}
+/* TODO 需要考虑使用 :has 选择器以外的方案 */
+/*.fn__flex:not(:has(.fullscreen)) :is(#dockLeft, #dockRight) {*/
+/*	z-index: 5; !* 全屏时需要恢复 *!*/
+/*}*/
 .layout--float.layout__dockr > .layout__dockresize--lr:hover {
 	border-left: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
 	transition: var(--b3-transition);
@@ -58,6 +60,8 @@
 }
 
 /* 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔 */
+/* TODO 需要适配右侧文档上下分屏的情况 */
+/* TODO 需要考虑使用 :has 选择器以外的方案 */
 .layout__center:has(~ .layout--float > .fn__flex:not(.fn__none)) > .fn__flex-1:last-child {
 	.protyle-content {
 		margin-right: 15px;
@@ -70,6 +74,7 @@
 
 /* 右侧栏 */
 /* 底栏会挡住右下侧栏（如果有底部侧栏的话不会挡住、如果关闭了底栏的话不会挡住） */
+/* TODO 需要考虑使用 :has 选择器以外的方案 */
 body:has(> #dockBottom.fn__none):has(> #status:not(.fn__none)) {
 	#dockRight,
 	.layout__dockr .layout__dockresize {

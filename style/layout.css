@@ -12,10 +12,15 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
     overflow-x: hidden; /* 有的情况下会出现横向滚动条。TODO 跟进 https://github.com/siyuan-note/siyuan/issues/12264 */
 }
 
+.protyle-content{width:unset!important;} /* TODO 动态加载时编辑器抖动。跟进 https://github.com/siyuan-note/siyuan/issues/13913 */
+
 /* 隐藏 border 边框 https://github.com/siyuan-note/siyuan/issues/12970 */
-.toolbar:not(:has(+ .fn__flex .fullscreen)) {
+/* TODO 需要考虑使用 :has 选择器以外的方案 */
+/*.toolbar:not(:has(+ .fn__flex .fullscreen)) {*/
+/*    z-index: 5; !* 高于侧栏面板的阴影效果，全屏时需要恢复 *!*/
+/*}*/
+.toolbar {
     border-bottom: unset;
-    z-index: 5; /* 高于侧栏面板的阴影效果，全屏时需要恢复 */
 }
 .dock#dockLeft {
     border-right: unset;

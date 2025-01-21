@@ -556,6 +556,11 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 
 /* ————————————————————数据库———————————————————— */
 
+/* 标题 */
+.av__title {
+	padding-left: 4px;
+}
+
 /* 筛选 */
 .av__panel .b3-menu__item .b3-chip.b3-chip--primary[data-type="setFilter"] {
 	background-color: var(--b3-list-hover);

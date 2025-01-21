@@ -2,8 +2,7 @@
 /* 原始样式来自 Savor 主题 v5.2.9 https://github.com/royc01/notion-theme/blob/27ee462ef0eb2e1ff244f860d317014fa56ac75c/style/module/search.css */
 .b3-dialog--open[data-key="dialog-search"] .b3-dialog__container .fn__flex-column,
 .b3-dialog--open[data-key="dialog-replace"] .b3-dialog__container .fn__flex-column,
-.b3-dialog--open[data-key="dialog-globalsearch"] .b3-dialog__container .fn__flex-column,
-.fn__flex-column:has(+ #searchAssets), #searchAssets, #searchUnRefPanel {
+.b3-dialog--open[data-key="dialog-globalsearch"] .b3-dialog__container .fn__flex-column {
     display: flex;
     flex-direction: column;
     background-color: var(--b3-theme-surface);
@@ -22,7 +21,7 @@
         border-top: none;
 
         &:not(:has(+.b3-form__icon.search__header:not(.fn__none))) {
-            border-radius: 0 0 var(--b3-border-radius-b) var(--b3-border-radius-b); /* 输入框的圆角 */
+            border-radius: 0 0 var(--b3-border-radius-b) var(--b3-border-radius-b); /* 搜索或替换输入框的圆角 */
         }
 
         .block__icon { /* 输入框上的按钮 */

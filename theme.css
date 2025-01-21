@@ -153,6 +153,7 @@ html[data-theme-mode="light"] {
 	--b3-button-shadow: 0 5px 5px -3px rgb(0 0 0 / .2), 0 8px 10px 1px rgb(0 0 0 / .14), 0 3px 14px 2px rgb(0 0 0 / .12);
 
 	/* 图表颜色 */
+	/* TODO 关系图配色 */
 	--b3-graph-p-point: #076f7e;
 	--b3-graph-heading-point: #8250df;
 	--b3-graph-math-point: #80FFA5;
@@ -239,4 +240,3 @@ html[data-theme-mode="dark"] {
 	/* 代码片段背景 */
 	--b3-protyle-code-background: rgba(126, 129, 133, .3); /* 代码块背景 */
 }
-
