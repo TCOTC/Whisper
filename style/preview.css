@@ -65,8 +65,8 @@
     font-weight: bold;
 }
 /* 图片居中 */
-#preview .protyle-wysiwyg .p:has(span.img),
-.protyle-preview>.b3-typography  p:has(span.img) {
+#preview .protyle-wysiwyg .p:has(> span.img),
+.protyle-preview>.b3-typography  p:has(> span.img) {
     text-align:center;
 }
 /* 超链接 */

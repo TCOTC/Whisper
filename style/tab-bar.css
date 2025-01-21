@@ -1,5 +1,8 @@
 /* ————————————————————页签———————————————————— */
 /* TODO 下面这些一个个检查过去，相关的样式合并到一起 */
+
+
+
 /*自定义页签最小宽度 CSS片段 （Savor主题自用）*/
 /* TODO 这个宽度还需要微调看看 */
 .layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] {
@@ -20,8 +23,8 @@
 	opacity: .68; /* 始终显示页签叉号 */
 }
 
-/* 给页签添加背景色 */
-.layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] {
+/* 给选项卡添加背景色 */
+.layout-tab-bar .item:not(.item--pin):not(.item--readonly) {
 	background-color: var(--b3-theme-surface);
 }
 .layout-tab-bar {
