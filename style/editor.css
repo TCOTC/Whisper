@@ -472,7 +472,7 @@ div:not(#preview) > .protyle-wysiwyg div {
 		&::before {
 			font-size: 0.65em;
 			font-weight: 200;
-			color: rgba(0,0,0,.45);
+			color: rgb(from var(--b3-theme-on-surface) r g b / .5);
 			position: absolute; /* 使用绝对定位 */
 			transform: translateY(44%);
 			left: 0;
