@@ -33,12 +33,12 @@ body[whisper-status="show"] .layout__dockr.layout--float {
 	&::after {
 		content: "";
 		position: absolute;
-		right: -42px; /* 侧栏的宽度 */
+		right: calc(28px - 42px); /* 侧栏的宽度 */ /* 露出"显示/隐藏停靠栏"按钮 */
 		bottom: 0;
 		height: 24px; /* 底栏的高度 */
-		width: 42px; /* 侧栏的宽度 */
+		width: calc(42px - 28px); /* 侧栏的宽度 */ /* 露出"显示/隐藏停靠栏"按钮 */
 		background-color: var(--b3-theme-surface);
-		pointer-events: none;
+		/*pointer-events: none; !* 不能穿透过去点击下面的按钮 *!*/
 	}
 }
 /* TODO 需要考虑使用 :has 选择器以外的方案 */
@@ -69,21 +69,6 @@ body[whisper-status="show"] .layout__dockr.layout--float {
 /*.fn__flex:not(:has(.fullscreen)) :is(#dockLeft, #dockRight) {*/
 /*	z-index: 5; !* 全屏时需要恢复 *!*/
 /*}*/
-
-.layout--float.layout__dockr > .layout__dockresize--lr {
-	border-left: 1px solid var(--b3-scroll-color);
-
-	&:hover {
-		border-left: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
-	}
-}
-.layout--float.layout__dockl > .layout__dockresize--lr {
-	border-right: 1px solid var(--b3-scroll-color);
-
-	&:hover {
-		border-right: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
-	}
-}
 
 /* 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔 */
 /* 右侧没有 .layout__resize--lr 的编辑器就是最靠右的编辑器 */
@@ -120,6 +105,55 @@ body[whisper-status="show"][whisper-dock-bottom="hide"] {
 
 	.dock__item.dock__item--pin {
 		order: 0; /* 钉住按钮始终放在最左边 */
+	}
+}
+
+/* TODO 悬浮的底部侧栏面板 */
+.layout__dockb.layout--float {
+	border: unset;
+	border-radius: unset;
+	box-shadow: unset;
+	opacity: 1 !important;
+	/*transition-delay: 1s; !* TODO 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!*/
+
+	&:not([style*="translate"]) {
+		bottom: 42px !important; /* 底部侧栏的高度 */
+	}
+}
+body[whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="translate"]) {
+	bottom: 24px !important; /* 隐藏底部侧栏之后。底栏的高度 */
+	overflow: visible;
+
+	&::after {
+		content: "";
+		position: absolute;
+		bottom: -24px; /* 底栏的高度 */
+		height: 24px; /* 底栏的高度 */
+		width: calc(100% - 28px); /* 露出"显示/隐藏停靠栏"按钮 */
+		background-color: var(--b3-theme-surface);
+		/*pointer-events: none; !* 不能穿透过去点击下面的按钮 *!*/
+	}
+}
+
+.layout--float.layout__dockr > .layout__dockresize--lr {
+	border-left: 1px solid var(--b3-scroll-color);
+
+	&:hover {
+		border-left: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
+	}
+}
+.layout--float.layout__dockl > .layout__dockresize--lr {
+	border-right: 1px solid var(--b3-scroll-color);
+
+	&:hover {
+		border-right: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
+	}
+}
+.layout--float.layout__dockb > .layout__dockresize {
+	border-top: 1px solid var(--b3-scroll-color);
+
+	&:hover {
+		border-top: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
 	}
 }
 
