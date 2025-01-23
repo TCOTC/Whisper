@@ -14,11 +14,6 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
 
 .protyle-content{width:unset!important;} /* TODO 动态加载时编辑器抖动。跟进 https://github.com/siyuan-note/siyuan/issues/13913 */
 
-/* 不改侧栏层级了，并且 :has 选择器性能太差，注释掉 */
-/*.toolbar:not(:has(+ .fn__flex .fullscreen)) {*/
-/*    z-index: 5; !* 高于侧栏面板的阴影效果，全屏时需要恢复 *!*/
-/*}*/
-
 /* 隐藏 border 边框 https://github.com/siyuan-note/siyuan/issues/12970 */
 .toolbar {
     border-bottom: unset;

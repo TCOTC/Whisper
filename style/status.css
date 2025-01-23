@@ -12,11 +12,6 @@
 	align-items: center;
 }
 
-/* 不改侧栏层级了，并且 :has 选择器性能太差，注释掉 */
-/*body:not(:has(> .fn__flex .fullscreen)) #status {*/
-/*	z-index: 5; !* 全屏时需要恢复 *!*/
-/*}*/
-
 .status .toolbar__item:not(.toolbar__item--close) {
 	margin:0!important;
 	padding:2px;
