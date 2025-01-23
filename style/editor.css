@@ -359,9 +359,14 @@
 .protyle-wysiwyg [data-node-id].hr>div:after {
 	height: .2em;
 	top: calc(14px - .2em); /* 与块标对齐 */
+	width: calc(90% - 1px);
+	left: 5%;
 }
 .b3-typography hr {
 	border-bottom-width: .2em;
+	position: relative;
+	width: calc(90% - 1px);
+	left: 5%;
 }
 
 /* 给被引用的块增加虚线外框 CSS片段 */
@@ -614,6 +619,7 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 			margin-left: 0;
 		}
 
+		/* 关联条目前的图标: 横杠/文档图标 */
 		&>span:first-child {
 			display: none;
 		}
