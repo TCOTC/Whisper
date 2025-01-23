@@ -49,30 +49,40 @@ body[whisper-status="show"] .layout__dockr.layout--float {
 
 /* 调整侧栏浮窗高度与层级 CSS片段 */
 /* TODO 未钉住的侧栏弹出样式还可以优化，比如圆角、阴影、位置之类的 */
-/* 其实可以直接把底栏盖住，更好看也更实用 */
 .layout__dockl.layout--float,
 .layout__dockr.layout--float {
-	top: 32px !important;
-	bottom: 0 !important;
-	z-index: 4 !important;
+	top: 32px !important; /* 顶栏的高度 */
+	bottom: 0 !important; /* 直接把底栏盖住 */
+	/*z-index: 4 !important;*/ /* 不改侧栏层级了 */
 	border: unset;
 	border-radius: unset;
+	box-shadow: unset; /* 阴影样式比较奇怪，先去掉 */
+	opacity: 1 !important;
+	/*transition-delay: 1s; !* TODO 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!*/
 
-	.file-tree > .fn__flex-1 {
-		padding-bottom: 24px !important; /* 避开底栏 */
-	}
+	/*.file-tree > .fn__flex-1 {*/
+	/*	padding-bottom: 24px !important; !* 避开底栏 *! !* 直接把底栏盖住，更好看也更实用，所以注释掉 *!*/
+	/*}*/
 }
-/* TODO 需要考虑使用 :has 选择器以外的方案 */
+
+/* 不改侧栏层级了，并且 :has 选择器性能太差，注释掉 */
 /*.fn__flex:not(:has(.fullscreen)) :is(#dockLeft, #dockRight) {*/
 /*	z-index: 5; !* 全屏时需要恢复 *!*/
 /*}*/
-.layout--float.layout__dockr > .layout__dockresize--lr:hover {
-	border-left: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
-	transition: var(--b3-transition);
+
+.layout--float.layout__dockr > .layout__dockresize--lr {
+	border-left: 1px solid var(--b3-scroll-color);
+
+	&:hover {
+		border-left: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
+	}
 }
-.layout--float.layout__dockl > .layout__dockresize--lr:hover {
-	border-right: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
-	transition: var(--b3-transition);
+.layout--float.layout__dockl > .layout__dockresize--lr {
+	border-right: 1px solid var(--b3-scroll-color);
+
+	&:hover {
+		border-right: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
+	}
 }
 
 /* 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔 */
@@ -99,15 +109,18 @@ body[whisper-status="show"][whisper-dock-bottom="hide"] {
 /* 底部侧栏 */
 #dockBottom {
 	padding: 0;
-}
-#dockBottom .dock__item--space {
-	display: none; /* 底部侧栏的左右两边都合并到左边 */
-}
-#dockBottom .dock__item {
-	order: 1;
-}
-#dockBottom .dock__item.dock__item--pin {
-	order: 0; /* 钉住按钮始终放在最左边 */
+
+	.dock__item--space {
+		display: none; /* 底部侧栏的左右两边都合并到左边 */
+	}
+
+	.dock__item {
+		order: 1;
+	}
+
+	.dock__item.dock__item--pin {
+		order: 0; /* 钉住按钮始终放在最左边 */
+	}
 }
 
 /* 侧栏面板焦点状态的侧栏按钮样式 */
@@ -207,9 +220,12 @@ body[whisper-status="show"][whisper-dock-bottom="hide"] {
 	}
 }
 
+
+/* ————————————————————反链、提及面板———————————————————— */
+
 /* 反链、提及面板固定文档名称 CSS片段 */
 /* author by JeffreyChen https://ld246.com/article/1737207365006 */
-/* TODO 需要跟进 https://github.com/siyuan-note/siyuan/issues/13679 修改*/
+/* TODO 需要跟进 https://github.com/siyuan-note/siyuan/issues/13679 修改 */
 .backlinkMList .b3-list-item,
 .backlinkList .b3-list-item {
 	position: sticky;

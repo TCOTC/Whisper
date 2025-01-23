@@ -11,7 +11,8 @@
 	margin:0;
 	align-items: center;
 }
-/* TODO 需要考虑使用 :has 选择器以外的方案 */
+
+/* 不改侧栏层级了，并且 :has 选择器性能太差，注释掉 */
 /*body:not(:has(> .fn__flex .fullscreen)) #status {*/
 /*	z-index: 5; !* 全屏时需要恢复 *!*/
 /*}*/
