@@ -76,9 +76,8 @@ body[whisper-status="show"] .layout__dockr.layout--float {
 }
 
 /* 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔 */
-/* TODO 需要适配右侧文档上下分屏的情况 */
-/* TODO 需要考虑使用 :has 选择器以外的方案 */
-.layout__center:has(~ .layout--float > .fn__flex:not(.fn__none)) > .fn__flex-1:last-child {
+/* 右侧没有 .layout__resize--lr 的编辑器就是最靠右的编辑器 */
+.layout__center .fn__flex-1:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .layout-tab-container > .protyle {
 	.protyle-content {
 		margin-right: 15px;
 	}
