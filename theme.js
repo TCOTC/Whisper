@@ -69,4 +69,43 @@
     (async () => {
         blockTrackMain();
     })();
+
+    // 通过监听来代替使用 :has 选择器，提高性能
+    (async () => {
+        // 选择需要观察的目标节点
+        const targetNodeStatus = document.querySelector('#status');
+        const targetNodeDockBottom = document.querySelector('#dockBottom');
+
+        // 配置观察选项
+        const config = { attributes: true, attributeFilter: ['class'] };
+
+        // 创建一个回调函数，当观察到变动时执行
+        const callback = function(mutationsList, observer) {
+            for(let mutation of mutationsList) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const targetNode = mutation.target;
+                    const hasFnNone = targetNode.classList.contains('fn__none');
+                    if (targetNode === targetNodeStatus) {
+                        document.body.setAttribute('whisper-status', hasFnNone ? 'hide' : 'show');
+                    } else if (targetNode === targetNodeDockBottom) {
+                        document.body.setAttribute('whisper-dock-bottom', hasFnNone ? 'hide' : 'show');
+                    }
+                }
+            }
+        };
+
+        // 手动检查一次并设置初始状态
+        const hasFnNoneStatusInitial = targetNodeStatus.classList.contains('fn__none');
+        document.body.setAttribute('whisper-status', hasFnNoneStatusInitial ? 'hide' : 'show');
+
+        const hasFnNoneDockBottomInitial = targetNodeDockBottom.classList.contains('fn__none');
+        document.body.setAttribute('whisper-dock-bottom', hasFnNoneDockBottomInitial ? 'hide' : 'show');
+
+        // 创建一个观察器实例并传入回调函数
+        const observer = new MutationObserver(callback);
+
+        // 传入目标节点和观察选项
+        observer.observe(targetNodeStatus, config);
+        observer.observe(targetNodeDockBottom, config);
+    })();
 })();

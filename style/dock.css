@@ -25,6 +25,22 @@
 .layout__dockr .file-tree {
 	margin-left: 3px;
 }
+
+/* 有底栏的情况下，未钉住的右侧栏弹出之后要隐藏底栏，更美观 */
+body[whisper-status="show"] .layout__dockr.layout--float {
+	overflow: visible;
+
+	&::after {
+		content: "";
+		position: absolute;
+		right: -42px; /* 侧栏的宽度 */
+		bottom: 0;
+		height: 24px; /* 底栏的高度 */
+		width: 42px; /* 侧栏的宽度 */
+		background-color: var(--b3-theme-surface);
+		pointer-events: none;
+	}
+}
 /* TODO 需要考虑使用 :has 选择器以外的方案 */
 .layout__dockl:not(.layout--float):has(> .fn__flex-1:not(.fn__none)),
 .layout__dockr:not(.layout--float):has(> .fn__flex-1:not(.fn__none)) {
@@ -74,8 +90,7 @@
 
 /* 右侧栏 */
 /* 底栏会挡住右下侧栏（如果有底部侧栏的话不会挡住、如果关闭了底栏的话不会挡住） */
-/* TODO 需要考虑使用 :has 选择器以外的方案 */
-body:has(> #dockBottom.fn__none):has(> #status:not(.fn__none)) {
+body[whisper-status="show"][whisper-dock-bottom="hide"] {
 	#dockRight,
 	.layout__dockr .layout__dockresize {
 		padding-bottom: 24px; /* 等于底栏 status 的高度 */
