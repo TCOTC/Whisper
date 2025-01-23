@@ -1,15 +1,20 @@
-// TODO 监听浮窗添加，然后展开聚焦的块（直接移除元素上的 [fold="1"] 属性即可，好像没有副作用）
-
 (function() {
-    // TODO 主题改完确定没问题之后就去除所有 log 输出
     (async () => {
         console.log('————————执行一次主题JS————————');
     })();
+
+    // 定义全局变量
+    let observer;
 
     window.destroyTheme = () => {
         console.log('————————移除一次主题————————');
         // 卸载“跟踪当前所在块”的事件监听器
         blockTrackCleanup();
+
+        // 卸载 MutationObserver 监听器
+        if (observer) {
+            observer.disconnect();
+        }
     }
 
     /**
@@ -102,7 +107,7 @@
         document.body.setAttribute('whisper-dock-bottom', hasFnNoneDockBottomInitial ? 'hide' : 'show');
 
         // 创建一个观察器实例并传入回调函数
-        const observer = new MutationObserver(callback);
+        observer = new MutationObserver(callback);
 
         // 传入目标节点和观察选项
         observer.observe(targetNodeStatus, config);
