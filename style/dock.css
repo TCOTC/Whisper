@@ -146,6 +146,11 @@ body[whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="trans
 	}
 }
 
+/* 侧栏面板悬浮时始终显示按钮，避免面板弹出时按钮闪烁 */
+.layout--float .block__icon:not([disabled]) {
+	opacity: 1;
+}
+
 /* 侧栏面板焦点状态的侧栏按钮样式 */
 .dock .dock__item.dock__item--activefocus{
 	background-color: var(--b3-theme-primary-lightest);
