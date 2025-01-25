@@ -4,15 +4,15 @@
 /* ————————————————————行级元素———————————————————— */
 /* 在编辑器里和属性面板里，行级元素的上层都有 [data-node-id] */
 
-/* TODO 这些样式需要跟进原生样式的变更 */
+/* NOTE 这些样式需要跟进原生样式的变更 */
 /* .b3-typography导出预览，[data-node-id]导出PDF/图片/大纲面板，.protyle-wysiwyg编辑器*/
 :is(.b3-typography, [data-node-id], .protyle-wysiwyg [data-node-id]) {
 	/* 行级标记。放在最前面用于覆盖原生的颜色 */
 	mark,
 	span[data-type~="mark"] {
 		background: inherit;
-		color: inherit;
-		box-shadow: 0 -0.7em 0 0 inset var(--b3-protyle-inline-mark-background), var(--custom-inline-box-shadow) var(--b3-protyle-inline-mark-background);
+		/*color: inherit;*/ /* 注释掉，避免覆盖块引文本的颜色 */
+		box-shadow: 0 -0.7em 0 0 inset rgb(from var(--b3-protyle-inline-mark-background) r g b / .7), var(--custom-inline-box-shadow) rgb(from var(--b3-protyle-inline-mark-background) r g b / .7); /* 添加透明度，避免完全覆盖文本背景色 */
 
 		&.mark--hl {
 			background-color: var(--b3-theme-primary-lighter);
@@ -100,7 +100,6 @@
 		margin: 0 1px;
 		font-size: 85%;
 		border-radius: var(--b3-border-radius);
-		font-family: var(--b3-font-family-code);
 		word-break: break-word;
 		background-size: 20px 20px;
 		white-space: pre-wrap;
@@ -204,7 +203,7 @@
 /* TODO 侧栏未 hover 时隐藏滚动条（编辑器的滚动条始终保留） */
 
 /* TODO 滚动条样式 */
-
+/* TODO 滚动条的宽度保持为 10px，因为其他地方的布局已经考虑到了 10px 的滚动条 */
 /*!* 编辑器滚动条粗细 CSS片段 *!*/
 /*.protyle ::-webkit-scrollbar{*/
 /*    width: 10px !important; !* 粗细 *!*/
