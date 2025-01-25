@@ -190,7 +190,7 @@ button, input, select, textarea {
 		.config-bazaar__content {
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-			margin-right: 16px;
+			margin-right: 6px;
 
 			.b3-card {
 				display: grid;
@@ -226,7 +226,7 @@ button, input, select, textarea {
 	.b3-cards {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-		margin-right: 16px;
+		margin-right: 6px;
 
 		.b3-card--wrap {
 			min-width: unset;
