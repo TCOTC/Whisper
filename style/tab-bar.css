@@ -1,38 +1,10 @@
-/* ————————————————————页签———————————————————— */
-/* TODO 下面这些一个个检查过去，相关的样式合并到一起 */
+/* ————————————————————选项卡———————————————————— */
+.layout-tab-bar:not(.layout-tab-bar--readonly) {
+	height: unset;
+	padding: 8px 5px 5px; /* 默认边距：距离其他元素 8px（.item本身有3px左右边距），底部留 5px 给伪元素 */
 
-
-
-/*自定义页签最小宽度 CSS片段 （Savor主题自用）*/
-/* TODO 这个宽度还需要微调看看 */
-.layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] {
-	min-width: 105px; /* 调整页签的最小宽度，只改这个值就可以了，其他代码不需要动 */
-}
-
-/* 调整叉号样式 */
-.layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] .item__text {
-	padding-right: 28px; /* 调整叉号与标题文本间的最小距离 */
-	-webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 0) 24px, var(--b3-theme-on-surface) 32px); /* 标题文本渐变，使叉号不与标题文本重叠 */
-}
-.layout-tab-bar .item:not(.item--pin):not(.item--readonly)[data-type="tab-header"] .item__close {
-	position: absolute; /* 让叉号靠右 */
-	right: 0;
-	padding: 4px 6px 4px 6px; /* 扩大叉号点击范围 */
-}
-.layout-tab-bar .item:hover .item__close svg, .layout-tab-bar .item .item__close svg {
-	opacity: .68; /* 始终显示页签叉号 */
-}
-
-/* 给选项卡添加背景色 */
-.layout-tab-bar .item:not(.item--pin):not(.item--readonly) {
-	background-color: var(--b3-theme-surface);
-}
-.layout-tab-bar {
-	height: 38px;
-	padding-left: 5px;
-
-	.item { /* 页签、数据库视图 */
-		border-radius: var(--b3-border-radius-s);
+	.item {
+		border-radius: var(--b3-border-radius);
 		min-height: unset;
 		min-width: unset;
 		overflow: visible;
@@ -40,91 +12,201 @@
 		margin: 0 3px;
 		transition: unset;
 
-		&[style*="max-width: 0"] { /* 关闭页签时的宽度缩小渐变动画 */
+		&:not(.item--pin) {
+			background-color: var(--b3-theme-surface); /* 默认背景色 */
+		}
+
+		&:not(.item--focus):hover { /* 聚焦时背景色不要变 */
+			background-color: var(--b3-theme-background-light) !important;
+		}
+
+		.item__text {
+			-webkit-mask-image: none;
+			transition: unset;
+		}
+	}
+
+	/* 焦点选项 */
+	.item--focus {
+		/* 伪元素下划线 */
+		&::after {
+			height: 2px;
+			bottom: -5px;
+			pointer-events: none; /* 伪元素会影响悬浮提示 */
+		}
+
+		.item__text {
+			color: var(--b3-theme-on-background);
+		}
+	}
+}
+
+
+/* ————————————————————数据库———————————————————— */
+
+.av__views > .layout-tab-bar {
+	height: 38px;
+	padding: 0;
+
+	/* 视图图标 */
+	.item__graphic {
+		padding: 0 2px 0 8px;
+	}
+}
+
+
+/* ————————————————————页签———————————————————— */
+
+#layouts .fn__flex:not(.av__views) {
+	&>.layout-tab-bar:not(.layout-tab-bar--readonly) {
+		padding: 4px 0 5px 5px; /* 跟面包屑对齐 */
+
+		/* 关闭页签时的宽度缩小渐变动画 */
+		.item[style*="max-width: 0"] {
 			transition: var(--b3-transition);
 			min-width: unset !important;
 
 			.item__close svg {
-				opacity: 0;
+				opacity: 0 !important;
 			}
 		}
 
+		/* 页签宽度 */
+		.item:not(.item--pin) {
 
-		.item__text {
-			padding: 2px 6px; 
-			-webkit-mask-image: none;
-		}
-		.item__close {
-			padding: 4px 2px 4px 2px;
-			svg{
-				height: 12px;
-				width: 12px;
+			.item__text {
+				min-width: 4em; /* 页签最少显示的字符数宽度 */
+				text-align-last: left; /* 文本居左 */
+				padding-right: 22px; /* 留给叉号图标的位置 */
+				-webkit-mask-image: -webkit-linear-gradient(right, rgba(0, 0, 0, 0) 20px, var(--b3-theme-on-surface) 24px); /* 标题文本渐变，使叉号不与标题文本重叠 */
+				mask-image: linear-gradient(to left, rgba(0, 0, 0, 0) 20px, var(--b3-theme-on-surface) 24px);
+			}
+
+			.item__close {
+				position: absolute; /* 让叉号靠右 */
+				right: 0;
+				padding: 0 3px 0 0; /* 叉号点击范围 */
+
+				svg {
+					opacity: .68; /* 始终显示页签叉号 */
+					transition: unset;
+					height: 10px; /* 叉号图标大小 */
+					width: 10px;
+					background-color: unset;
+				}
 			}
 		}
-		&.item.item--focus .item__close svg {
-			/*opacity: 0;*/
-		}
-		&.item.item--focus:hover .item__close svg {
-			opacity: 1;
+
+		/* 钉住的页签 */
+		.item--pin {
+			.item__icon {
+				padding: 0 5px;
+			}
+			&:nth-child(4n-3) {
+				background-color: var(--b3-card-error-background);
+
+				&:hover {
+					background-color: color-mix(in srgb, var(--b3-card-error-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+				}
+			}
+			&:nth-child(4n-2) {
+				background-color: var(--b3-card-warning-background);
+
+				&:hover {
+					background-color: color-mix(in srgb, var(--b3-card-warning-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+				}
+			}
+			&:nth-child(4n-1) {
+				background-color: var(--b3-card-info-background);
+
+				&:hover {
+					background-color: color-mix(in srgb, var(--b3-card-info-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+				}
+			}
+			&:nth-child(4n) {
+				background-color: var(--b3-card-success-background);
+
+				&:hover {
+					background-color: color-mix(in srgb, var(--b3-card-success-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+				}
+			}
+			/* 钉住且聚焦的页签 */
+			&.item--focus {
+				&:nth-child(4n-3):hover {
+					background-color: var(--b3-card-error-background) !important;
+				}
+				&:nth-child(4n-2):hover {
+					background-color: var(--b3-card-warning-background) !important;
+				}
+				&:nth-child(4n-1):hover {
+					background-color: var(--b3-card-info-background) !important;
+				}
+				&:nth-child(4n):hover {
+					background-color: var(--b3-card-success-background) !important;
+				}
+			}
 		}
 	}
 
-	.item__text {
-		transition: unset;
-	}
+	&>.layout-tab-bar--readonly {
+		min-width: 69px;
 
-	.item:not(.item--readonly):hover {
-		background-color: var(--b3-theme-background-light) !important;
-	}
-	.item--readonly {
-		margin: 7px 0 0 7px;
+		.item--readonly {
+			padding: 0 8px 0 5px;
+		}
 	}
 }
-.layout-tab-bar .item--focus::after {
-	height: 2px;
-	bottom: -5px;
-	pointer-events: none; /* 伪元素会影响悬浮提示 */
-}
-.layout-tab-bar .item--focus.item--full::after {
-	background-color: transparent;
-	box-shadow: var(--b3-theme-background-light) 0 6px 0;
-}
+
+/* 窗口失去焦点时 */
 body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
 	box-shadow: none !important;
 }
-.layout-tab-bar .item--pin {
-	.item__icon {
-		padding: 0 5px;
-	}
-	.item__graphic {
-		padding: 4px;
-	}
-	&:nth-child(4n-3) {
-		background-color: var(--b3-card-error-background);
 
-		&:hover {
-			background-color: color-mix(in srgb, var(--b3-card-error-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+
+/* ————————————————————窗口———————————————————— */
+
+/* 属性面板 */
+.b3-dialog--open[data-key="dialog-attr"] .layout-tab-bar {
+	padding: 8px 13px 5px;
+}
+
+/* 数据历史 */
+.b3-dialog--open[data-key="dialog-history"] .layout-tab-bar {
+	padding: 8px 5px 5px;
+}
+
+/* 设置 */
+.b3-dialog--open[data-key="dialog-setting"] .config__tab-container {
+	/* AI */
+	&[data-name="AI"] {
+		/* 隐藏唯一的 Tab */
+		.layout-tab-bar {
+			padding: 0;
+			opacity: 0;
+			max-height: 16px;
+			pointer-events: none;
 		}
 	}
-	&:nth-child(4n-2) {
-		background-color: var(--b3-card-warning-background);
 
-		&:hover {
-			background-color: color-mix(in srgb, var(--b3-card-warning-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+	/* 资源 */
+	&[data-name="image"] {
+		.layout-tab-bar {
+			padding: 8px 5px 5px;
 		}
 	}
-	&:nth-child(4n-1) {
-		background-color: var(--b3-card-info-background);
 
-		&:hover {
-			background-color: color-mix(in srgb, var(--b3-card-info-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+	/* 集市 */
+	&[data-name="bazaar"] {
+		.layout-tab-bar {
+			padding: 10px 13px 5px;
 		}
-	}
-	&:nth-child(4n) {
-		background-color: var(--b3-card-success-background);
+		.config-bazaar__title {
+			padding-left: 16px;
+			padding-right: 6px;
+		}
 
-		&:hover {
-			background-color: color-mix(in srgb, var(--b3-card-success-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
+		.config-bazaar__panel {
+			scrollbar-gutter: stable;
 		}
 	}
 }
