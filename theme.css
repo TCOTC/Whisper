@@ -242,3 +242,9 @@ html[data-theme-mode="dark"] {
 	/* 代码片段背景 */
 	--b3-protyle-code-background: rgba(126, 129, 133, .3); /* 代码块背景 */
 }
+
+/* —————————————————————————— 全局样式 —————————————————————————— */
+
+* {
+	font-variant-numeric: tabular-nums; /* 使用等宽数字 */
+}
