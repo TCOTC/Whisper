@@ -1,4 +1,4 @@
-.block__icon, .toolbar__item, .protyle-icons, .protyle-icon {
+.block__icon, .toolbar__item, .protyle-icons, .protyle-icon, .dock__item--pin {
 	transition: unset !important; /* 按钮感觉不跟手，不要过渡样式 */
 }
 
