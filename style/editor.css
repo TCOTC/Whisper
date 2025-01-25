@@ -140,7 +140,7 @@
 	span[data-type~="a"] {
 		/*opacity: 0.86;*/
 		opacity: 1;
-		transition: unset;
+		transition: text-shadow var(--custom-transition);
 
 		&:hover {
 			/*opacity: 1;*/
@@ -162,7 +162,7 @@
 		/*box-shadow: var(--custom-inline-box-shadow) var(--custom-color-blue-light);*/ /* 跟标记样式冲突 */
 		border-bottom: 0.15em solid var(--custom-color-blue-light); /* 直接覆盖下划线样式 */
 		color: inherit;
-		transition: unset;
+		transition: text-shadow var(--custom-transition);
 
 		&:hover {
 			text-shadow: var(--custom-theme-on-shadow); /* 代替 opacity 变化 */
@@ -356,17 +356,13 @@
 }
 
 /* 分隔线 */
-.protyle-wysiwyg [data-node-id].hr>div:after {
+.protyle-wysiwyg [data-node-id].hr>div::after {
 	height: .2em;
-	top: calc(14px - .2em); /* 与块标对齐 */
-	width: calc(90% - 1px);
-	left: 5%;
+	top: calc(15px - .2em); /* 与块标对齐 */
 }
 .b3-typography hr {
 	border-bottom-width: .2em;
 	position: relative;
-	width: calc(90% - 1px);
-	left: 5%;
 }
 
 /* 给被引用的块增加虚线外框 CSS片段 */
