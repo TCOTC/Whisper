@@ -466,44 +466,65 @@
 
 /* ————————————————————标题块———————————————————— */
 
-/* 在标题前添加数字标识 */
-/* 用:not(#preview)排除导出PDF，用.protyle-wysiwyg排除导出预览 */
-div:not(#preview) > .protyle-wysiwyg div {
-	&[data-subtype^="h"] > div:first-child {
-		padding-left: 10px;
+/* 标题前的图标 */
+/* 图标文件来自粉色小屋主题 https://github.com/StarDustSheep/pink-room */
+.h1 > :first-child {
+	padding-left: .457em;
 
-		&::before {
-			font-size: 0.65em;
-			font-weight: 200;
-			color: rgb(from var(--b3-theme-on-surface) r g b / .5);
-			position: absolute; /* 使用绝对定位 */
-			transform: translateY(44%);
-			left: 0;
-		}
+	&::before{
+		background: url('../icon/headings/h1.svg');
 	}
+}
+.h2 > :first-child {
+	padding-left: .516em;
 
-	&[data-subtype="h1"] > div:first-child::before {
-		content: "1";
+	&::before{
+		background: url('../icon/headings/h2.svg');
 	}
+}
+.h3 > :first-child {
+	padding-left: .58em;
 
-	&[data-subtype="h2"] > div:first-child::before {
-		content: "2";
+	&::before{
+		background: url('../icon/headings/h3.svg');
 	}
+}
+.h4 > :first-child {
+	padding-left: .64em;
 
-	&[data-subtype="h3"] > div:first-child::before {
-		content: "3";
+	&::before{
+		background: url('../icon/headings/h4.svg');
 	}
+}
+.h5 > :first-child {
+	padding-left: .708em;
 
-	&[data-subtype="h4"] > div:first-child::before {
-		content: "4";
+	&::before{
+		background: url('../icon/headings/h5.svg');
 	}
+}
+.h6 > :first-child {
+	padding-left: .8em; /* 按倍数算，以H6为基准（1倍），让所有标题的左侧对齐 */
 
-	&[data-subtype="h5"] > div:first-child::before {
-		content: "5";
+	&::before{
+		background: url('../icon/headings/h6.svg');
 	}
+}
+/* background-repeat 需要放在后面覆盖 */
+:is(.h1, .h2, .h3, .h4, .h5, .h6) > :first-child {
+	/*position: relative;*/
 
-	&[data-subtype="h6"] > div:first-child::before {
-		content: "6";
+	&::before {
+		height: 1em;
+		width: 1em;
+		position: absolute;
+		content: "";
+		filter: hue-rotate(325deg);
+		background-repeat: no-repeat;
+		/*left: 0;*/
+		left: 4px;
+		top: 50%; /* 垂直居中 */
+		transform: translateY(-50%);
 	}
 }
 
