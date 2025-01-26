@@ -413,23 +413,27 @@
 }
 
 /* 数据库角标样式 */
-.protyle-attr--av > span{
-	border-radius: var(--b3-border-radius-s);
+.protyle-attr--av svg {
+	display: none; /* 去除数据库图标 */
 }
-.protyle-attr--av > span:nth-child(4n+1) {
-	color: var(--b3-card-success-color);/* 每组的第1个 */
+.protyle-attr--av > span {
+	padding: 2px 0.4em;
+	border-radius: var(--b3-border-radius-b);
+}
+.protyle-attr--av > span:nth-child(4n+1) { /* 每组的第1个 */
+	color: var(--b3-card-success-color);
 	background-color: var(--b3-card-success-background);
 }
-.protyle-attr--av > span:nth-child(4n+2) {
-	color: var(--b3-card-info-color); /* 每组的第2个 */
+.protyle-attr--av > span:nth-child(4n+2) { /* 每组的第2个 */
+	color: var(--b3-card-info-color);
 	background-color: var(--b3-card-info-background);
 }
-.protyle-attr--av > span:nth-child(4n+3) {
-	color: var(--b3-card-warning-color); /* 每组的第3个 */
+.protyle-attr--av > span:nth-child(4n+3) { /* 每组的第3个 */
+	color: var(--b3-card-warning-color);
 	background-color: var(--b3-card-warning-background);
 }
-.protyle-attr--av > span:nth-child(4n) {
-	color: var( --b3-card-error-color); /* 每组的第4个 */
+.protyle-attr--av > span:nth-child(4n) {   /* 每组的第4个 */
+	color: var( --b3-card-error-color);
 	background-color: var(--b3-card-error-background);
 }
 
