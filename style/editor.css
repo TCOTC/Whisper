@@ -263,25 +263,28 @@
 
 /* ————————————————————滚动条———————————————————— */
 
+/* 动态滚动条 */
+.protyle-scroll :is(.protyle-scroll__down, .protyle-scroll__up) {
+	opacity: 1;
+}
+
+/* 滚动条的厚度保持为 10px，因为其他地方的布局已经考虑到了 10px 的滚动条 */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+::-webkit-scrollbar-thumb {
+	background-clip: padding-box;
+	border: 2px solid transparent;
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: rgb(from var(--b3-scroll-color) r g b / .15);
+	border-width: unset;
+}
+
 .av:not(:hover) > .av__container > .av__scroll {
 	--b3-scroll-color: transparent; /* 数据库块未 hover 时隐藏横向滚动条 */
 }
-/* TODO 侧栏未 hover 时隐藏滚动条（编辑器的滚动条始终保留） */
-
-/* TODO 滚动条样式 */
-/* TODO 滚动条的宽度保持为 10px，因为其他地方的布局已经考虑到了 10px 的滚动条 */
-/*!* 编辑器滚动条粗细 CSS片段 *!*/
-/*.protyle ::-webkit-scrollbar{*/
-/*    width: 10px !important; !* 粗细 *!*/
-/*}*/
-
-/*::-webkit-scrollbar-thumb {*/
-/*    overflow: hidden;*/
-/*}*/
-/*::-webkit-scrollbar-thumb:hover {*/
-/*    overflow-y: auto;*/
-/*}*/
-
 
 /* ————————————————————编辑器顶部———————————————————— */
 

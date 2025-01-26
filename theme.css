@@ -67,7 +67,7 @@ html[data-theme-mode="light"] {
 	--b3-border-radius-b: 12px;
 
 	/* 滚动条 */
-	--b3-scroll-color: rgba(0, 0, 0, .2);
+	--b3-scroll-color: rgba(0, 0, 0, .1); /* 原来是 rgba(0, 0, 0, .2) */
 
 	/* 列表 */
 	--b3-list-hover: rgba(51, 49, 44, 0.06);    /* 鼠标悬浮在选项上 */
