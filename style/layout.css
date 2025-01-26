@@ -1,4 +1,4 @@
-/* TODO 需要确保布局不会跟全屏模式冲突：编辑器全屏、关系图全屏 */
+/* NOTE 确保布局不会跟全屏模式冲突：编辑器全屏、关系图全屏 */
 
 /* 界面圆角 */
 body:not(.body--mobile,.body--window) #layouts {

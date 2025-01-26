@@ -42,7 +42,7 @@
     };
 
     const focusHandler = function() {
-        // TODO 需要排除上层块包含 .protyle-wysiwyg--select 的情况，这种情况下样式会造成干扰。hasClosestByClassName？
+        // TODO 1 需要排除上层块包含 .protyle-wysiwyg--select 的情况，这种情况下样式会造成干扰。hasClosestByClassName？
         // 获取当前编辑区
         let block = getFocusedBlock(); // 当前光标所在块
         // 当前块已经设置焦点
