@@ -1,128 +1,93 @@
 /* ———————————————————— 底栏 ———————————————————— */
-/* TODO 1 一个个样式看过去，删掉不需要的 */
+
 #status {
     position: fixed;
     right: 0;
     bottom: 0;
-	border-radius:6px 0 0 0;
 	height: 24px;
-	border:0;
-	padding: 0 48px 0 0;
-	margin:0;
+	border: unset;
+	border-radius: var(--b3-border-radius) 0 0 0;
+	padding: 0 28px 0 0;
 	align-items: center;
+
+	.toolbar__item {
+		align-items: center;
+		margin: 0;
+		/*z-index: 8;*/ /* 暂时不知道这个有什么用 */
+
+		svg {
+			height: 12px;
+			width: 12px;
+		}
+	}
+
+	/* 停靠栏按钮 */
+	#barDock {
+		position: absolute;
+		right: 4px;
+	}
 }
 
-.status .toolbar__item:not(.toolbar__item--close) {
-	margin:0!important;
-	padding:2px;
-	background-color:rgb(0, 0, 0, 0);
+/* 新窗口没有停靠栏按钮 */
+.body--window #status {
+	padding: 0 2px 0 0;
 }
 
-.status .toolbar__item svg{
-	padding:3px 4px;
-	/*color:var(--b3-dockright-color);*/
-	width: 12px;
-}
-.body--win32>.fn__flex-1
-{
-	overflow:visible;
+.status__counter:not(:empty) {
+	padding: 0 0 0 .1em;
+	line-height: 24px;
 }
 
-.status__counter:not(:empty){
-	border-radius:5px;
-	padding: 0 0 0 8px ;
-	margin:0 2px 0 0;
-	height:26px;
-	line-height:26px;
-}
-.status__msg:not(:empty){
+.status__msg:not(:empty) {
 	animation: statusmsg 5s ease-in-out;
 	max-width: 140px;
-	padding: 0 8px;
-	border-radius:5px;
-	margin:0;
-	transition: max-width 300ms,opacity 300ms;
-	transition-delay: 2000ms;
-	position:relative;
-	height:26px;
-	line-height:26px;
-}
-.status__msg:not(:empty):before{
-	content: "📢";
-	font-size:12px;
-	padding-right:6px;
-}
-
-.status__msg:not(:empty):hover{
-	max-width:400px;
-	transition: max-width 300ms ease-out;
-}
-
-
-.status #statusHelp{
-	position:absolute;
-	right:28px;
-	z-index:8;
-	align-items: center;
-}
-.status #barDock{
-	border-radius:6px;
-	position:absolute;
-	right:4px;
-	z-index:8;
-	align-items: center;
-    /*background-color: var(--S-status-barDock);
-    box-shadow: 0 4px 9px rgba(0,0,0,.05), 0 1.5px 2.8px rgba(0,0,0,.07), 0 0.3px 0.7px rgba(0,0,0,.12);*/
-}
-/*.status #barDock:hover{
-	background-color: var(--S-status-barDock-hover)!important;
-}*/
-/*.status #statusHelp svg{*/
-/*	color:var(--S-dock--item--activefocus);*/
-/*}*/
-/*.status #barDock svg{*/
-/*	color:var(--S-dock--item--activefocus);*/
-/*}*/
-.status #barDock:before{
-	right:unset!important;
-	left: 0;
-	transform: rotateY(180deg);
-}
-.status #barDock:after{
-	left:unset!important;
-	right:100%;
-}
-
-.status>.fn__flex-1{
-	position:relative!important;
-	width:0!important;
-	right:0;
-	flex:0;
-}
-
-
-.status__backgroundtask{
-	padding: 0 0 0 8px;
-	border-radius:5px;
-	height:24px;
-	line-height:26px;
-}
-
-
-.body--window #status{
-	right: -22px;
-	border-radius: 6px 0 0 0;
-}
-
-.status .toolbar__item{
+	padding-right: 8px;
+	transition: max-width 300ms, opacity 300ms;
+	transition-delay: 200ms;
+	position: relative;
 	height: 24px;
+	line-height: 24px;
+
+	&:hover {
+		max-width: 600px;
+		transition: max-width 300ms ease-out;
+	}
+
+	&::before {
+		content: "📢";
+		padding-right: 2px;
+	}
 }
 
-#status .toolbar__item span{
-	margin:3px;
-	font-size:12px;
+.status > .fn__flex-1 {
+	display: none;
 }
 
-#dockBottom:not(.fn__none)+#status{
-	background-color:transparent;
+.status__backgroundtask {
+	height: 24px;
+	line-height: 24px;
 }
+
+/* 下面这些不知道有啥用 */
+/*#status #barDock::before {*/
+/*	right: unset !important;*/
+/*	left: 0;*/
+/*	transform: rotateY(180deg);*/
+/*}*/
+/*#status #barDock::after {*/
+/*	left: unset!important;*/
+/*	right: 100%;*/
+/*}*/
+/*.status > .fn__flex-1 {*/
+/*	position: relative !important;*/
+/*	width: 0 !important;*/
+/*	right: 0;*/
+/*	flex: 0;*/
+/*}*/
+/*#status .toolbar__item span {*/
+/*	margin: 3px;*/
+/*	font-size: 12px;*/
+/*}*/
+/*.body--win32 > .fn__flex-1 {*/
+/*	overflow:visible;*/
+/*}*/
