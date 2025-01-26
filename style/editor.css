@@ -192,6 +192,73 @@
 			display: none; /* 隐藏空标题 */
 		}
 	}
+
+	/* 半高背景色 */
+	span[style*="background-color: var(--b3-font-background1)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background1), var(--b3-font-background1)) center bottom / 100% .6em no-repeat;
+	}
+
+	span[style*="background-color: var(--b3-font-background2)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background2), var(--b3-font-background2)) center bottom / 100% .6em no-repeat;
+	}
+
+	span[style*="background-color: var(--b3-font-background3)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background3), var(--b3-font-background3)) center bottom / 100% .6em no-repeat;
+	}
+
+	span[style*="background-color: var(--b3-font-background4)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background4), var(--b3-font-background4)) center bottom / 100% .6em no-repeat;
+	}
+
+	span[style*="background-color: var(--b3-font-background5)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background5), var(--b3-font-background5)) center bottom / 100% .6em no-repeat;
+	}
+
+	span[style*="background-color: var(--b3-font-background6)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background6), var(--b3-font-background6)) center bottom / 100% .6em no-repeat;
+	}
+
+	span[style*="background-color: var(--b3-font-background7)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background7), var(--b3-font-background7)) center bottom / 100% .6em no-repeat;
+	}
+
+	span[style*="background-color: var(--b3-font-background8)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background8), var(--b3-font-background8)) center bottom / 100% .6em no-repeat;
+	}
+
+	span[style*="background-color: var(--b3-font-background9)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background9), var(--b3-font-background9)) center bottom / 100% .6em no-repeat;
+	}
+
+	span[style*="background-color: var(--b3-font-background10)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background10), var(--b3-font-background10)) center bottom / 100% .6em no-repeat;
+	}
+
+	span[style*="background-color: var(--b3-font-background11)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background11), var(--b3-font-background11)) center bottom / 100% .6em no-repeat;
+	}
+
+	span[style*="background-color: var(--b3-font-background12)"] {
+		background-color: transparent !important;
+		background: linear-gradient(var(--b3-font-background12), var(--b3-font-background12)) center bottom / 100% .6em no-repeat;
+	}
+
+	/* 黑色保留全高 */
+	/*span[style*="background-color: var(--b3-font-background13)"] {*/
+	/*	background-color: transparent !important;*/
+	/*	background: linear-gradient(var(--b3-font-background13), var(--b3-font-background13)) center bottom / 100% .6em no-repeat;*/
+	/*}*/
 }
 
 /* ————————————————————滚动条———————————————————— */
