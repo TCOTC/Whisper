@@ -64,7 +64,7 @@
 		color: var(--b3-protyle-inline-strong-color);
 	}
 
-	/* TODO 行级标签。导出预览是纯文本所以没有行级标签样式 */
+	/* 行级标签。导出预览是纯文本所以没有行级标签样式 */
 	span[data-type~="tag"] {
 		position: relative;
 		font-size: .75em;
@@ -525,14 +525,14 @@
 .protyle .protyle-wysiwyg[data-readonly=false] .li[data-subtype=t] > .protyle-action:hover::after {
 	background-color: var(--custom-list-hover-darker);
 }
-/* TODO 任务列表要用方形 */
+/* TODO 1 任务列表要用方形 */
 
 .protyle-wysiwyg [data-node-id].li[data-subtype="o"][fold="1"]>.protyle-action::after {
 	left: unset; /* 有序列表 */
 	width: 100%;
 }
 
-/* TODO 折叠的标题前的圆点也不好看，要改一下 */
+/* TODO 1 折叠的标题前的圆点也不好看，要改一下 */
 
 /* ————————————————————标题块———————————————————— */
 

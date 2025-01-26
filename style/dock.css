@@ -47,7 +47,6 @@ body[whisper-status="show"] .layout__dockr.layout--float {
 }
 
 /* 调整侧栏浮窗高度与层级 CSS片段 */
-/* TODO 未钉住的侧栏弹出样式还可以优化，比如圆角、阴影、位置之类的 */
 .layout__dockl.layout--float,
 .layout__dockr.layout--float {
 	top: 32px !important; /* 顶栏的高度 */
