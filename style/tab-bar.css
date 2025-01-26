@@ -79,8 +79,8 @@
 				min-width: 4em; /* 页签最少显示的字符数宽度 */
 				text-align-last: left; /* 文本居左 */
 				padding-right: 22px; /* 留给叉号图标的位置 */
-				-webkit-mask-image: -webkit-linear-gradient(right, rgba(0, 0, 0, 0) 20px, var(--b3-theme-on-surface) 24px); /* 标题文本渐变，使叉号不与标题文本重叠 */
-				mask-image: linear-gradient(to left, rgba(0, 0, 0, 0) 20px, var(--b3-theme-on-surface) 24px);
+				-webkit-mask-image: -webkit-linear-gradient(right, transparent 20px, var(--b3-theme-on-surface) 24px); /* 标题文本渐变，使叉号不与标题文本重叠 */
+				mask-image: linear-gradient(to left, transparent 20px, var(--b3-theme-on-surface) 24px);
 			}
 
 			.item__close {
@@ -103,6 +103,15 @@
 			.item__icon {
 				padding: 0 5px;
 			}
+
+			.item__text {
+				min-width: 4em; /* 页签最少显示的字符数宽度 */
+				text-align-last: left; /* 文本居左 */
+				-webkit-mask-image: -webkit-linear-gradient(right, transparent 1px, var(--b3-theme-on-surface) 15px);
+				mask-image: linear-gradient(to left, transparent 1px, var(--b3-theme-on-surface) 15px);
+			}
+
+			/* 颜色 */
 			&:nth-child(4n-3) {
 				background-color: var(--b3-card-error-background);
 
@@ -144,6 +153,23 @@
 				}
 				&:nth-child(4n):hover {
 					background-color: var(--b3-card-success-background) !important;
+				}
+			}
+
+			/* 钉住的页签与未钉住的页签之间添加分隔线 */
+			&+.item:not(.item--pin, .item--readonly) {
+				margin-left: 10px;
+
+				&::before {
+					content: "";
+					display: block;
+					position: absolute;
+					left: -8px;
+					width: .2em;
+					height: 1.5em;
+					background-color: var(--b3-theme-surface-lighter);
+					border-radius: var(--b3-border-radius);
+					pointer-events: none;
 				}
 			}
 		}
