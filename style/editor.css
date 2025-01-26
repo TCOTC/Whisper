@@ -10,7 +10,7 @@
 	/* 行级标记。放在最前面用于覆盖原生的颜色 */
 	mark,
 	span[data-type~="mark"] {
-		background: inherit;
+		background-color: transparent; /* 覆盖标记样式本身的背景色，并且不会影响带背景色的文本 */
 		/*color: inherit;*/ /* 注释掉，避免覆盖块引文本的颜色 */
 		box-shadow: 0 -0.7em 0 0 inset rgb(from var(--b3-protyle-inline-mark-background) r g b / .7), var(--custom-inline-box-shadow) rgb(from var(--b3-protyle-inline-mark-background) r g b / .7); /* 添加透明度，避免完全覆盖文本背景色 */
 
@@ -22,7 +22,7 @@
 
 	/* 行级标记。放在最前面用于覆盖原生的颜色。主题色虚线 CSS片段 https://github.com/TCOTC/siyuan-css-dashed-line-memo */
 	span[data-type~="inline-memo"] {
-		background: inherit;
+		background-color: transparent; /* 覆盖备注样式本身的背景色，并且不会影响带背景色的文本 */
 		border-bottom: medium dashed var(--b3-theme-primary);
 	}
 
@@ -511,21 +511,16 @@
 	}
 }
 /* background-repeat 需要放在后面覆盖 */
-:is(.h1, .h2, .h3, .h4, .h5, .h6) > :first-child {
-	/*position: relative;*/
-
-	&::before {
-		height: 1em;
-		width: 1em;
-		position: absolute;
-		content: "";
-		filter: hue-rotate(325deg);
-		background-repeat: no-repeat;
-		/*left: 0;*/
-		left: 4px;
-		top: 50%; /* 垂直居中 */
-		transform: translateY(-50%);
-	}
+:is(.h1, .h2, .h3, .h4, .h5, .h6) > :first-child::before {
+	height: 1em;
+	width: 1em;
+	position: absolute;
+	content: "";
+	filter: hue-rotate(325deg);
+	background-repeat: no-repeat;
+	left: 4px; /* 内容块的 padding 4px */
+	top: 50%; /* 垂直居中 */
+	transform: translateY(-50%);
 }
 
 
