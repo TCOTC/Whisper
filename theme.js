@@ -1,81 +1,47 @@
 (function() {
     (async () => {
-        console.log('————————执行一次主题JS————————');
+        console.log('Welcome to the Whisper theme!');
     })();
 
-    // 定义全局变量
-    let observer;
-
+    // 关闭或卸载主题
     window.destroyTheme = () => {
-        console.log('————————移除一次主题————————');
-        // 卸载“跟踪当前所在块”的事件监听器
-        blockTrackCleanup();
+        console.log('Whisper theme goodbye!');
+        // 跟踪当前所在块
+        document.querySelectorAll('.block-focus').forEach((element) => element.classList.remove('block-focus')); // 移除添加的类名
+        window.removeEventListener('mouseup', focusBlock, true); // 卸载事件监听器
+        window.removeEventListener('keyup', focusBlock, true);
 
-        // 卸载 MutationObserver 监听器
-        if (observer) {
-            observer.disconnect();
-        }
+        // 监听元素变化
+        observer?.disconnect();
     }
 
-    /**
-     * 获得指定块位于的编辑区
-     * @param {HTMLElement} block
-     * @return {HTMLElement} 光标所在块位于的编辑区
-     * @return {null} 光标不在块内
-     */
-    const getTargetEditor = function(block) {
-        while (block != null && !block.classList.contains('protyle-wysiwyg')) block = block.parentElement;
-        return block;
+    const focusBlock = function() {
+        const editor = document.activeElement.classList.contains('protyle-wysiwyg') ? document.activeElement : null;
+        if (!editor) return; // 焦点不在编辑器内就直接返回
+
+        // 获取光标所在块
+        let block = window.getSelection()?.anchorNode?.parentElement; // 光标所在元素的父元素
+        while (block && !(block instanceof HTMLElement && block.dataset.nodeId)) block = block.parentElement; // 光标所在块
+        // 光标不在块内时直接返回；当前块已经设置类名时直接返回
+        if (!block || block?.classList.contains(`block-focus`)) return;
+
+        // 清除当前编辑器内非聚焦块上的类名
+        editor.querySelectorAll(`.block-focus`).forEach((element) => element.classList.remove(`block-focus`));
+
+        // 编辑器内有选中块时不必凸显聚焦块，直接返回
+        if (editor?.querySelectorAll(`.protyle-wysiwyg--select`).length > 0) return;
+
+        block.classList.add(`block-focus`);
     };
 
-    /**
-     * 获得焦点所在的块
-     * @return {HTMLElement} 光标所在块
-     * @return {null} 光标不在块内
-     */
-    const getFocusedBlock = function() {
-        if (document.activeElement.classList.contains('protyle-wysiwyg')) {
-            let block = window.getSelection()?.focusNode?.parentElement; // 当前光标
-            while (block != null && block.dataset.nodeId == null) block = block.parentElement;
-            return block;
-        }
-    };
-
-    const focusHandler = function() {
-        // TODO 1 需要排除上层块包含 .protyle-wysiwyg--select 的情况，这种情况下样式会造成干扰。hasClosestByClassName？
-        // 获取当前编辑区
-        let block = getFocusedBlock(); // 当前光标所在块
-        // 当前块已经设置焦点
-        if (block?.classList.contains(`block-focus`)) return;
-
-        // 当前块未设置焦点
-        const editor = getTargetEditor(block); // 当前光标所在块位于的编辑区
-        if (editor) {
-            editor.querySelectorAll(`.block-focus`).forEach((element) => element.classList.remove(`block-focus`));
-            block.classList.add(`block-focus`);
-            // setSelector(block);
-        }
-    };
-
-    const blockTrackMain = function() {
-        // 跟踪当前所在块
-        window.addEventListener('mouseup', focusHandler, true);
-        window.addEventListener('keyup', focusHandler, true);
-    };
-
-    const blockTrackCleanup = function() {
-        // 移除类名
-        document.querySelectorAll('.block-focus').forEach((element) => element.classList.remove('block-focus'));
-        // 卸载事件监听器
-        window.removeEventListener('mouseup', focusHandler, true);
-        window.removeEventListener('keyup', focusHandler, true);
-    };
-
+    // 跟踪当前所在块
     (async () => {
-        blockTrackMain();
+        window.addEventListener('mouseup', focusBlock, true);
+        window.addEventListener('keyup', focusBlock, true);
     })();
 
-    // 通过监听来代替使用 :has 选择器，提高性能
+    // 监听元素是否隐藏。通过监听来代替使用 :has 选择器，提高性能
+    let observer;
     (async () => {
         // 选择需要观察的目标节点
         const targetNodeStatus = document.querySelector('#status');
