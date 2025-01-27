@@ -6,6 +6,7 @@
     // 关闭或卸载主题
     window.destroyTheme = () => {
         console.log('Whisper theme goodbye!');
+
         // 跟踪当前所在块
         document.querySelectorAll('.block-focus').forEach((element) => element.classList.remove('block-focus')); // 移除添加的类名
         window.removeEventListener('mouseup', focusBlock, true); // 卸载事件监听器
@@ -47,32 +48,27 @@
         const targetNodeStatus = document.querySelector('#status');
         const targetNodeDockBottom = document.querySelector('#dockBottom');
 
-        // 配置观察选项
+        // 手动检查一次并设置初始状态
+        document.body.dataset.whisperStatus = targetNodeStatus.classList.contains('fn__none') ? 'hide' : 'show';
+        document.body.dataset.whisperDockBottom = targetNodeDockBottom.classList.contains('fn__none') ? 'hide' : 'show';
+
         const config = { attributes: true, attributeFilter: ['class'] };
 
         // 创建一个回调函数，当观察到变动时执行
-        const callback = function(mutationsList, observer) {
+        const callback = function(mutationsList) {
             for(let mutation of mutationsList) {
                 if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                     const targetNode = mutation.target;
-                    const hasFnNone = targetNode.classList.contains('fn__none');
+                    const data = targetNode.classList.contains('fn__none') ? 'hide' : 'show';
                     if (targetNode === targetNodeStatus) {
-                        document.body.setAttribute('whisper-status', hasFnNone ? 'hide' : 'show');
+                        document.body.dataset.whisperStatus = data;
                     } else if (targetNode === targetNodeDockBottom) {
-                        document.body.setAttribute('whisper-dock-bottom', hasFnNone ? 'hide' : 'show');
+                        document.body.dataset.whisperDockBottom = data;
                     }
                 }
             }
         };
 
-        // 手动检查一次并设置初始状态
-        const hasFnNoneStatusInitial = targetNodeStatus.classList.contains('fn__none');
-        document.body.setAttribute('whisper-status', hasFnNoneStatusInitial ? 'hide' : 'show');
-
-        const hasFnNoneDockBottomInitial = targetNodeDockBottom.classList.contains('fn__none');
-        document.body.setAttribute('whisper-dock-bottom', hasFnNoneDockBottomInitial ? 'hide' : 'show');
-
-        // 创建一个观察器实例并传入回调函数
         observer = new MutationObserver(callback);
 
         // 传入目标节点和观察选项
