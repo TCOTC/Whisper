@@ -20,7 +20,7 @@
 }
 
 /*.layout__dockr > .fn__flex-1:not(.fn__none) {*/
-/*	margin-left: 3px; !* TODO 这里会导致侧栏面板宽度异常，暂时用下面的 min-width 解决。需要跟进 https://github.com/siyuan-note/siyuan/issues/13516 *!*/
+/*	margin-left: 3px; !* TODO跟进 这里会导致侧栏面板宽度异常，暂时用下面的 min-width 解决。需要跟进 https://github.com/siyuan-note/siyuan/issues/13516 *!*/
 /*}*/
 .layout__dockr .file-tree {
 	margin-left: 3px;
@@ -56,7 +56,7 @@ body[data-whisper-status="show"] .layout__dockr.layout--float {
 	border-radius: unset;
 	box-shadow: unset; /* 阴影样式比较奇怪，先去掉 */
 	opacity: 1 !important;
-	/*transition-delay: 1s; !* TODO 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!*/
+	/*transition-delay: 1s; !* TODO跟进 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!*/
 }
 
 /* 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔 */
@@ -103,7 +103,7 @@ body[data-whisper-status="show"][data-whisper-dock-bottom="hide"] {
 	border-radius: unset;
 	box-shadow: unset;
 	opacity: 1 !important;
-	/*transition-delay: 1s; !* TODO 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!*/
+	/*transition-delay: 1s; !* TODO跟进 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!*/
 
 	&:not([style*="translate"]) {
 		bottom: 42px !important; /* 底部侧栏的高度 */
@@ -252,7 +252,7 @@ body[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 
 /* 反链、提及面板固定文档名称 CSS片段 */
 /* author by JeffreyChen https://ld246.com/article/1737207365006 */
-/* TODO 需要跟进 https://github.com/siyuan-note/siyuan/issues/13679 修改 */
+/* TODO跟进 需要跟进 https://github.com/siyuan-note/siyuan/issues/13679 修改 */
 .backlinkMList .b3-list-item,
 .backlinkList .b3-list-item {
 	position: sticky;

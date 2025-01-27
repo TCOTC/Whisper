@@ -67,7 +67,8 @@
 }
 
 /* 链接可能有标题，样式单独调整 */
-/* TODO 选择器 span 需要跟进 https://github.com/siyuan-note/siyuan/pull/13476 */
+/* TODO跟进 选择器 span 需要跟进 https://github.com/siyuan-note/siyuan/pull/13476 */
+/* TODO 1 数据库链接字段的 tooltip 不需要放到左下角，因为有标题显示不全 */
 .tooltip--href  {
     /* TODO &, &.fn__none 有必要吗？ */
     &, &.fn__none {
