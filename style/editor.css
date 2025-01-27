@@ -116,7 +116,7 @@
 		line-height: 1;
 		color: var(--b3-theme-on-background);
 		vertical-align: middle;
-		background-color: rgb(from var(--b3-theme-surface) r g b / .65); /* TODO 背景颜色不明显，需要跟进 https://github.com/siyuan-note/siyuan/issues/13890 */
+		background-color: var(--custom-protyle-kbd-background); /* TODO 在暗黑模式下这个背景颜色不明显 */
 		border: solid 1px var(--b3-theme-surface-lighter);
 		border-radius: var(--b3-border-radius);
 		box-shadow: inset 0 -1px 0 var(--b3-theme-surface-lighter);
