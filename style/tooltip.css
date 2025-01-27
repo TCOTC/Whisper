@@ -1,84 +1,126 @@
 /* ————————————————————伪元素提示———————————————————— */
 
+/* 动画 */
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes tooltipHrefFadeIn {
+    to {
+        opacity: 1;
+    }
+}
+/*@keyframes tooltipFadeOut {*/
+/*    from {*/
+/*        opacity: 1;*/
+/*    }*/
+/*    to {*/
+/*        pointer-events: none;*/
+/*        opacity: 0;*/
+/*    }*/
+/*}*/
+@keyframes tooltipHrefFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        pointer-events: none;
+        opacity: 0;
+    }
+}
+
 /* NOTE 伪元素提示和悬浮提示统一样式、渐变动画 */
 .b3-tooltips::before, .b3-tooltips:hover::before {
     display: none; /* 隐藏小三角 */
 }
 .b3-tooltips::after, .b3-tooltips:hover::after {
-    box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 2px 6px 0 rgba(0,0,0,.1);
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,.1); /* 阴影 */
+    outline: 1px solid rgba(0, 0, 0, 0.1);  /* 外框 */
+    outline-offset: -1px;
     background-color: var(--mix-theme_primary_background);
     color: var(--b3-theme-on-background);
 }
 .b3-tooltips:hover::after {
-    transition: opacity 100ms 400ms cubic-bezier(0, 0, 0.2, 1); /* 透明度渐变 */
+    animation-name: tooltipFadeIn;
+    animation-duration: 100ms;     /* 动画过渡时间 */
+    animation-delay: 800ms;        /* 延迟显示动画 */
+    animation-fill-mode: forwards; /* 动画结束后保持最后一帧（不透明） */
+    opacity: 0;
 }
 
 
 /* ————————————————————悬浮提示———————————————————— */
-
+/* TODO 1 重新梳理一下样式，每行都写注释，看看怎么搞淡入淡出 */
 .tooltip {
-    box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 2px 6px 0 rgba(0,0,0,.1);
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,.1); /* 阴影 */
+    outline: 1px solid rgba(0, 0, 0, 0.1);  /* 外框 */
+    outline-offset: -1px;
     background-color: var(--mix-theme_primary_background);
     color: var(--b3-theme-on-background);
-    animation-duration: 10ms; /* 默认动画 zoomIn 更快过渡 */
-    animation-delay: 400ms;   /* 延迟显示 */
-    max-width: 350px;         /* 初始链接宽度(小于这个宽度的情况下字体会变细，很怪) */
-    transition: max-width 0.5s 1.5s, opacity 100ms 400ms cubic-bezier(0, 0, 0.2, 1);
+    animation-name: tooltipFadeIn;
+    animation-duration: 100ms; /* 动画过渡时间 */
+    animation-delay: 800ms;    /* 延迟显示动画 */
+    max-width: 350px;          /* 初始链接宽度(小于这个宽度的情况下字体会变细，很怪) */
+    overflow-x: hidden;        /* 设置了 max-width 之后有的情况下会出现横向滚动条 */
+    transition: max-width 0.5s 1.5s;
     opacity: 1;
 }
+/* TODO 1 鼠标移入的瞬间移出，opacity 会瞬间变成 1：不要淡出能解决 */
+/*.tooltip.fn__none {*/
+/*    display: block !important;     !* 保持显示直到淡出 *!*/
+/*    transition: max-width 0s 2s;*/
+/*    animation-name: tooltipFadeOut;*/
+/*    animation-duration: 100ms;     !* 动画过渡时间 *!*/
+/*    animation-delay: unset;        !* 动画无延迟 *!*/
+/*    animation-fill-mode: forwards; !* 动画结束后保持最后一帧（不透明） *!*/
+/*    !*animation-name: unset;*!*/
+/*    !*transition: opacity 100ms 0ms, max-width 0s 2s;*!*/
+/*    pointer-events: none;*/
+/*    opacity: .5;*/
+/*}*/
 
+
+/* ————————————————————特别类型的悬浮提示———————————————————— */
+/* TODO 1 要在主题 JS 里重新实现简化版本的 showTooltip 和 hideTooltip，用来添加特定类名 */
 /* 无需延迟显示 */
 .tooltip--emoji {
     animation-delay: unset;
 }
-
 /* 路径信息的悬浮提示统一显示在左下角 */
-@keyframes tooltipFadeIn {
-    to {
-        opacity: 1;
-    }
-}
-@keyframes tooltipFadeOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
 .tooltip--tab_header,
 .tooltip--href {
-    pointer-events: none;    /* 有的悬浮提示会有滚动条需要鼠标交互，所以只有这部分禁止 */
-    white-space: nowrap;     /* 不换行 */
-    overflow: hidden;        /* 隐藏超出部分 */
-    text-overflow: ellipsis; /* 显示省略号 */
-    position: absolute;      /* 显示在左下角 */
+    /* 底栏高度 24px */
+    line-height: 16px;
+    padding: 4px 8px;
+    box-shadow: unset; /* 阴影 */
+    outline: unset;    /* 外框 */
+    border-radius: 0 var(--b3-border-radius) 0 0;
     top: unset !important;
     left: 0 !important;
     bottom: 0 !important;
-    border-radius:0 6px 0 0;
-    max-width: 90vw;         /* 最大链接宽度 */
-    animation-name: tooltipFadeIn;
-    animation-duration: 300ms;
-    animation-delay: 200ms;
+
+    pointer-events: none;      /* 有的悬浮提示会有滚动条需要鼠标交互，所以只有这部分放左下角的禁止 */
+    white-space: nowrap;       /* 不换行 */
+    overflow: hidden;          /* 隐藏超出部分 */
+    text-overflow: ellipsis;   /* 显示省略号 */
+    position: absolute;        /* 显示在左下角 */
+    max-width: 90vw;           /* 最大链接宽度 */
+    animation-name: tooltipHrefFadeIn;
+    animation-duration: 300ms; /* 动画过渡时间 */
+    animation-delay: 200ms;    /* 延迟显示动画 */
     animation-fill-mode: both;
-}
-.tooltip.fn__none {
-    transition: max-width 0s 2s;
-    animation-name: tooltipFadeOut;
-    animation-duration: 500ms;
-    animation-delay: 200ms;
-    transition: max-width 0s 2s, opacity 100ms 400ms cubic-bezier(0, 0, 0.2, 1);
-    opacity: 0;
 }
 .tooltip--tab_header.fn__none,
 .tooltip--href.fn__none {
-    display: block !important;     /* 保持显示直到淡出 */
-    animation-name: tooltipFadeOut;
-    animation-duration: 300ms;
-    animation-delay: 200ms;
+    animation-name: tooltipHrefFadeOut;
+    animation-duration: 300ms;     /* 动画过渡时间 */
+    animation-delay: 200ms;        /* 延迟显示动画 */
     max-width: 350px;              /* 能够使元素添加 .fn__none 之后宽度不变(用于宽度刚好展开一半的情况) */
-    transition: max-width 0s 0.3s, opacity 100ms 400ms cubic-bezier(0, 0, 0.2, 1); /* 隐藏超过 0.3s 宽度就立即缩回 */
+    transition: max-width 0s 0.3s; /* 隐藏超过 0.3s 宽度就立即缩回 */
 }
 
 /* 链接可能有标题，样式单独调整 */
