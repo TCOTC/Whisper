@@ -138,7 +138,8 @@
 	span[data-type~="a"] {
 		/*opacity: 0.86;*/
 		opacity: 1;
-		transition: text-shadow var(--custom-transition);
+		/*transition: text-shadow var(--custom-transition);*/
+		transition: unset;
 
 		&:hover {
 			/*opacity: 1;*/
@@ -160,7 +161,8 @@
 		/*box-shadow: var(--custom-inline-box-shadow) var(--custom-color-blue-light);*/ /* 跟标记样式冲突 */
 		border-bottom: 0.15em solid var(--custom-color-blue-light); /* 直接覆盖下划线样式 */
 		color: inherit;
-		transition: text-shadow var(--custom-transition);
+		/*transition: text-shadow var(--custom-transition);*/
+		transition: unset;
 
 		&:hover {
 			text-shadow: var(--custom-theme-on-shadow); /* 代替 opacity 变化 */

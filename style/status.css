@@ -9,6 +9,7 @@
 	border-radius: var(--b3-border-radius) 0 0 0;
 	padding: 0 28px 0 0;
 	align-items: center;
+	z-index: 3; /* 高于选中块的高亮伪元素 */
 
 	.toolbar__item {
 		align-items: center;
