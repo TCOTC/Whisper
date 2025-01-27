@@ -21,16 +21,20 @@
         if (!editor) return; // 焦点不在编辑器内就直接返回
 
         // 获取光标所在块
-        let block = window.getSelection()?.anchorNode?.parentElement; // 光标所在元素的父元素
-        while (block && !(block instanceof HTMLElement && block.dataset.nodeId)) block = block.parentElement; // 光标所在块
-        // 光标不在块内时直接返回；当前块已经设置类名时直接返回
-        if (!block || block?.classList.contains(`block-focus`)) return;
+        let block = window.getSelection()?.anchorNode?.parentElement?.closest('[data-node-id]'); // 光标在选区前面，所以用 anchorNode
+
+        // 编辑器内有选中块时不必凸显聚焦块，清除类名后返回
+        if (editor?.querySelector(`.protyle-wysiwyg--select`)) {
+            // 清除当前编辑器内所有块上的类名
+            editor.querySelectorAll(`.block-focus`).forEach((element) => element.classList.remove(`block-focus`));
+            return;
+        }
+
+        // 光标不在块内 或者 当前块已经设置类名 时直接返回
+        if (block?.classList.contains(`block-focus`)) return;
 
         // 清除当前编辑器内非聚焦块上的类名
         editor.querySelectorAll(`.block-focus`).forEach((element) => element.classList.remove(`block-focus`));
-
-        // 编辑器内有选中块时不必凸显聚焦块，直接返回
-        if (editor?.querySelectorAll(`.protyle-wysiwyg--select`).length > 0) return;
 
         block.classList.add(`block-focus`);
     };
