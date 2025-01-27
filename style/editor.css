@@ -508,33 +508,60 @@
 }
 
 
+/* ————————————————————折叠块———————————————————— */
+
 /* 列表 */
 .protyle-wysiwyg [data-node-id].li:has(.block-focus) > .protyle-action {
 	color: var(--b3-theme-primary);
 }
+/* 折叠的列表项 */
 .protyle-wysiwyg [data-node-id].li[fold="1"]:has(.block-focus) > .protyle-action::after {
 	background-color: var(--b3-theme-primary-lighter);
 }
-
-/* 折叠的列表项 */
 .protyle-wysiwyg [data-node-id].li[fold="1"] > .protyle-action::after {
 	background-color: var(--custom-list-hover-dark);
 }
-.protyle .protyle-wysiwyg .li[data-subtype=o] > .protyle-action:hover::after,
-.protyle .protyle-wysiwyg .li[data-subtype=u] > .protyle-action:hover::after,
-.protyle .protyle-wysiwyg[data-readonly=false] .li[data-subtype=t] > .protyle-action:hover::after {
+/* 无序列表 */
+.protyle .protyle-wysiwyg .li[data-subtype="u"] > .protyle-action:hover::after {
 	background-color: var(--custom-list-hover-darker);
 }
-/* TODO 1 任务列表要用方形 */
-
-.protyle-wysiwyg [data-node-id].li[data-subtype="o"][fold="1"]>.protyle-action::after {
-	left: unset; /* 有序列表 */
-	width: 100%;
+/* 有序列表、任务列表 */
+/* 图标必须是这一个 Size 为 32 的，位置才能刚好对上 https://fonts.google.com/icons?icon.set=Material+Icons&icon.style=Rounded&icon.size=32&icon.color=%235f6368&icon.query=Play&selected=Material+Icons+Round:play_arrow:&icon.platform=web */
+/* svg 里的 fill 填的是 --b3-theme-on-surface-light */
+.protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::before {
+	content: '';
+	position: absolute;
+	left: -19px;
+	width: 21px;
+	height: 47px;
+	background-image: url('../icon/play_arrow_5F6368.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position-y: center;
+	pointer-events: none;
+}
+.protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::after {
+	background-color: unset; /* 有序列表、任务列表折叠的时候不需要阴影 */
 }
 
-/* TODO 1 折叠的标题前的圆点也不好看，要改一下 */
+/* 标题块 */
+.protyle-wysiwyg [data-node-id][data-type="NodeHeading"][fold="1"]::before {
+	display: none;
+}
+
+/* 给折叠的非列表项块添加背景 */
+.protyle-wysiwyg [data-node-id][fold="1"]:not(.li) {
+	background-image: repeating-linear-gradient(-45deg,var(--b3-theme-background-light),var(--b3-theme-background-light) 5px, var(--b3-list-hover) 0, var(--b3-list-hover) 10px);
+}
+/* TODO 给各种类型的块分别弄个合适的折叠样式 */
+
 
 /* ————————————————————标题块———————————————————— */
+
+/* 隐藏展开标题块时一闪而过的 loading-pure.svg */
+[data-node-id][data-type="NodeHeading"] > div[spin]:last-child {
+	display: none;
+}
 
 /* 标题前的图标 */
 /* 图标文件来自粉色小屋主题 https://github.com/StarDustSheep/pink-room */
