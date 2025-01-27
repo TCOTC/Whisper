@@ -538,7 +538,7 @@
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position-y: center;
-	pointer-events: none;
+	pointer-events: none; /* 伪元素会影响块标移动 */
 }
 .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::after {
 	background-color: unset; /* 有序列表、任务列表折叠的时候不需要阴影 */
