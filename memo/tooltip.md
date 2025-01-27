@@ -120,7 +120,7 @@
                     }
 
                     // 记录当前的类名
-                    currentClasses = node.className; // TODO 主题改完确定没问题之后就去除所有 log 输出
+                    currentClasses = node.className;
                 }
             }
         }, 500)); // 500 毫秒的延迟

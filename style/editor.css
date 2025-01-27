@@ -87,7 +87,7 @@
 		}
 	}
 	.export-img span[data-type~="tag"] + span[data-type~="tag"]::before {
-		content: none; /* TODO 导出图片时的行级元素有问题，等待 issue 解决之后修改 https://github.com/siyuan-note/siyuan/issues/13856 */
+		content: none; /* TODO跟进 导出图片时的行级元素有问题，等待 issue 解决之后修改 https://github.com/siyuan-note/siyuan/issues/13856 */
 	}
 
 	span[data-type~="inline-math"] {
@@ -167,7 +167,7 @@
 		}
 	}
 	/* 块引用静态锚文本用虚线下划线 */
-	/* TODO 跟进锚文本类型修复 https://github.com/siyuan-note/siyuan/issues/13889 */
+	/* TODO跟进 跟进锚文本类型修复 https://github.com/siyuan-note/siyuan/issues/13889 */
 	span[data-type~=block-ref][data-subtype="s"]:not(.av__celltext),
 	.av__celltext--ref[data-subtype="s"] {
 		border-bottom: 0.15em dashed var(--custom-color-blue-light);
@@ -295,7 +295,7 @@
 
 /* 头图、图标、标签 */
 .protyle-background__ia {
-	display: flex; /* TODO 用 flex 布局重写 */
+	display: flex; /* TODO 1 用 flex 布局重写 */
 	margin-top: 0 !important;
 
 	.protyle-background__icon {
@@ -531,7 +531,7 @@
 .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::before {
 	content: '';
 	position: absolute;
-	left: -19px;
+	left: -19.5px;
 	width: 21px;
 	height: 47px;
 	background-image: url('../icon/play_arrow_5F6368.svg');
@@ -624,7 +624,7 @@
 /* ————————————————————代码块———————————————————— */
 
 /* 缩短代码块上下边距，更紧凑 */
-/* TODO https://github.com/siyuan-note/siyuan/pull/13564 PR 合并后需要移除这部分 */
+/* TODO跟进 https://github.com/siyuan-note/siyuan/pull/13564 PR 合并后需要移除这部分 */
 .b3-typography .code-block:not(pre),
 .protyle-wysiwyg .code-block:not(pre) {
 	margin: 2px 0;
@@ -663,7 +663,7 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	opacity: 0;
 }
 /* 代码块语言的左边与代码对齐 */
-/* TODO 跟进 https://github.com/siyuan-note/siyuan/pull/13564 ，如果 PR 合并的话就可以删掉这部分了 */
+/* TODO跟进 跟进 https://github.com/siyuan-note/siyuan/pull/13564 ，如果 PR 合并的话就可以删掉这部分了 */
 .protyle-action__language {
 	position: absolute;
 	left: 1em;
