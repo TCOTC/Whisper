@@ -1,20 +1,21 @@
 (function() {
     (async () => {
-        console.log('Welcome to the Whisper theme!');
+        console.log('Whisper: Welcome to the Whisper theme!');
     })();
 
     // 关闭或卸载主题
     window.destroyTheme = () => {
-        console.log('Whisper theme goodbye!');
+        console.log('Whisper: Goodbye Whisper theme!');
 
-        // 跟踪当前所在块
+        // 给光标所在块添加类名 block-focus
         document.querySelectorAll('.block-focus').forEach((element) => element.classList.remove('block-focus')); // 移除添加的类名
         document.removeEventListener('mouseup', focusBlock); // 卸载事件监听器
         document.removeEventListener('keyup', focusBlock);
 
-        // 监听元素变化
+        // 监听元素是否隐藏。通过监听来代替使用 :has 选择器，提高性能
         observer?.disconnect();
 
+        // 鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加类名
         document.removeEventListener('mouseover', checkAndAddClassOnHover);
     }
 
@@ -41,13 +42,13 @@
         block.classList.add(`block-focus`);
     };
 
-    // 跟踪当前所在块
+    // 功能：给光标所在块添加类名 block-focus
     (async () => {
         document.addEventListener('mouseup', focusBlock);
         document.addEventListener('keyup', focusBlock);
     })();
 
-    // 监听元素是否隐藏。通过监听来代替使用 :has 选择器，提高性能
+    // 功能：监听元素是否隐藏。通过监听来代替使用 :has 选择器，提高性能
     let observer;
     (async () => {
         // 选择需要观察的目标节点
@@ -82,67 +83,58 @@
         observer.observe(targetNodeDockBottom, config);
     })();
 
-    const hasClosestByClassName = (e, className, top = false) => {
-        if (!e || e.nodeType === 9) return false;
-        if (e.nodeType === 3) e = e.parentElement;
-        if (top) {
-            while (e?.tagName !== "BODY") {
-                if (e.classList?.contains(className)) return e;
-                e = e.parentElement;
-            }
-        } else {
-            while (e && !e.classList.contains("protyle-wysiwyg")) {
-                if (e.classList?.contains(className)) return e;
-                e = e.parentElement;
-            }
-        }
-        return false;
-    };
+    // 获取包含特定类名的上层元素
+    // const hasClosestByClassName = (e, className, top = false) => {
+    //     if (!e || e.nodeType === 9) return false;
+    //     if (e.nodeType === 3) e = e.parentElement;
+    //     if (top) {
+    //         while (e?.tagName !== "BODY") {
+    //             if (e.classList?.contains(className)) return e;
+    //             e = e.parentElement;
+    //         }
+    //     } else {
+    //         while (e && !e.classList.contains("protyle-wysiwyg")) {
+    //             if (e.classList?.contains(className)) return e;
+    //             e = e.parentElement;
+    //         }
+    //     }
+    //     return false;
+    // };
 
-    // 拼接类名并添加到 tooltipElement 的 classList 中
+    // 把类名添加到 tooltip 元素的 classList 中
     const addClasses2Tooltip = (tooltipClasses) => {
         tooltipClasses.forEach(cls => {
-            const fullClassName = `tooltip--${cls}`;
-            // 如果类名不存在且 tooltip 元素没有隐藏，才添加类名
-            if (!tooltipElement.classList.contains(fullClassName) && !tooltipElement.classList.contains("fn__none")) {
-                tooltipElement.classList.add(fullClassName);
+            // 类名不存在才添加类名
+            // 感觉理论上会有 tooltip 显示又隐藏了才添加类名的情况，但实际没测出来。不过即使 tooltip 隐藏了也要添加类名，因为可以有 .tooltip--custom.fn__none 的样式
+            if (!tooltipElement.classList.contains(cls)) {
+                tooltipElement.classList.add(cls);
             }
         });
     };
 
     // 判断元素是否需要添加类名
     const checkAndAddClassOnHover = (event) => {
+        if (!event.target || event.target.nodeType === 9) return false;
+        const element = event.target.nodeType === 3 ? event.target.parentElement : event.target;
 
-        // TODO 两种情况：1.tooltip显示了又隐藏了就不再继续执行 2.tooltip还没开始显示的话要等到显示了再继续执行。如果判断不了的话就先不管了，反正是小概率事件
-        // // 没显示 tooltip 时，需要等到 tooltip 显示之后再判断和添加类名，否则原生 showTooltip 时会覆盖掉这里添加的类名
-        // if (tooltipElement.classList.contains("fn__none")) {
-        //     // TODO 1 监听 tooltip 元素移除 fn__none 类名，然后卸载监听器继续执行后面的代码
-        // }
-        // emoji 元素
-        const emojiElement = hasClosestByClassName(event.target, "emojis__item", true) ||
-            hasClosestByClassName(event.target, "emojis__type", true);
-        if (emojiElement) {
-            const tooltipClasses = [];
-            tooltipClasses.push("emoji");
-            addClasses2Tooltip(tooltipClasses);
+        // emoji 元素、emoji 选项
+        if (element.classList.contains("emojis__item") || element.classList.contains("emojis__type")) {
+            addClasses2Tooltip(["tooltip--emoji"]);
             return;
         }
-        // 数据库资源字段中的链接
-        const avHrefElement = hasClosestByClassName(event.target, "av__celltext--url");
-        if (avHrefElement?.parentElement?.closest('[data-dtype="mAsset"]')) {
-            const tooltipClasses = [];
-            tooltipClasses.push("av-href");
-            addClasses2Tooltip(tooltipClasses);
+        // 数据库资源字段中的链接、属性面板数据库资源字段中的链接
+        if (element.parentElement?.closest('[data-dtype="mAsset"]') || element.parentElement?.closest('[data-type="mAsset"]')) {
+            addClasses2Tooltip(["tooltip--av-href"]);
             // return;
         }
     };
 
-    // 鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加类名
+    // 功能：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加类名
     let tooltipElement;
     (async () => {
         tooltipElement = document.getElementById("tooltip");
         if (tooltipElement) {
-            // initBlockPopover
+            // 参考原生的 initBlockPopover 函数
             document.addEventListener('mouseover', checkAndAddClassOnHover);
         } else {
             console.log("Whisper: tooltip element does not exist.");
