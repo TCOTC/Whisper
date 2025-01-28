@@ -101,15 +101,24 @@
     //     return false;
     // };
 
+    // 获取包含特定属性和值的上层元素
+    // 属性值只能是 string 类型，if 条件优化掉了 `typeof value === "string" &&`
+    const hasClosestByAttribute = (e, attr, value) => {
+        // 到达 <html> 元素时，e.parentElement 会返回 null，跳出循环
+        while (e) {
+            if (e.getAttribute(attr)?.includes(value)) return e; // 找到匹配的元素，直接返回；为了提高性能，优化掉了 .split(" ")
+            e = e.parentElement; // 继续向上查找
+        }
+        return false; // 未找到匹配的元素
+    };
+
     // 把类名添加到 tooltip 元素的 classList 中
-    const addClasses2Tooltip = (tooltipClasses) => {
-        tooltipClasses.forEach(cls => {
-            // 类名不存在才添加类名
-            // 感觉理论上会有 tooltip 显示又隐藏了才添加类名的情况，但实际没测出来。不过即使 tooltip 隐藏了也要添加类名，因为可以有 .tooltip--custom.fn__none 的样式
-            if (!tooltipElement.classList.contains(cls)) {
-                tooltipElement.classList.add(cls);
-            }
-        });
+    const addClass2Tooltip = (tooltipClass) => {
+        // 类名不存在才添加类名
+        // 感觉理论上会有 tooltip 显示又隐藏了才添加类名的情况，但实际没测出来。不过即使 tooltip 隐藏了也要添加类名，因为可以有 .tooltip--custom.fn__none 的样式
+        if (!tooltipElement.classList.contains(tooltipClass)) {
+            tooltipElement.classList.add(tooltipClass);
+        }
     };
 
     // 判断元素是否需要添加类名
@@ -117,14 +126,19 @@
         if (!event.target || event.target.nodeType === 9) return false;
         const element = event.target.nodeType === 3 ? event.target.parentElement : event.target;
 
-        // emoji 元素、emoji 选项
+        // 表情选择器上的表情、底部选项
         if (element.classList.contains("emojis__item") || element.classList.contains("emojis__type")) {
-            addClasses2Tooltip(["tooltip--emoji"]);
+            addClass2Tooltip("tooltip--emoji");
             return;
         }
         // 数据库资源字段中的链接、属性面板数据库资源字段中的链接
         if (element.parentElement?.closest('[data-dtype="mAsset"]') || element.parentElement?.closest('[data-type="mAsset"]')) {
-            addClasses2Tooltip(["tooltip--av-href"]);
+            addClass2Tooltip("tooltip--href_av");
+            return;
+        }
+        // 页签
+        if (hasClosestByAttribute(element, "data-type", "tab-header")) {
+            addClass2Tooltip("tooltip--tab_header");
             // return;
         }
     };
