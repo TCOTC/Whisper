@@ -1,22 +1,20 @@
 (function() {
-    (async () => {
-        console.log('Whisper: Welcome to the Whisper theme!');
-    })();
+    console.log('Whisper: Welcome!');
 
     // 关闭或卸载主题
     window.destroyTheme = () => {
-        console.log('Whisper: Goodbye Whisper theme!');
-
         // 给光标所在块添加类名 block-focus
         document.querySelectorAll('.block-focus').forEach((element) => element.classList.remove('block-focus')); // 移除添加的类名
         document.removeEventListener('mouseup', focusBlock); // 卸载事件监听器
         document.removeEventListener('keyup', focusBlock);
 
         // 监听元素是否隐藏。通过监听来代替使用 :has 选择器，提高性能
-        observer?.disconnect();
+        cssObserver?.disconnect();
 
         // 鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加类名
         document.removeEventListener('mouseover', checkAndAddClassOnHover);
+
+        console.log('Whisper: Goodbye!');
     }
 
     const focusBlock = function() {
@@ -49,7 +47,7 @@
     })();
 
     // 功能：监听元素是否隐藏。通过监听来代替使用 :has 选择器，提高性能
-    let observer;
+    let cssObserver;
     (async () => {
         // 选择需要观察的目标节点
         const targetNodeStatus = document.querySelector('#status');
@@ -59,28 +57,24 @@
         document.body.dataset.whisperStatus = targetNodeStatus.classList.contains('fn__none') ? 'hide' : 'show';
         document.body.dataset.whisperDockBottom = targetNodeDockBottom.classList.contains('fn__none') ? 'hide' : 'show';
 
-        const config = { attributes: true, attributeFilter: ['class'] };
-
         // 创建一个回调函数，当观察到变动时执行
         const callback = function(mutationsList) {
             for(let mutation of mutationsList) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                    const targetNode = mutation.target;
-                    const data = targetNode.classList.contains('fn__none') ? 'hide' : 'show';
-                    if (targetNode === targetNodeStatus) {
-                        document.body.dataset.whisperStatus = data;
-                    } else if (targetNode === targetNodeDockBottom) {
-                        document.body.dataset.whisperDockBottom = data;
-                    }
+                const targetNode = mutation.target;
+                const data = targetNode.classList.contains('fn__none') ? 'hide' : 'show';
+                if (targetNode === targetNodeStatus) {
+                    document.body.dataset.whisperStatus = data;
+                } else if (targetNode === targetNodeDockBottom) {
+                    document.body.dataset.whisperDockBottom = data;
                 }
             }
         };
 
-        observer = new MutationObserver(callback);
+        cssObserver = new MutationObserver(callback);
 
         // 传入目标节点和观察选项
-        observer.observe(targetNodeStatus, config);
-        observer.observe(targetNodeDockBottom, config);
+        cssObserver.observe(targetNodeStatus, { attributeFilter: ['class'] });
+        cssObserver.observe(targetNodeDockBottom, { attributeFilter: ['class'] });
     })();
 
     // 获取包含特定类名的上层元素
@@ -137,8 +131,24 @@
             return;
         }
         // 页签
-        if (hasClosestByAttribute(element, "data-type", "tab-header")) {
-            addClass2Tooltip("tooltip--tab_header");
+        const tabHeaderElement = hasClosestByAttribute(element, "data-type", "tab-header");
+        if (tabHeaderElement) {
+            if (tabHeaderElement.hasAttribute("aria-label")) {
+                addClass2Tooltip("tooltip--tab_header");
+            } else {
+                // 如果页签没有 aria-label 属性，说明 tooltip 也还没有被添加
+                // 要监听 tooltipElement 元素的类名变化，等 fn__none 类名被移除之后再调用 addClass2Tooltip() 和卸载监听
+                // TODO 这个地方比较影响性能，需要思考更好的方法
+                let tooltipObserver = new MutationObserver((mutationsList) => {
+                    for (let mutation of mutationsList) {
+                        if (!tooltipElement.classList.contains('fn__none')) {
+                            addClass2Tooltip("tooltip--tab_header");
+                            tooltipObserver.disconnect(); // 卸载监听
+                        }
+                    }
+                });
+                tooltipObserver.observe(tooltipElement, { attributeFilter: ['class'] });
+            }
             // return;
         }
     };
