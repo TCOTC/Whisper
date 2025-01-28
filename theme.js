@@ -9,8 +9,8 @@
 
         // 跟踪当前所在块
         document.querySelectorAll('.block-focus').forEach((element) => element.classList.remove('block-focus')); // 移除添加的类名
-        window.removeEventListener('mouseup', focusBlock, true); // 卸载事件监听器
-        window.removeEventListener('keyup', focusBlock, true);
+        document.removeEventListener('mouseup', focusBlock); // 卸载事件监听器
+        document.removeEventListener('keyup', focusBlock);
 
         // 监听元素变化
         observer?.disconnect();
@@ -41,8 +41,8 @@
 
     // 跟踪当前所在块
     (async () => {
-        window.addEventListener('mouseup', focusBlock, true);
-        window.addEventListener('keyup', focusBlock, true);
+        document.addEventListener('mouseup', focusBlock);
+        document.addEventListener('keyup', focusBlock);
     })();
 
     // 监听元素是否隐藏。通过监听来代替使用 :has 选择器，提高性能
