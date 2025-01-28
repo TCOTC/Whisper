@@ -84,9 +84,10 @@
 
 
 /* ————————————————————特别类型的悬浮提示———————————————————— */
-/* TODO 1 要在主题 JS 里重新实现简化版本的 showTooltip 和 hideTooltip，用来添加特定类名 */
+/* TODO 1 JS 功能已经加上了，还需要修改 PR https://github.com/siyuan-note/siyuan/pull/13476 去掉自定义类名的相关修改，尽快合并。合并 PR 的下一个版本就上架主题（记得改json版本号） */
 /* 无需延迟显示 */
-.tooltip--emoji {
+.tooltip--emoji,
+.tooltip--href_av {
     animation-delay: unset;
 }
 /* 路径信息的悬浮提示统一显示在左下角 */
