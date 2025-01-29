@@ -68,7 +68,8 @@
     transition: max-width 0.5s 1.5s;
     opacity: 1;
 }
-/* TODO 1 鼠标移入的瞬间移出，opacity 会瞬间变成 1：不要淡出能解决 */
+/* TODO 1 鼠标移入的瞬间移出，opacity 会瞬间变成 1：不要淡出才行 */
+/* TODO 看看能不能用 JS 实现 animation 的效果，读取和修改 style.opacity；看看能不能用上 window.requestAnimationFrame() 方法 */
 /*.tooltip.fn__none {*/
 /*    display: block !important;     !* 保持显示直到淡出 *!*/
 /*    transition: max-width 0s 2s;*/
@@ -85,14 +86,15 @@
 
 /* ————————————————————特别类型的悬浮提示———————————————————— */
 /* TODO 1 JS 功能已经加上了，还需要修改 PR https://github.com/siyuan-note/siyuan/pull/13476 去掉自定义类名的相关修改，尽快合并。合并 PR 的下一个版本就上架主题（记得改json版本号） */
+/* https://github.com/siyuan-note/siyuan/pull/13966 */
 /* 无需延迟显示 */
-.tooltip--emoji,
-.tooltip--href_av {
+.tooltip[data-whisper-tooltip="emoji"],
+.tooltip[data-whisper-tooltip="href_av"] {
     animation-delay: unset;
 }
 /* 路径信息的悬浮提示统一显示在左下角 */
-.tooltip--tab_header,
-.tooltip--href {
+.tooltip--href,
+.tooltip[data-whisper-tooltip="tab_header"] {
     /* 底栏高度 24px */
     line-height: 16px;
     padding: 4px 8px;
@@ -113,8 +115,8 @@
     animation-delay: 200ms;    /* 延迟显示动画 */
     animation-fill-mode: both;
 }
-.tooltip--tab_header.fn__none,
-.tooltip--href.fn__none {
+.tooltip--href.fn__none,
+.tooltip.fn__none[data-whisper-tooltip="tab_header"] {
     animation-name: tooltipHrefFadeOut;
     animation-duration: 300ms;     /* 动画过渡时间 */
     animation-delay: 200ms;        /* 延迟显示动画 */
@@ -123,9 +125,9 @@
 }
 
 /* 链接可能有标题，样式单独调整 */
-/* TODO跟进 选择器 span 需要跟进 https://github.com/siyuan-note/siyuan/pull/13476 */
-/* TODO 1 数据库链接字段的 tooltip 不需要放到左下角，因为有标题显示不全 */
-.tooltip--href  {
+/* TODO跟进 选择器 span 需要跟进 https://github.com/siyuan-note/siyuan/pull/13966 */
+.tooltip--href:not([data-whisper-tooltip="href_av"]), /* 数据库链接字段的 tooltip 不放到左下角，因为确实会需要原地查看 */
+.tooltip[data-whisper-tooltip="tab_header"] {
     /* TODO &, &.fn__none 有必要吗？ */
     &, &.fn__none {
         display: flex !important;
