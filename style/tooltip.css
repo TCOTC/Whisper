@@ -107,7 +107,6 @@
     white-space: nowrap;       /* 不换行 */
     overflow: hidden;          /* 隐藏超出部分 */
     text-overflow: ellipsis;   /* 显示省略号 */
-    position: absolute;        /* 显示在左下角 */
     max-width: 90vw;           /* 最大链接宽度 */
     animation-name: tooltipHrefFadeIn;
     animation-duration: 300ms; /* 动画过渡时间 */

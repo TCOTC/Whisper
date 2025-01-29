@@ -1,6 +1,12 @@
 (function() {
     console.log('Whisper: Welcome!');
 
+    // 判断是否为手机
+    let isMobile;
+    (async () => {
+        isMobile = !!document.getElementById("sidebar");
+    })();
+
     // 关闭或卸载主题
     window.destroyTheme = () => {
         // 给光标所在块添加类名 block-focus
@@ -49,6 +55,7 @@
     // 功能：监听元素是否隐藏。通过监听来代替使用 :has 选择器，提高性能
     let cssObserver;
     (async () => {
+        if (isMobile) return;
         // 选择需要观察的目标节点
         const targetNodeStatus = document.querySelector('#status');
         const targetNodeDockBottom = document.querySelector('#dockBottom');
@@ -138,7 +145,6 @@
             } else {
                 // 如果页签没有 aria-label 属性，说明 tooltip 也还没有被添加
                 // 要监听 tooltipElement 元素的类名变化，等 fn__none 类名被移除之后再调用 addClass2Tooltip() 和卸载监听
-                // TODO 这个地方比较影响性能，需要思考更好的方法
                 let tooltipObserver = new MutationObserver((mutationsList) => {
                     for (let mutation of mutationsList) {
                         if (!tooltipElement.classList.contains('fn__none')) {
@@ -148,6 +154,19 @@
                     }
                 });
                 tooltipObserver.observe(tooltipElement, { attributeFilter: ['class'] });
+
+                // 不知道这两个方法哪个性能更好
+                // // 使用 IntersectionObserver 监听 tooltipElement 的可见性
+                // const tooltipObserver = new IntersectionObserver((entries) => {
+                //     entries.forEach(entry => {
+                //         if (entry.isIntersecting && !tooltipElement.classList.contains('fn__none')) {
+                //             addClass2Tooltip("tooltip--tab_header");
+                //             tooltipObserver.disconnect(); // 卸载监听
+                //         }
+                //     });
+                // });
+                //
+                // tooltipObserver.observe(tooltipElement);
             }
             // return;
         }
@@ -156,6 +175,7 @@
     // 功能：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加类名
     let tooltipElement;
     (async () => {
+        if (isMobile) return;
         tooltipElement = document.getElementById("tooltip");
         if (tooltipElement) {
             // 参考原生的 initBlockPopover 函数
