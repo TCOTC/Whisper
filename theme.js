@@ -143,20 +143,21 @@
         // 页签
         const tabHeaderElement = hasClosestByAttribute(element, "data-type", "tab-header");
         if (tabHeaderElement) {
-            if (tabHeaderElement.hasAttribute("aria-label")) {
-                addClass2Tooltip("tooltip--tab_header");
-            } else {
-                // 如果页签没有 aria-label 属性，说明 tooltip 也还没有被添加
-                // 要监听 tooltipElement 元素的类名变化，等 fn__none 类名被移除之后再调用 addClass2Tooltip() 和卸载监听
-                tooltipObserver = new MutationObserver((mutationsList) => {
-                    for (let mutation of mutationsList) {
-                        if (!tooltipElement.classList.contains('fn__none')) {
-                            addClass2Tooltip("tooltip--tab_header");
-                            tooltipObserver.disconnect(); // 卸载监听
-                        }
+            // 如果页签没有 aria-label 属性，说明 tooltip 也还没有被添加
+            // 要监听 tooltipElement 元素的类名变化，等 fn__none 类名被移除之后再调用 addClass2Tooltip() 和卸载监听
+            tooltipObserver = new MutationObserver((mutationsList) => {
+                for (let mutation of mutationsList) {
+                    if (!tooltipElement.classList.contains('fn__none')) {
+                        addClass2Tooltip("tooltip--tab_header");
+                        tooltipObserver?.disconnect(); // 卸载监听
                     }
-                });
-                tooltipObserver.observe(tooltipElement, { attributeFilter: ['class'] });
+                }
+            });
+            tooltipObserver.observe(tooltipElement, { attributeFilter: ['class'] });
+            // 先判断再监听，中间可能会有时间差，故改为先监听再判断
+            if (tabHeaderElement.hasAttribute("aria-label")) {
+                tooltipObserver?.disconnect(); // 卸载监听
+                addClass2Tooltip("tooltip--tab_header");
             }
             // return;
         }
