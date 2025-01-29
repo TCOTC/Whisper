@@ -18,12 +18,22 @@
         // 监听元素是否隐藏。通过监听来代替使用 :has 选择器，提高性能
         cssObserver?.disconnect();
 
-        // 鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加类名
-        document.removeEventListener('mouseover', checkAndAddClassOnHover);
-        tooltipObserver?.disconnect();
+        // 鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
+        document.removeEventListener('mouseover', debouncedCheckAndAddClassOnHover);
 
         console.log('Whisper: Goodbye!');
     }
+
+    // 通用防抖函数，func 为执行的函数，delay 为延迟时间（单位：毫秒）
+    const debounce = (func, delay) => {
+        let timeoutId;
+        return (...args) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                func.apply(this, args);
+            }, delay);
+        };
+    };
 
     const focusBlock = function() {
         const editor = document.activeElement.classList.contains('protyle-wysiwyg') ? document.activeElement : null;
@@ -104,76 +114,72 @@
     //     return false;
     // };
 
-    // 获取包含特定属性和值的上层元素
-    // 属性值只能是 string 类型，if 条件优化掉了 `typeof value === "string" &&`
-    const hasClosestByAttribute = (e, attr, value) => {
-        // 到达 <html> 元素时，e.parentElement 会返回 null，跳出循环
-        while (e) {
-            if (e.getAttribute(attr)?.includes(value)) return e; // 找到匹配的元素，直接返回；为了提高性能，优化掉了 .split(" ")
-            e = e.parentElement; // 继续向上查找
-        }
-        return false; // 未找到匹配的元素
-    };
+    // // 获取编辑器内包含特定属性和值的上层元素
+    // // 为了提高性能，属性值只能是 string 类型，if 条件优化掉了 `typeof value === "string" &&` 和 `.split(" ")`
+    // const hasClosestByAttribute = (e, attr, value) => {
+    //     while (e && !e.classList.contains("protyle-wysiwyg")) {
+    //         if (e.getAttribute(attr)?.includes(value)) return e; // 找到匹配的元素，直接返回
+    //         e = e.parentElement; // 继续向上查找
+    //     }
+    //     return false; // 未找到匹配的元素
+    // };
 
-    // 把类名添加到 tooltip 元素的 classList 中
-    const addClass2Tooltip = (tooltipClass) => {
-        // 类名不存在才添加类名
-        // 感觉理论上会有 tooltip 显示又隐藏了才添加类名的情况，但实际没测出来。不过即使 tooltip 隐藏了也要添加类名，因为可以有 .tooltip--custom.fn__none 的样式
-        if (!tooltipElement.classList.contains(tooltipClass)) {
-            tooltipElement.classList.add(tooltipClass);
+    // 添加类名会和原生的 showTooltip() 逻辑冲突，性能不太好，所以改为使用 data-* 属性
+    // // 把类名添加到 tooltip 元素的 classList 中
+    // const addClass2Tooltip = (tooltipClass) => {
+    //     // 类名不存在才添加类名
+    //     // 感觉理论上会有 tooltip 显示又隐藏了才添加类名的情况，但实际没感觉出有问题。不过即使 tooltip 隐藏了也要添加类名，因为可以有 .tooltip--custom.fn__none 的样式
+    //     if (!tooltipElement.classList.contains(tooltipClass)) {
+    //         tooltipElement.classList.add(tooltipClass);
+    //     }
+    // };
+
+    // 给 tooltip 元素添加 data-whisper-tooltip 属性值
+    const setTooltipData = (data) => {
+        if (tooltipElement.dataset?.whisperTooltip !== data) {
+            tooltipElement.dataset.whisperTooltip = data;
         }
     };
 
     // 判断元素是否需要添加类名
-    // 这个函数不能弄防抖，因为原生的 showTooltip() 没有防抖，会覆盖掉类名
-    let tooltipObserver;
+    // ~这个函数不能弄防抖，因为原生的 showTooltip() 没有防抖，会覆盖掉类名~ 改成添加data-*属性就可以做防抖了，不会被原生的 showTooltip() 影响
+    // 不在编辑器内的元素可以直接用 .closest 查
     const checkAndAddClassOnHover = (event) => {
-        tooltipObserver?.disconnect(); // checkAndAddClassOnHover 函数会高频执行（1ms内能执行很多次），需要避免重复创建监听器
-
         if (!event.target || event.target.nodeType === 9) return false;
-        const element = event.target.nodeType === 3 ? event.target.parentElement : event.target;
+        const e = event.target.nodeType === 3 ? event.target.parentElement : event.target;
 
         // 表情选择器上的表情、底部选项
-        if (element.classList.contains("emojis__item") || element.classList.contains("emojis__type")) {
-            addClass2Tooltip("tooltip--emoji");
+        if (e.classList.contains("emojis__item") || e.classList.contains("emojis__type")) {
+            setTooltipData("emoji");
             return;
         }
         // 数据库资源字段中的链接、属性面板数据库资源字段中的链接
-        if (element.parentElement?.closest('[data-dtype="mAsset"]') || element.parentElement?.closest('[data-type="mAsset"]')) {
-            addClass2Tooltip("tooltip--href_av");
+        if (e.parentElement?.closest('[data-dtype="mAsset"]') || e.parentElement?.closest('[data-type="mAsset"]')) {
+            setTooltipData("href_av");
             return;
         }
         // 页签
-        const tabHeaderElement = hasClosestByAttribute(element, "data-type", "tab-header");
-        if (tabHeaderElement) {
-            // 如果页签没有 aria-label 属性，说明 tooltip 也还没有被添加
-            // 要监听 tooltipElement 元素的类名变化，等 fn__none 类名被移除之后再调用 addClass2Tooltip() 和卸载监听
-            tooltipObserver = new MutationObserver((mutationsList) => {
-                for (let mutation of mutationsList) {
-                    if (!tooltipElement.classList.contains('fn__none')) {
-                        addClass2Tooltip("tooltip--tab_header");
-                        tooltipObserver?.disconnect(); // 卸载监听
-                    }
-                }
-            });
-            tooltipObserver.observe(tooltipElement, { attributeFilter: ['class'] });
-            // 先判断再监听，中间可能会有时间差，故改为先监听再判断
-            if (tabHeaderElement.hasAttribute("aria-label")) {
-                tooltipObserver?.disconnect(); // 卸载监听
-                addClass2Tooltip("tooltip--tab_header");
-            }
-            // return;
+        if (e.parentElement?.closest('[data-type="tab-header"]')) {
+            setTooltipData("tab_header");
+            return;
+        }
+        // 如果正在显示的 tooltip 不属于特定元素，就将属性置空
+        if (!tooltipElement.classList.contains("fn__none")) {
+            tooltipElement.dataset.whisperTooltip = "";
         }
     };
+    // 防抖：checkAndAddClassOnHover 几乎都在 1ms 内执行完成，所以设置 delay 为 1ms。这里的防抖大概能减少两个数量级的函数执行次数
+    const debouncedCheckAndAddClassOnHover = debounce(checkAndAddClassOnHover, 1);
 
-    // 功能：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加类名
+    // 功能：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
+    // TODO 1 PR 合并后才能用这个功能 https://github.com/siyuan-note/siyuan/pull/13966
     let tooltipElement;
     (async () => {
         if (isMobile) return;
         tooltipElement = document.getElementById("tooltip");
         if (tooltipElement) {
             // 参考原生的 initBlockPopover 函数
-            document.addEventListener('mouseover', checkAndAddClassOnHover);
+            document.addEventListener('mouseover', debouncedCheckAndAddClassOnHover);
         } else {
             console.log("Whisper: tooltip element does not exist.");
         }
