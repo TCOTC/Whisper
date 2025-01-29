@@ -70,6 +70,9 @@ body[data-whisper-status="show"] .layout__dockr.layout--float {
 		right: 25px;
 	}
 }
+.body--window .protyle-content {
+	margin-right: unset !important; /* 新窗口没有侧栏面板 */
+}
 
 /* 右侧栏 */
 /* 底栏会挡住右下侧栏（如果有底部侧栏的话不会挡住、如果关闭了底栏的话不会挡住） */

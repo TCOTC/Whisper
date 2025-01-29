@@ -183,6 +183,13 @@
 		}
 	}
 }
+/* 新窗口的右上角留一点位置用来拖拽窗口 */
+.body--window #layouts .fn__flex-1:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
+	min-width: 100px;
+}
+.body--window .layout__resize + .fn__flex-1 > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
+	min-width: 69px !important;
+}
 
 /* 窗口失去焦点时 */
 body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
