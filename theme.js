@@ -4,6 +4,7 @@
     // 判断是否为手机
     let isMobile;
     (async () => {
+        // TODO跟进 https://github.com/siyuan-note/siyuan/issues/13952 如果支持了切换界面，需要在切换界面之后重新执行被跳过的程序
         isMobile = !!document.getElementById("sidebar");
     })();
 
@@ -19,6 +20,7 @@
 
         // 鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加类名
         document.removeEventListener('mouseover', checkAndAddClassOnHover);
+        tooltipObserver?.disconnect();
 
         console.log('Whisper: Goodbye!');
     }
@@ -123,6 +125,7 @@
     };
 
     // 判断元素是否需要添加类名
+    let tooltipObserver;
     const checkAndAddClassOnHover = (event) => {
         if (!event.target || event.target.nodeType === 9) return false;
         const element = event.target.nodeType === 3 ? event.target.parentElement : event.target;
@@ -145,7 +148,7 @@
             } else {
                 // 如果页签没有 aria-label 属性，说明 tooltip 也还没有被添加
                 // 要监听 tooltipElement 元素的类名变化，等 fn__none 类名被移除之后再调用 addClass2Tooltip() 和卸载监听
-                let tooltipObserver = new MutationObserver((mutationsList) => {
+                tooltipObserver = new MutationObserver((mutationsList) => {
                     for (let mutation of mutationsList) {
                         if (!tooltipElement.classList.contains('fn__none')) {
                             addClass2Tooltip("tooltip--tab_header");
@@ -154,19 +157,6 @@
                     }
                 });
                 tooltipObserver.observe(tooltipElement, { attributeFilter: ['class'] });
-
-                // 不知道这两个方法哪个性能更好
-                // // 使用 IntersectionObserver 监听 tooltipElement 的可见性
-                // const tooltipObserver = new IntersectionObserver((entries) => {
-                //     entries.forEach(entry => {
-                //         if (entry.isIntersecting && !tooltipElement.classList.contains('fn__none')) {
-                //             addClass2Tooltip("tooltip--tab_header");
-                //             tooltipObserver.disconnect(); // 卸载监听
-                //         }
-                //     });
-                // });
-                //
-                // tooltipObserver.observe(tooltipElement);
             }
             // return;
         }
