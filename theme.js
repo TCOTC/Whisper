@@ -125,8 +125,11 @@
     };
 
     // 判断元素是否需要添加类名
+    // 这个函数不能弄防抖，因为原生的 showTooltip() 没有防抖，会覆盖掉类名
     let tooltipObserver;
     const checkAndAddClassOnHover = (event) => {
+        tooltipObserver?.disconnect(); // checkAndAddClassOnHover 函数会高频执行（1ms内能执行很多次），需要避免重复创建监听器
+
         if (!event.target || event.target.nodeType === 9) return false;
         const element = event.target.nodeType === 3 ? event.target.parentElement : event.target;
 
