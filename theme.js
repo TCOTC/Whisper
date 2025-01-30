@@ -169,7 +169,7 @@
             // 参考原生的 initBlockPopover 函数
             document.addEventListener('mouseover', updateTooltipData);
         } else {
-            // TODO跟进 PR 合并后才能用这个功能，不过没合并之前也不会有问题，会执行 else 分支 https://github.com/siyuan-note/siyuan/pull/13966
+            // TODO跟进 https://github.com/siyuan-note/siyuan/pull/13966 PR 合并后才能用这个功能，不过没合并之前也不会有问题，会执行 else 分支
             console.log("Whisper: tooltip element does not exist.");
         }
     })();
