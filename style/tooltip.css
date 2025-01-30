@@ -155,3 +155,12 @@
         }
     }
 }
+
+/*.tooltip[data-whisper-tooltip="href"], .tooltip__href {*/
+/*    animation: unset !important;*/
+/*    opacity: 0 !important;*/
+/*}*/
+
+#tooltip {
+    display: none !important;
+}
