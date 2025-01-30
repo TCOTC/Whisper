@@ -96,44 +96,6 @@
         cssObserver.observe(targetNodeDockBottom, { attributeFilter: ['class'] });
     })();
 
-    // 获取包含特定类名的上层元素
-    // const hasClosestByClassName = (e, className, top = false) => {
-    //     if (!e || e.nodeType === 9) return false;
-    //     if (e.nodeType === 3) e = e.parentElement;
-    //     if (top) {
-    //         while (e?.tagName !== "BODY") {
-    //             if (e.classList?.contains(className)) return e;
-    //             e = e.parentElement;
-    //         }
-    //     } else {
-    //         while (e && !e.classList.contains("protyle-wysiwyg")) {
-    //             if (e.classList?.contains(className)) return e;
-    //             e = e.parentElement;
-    //         }
-    //     }
-    //     return false;
-    // };
-
-    // // 获取编辑器内包含特定属性和值的上层元素
-    // // 为了提高性能，属性值只能是 string 类型，if 条件优化掉了 `typeof value === "string" &&` 和 `.split(" ")`
-    // const hasClosestByAttribute = (e, attr, value) => {
-    //     while (e && !e.classList.contains("protyle-wysiwyg")) {
-    //         if (e.getAttribute(attr)?.includes(value)) return e; // 找到匹配的元素，直接返回
-    //         e = e.parentElement; // 继续向上查找
-    //     }
-    //     return false; // 未找到匹配的元素
-    // };
-
-    // 添加类名会和原生的 showTooltip() 逻辑冲突，性能不太好，所以改为使用 data-* 属性
-    // // 把类名添加到 tooltip 元素的 classList 中
-    // const addClass2Tooltip = (tooltipClass) => {
-    //     // 类名不存在才添加类名
-    //     // 感觉理论上会有 tooltip 显示又隐藏了才添加类名的情况，但实际没感觉出有问题。不过即使 tooltip 隐藏了也要添加类名，因为可以有 .tooltip--custom.fn__none 的样式
-    //     if (!tooltipElement.classList.contains(tooltipClass)) {
-    //         tooltipElement.classList.add(tooltipClass);
-    //     }
-    // };
-
     const isLocalPath = (link) => {
         if (!link) {
             return false;
@@ -155,63 +117,20 @@
 
     // 给 tooltip 元素添加 data-whisper-tooltip 属性值
     const setTooltipData = (data) => {
-        // TODO 1 隐藏 tooltip 元素，创建一个 clone 元素显示，控制 clone 元素的显示逻辑以避免 tooltip 元素的闪烁
-        if (tooltipElement.dataset?.whisperTooltip !== data) {
-            tooltipElement.dataset.whisperTooltip = data;
-            // tooltipElement.dataset.whisperTooltipClean = "true";
+        console.log("setTooltipData");
+        if (clonedTooltip.dataset?.whisperTooltip !== data) {
+            clonedTooltip.dataset.whisperTooltip = data;
         }
-        // tooltipElement.dataset.check = "false";
     };
 
-    // 给 tooltip 元素添加 data-whisper-last-tooltip 属性值，并移除 data-whisper-tooltip 属性值
-    const setLastTooltipData = (data) => {
-        if (tooltipElement.dataset?.whisperLastTooltip !== data) {
-            tooltipElement.dataset.whisperLastTooltip = data;
-        }
-        // tooltipElement.dataset.whisperTooltip = "";
-    };
+    // 类型处理程序
+    const typeHandler = (styleObject) => {
+        if (!mouseoverEventTarget || mouseoverEventTarget.nodeType === 9) return false;
+        // const e = mouseoverEventTarget.nodeType === 3 ? mouseoverEventTarget.parentElement : mouseoverEventTarget;
+        const e = mouseoverEventTarget;
 
-    // const TooltipData2LastTooltipData = (e) => {
-    //     const data = tooltipElement.dataset.whisperTooltip;
-    //     if (!data) {
-    //         tooltipElement.dataset.whisperLastTooltip = "";
-    //     }
-    //     switch (data) {
-    //         case "href":
-    //             if (!e.getAttribute("data-href")) {
-    //                 setLastTooltipData(data);
-    //             } break;
-    //         case "href_asset":
-    //             if (!e.getAttribute("data-href").indexOf("assets/") > -1) {
-    //                 setLastTooltipData(data);
-    //             } break;
-    //         case "tab_header":
-    //             if (e.parentElement?.closest('[data-type="tab-header"]') || e.closest('[data-type="tab-header"]')) {
-    //                 setLastTooltipData(data);
-    //             } break;
-    //         case "href_av":
-    //             if (e.classList.contains("av__celltext--url")) {
-    //                 setLastTooltipData(data);
-    //             } break;
-    //         case "emoji":
-    //             if (e.classList.contains("emojis__item") || e.classList.contains("emojis__type")) {
-    //                 setLastTooltipData(data);
-    //             } break;
-    //     }
-    // };
-
-    // 判断元素是否需要添加类名
-    // ~这个函数不能弄防抖，因为原生的 showTooltip() 没有防抖，会覆盖掉类名~ 改成添加data-*属性就可以做防抖了，不会被原生的 showTooltip() 影响
-    // 不在编辑器内的元素可以直接用 .closest 查
-    const checkAndAddClassOnHover = (event) => {
-        if (!event.target || event.target.nodeType === 9) return false;
-        const e = event.target.nodeType === 3 ? event.target.parentElement : event.target;
-
-        // tooltipElement.dataset.check = "true";
-
-        // // 及时移除属性
-        // TooltipData2LastTooltipData(e);
-
+        console.log(styleObject);
+        console.log(e);
         // 文本超链接
         if (e.getAttribute("data-href")) {
             // 资源文件链接
@@ -220,6 +139,9 @@
                 return;
             }
             // 普通链接
+            styleObject.top = "unset";
+            styleObject.left = "0px";
+            styleObject.bottom = "0px";
             setTooltipData("href");
             return;
         }
@@ -230,15 +152,6 @@
         }
         // 数据库超链接
         if (e.classList.contains("av__celltext--url")) {
-            // // 数据库资源字段中的链接、属性面板数据库资源字段中的链接
-            // if (e.parentElement?.closest('[data-dtype="mAsset"]') || e.parentElement?.closest('[data-type="mAsset"]')) {
-            //     setTooltipData("href_av");
-            //     return;
-            // }
-            // // 数据库链接字段中的链接
-            // setTooltipData("href");
-
-            // 先统一用 href_av
             setTooltipData("href_av");
             return;
         }
@@ -249,52 +162,81 @@
         }
         // TODO 1 鼠标移动到不符合条件的元素上，属性移除不及时。动画时间 500ms 后要移除属性，如果在此之前就移动到其他元素上了，就不在移除（因为已经移除了）
         // 如果正在显示的 tooltip 不属于特定元素，就将属性置空
-        if (!tooltipElement.classList.contains("fn__none")) {
-            tooltipElement.dataset.whisperTooltip = "";
-            // tooltipElement.dataset.whisperTooltipClean = "false";
-            // tooltipElement.dataset.check = "true";
+        if (!clonedTooltip.classList.contains("fn__none")) {
+            clonedTooltip.dataset.whisperTooltip = "";
         }
-        // tooltipElement.dataset.check = "false";
     };
-    // 防抖：checkAndAddClassOnHover 几乎都在 1ms 内执行完成，所以设置 delay 为 1ms。这里的防抖大概能减少两个数量级的函数执行次数
-    const debouncedCheckAndAddClassOnHover = debounce(checkAndAddClassOnHover, 1);
 
+    let mouseoverEventTarget;
+    const updateMouseoverEventTarget = (event) => {
+        console.log("updateMouseoverEventTarget");
+        const target = event.target;
+        if (mouseoverEventTarget !== target) {
+            mouseoverEventTarget = target;
+            console.log(target);
+        }
+    };
+    // TODO 之后看看需不需要这里的防抖，看看是不是防抖导致的元素闪现
+    // const debouncedUpdateMouseoverEventTarget = debounce(updateMouseoverEventTarget, 1);
 
+    // TODO 1 隐藏 tooltip 元素，创建一个 clone 元素显示（监听 tooltip 元素的变化），控制 clone 元素的 style 属性和显示逻辑以避免 tooltip 元素的闪烁
     // 功能：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
-    // TODO跟进 PR 合并后才能用这个功能，不过没合并之前也不会有问题，会执行 else 分支 https://github.com/siyuan-note/siyuan/pull/13966
-    let tooltipElement;
+    let tooltipElement, clonedTooltip, tooltipObserver;
     (async () => {
+        console.log("执行了");
         if (isMobile) return;
         tooltipElement = document.getElementById("tooltip");
         if (tooltipElement) {
-            // 参考原生的 initBlockPopover 函数
-            document.addEventListener('mouseover', debouncedCheckAndAddClassOnHover);
+            // 获取鼠标当前悬停的元素
+            document.addEventListener('mouseover', updateMouseoverEventTarget);
+
+            clonedTooltip = tooltipElement.cloneNode(true);
+            clonedTooltip.id  = "whisperTooltip";
+            document.body.append(clonedTooltip);
+
+            // 当 tooltip 元素的 style 属性发生变化时，特殊处理 class style interHTML 的变化之后转移到 cloneTooltip 元素上
+            const tooltip2clonedTooltip = function(mutationsList) {
+                for(let mutation of mutationsList) {
+                    if (mutation.attributeName !== 'style' && mutation.attributeName === 'class') {
+                        clonedTooltip.className = tooltipElement.className;
+                        return;
+                    }
+                    // 获取元素的 style 属性
+                    let tooltipStyle = tooltipElement.getAttribute("style");
+                    // 将 style 字符串解析成对象
+                    const styleObject = {};
+                    tooltipStyle.split(';').forEach((stylePair) => {
+                        if (stylePair.trim()) {
+                            const [key, value] = stylePair.split(':').map(part => part.trim());
+                            styleObject[key] = value;
+                        }
+                    });
+
+                    // TODO 处理 style，链接： top = "unset" left = "0px" bottom = "0px";
+                    typeHandler(styleObject);
+
+                    // 将对象重新转换回字符串
+                    tooltipStyle = Object.entries(styleObject).map(([key, value]) => `${key}: ${value}`).join('; ');
+                    if (clonedTooltip.getAttribute("style") !== tooltipStyle) {
+                        clonedTooltip.setAttribute("style", tooltipStyle);
+                    }
+                    if (clonedTooltip.className !== tooltipElement.className) {
+                        clonedTooltip.className = tooltipElement.className;
+                    }
+                    if (clonedTooltip.innerHTML !== tooltipElement.innerHTML) {
+                        // 这个 if 条件应该可以去掉，多数情况下新的 tooltip 元素的 innerHTML 和上一个 tooltip 元素的 innerHTML 不同
+                        clonedTooltip.innerHTML = tooltipElement.innerHTML;
+                    }
+                }
+            };
+
+            // 监听 tooltip 元素的 style 属性变化，变化了就说明是跟上一个不同的 tooltip
+            // TODO 监听类名变化：fn__none
+            tooltipObserver = new MutationObserver(tooltip2clonedTooltip);
+            tooltipObserver.observe(tooltipElement, { attributeFilter: ['style', 'class'] });
         } else {
+            // TODO跟进 PR 合并后才能用这个功能，不过没合并之前也不会有问题，会执行 else 分支 https://github.com/siyuan-note/siyuan/pull/13966
             console.log("Whisper: tooltip element does not exist.");
         }
     })();
-
-    // // TODO 1 把监听 mouseover 改进为监听 tooltip 的 style 变化
-    // // tooltip 的目标元素变了之后及时移除 data-whisper-tooltip 属性值（就是前面的“如果正在显示的 tooltip 不属于特定元素，就将属性置空”，但是不够及时）
-    // const callback2 = function(mutationsList) {
-    //     for(let mutation of mutationsList) {
-    //         // TODO 1 存储上一次的 Style change，比较有变化之后再执行
-    //         // 克隆一个元素操作之后再修改原元素，属性修改就没有时间间隔，不会导致闪现 https://github.com/siyuan-note/siyuan/pull/13966
-    //         if (tooltipElement.style.top !== "0" && tooltipElement.style.left !== "0" && tooltipElement.dataset?.whisperTooltipClean !== "true") {
-    //             // // 监听到 style 属性的变化后，将 data-whisper-tooltip 的值设置为空
-    //             // tooltipElement.dataset.whisperTooltip = "";
-    //             // tooltipElement.dataset.whisperTooltipClean = "true";
-    //             tooltipElement.dataset.check = "false";
-    //         }
-    //     }
-    // };
-    //
-    // // 创建一个观察器实例并传入回调函数
-    // const observer = new MutationObserver(callback2);
-    //
-    // // 配置观察选项
-    // const config = { attributeFilter: ['style'] };
-    //
-    // // 以配置文件中的选项，开始观察目标节点
-    // observer.observe(tooltipElement, config);
 })();
