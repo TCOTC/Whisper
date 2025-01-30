@@ -27,16 +27,16 @@
         console.log('Whisper: Goodbye!');
     }
 
-    // 通用防抖函数，func 为执行的函数，delay 为延迟时间（单位：毫秒）
-    const debounce = (func, delay) => {
-        let timeoutId;
-        return (...args) => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-                func.apply(this, args);
-            }, delay);
-        };
-    };
+    // // 通用防抖函数，func 为执行的函数，delay 为延迟时间（单位：毫秒）
+    // const debounce = (func, delay) => {
+    //     let timeoutId;
+    //     return (...args) => {
+    //         clearTimeout(timeoutId);
+    //         timeoutId = setTimeout(() => {
+    //             func.apply(this, args);
+    //         }, delay);
+    //     };
+    // };
 
     const focusBlock = function() {
         const editor = document.activeElement.classList.contains('protyle-wysiwyg') ? document.activeElement : null;
