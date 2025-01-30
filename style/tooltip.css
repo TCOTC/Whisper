@@ -88,13 +88,14 @@
 /* TODO 1 JS 功能已经加上了，还需要修改 PR https://github.com/siyuan-note/siyuan/pull/13476 去掉自定义类名的相关修改，尽快合并。合并 PR 的下一个版本就上架主题（记得改json版本号） */
 /* https://github.com/siyuan-note/siyuan/pull/13966 */
 /* 无需延迟显示 */
-/* TODO 1 href_av还是会在一瞬间在左下角闪现。两个方案：1.单独给链接元素也添加属性，选择器不用类名 2.链接显示前也留一点延迟时间，但要看看在相邻的链接（或者上下两行直接移动鼠标）之间移动鼠标会不会出现闪烁 */
+/* TODO 1 href_av还是会在一瞬间在左下角闪现。两个方案：1.单独给链接元素也添加属性，选择器不用类名 2.链接显示前也留一点延迟时间，但要看看在相邻的链接（或者上下两行直接移动鼠标）之间移动鼠标会不会出现闪烁→确实会，这个方案pass */
 .tooltip[data-whisper-tooltip="emoji"],
-.tooltip[data-whisper-tooltip="href_av"] {
+.tooltip[data-whisper-tooltip="href_av"],
+.tooltip[data-whisper-tooltip="href_asset"] {
     animation-delay: unset;
 }
 /* 路径信息的悬浮提示统一显示在左下角 */
-.tooltip--href:not([data-whisper-tooltip="href_av"]),
+.tooltip[data-whisper-tooltip="href"],
 .tooltip[data-whisper-tooltip="tab_header"] {
     /* 底栏高度 24px */
     line-height: 16px;
@@ -116,7 +117,7 @@
     animation-delay: 200ms;    /* 延迟显示动画 */
     animation-fill-mode: both;
 }
-.tooltip--href:not([data-whisper-tooltip="href_av"]).fn__none,
+.tooltip.fn__none[data-whisper-tooltip="href"],
 .tooltip.fn__none[data-whisper-tooltip="tab_header"] {
     animation-name: tooltipHrefFadeOut;
     animation-duration: 300ms;     /* 动画过渡时间 */
@@ -127,7 +128,7 @@
 
 /* 链接可能有标题，样式单独调整 */
 /* TODO跟进 选择器 span 需要跟进 https://github.com/siyuan-note/siyuan/pull/13966 */
-.tooltip--href:not([data-whisper-tooltip="href_av"]), /* 数据库链接字段的 tooltip 不放到左下角，因为确实会需要原地查看 */
+.tooltip[data-whisper-tooltip="href"], /* 数据库链接字段的 tooltip 不放到左下角，因为确实会需要原地查看 */
 .tooltip[data-whisper-tooltip="tab_header"] {
     /* TODO &, &.fn__none 有必要吗？ */
     &, &.fn__none {
