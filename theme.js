@@ -39,7 +39,12 @@
     // };
 
     const focusBlock = function() {
-        const editor = document.activeElement.classList.contains('protyle-wysiwyg') ? document.activeElement : null;
+        let editor = document.activeElement.classList.contains('protyle-wysiwyg') ? document.activeElement : null;
+        if (!editor) {
+            // TODO 看看每种类型的块都行不行
+            // 光标在表格块内
+            editor = document.activeElement.tagName === 'TABLE' ? document.activeElement.closest('.protyle-wysiwyg') : null;
+        }
         if (!editor) return; // 焦点不在编辑器内就直接返回
 
         // 获取光标所在块
