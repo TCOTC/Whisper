@@ -1,6 +1,7 @@
 /* ————————————————————伪元素提示———————————————————— */
 
 /* 动画 */
+/* NOTE 不考虑做淡出效果了，因为 tooltip 只有一个，如果连续弹出的话看起来效果也不好 */
 @keyframes tooltipFadeIn {
     from {
         opacity: 0;
@@ -14,15 +15,6 @@
         opacity: 1;
     }
 }
-/*@keyframes tooltipFadeOut {*/
-/*    from {*/
-/*        opacity: 1;*/
-/*    }*/
-/*    to {*/
-/*        pointer-events: none;*/
-/*        opacity: 0;*/
-/*    }*/
-/*}*/
 @keyframes tooltipHrefFadeOut {
     from {
         opacity: 1;
@@ -68,33 +60,17 @@
     transition: max-width 0.5s 1.5s;
     opacity: 1;
 }
-/* TODO 1 鼠标移入的瞬间移出，opacity 会瞬间变成 1：不要淡出才行 */
-/* TODO 看看能不能用 JS 实现 animation 的效果，读取和修改 style.opacity；看看能不能用上 window.requestAnimationFrame() 方法 */
-/*.tooltip.fn__none {*/
-/*    display: block !important;     !* 保持显示直到淡出 *!*/
-/*    transition: max-width 0s 2s;*/
-/*    animation-name: tooltipFadeOut;*/
-/*    animation-duration: 100ms;     !* 动画过渡时间 *!*/
-/*    animation-delay: unset;        !* 动画无延迟 *!*/
-/*    animation-fill-mode: forwards; !* 动画结束后保持最后一帧（不透明） *!*/
-/*    !*animation-name: unset;*!*/
-/*    !*transition: opacity 100ms 0ms, max-width 0s 2s;*!*/
-/*    pointer-events: none;*/
-/*    opacity: .5;*/
-/*}*/
 
 
 /* ————————————————————特别类型的悬浮提示———————————————————— */
-/* TODO 1 JS 功能已经加上了，还需要修改 PR https://github.com/siyuan-note/siyuan/pull/13476 去掉自定义类名的相关修改，尽快合并。合并 PR 的下一个版本就上架主题（记得改json版本号） */
-/* https://github.com/siyuan-note/siyuan/pull/13966 */
 /* 无需延迟显示 */
-/* TODO 1 href_av还是会在一瞬间在左下角闪现。两个方案：1.单独给链接元素也添加属性，选择器不用类名 2.链接显示前也留一点延迟时间，但要看看在相邻的链接（或者上下两行直接移动鼠标）之间移动鼠标会不会出现闪烁→确实会，这个方案pass */
 .tooltip[data-whisper-tooltip="emoji"],
 .tooltip[data-whisper-tooltip="href_av"],
 .tooltip[data-whisper-tooltip="href_asset"] {
     animation-delay: unset;
+    pointer-events: none; /* 允许交互的话鼠标很容易移到上面去，会有卡顿的感觉 */
 }
-/* 路径信息的悬浮提示统一显示在左下角 */
+/* 路径信息的悬浮提示显示在左下角 */
 .tooltip[data-whisper-tooltip="href"],
 .tooltip[data-whisper-tooltip="tab_header"] {
     /* 底栏高度 24px */
@@ -135,6 +111,7 @@
         display: flex !important;
         flex-direction: row;
 
+        /* 链接 */
         span:first-child {
             order: 3;
             white-space: nowrap;     /* 不换行 */
@@ -142,11 +119,13 @@
             text-overflow: ellipsis; /* 显示省略号 */
         }
 
+        /* 换行 */
         .fn__hr {
             order: 2;
             width: 8px;
         }
 
+        /* 标题 */
         span:last-child {
             order: 1;
             white-space: nowrap;     /* 不换行 */
