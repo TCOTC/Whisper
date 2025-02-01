@@ -1,6 +1,6 @@
 (function() {
     // TODO 在外观模式菜单中添加功能开关，参考新版 Savor
-    console.log('Whisper: Welcome!');
+    console.log('Whisper: loaded');
 
     // 判断是否为手机
     let isMobile;
@@ -25,7 +25,7 @@
         document.removeEventListener('mouseover', updateTooltipData);
         tooltipElement?.removeAttribute("data-whisper-tooltip");
 
-        console.log('Whisper: Goodbye!');
+        console.log('Whisper: unloaded');
     }
 
     // // 通用防抖函数，func 为执行的函数，delay 为延迟时间（单位：毫秒）
@@ -39,7 +39,7 @@
     //     };
     // };
 
-    const focusBlock = function() {
+    const focusBlock = (event) => {
         let editor = document.activeElement.classList.contains('protyle-wysiwyg') ? document.activeElement : null;
         if (!editor) {
             // TODO 看看每种类型的块都行不行
@@ -48,9 +48,6 @@
         }
         if (!editor) return; // 焦点不在编辑器内就直接返回
 
-        // 获取光标所在块
-        let block = window.getSelection()?.anchorNode?.parentElement?.closest('[data-node-id]'); // 光标在选区前面，所以用 anchorNode
-
         // 编辑器内有选中块时不必凸显聚焦块，清除类名后返回
         if (editor?.querySelector(`.protyle-wysiwyg--select`)) {
             // 清除当前编辑器内所有块上的类名
@@ -58,8 +55,10 @@
             return;
         }
 
+        // 优先获取光标所在块，其次获取点击的元素所在块（例如数据库元素对应的数据库块）
+        const block = window.getSelection()?.anchorNode?.parentElement?.closest('[data-node-id]') || event.target.closest('[data-node-id]'); // 光标在选区前面，所以用 anchorNode
         // 光标不在块内 或者 当前块已经设置类名 时直接返回
-        if (block?.classList.contains(`block-focus`)) return;
+        if (!block || block?.classList.contains(`block-focus`)) return;
 
         // 清除当前编辑器内非聚焦块上的类名
         editor.querySelectorAll(`.block-focus`).forEach((element) => element.classList.remove(`block-focus`));
