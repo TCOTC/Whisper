@@ -510,6 +510,13 @@
 }
 
 
+/* 表格。首行不要加粗、首行要灰色背景 */
+:is(.b3-typography, .protyle-wysiwyg) table thead th {
+	font-weight: normal;
+	background-color: var(--b3-table-even-background);
+}
+
+
 /* ————————————————————折叠块———————————————————— */
 
 /* 列表 */
