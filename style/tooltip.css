@@ -1,3 +1,7 @@
+/* ————————————————————右上角消息———————————————————— */
+/* TODO 两个状态相同颜色、两个模式两种颜色 */
+
+
 /* ————————————————————伪元素提示———————————————————— */
 
 /* 动画 */
@@ -44,6 +48,12 @@
     opacity: 0;
 }
 
+/* “从数据库中移除”按钮需要立即显示 */
+.block__icon--warning.b3-tooltips:hover::after {
+    animation: unset;
+    opacity: 1;
+}
+
 
 /* ————————————————————悬浮提示———————————————————— */
 .tooltip {
@@ -67,7 +77,7 @@
 .tooltip[data-whisper-tooltip="emoji"],
 .tooltip[data-whisper-tooltip="href_av"],
 .tooltip[data-whisper-tooltip="href_asset"] {
-    animation-delay: unset;
+    animation: unset;
     pointer-events: none; /* 允许交互的话鼠标很容易移到上面去，会有卡顿的感觉 */
 }
 /* 路径信息的悬浮提示显示在左下角 */

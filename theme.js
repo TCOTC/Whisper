@@ -1,4 +1,5 @@
 (function() {
+    // TODO 在外观模式菜单中添加功能开关，参考新版 Savor
     console.log('Whisper: Welcome!');
 
     // 判断是否为手机
@@ -105,18 +106,10 @@
     })();
 
     const isLocalPath = (link) => {
-        if (!link) return false;
-
-        link = link.trim();
-        if (1 > link.length) return false;
-
-        link = link.toLowerCase();
-        if (link.startsWith("assets/") || link.startsWith("file://") || link.startsWith("\\\\") /* Windows 网络共享路径 */) {
-            return true;
-        }
-
-        const colonIdx = link.indexOf(":");
-        return 1 === colonIdx; // 冒号前面只有一个字符认为是 Windows 盘符而不是网络协议
+        // 参考原生 isLocalPath 函数
+        link = link?.trim();
+        if (!link || link.length === 0) return false;
+        return /^assets\/|file:\/\/|\\\\|[A-Z]:$/i.test(link.slice(0, 7));
     };
 
     // 给 tooltip 元素添加 data-whisper-tooltip 属性值
@@ -131,10 +124,13 @@
         if (!event.target || event.target.nodeType === 9) return;
         const e = event.target.nodeType === 3 ? event.target.parentElement : event.target;
 
+        // 按照触发频率排序
+
         // 文本超链接
-        if (e.getAttribute("data-href")) {
+        const href = e.getAttribute("data-href")
+        if (href) {
             // 资源文件链接
-            if (isLocalPath(e.getAttribute("data-href"))) {
+            if (isLocalPath(href)) {
                 setTooltipData("href_asset");
                 return;
             }
@@ -142,21 +138,25 @@
             setTooltipData("href");
             return;
         }
+
         // 页签
-        if (e.parentElement?.closest('[data-type="tab-header"]') || e.closest('[data-type="tab-header"]')) {
+        if (e.closest('[data-type="tab-header"]')) {
             setTooltipData("tab_header");
             return;
         }
+
         // 数据库超链接
         if (e.classList.contains("av__celltext--url")) {
             setTooltipData("href_av");
             return;
         }
+
         // 表情选择器上的表情、底部选项
         if (e.classList.contains("emojis__item") || e.classList.contains("emojis__type")) {
             setTooltipData("emoji");
             return;
         }
+
         // 如果正在显示的 tooltip 不属于特定元素，就将属性置空
         if (!tooltipElement.classList.contains("fn__none")) {
             tooltipElement.dataset.whisperTooltip = "";
