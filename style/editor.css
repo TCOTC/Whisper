@@ -284,9 +284,6 @@
 	border-width: unset;
 }
 
-.av:not(:hover) > .av__container > .av__scroll {
-	--b3-scroll-color: transparent; /* 数据库块未 hover 时隐藏横向滚动条 */
-}
 
 /* ————————————————————编辑器顶部———————————————————— */
 
