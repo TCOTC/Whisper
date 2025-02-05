@@ -144,9 +144,9 @@
             return;
         }
 
-        // 数据库超链接
-        if (e.classList.contains("av__celltext--url")) {
-            setTooltipData("href_av");
+        // 数据库单元格
+        if (e.classList.contains('av__cell') || e.parentElement?.classList.contains('av__cell') || e.parentElement?.parentElement?.classList.contains('av__cell')) {
+            setTooltipData("av");
             return;
         }
 

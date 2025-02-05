@@ -75,9 +75,9 @@
 /* ————————————————————特别类型的悬浮提示———————————————————— */
 /* 无需延迟显示 */
 .tooltip[data-whisper-tooltip="emoji"],
-.tooltip[data-whisper-tooltip="href_av"],
+.tooltip[data-whisper-tooltip="av"],
 .tooltip[data-whisper-tooltip="href_asset"] {
-    animation: unset;
+    animation-delay: 150ms; /* 没有动画感觉很生硬，故保留动画 */
     pointer-events: none; /* 允许交互的话鼠标很容易移到上面去，会有卡顿的感觉 */
 }
 /* 路径信息的悬浮提示显示在左下角 */
