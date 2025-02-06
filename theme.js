@@ -1,5 +1,4 @@
 (function() {
-    // TODO 在外观模式菜单中添加功能开关，参考新版 Savor
     console.log('Whisper: loaded');
 
     // 判断是否为手机
@@ -165,6 +164,7 @@
     // const debouncedUpdateTooltipData = debounce(updateTooltipData, 1);
 
     // 功能：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
+    // TODO跟进 https://github.com/siyuan-note/siyuan/pull/13966 PR 合并后才能用这个功能，不过没合并之前也几乎不会有问题，会执行 else 分支
     let tooltipElement;
     (async () => {
         if (isMobile) return;
@@ -173,8 +173,72 @@
             // 参考原生的 initBlockPopover 函数
             document.addEventListener('mouseover', updateTooltipData);
         } else {
-            // TODO跟进 https://github.com/siyuan-note/siyuan/pull/13966 PR 合并后才能用这个功能，不过没合并之前也不会有问题，会执行 else 分支
             console.log("Whisper: tooltip element does not exist.");
+        }
+    })();
+
+    // 功能：切换外观模式时背景色过渡
+    (async () => {
+        const root = document.documentElement; // 获取 :root 元素
+
+        const initRootObserver = () => {
+            let switchTimer, lastThemeMode;
+            const rootObserver = new MutationObserver((mutations) => {
+                mutations.forEach(mutation => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme-mode') {
+                        // 读取 data-theme-mode 属性的值
+                        const currentThemeMode = root.dataset.themeMode;
+
+                        // 将上一次的值写入 data-whisper-last-theme-mode 属性
+                        if (lastThemeMode) {
+                            root.dataset.whisperLastThemeMode = lastThemeMode;
+                        }
+
+                        // 快速切换主题时取消前一次计时器
+                        if (switchTimer) {
+                            clearTimeout(switchTimer);
+                        }
+
+                        root.dataset.whisperSwitching = "true";
+                        switchTimer = setTimeout(() => {
+                            root.dataset.whisperSwitching = "false";
+                        }, 300); // transition 耗时
+
+                        // 更新 lastThemeMode 为当前值
+                        lastThemeMode = currentThemeMode;
+                    }
+                });
+            });
+
+            // 监听属性变化
+            rootObserver.observe(root, {  attributes: true });
+        }
+
+        // 如果 :root 元素不存在 data-whisper-last-switching 属性，则开始监听属性变化(只添加一次监听，并且不停止)
+        if (!root.dataset.whisperSwitching) {
+            // 初始化属性
+            root.dataset.whisperLastThemeMode = root.dataset.themeMode;
+            root.dataset.whisperSwitching = "false";
+            initRootObserver();
+        }
+
+        // 切换到明亮模式的 Whisper 主题；切换到暗黑模式的 Whisper 主题
+        const innerHTML = `:root:is([data-whisper-last-theme-mode="dark"][data-light-theme="Whisper"], [data-whisper-last-theme-mode="light"][data-dark-theme="Whisper"]):not([data-whisper-switching="false"]) {
+            *, *::before, *::after {
+                transition: background-color .3s ease-in-out 0ms !important;
+            }
+        }`;
+
+        // 查找 head 中是否已存在样式
+        if (!document.getElementById('whisperThemeSwitchStyle')) {
+            // 如果不存在，则创建并添加样式(只添加一次，并且不移除)
+            const style = document.createElement("style");
+            style.id = "whisperThemeSwitchStyle";
+            style.innerHTML = innerHTML;
+            document.head.appendChild(style);
+        } else {
+            // 如果存在，则更新样式（更新主题可以更新样式）
+            document.getElementById('whisperThemeSwitchStyle').innerHTML = innerHTML;
         }
     })();
 })();
