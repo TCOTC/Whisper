@@ -107,7 +107,7 @@
         // 参考原生 isLocalPath 函数
         link = link?.trim();
         if (!link || link.length === 0) return false;
-        return /^assets\/|file:\/\/|\\\\|[A-Z]:$/i.test(link.slice(0, 7));
+        return /^assets\/|file:\/\/|\\\\|[A-Z]:$/i.test(link);
     };
 
     // 给 tooltip 元素添加 data-whisper-tooltip 属性值
@@ -143,8 +143,10 @@
             return;
         }
 
-        // 数据库单元格
-        if (e.classList.contains('av__cell') || e.parentElement?.classList.contains('av__cell') || e.parentElement?.parentElement?.classList.contains('av__cell')) {
+        // 数据库单元格、“添加”按钮、视图
+        if (e.closest(".av__cell") ||
+            e.closest('[data-type="av-add"]') || e.closest('[data-type="av-add-more"]') || e.closest('[data-type="av-header-add"]') ||
+            e.closest('[data-page]')) {
             setTooltipData("av");
             return;
         }
