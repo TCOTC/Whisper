@@ -21,7 +21,6 @@ html[data-theme-mode="light"] {
 	/*--custom-transition: .2s cubic-bezier(0, 0, .2, 1) 0ms;*/
 
 	--b3-font-background14: rgb(183, 183, 183);  /* 数据库选项专用 */
-	--custom-database-color13: rgb(157, 157, 157); /* 在数据库选项里显示为灰色 */
 	--custom-database-background13: rgba(232, 233, 235); /* 在数据库选项里显示为灰色 */
 	--custom-color-blue-light: rgba(0, 202, 255, .85);
 	--custom-list-hover-dark: rgba(51, 49, 44, .15);
@@ -245,7 +244,6 @@ html[data-theme-mode="dark"] {
 	--custom-link-shadow: 0px 0px 2px rgb(from var(--b3-protyle-inline-link-color) r g b / .5);
 
 	--b3-font-background14: rgb(183, 183, 183);  /* 数据库选项专用 */
-	--custom-database-color13: rgb(157, 157, 157); /* 在数据库选项里显示为灰色 */
 	--custom-database-background13: rgba(232, 233, 235); /* 在数据库选项里显示为灰色 */
 	--custom-color-blue-light: rgba(0, 202, 255, .85);
 	--custom-list-hover-dark: rgba(51, 49, 44, .15);

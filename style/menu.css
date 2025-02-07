@@ -123,7 +123,7 @@ button, input, select, textarea {
 	scrollbar-gutter: auto;
 }
 /* 颜色选项 */
-.color__square{
+.color__square {
 	&[data-type="color"],&[data-type="style1"] {
 		font-size: 18px;
 		font-weight: bold; /* 字体加粗更清晰 */
@@ -168,7 +168,7 @@ button, input, select, textarea {
 		order: 13;
 	}
 	&[style*="--b3-font-color13"],&[style*="--b3-font-background13"] {
-		order: 7; /* 把 13 号颜色排到默认色正下方 */
+		order: 7; /* 把 13 号颜色排到默认色正下方；在数据库选项颜色弹窗里是第一行最右边 */
 
 		&[data-type="color"]{
 			color: var(--b3-theme-on-background) !important;
@@ -180,7 +180,14 @@ button, input, select, textarea {
 		order: 14; /* 数据库选项颜色 */
 	}
 }
+/* 数据库选项颜色菜单 */
+.b3-menu[data-name="av-col-option"] .color__square {
+	color: transparent !important;
 
+	&[style*="--b3-font-color13"],&[style*="--b3-font-background13"] {
+		background-color: var(--custom-database-background13) !important;
+	}
+}
 
 /* ————————————————————集市———————————————————— */
 /* 已下载页面 */
