@@ -86,6 +86,9 @@
 
 /* ————————————————————特别类型的悬浮提示———————————————————— */
 /* 无需延迟显示 */
+.tooltip--memo {
+    animation-delay: 150ms; /* 没有动画感觉很生硬，故保留动画 */
+}
 .tooltip[data-whisper-tooltip="emoji"],
 .tooltip[data-whisper-tooltip="av"],
 .tooltip[data-whisper-tooltip="href_asset"] {
