@@ -6,7 +6,7 @@
 @import url(style/tooltip.css);       /* 悬浮提示 */
 @import url(style/tab-bar.css);       /* 页签 */
 @import url(style/search.css);        /* 搜索 */
-/*@import url(style/preview.css);       !* 导出 *!*/
+@import url(style/preview.css);       /* 导出 */
 
 /* NOTE 偶尔需要跟最新版的默认主题文件对比一下，跟进变量的变更 */
 /* —————————————————————————— 配色 —————————————————————————— */

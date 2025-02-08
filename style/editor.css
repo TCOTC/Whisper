@@ -77,7 +77,7 @@
 		background-color: rgb(from var(--b3-card-success-background) r g b / .65); /* 背景色透明才能显示出光标 */
 
 		&:hover {
-			background: var(--b3-card-success-background);
+			background-color: var(--b3-card-success-background);
 		}
 
 		&::before {
@@ -85,9 +85,6 @@
 			color: var(--b3-theme-primary);
 			padding-right: 0.1em;
 		}
-	}
-	.export-img span[data-type~="tag"] + span[data-type~="tag"]::before {
-		content: none; /* TODO跟进 导出图片时的行级元素有问题，等待 issue 解决之后修改 https://github.com/siyuan-note/siyuan/issues/13856 */
 	}
 
 	span[data-type~="inline-math"] {
