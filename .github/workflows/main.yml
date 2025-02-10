@@ -13,7 +13,7 @@ jobs:
       with:
         type: 'zip'
         filename: 'package.zip'
-        exclusions: '*.git* /*node_modules/* .editorconfig /*memo/* /*style/* theme.scss LICENSE'
+        exclusions: '*.git* /*node_modules/* .editorconfig /*memo/* /*style/* theme.scss theme.css.map LICENSE'
 
     - name: Upload Release
       uses: ncipollo/release-action@v1
