@@ -588,7 +588,7 @@
 	left: -19.5px;
 	width: 21px;
 	height: 47px;
-	background-image: url('../icon/play_arrow_5F6368.svg');
+	background-image: url('./icon/play_arrow_5F6368.svg');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position-y: center;
@@ -622,43 +622,43 @@
 .h1 > :first-child {
 	padding-left: .457em;
 
-	&::before{
-		background: url('../icon/headings/h1.svg');
+	&::before {
+		background: url('./icon/headings/h1.svg');
 	}
 }
 .h2 > :first-child {
 	padding-left: .516em;
 
-	&::before{
-		background: url('../icon/headings/h2.svg');
+	&::before {
+		background: url('./icon/headings/h2.svg');
 	}
 }
 .h3 > :first-child {
 	padding-left: .58em;
 
-	&::before{
-		background: url('../icon/headings/h3.svg');
+	&::before {
+		background: url('./icon/headings/h3.svg');
 	}
 }
 .h4 > :first-child {
 	padding-left: .64em;
 
-	&::before{
-		background: url('../icon/headings/h4.svg');
+	&::before {
+		background: url('./icon/headings/h4.svg');
 	}
 }
 .h5 > :first-child {
 	padding-left: .708em;
 
-	&::before{
-		background: url('../icon/headings/h5.svg');
+	&::before {
+		background: url('./icon/headings/h5.svg');
 	}
 }
 .h6 > :first-child {
 	padding-left: .8em; // 按倍数算，以H6为基准（1倍），让所有标题的左侧对齐
 
-	&::before{
-		background: url('../icon/headings/h6.svg');
+	&::before {
+		background: url('./icon/headings/h6.svg');
 	}
 }
 // background-repeat 需要放在后面覆盖
