@@ -195,68 +195,69 @@
 	// 半高背景色
 	span[style*="background-color: var(--b3-font-background1)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background1), var(--b3-font-background1)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background1) 0%, var(--b3-font-background1) 100%) center bottom / 100% .6em no-repeat;
+
 	}
 
 	span[style*="background-color: var(--b3-font-background2)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background2), var(--b3-font-background2)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background2) 0%, var(--b3-font-background2) 100%) center bottom / 100% .6em no-repeat;
 	}
 
 	span[style*="background-color: var(--b3-font-background3)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background3), var(--b3-font-background3)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background3) 0%, var(--b3-font-background3) 100%) center bottom / 100% .6em no-repeat;
 	}
 
 	span[style*="background-color: var(--b3-font-background4)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background4), var(--b3-font-background4)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background4) 0%, var(--b3-font-background4) 100%) center bottom / 100% .6em no-repeat;
 	}
 
 	span[style*="background-color: var(--b3-font-background5)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background5), var(--b3-font-background5)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background5) 0%, var(--b3-font-background5) 100%) center bottom / 100% .6em no-repeat;
 	}
 
 	span[style*="background-color: var(--b3-font-background6)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background6), var(--b3-font-background6)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background6) 0%, var(--b3-font-background6) 100%) center bottom / 100% .6em no-repeat;
 	}
 
 	span[style*="background-color: var(--b3-font-background7)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background7), var(--b3-font-background7)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background7) 0%, var(--b3-font-background7) 100%) center bottom / 100% .6em no-repeat;
 	}
 
 	span[style*="background-color: var(--b3-font-background8)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background8), var(--b3-font-background8)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background8) 0%, var(--b3-font-background8) 100%) center bottom / 100% .6em no-repeat;
 	}
 
 	span[style*="background-color: var(--b3-font-background9)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background9), var(--b3-font-background9)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background9) 0%, var(--b3-font-background9) 100%) center bottom / 100% .6em no-repeat;
 	}
 
 	span[style*="background-color: var(--b3-font-background10)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background10), var(--b3-font-background10)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background10) 0%, var(--b3-font-background10) 100%) center bottom / 100% .6em no-repeat;
 	}
 
 	span[style*="background-color: var(--b3-font-background11)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background11), var(--b3-font-background11)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background11) 0%, var(--b3-font-background11) 100%) center bottom / 100% .6em no-repeat;
 	}
 
 	span[style*="background-color: var(--b3-font-background12)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background12), var(--b3-font-background12)) center bottom / 100% .6em no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background12) 0%, var(--b3-font-background12) 100%) center bottom / 100% .6em no-repeat;
 	}
 
 	// 反色保留全高
 	span[style*="background-color: var(--b3-font-background13)"] {
 		background-color: transparent !important;
-		background: linear-gradient(var(--b3-font-background13), var(--b3-font-background13)) center bottom / 100% no-repeat;
+		background: linear-gradient(to bottom, var(--b3-font-background13) 0%, var(--b3-font-background13) 100%) center bottom / 100% no-repeat;
 	}
 }
 
