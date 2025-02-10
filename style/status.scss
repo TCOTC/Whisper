@@ -1,4 +1,4 @@
-/* ———————————————————— 底栏 ———————————————————— */
+// ———————————————————— 底栏 ————————————————————
 
 #status {
     position: fixed;
@@ -9,12 +9,12 @@
 	border-radius: var(--b3-border-radius) 0 0 0;
 	padding: 0 28px 0 0;
 	align-items: center;
-	z-index: 3; /* 高于选中块的高亮伪元素 */
+	z-index: 3; // 高于选中块的高亮伪元素
 
 	.toolbar__item {
 		align-items: center;
 		margin: 0;
-		/*z-index: 8;*/ /* 暂时不知道这个有什么用 */
+		// z-index: 8; // 暂时不知道这个有什么用
 
 		svg {
 			height: 12px;
@@ -22,14 +22,14 @@
 		}
 	}
 
-	/* 停靠栏按钮 */
+	// 停靠栏按钮
 	#barDock {
 		position: absolute;
 		right: 4px;
 	}
 }
 
-/* 新窗口没有停靠栏按钮 */
+// 新窗口没有停靠栏按钮
 .body--window #status {
 	padding: 0 2px 0 0;
 }
@@ -69,26 +69,26 @@
 	line-height: 24px;
 }
 
-/* 下面这些不知道有啥用 */
-/*#status #barDock::before {*/
-/*	right: unset !important;*/
-/*	left: 0;*/
-/*	transform: rotateY(180deg);*/
-/*}*/
-/*#status #barDock::after {*/
-/*	left: unset!important;*/
-/*	right: 100%;*/
-/*}*/
-/*.status > .fn__flex-1 {*/
-/*	position: relative !important;*/
-/*	width: 0 !important;*/
-/*	right: 0;*/
-/*	flex: 0;*/
-/*}*/
-/*#status .toolbar__item span {*/
-/*	margin: 3px;*/
-/*	font-size: 12px;*/
-/*}*/
-/*.body--win32 > .fn__flex-1 {*/
-/*	overflow:visible;*/
-/*}*/
+// 下面这些不知道有啥用
+// #status #barDock::before {
+// right: unset !important;
+// left: 0;
+// transform: rotateY(180deg);
+// }
+// #status #barDock::after {
+// left: unset!important;
+// right: 100%;
+// }
+// .status > .fn__flex-1 {
+// position: relative !important;
+// width: 0 !important;
+// right: 0;
+// flex: 0;
+// }
+// #status .toolbar__item span {
+// margin: 3px;
+// font-size: 12px;
+// }
+// .body--win32 > .fn__flex-1 {
+// overflow:visible;
+// }

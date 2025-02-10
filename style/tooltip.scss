@@ -1,4 +1,4 @@
-/* ————————————————————右上角消息———————————————————— */
+// ————————————————————右上角消息————————————————————
 .b3-snackbar__content {
     padding: 8px 16px;
     color: var(--b3-theme-on-background);
@@ -14,10 +14,10 @@
     display: none;
 }
 
-/* ————————————————————伪元素提示———————————————————— */
+// ————————————————————伪元素提示————————————————————
 
-/* 动画 */
-/* NOTE 不考虑做淡出效果了，因为 tooltip 只有一个，如果连续弹出的话看起来效果也不好 */
+// 动画
+// NOTE 不考虑做淡出效果了，因为 tooltip 只有一个，如果连续弹出的话看起来效果也不好
 @keyframes tooltipFadeIn {
     from {
         opacity: 0;
@@ -41,121 +41,121 @@
     }
 }
 
-/* NOTE 伪元素提示和悬浮提示统一样式、渐变动画 */
+// NOTE 伪元素提示和悬浮提示统一样式、渐变动画
 .b3-tooltips::before, .b3-tooltips:hover::before {
-    display: none; /* 隐藏小三角 */
+    display: none; // 隐藏小三角
 }
 .b3-tooltips::after, .b3-tooltips:hover::after {
-    box-shadow: 0 2px 6px 0 rgba(0,0,0,.1); /* 阴影 */
-    outline: 1px solid rgba(0, 0, 0, 0.1);  /* 外框 */
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,.1); // 阴影
+    outline: 1px solid rgba(0, 0, 0, 0.1);  // 外框
     outline-offset: -1px;
     background-color: var(--mix-theme_primary_background);
     color: var(--b3-theme-on-background);
 }
 .b3-tooltips:hover::after {
     animation-name: tooltipFadeIn;
-    animation-duration: 100ms;     /* 动画过渡时间 */
-    animation-delay: 800ms;        /* 延迟显示动画 */
-    animation-fill-mode: forwards; /* 动画结束后保持最后一帧（不透明） */
+    animation-duration: 100ms;     // 动画过渡时间
+    animation-delay: 800ms;        // 延迟显示动画
+    animation-fill-mode: forwards; // 动画结束后保持最后一帧（不透明）
     opacity: 0;
 }
 
-/* “从数据库中移除”按钮需要立即显示 */
+// “从数据库中移除”按钮需要立即显示
 .block__icon--warning.b3-tooltips:hover::after {
     animation: unset;
     opacity: 1;
 }
 
 
-/* ————————————————————悬浮提示———————————————————— */
+// ————————————————————悬浮提示————————————————————
 .tooltip {
-    box-shadow: 0 2px 6px 0 rgba(0,0,0,.1); /* 阴影 */
-    outline: 1px solid rgba(0, 0, 0, 0.1);  /* 外框 */
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,.1); // 阴影
+    outline: 1px solid rgba(0, 0, 0, 0.1);  // 外框
     outline-offset: -1px;
     background-color: var(--mix-theme_primary_background);
     color: var(--b3-theme-on-background);
     animation-name: tooltipFadeIn;
-    animation-duration: 100ms; /* 动画过渡时间 */
-    animation-delay: 800ms;    /* 延迟显示动画 */
-    max-width: 350px;          /* 初始链接宽度(小于这个宽度的情况下字体会变细，很怪) */
-    overflow-x: hidden;        /* 设置了 max-width 之后有的情况下会出现横向滚动条 */
+    animation-duration: 100ms; // 动画过渡时间
+    animation-delay: 800ms;    // 延迟显示动画
+    max-width: 350px;          // 初始链接宽度(小于这个宽度的情况下字体会变细，很怪)
+    overflow-x: hidden;        // 设置了 max-width 之后有的情况下会出现横向滚动条
     transition: max-width 0.5s 1.5s;
     opacity: 1;
 }
 
 
-/* ————————————————————特别类型的悬浮提示———————————————————— */
-/* 无需延迟显示 */
+// ————————————————————特别类型的悬浮提示————————————————————
+// 无需延迟显示
 .tooltip--memo {
-    animation-delay: 150ms; /* 没有动画感觉很生硬，故保留动画 */
+    animation-delay: 150ms; // 没有动画感觉很生硬，故保留动画
 }
 .tooltip[data-whisper-tooltip="emoji"],
 .tooltip[data-whisper-tooltip="av"],
 .tooltip[data-whisper-tooltip="href_asset"] {
-    animation-delay: 150ms; /* 没有动画感觉很生硬，故保留动画 */
-    pointer-events: none; /* 允许交互的话鼠标很容易移到上面去，会有卡顿的感觉 */
+    animation-delay: 150ms; // 没有动画感觉很生硬，故保留动画
+    pointer-events: none; // 允许交互的话鼠标很容易移到上面去，会有卡顿的感觉
 }
-/* 路径信息的悬浮提示显示在左下角 */
+// 路径信息的悬浮提示显示在左下角
 .tooltip[data-whisper-tooltip="href"],
 .tooltip[data-whisper-tooltip="tab_header"] {
-    /* 底栏高度 24px */
+    // 底栏高度 24px
     line-height: 16px;
     padding: 4px 8px;
-    box-shadow: unset; /* 阴影 */
-    outline: unset;    /* 外框 */
+    box-shadow: unset; // 阴影
+    outline: unset;    // 外框
     border-radius: 0 var(--b3-border-radius) 0 0;
     top: unset !important;
     left: 0 !important;
     bottom: 0 !important;
 
-    pointer-events: none;      /* 有的悬浮提示会有滚动条需要鼠标交互，所以只有这部分放左下角的禁止 */
-    white-space: nowrap;       /* 不换行 */
-    overflow: hidden;          /* 隐藏超出部分 */
-    text-overflow: ellipsis;   /* 显示省略号 */
-    max-width: 90vw;           /* 最大链接宽度 */
+    pointer-events: none;      // 有的悬浮提示会有滚动条需要鼠标交互，所以只有这部分放左下角的禁止
+    white-space: nowrap;       // 不换行
+    overflow: hidden;          // 隐藏超出部分
+    text-overflow: ellipsis;   // 显示省略号
+    max-width: 90vw;           // 最大链接宽度
     animation-name: tooltipHrefFadeIn;
-    animation-duration: 300ms; /* 动画过渡时间 */
-    animation-delay: 200ms;    /* 延迟显示动画 */
+    animation-duration: 300ms; // 动画过渡时间
+    animation-delay: 200ms;    // 延迟显示动画
     animation-fill-mode: both;
 }
 .tooltip.fn__none[data-whisper-tooltip="href"],
 .tooltip.fn__none[data-whisper-tooltip="tab_header"] {
     animation-name: tooltipHrefFadeOut;
-    animation-duration: 300ms;     /* 动画过渡时间 */
-    animation-delay: 200ms;        /* 延迟显示动画 */
-    max-width: 350px;              /* 能够使元素添加 .fn__none 之后宽度不变(用于宽度刚好展开一半的情况) */
-    transition: max-width 0s 0.3s; /* 隐藏超过 0.3s 宽度就立即缩回 */
+    animation-duration: 300ms;     // 动画过渡时间
+    animation-delay: 200ms;        // 延迟显示动画
+    max-width: 350px;              // 能够使元素添加 .fn__none 之后宽度不变(用于宽度刚好展开一半的情况)
+    transition: max-width 0s 0.3s; // 隐藏超过 0.3s 宽度就立即缩回
 }
 
-/* 链接可能有标题，样式单独调整 */
-/* TODO跟进 选择器 span 需要跟进 https://github.com/siyuan-note/siyuan/pull/13966 */
-.tooltip[data-whisper-tooltip="href"], /* 数据库链接字段的 tooltip 不放到左下角，因为确实会需要原地查看 */
+// 链接可能有标题，样式单独调整
+// TODO跟进 选择器 span 需要跟进 https://github.com/siyuan-note/siyuan/pull/13966
+.tooltip[data-whisper-tooltip="href"], // 数据库链接字段的 tooltip 不放到左下角，因为确实会需要原地查看
 .tooltip[data-whisper-tooltip="tab_header"] {
-    /* TODO &, &.fn__none 有必要吗？ */
+    // TODO &, &.fn__none 有必要吗？
     &, &.fn__none {
         display: flex !important;
         flex-direction: row;
 
-        /* 链接 */
+        // 链接
         span:first-child {
             order: 3;
-            white-space: nowrap;     /* 不换行 */
-            overflow: hidden;        /* 隐藏超出部分 */
-            text-overflow: ellipsis; /* 显示省略号 */
+            white-space: nowrap;     // 不换行
+            overflow: hidden;        // 隐藏超出部分
+            text-overflow: ellipsis; // 显示省略号
         }
 
-        /* 换行 */
+        // 换行
         .fn__hr {
             order: 2;
             width: 8px;
         }
 
-        /* 标题 */
+        // 标题
         span:last-child {
             order: 1;
-            white-space: nowrap;     /* 不换行 */
-            overflow: hidden;        /* 隐藏超出部分 */
-            text-overflow: ellipsis; /* 显示省略号 */
+            white-space: nowrap;     // 不换行
+            overflow: hidden;        // 隐藏超出部分
+            text-overflow: ellipsis; // 显示省略号
         }
     }
 }

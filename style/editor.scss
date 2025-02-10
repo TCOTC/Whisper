@@ -1,18 +1,18 @@
-/* ————————————————————编辑区———————————————————— */
-/* TODO 调整样式的时候分屏看 所见即所得 和 导出预览 模式，有的情况下需要不同的样式 */
+// ————————————————————编辑区————————————————————
+// TODO 调整样式的时候分屏看 所见即所得 和 导出预览 模式，有的情况下需要不同的样式
 
-/* ————————————————————行级元素———————————————————— */
-/* 在编辑器里和属性面板里，行级元素的上层都有 [data-node-id] */
+// ————————————————————行级元素————————————————————
+// 在编辑器里和属性面板里，行级元素的上层都有 [data-node-id]
 
-/* NOTE 这些样式需要跟进原生样式的变更 */
-/* .b3-typography导出预览，[data-node-id]导出PDF/图片/大纲面板，.protyle-wysiwyg编辑器*/
+// NOTE 这些样式需要跟进原生样式的变更
+// .b3-typography导出预览，[data-node-id]导出PDF/图片/大纲面板，.protyle-wysiwyg编辑器
 :is(.b3-typography, [data-node-id], .protyle-wysiwyg [data-node-id]) {
-	/* 行级标记。放在最前面用于覆盖原生的颜色 */
+	// 行级标记。放在最前面用于覆盖原生的颜色
 	mark,
 	span[data-type~="mark"] {
-		background-color: transparent; /* 覆盖标记样式本身的背景色，并且不会影响带背景色的文本 */
-		/*color: inherit;*/ /* 注释掉，避免覆盖块引文本的颜色 */
-		box-shadow: 0 -0.7em 0 0 inset rgb(from var(--b3-protyle-inline-mark-background) r g b / .7), var(--custom-inline-box-shadow) rgb(from var(--b3-protyle-inline-mark-background) r g b / .7); /* 添加透明度，避免完全覆盖文本背景色 */
+		background-color: transparent; // 覆盖标记样式本身的背景色，并且不会影响带背景色的文本
+		// color: inherit; // 注释掉，避免覆盖块引文本的颜色
+		box-shadow: 0 -0.7em 0 0 inset rgb(from var(--b3-protyle-inline-mark-background) r g b / .7), var(--custom-inline-box-shadow) rgb(from var(--b3-protyle-inline-mark-background) r g b / .7); // 添加透明度，避免完全覆盖文本背景色
 
 		&.mark--hl {
 			background-color: var(--b3-theme-primary-lighter);
@@ -20,9 +20,9 @@
 		}
 	}
 
-	/* 行级标记。放在最前面用于覆盖原生的颜色。主题色虚线 CSS片段 https://github.com/TCOTC/siyuan-css-dashed-line-memo */
+	// 行级标记。放在最前面用于覆盖原生的颜色。主题色虚线 CSS片段 https://github.com/TCOTC/siyuan-css-dashed-line-memo
 	span[data-type~="inline-memo"] {
-		background-color: transparent; /* 覆盖备注样式本身的背景色，并且不会影响带背景色的文本 */
+		background-color: transparent; // 覆盖备注样式本身的背景色，并且不会影响带背景色的文本
 		border-bottom: medium dashed var(--b3-theme-primary);
 	}
 
@@ -53,7 +53,7 @@
 		color: var(--b3-protyle-inline-s-color);
 		text-decoration: line-through;
 	}
-	/* 已完成的任务列表项 */
+	// 已完成的任务列表项
 	.protyle-task--done > [data-node-id] > [spellcheck] > span[data-type~="s"] {
 		color: rgb(from var(--b3-protyle-inline-s-color) r g b / .5);
 	}
@@ -64,7 +64,7 @@
 		color: var(--b3-protyle-inline-strong-color);
 	}
 
-	/* 行级标签。导出预览是纯文本所以没有行级标签样式 */
+	// 行级标签。导出预览是纯文本所以没有行级标签样式
 	span[data-type~="tag"] {
 		position: relative;
 		font-size: .75em;
@@ -74,7 +74,7 @@
 		padding: .1em .2em;
 		margin: 0 1px;
 		color: var(--b3-card-success-color);
-		background-color: rgb(from var(--b3-card-success-background) r g b / .65); /* 背景色透明才能显示出光标 */
+		background-color: rgb(from var(--b3-card-success-background) r g b / .65); // 背景色透明才能显示出光标
 
 		&:hover {
 			background-color: var(--b3-card-success-background);
@@ -103,7 +103,7 @@
 		background-color: var(--b3-protyle-code-background)
 	}
 
-	/* 键盘样式 */
+	// 键盘样式
 	kbd,
 	span[data-type~="kbd"] {
 		position: relative;
@@ -113,7 +113,7 @@
 		line-height: 1;
 		color: var(--b3-theme-on-background);
 		vertical-align: middle;
-		background-color: var(--custom-protyle-kbd-background); /* TODO 在暗黑模式下这个背景颜色不明显 */
+		background-color: var(--custom-protyle-kbd-background); // TODO 在暗黑模式下这个背景颜色不明显
 		border: solid 1px var(--b3-theme-surface-lighter);
 		border-radius: var(--b3-border-radius);
 		box-shadow: inset 0 -1px 0 var(--b3-theme-surface-lighter);
@@ -124,7 +124,7 @@
 		border-bottom: 1px solid;
 	}
 
-	/* 下划线 */
+	// 下划线
 	u,
 	span[data-type~="u"] {
 		border-bottom: 0.1em solid;
@@ -133,66 +133,66 @@
 
 	a,
 	span[data-type~="a"] {
-		/*opacity: 0.86;*/
+		// opacity: 0.86;
 		opacity: 1;
-		/*transition: text-shadow var(--custom-transition);*/
+		// transition: text-shadow var(--custom-transition);
 		transition: unset;
 
 		&:hover {
-			/*opacity: 1;*/
-			/*border-bottom: 0.1em solid;*/
-			border-bottom: unset; /* 简约，不必要下划线 */
-			text-shadow: var(--custom-link-shadow); /* 代替 opacity 变化 */
+			// opacity: 1;
+			// border-bottom: 0.1em solid;
+			border-bottom: unset; // 简约，不必要下划线
+			text-shadow: var(--custom-link-shadow); // 代替 opacity 变化
 		}
 	}
 
-	/* 虚拟引用 */
+	// 虚拟引用
 	span[data-type~="virtual-block-ref"] {
 		transition: unset;
 	}
 
-	/* 块引、数据库块引下划线 */
+	// 块引、数据库块引下划线
 	span[data-type~=block-ref]:not(.av__celltext),
 	.av__celltext--ref {
 		opacity: 1;
-		/*box-shadow: var(--custom-inline-box-shadow) var(--custom-color-blue-light);*/ /* 跟标记样式冲突 */
-		border-bottom: 0.15em solid var(--custom-color-blue-light); /* 直接覆盖下划线样式 */
+		// box-shadow: var(--custom-inline-box-shadow) var(--custom-color-blue-light); // 跟标记样式冲突
+		border-bottom: 0.15em solid var(--custom-color-blue-light); // 直接覆盖下划线样式
 		color: inherit;
-		/*transition: text-shadow var(--custom-transition);*/
+		// transition: text-shadow var(--custom-transition);
 		transition: unset;
 
 		&:hover {
-			text-shadow: var(--custom-theme-on-shadow); /* 代替 opacity 变化 */
+			text-shadow: var(--custom-theme-on-shadow); // 代替 opacity 变化
 		}
 	}
-	/* 块引用静态锚文本用虚线下划线 */
-	/* TODO跟进 跟进锚文本类型修复 https://github.com/siyuan-note/siyuan/issues/13889 */
+	// 块引用静态锚文本用虚线下划线
+	// TODO跟进 跟进锚文本类型修复 https://github.com/siyuan-note/siyuan/issues/13889
 	span[data-type~=block-ref][data-subtype="s"]:not(.av__celltext),
 	.av__celltext--ref[data-subtype="s"] {
 		border-bottom: 0.15em dashed var(--custom-color-blue-light);
 	}
 
-	/* PDF 标注 */
+	// PDF 标注
 	span[data-type~=file-annotation-ref] {
 		opacity: 1;
 		transition: unset;
 
 		&:hover {
-			text-shadow: var(--custom-theme-on-shadow); /* 代替 opacity 变化 */
+			text-shadow: var(--custom-theme-on-shadow); // 代替 opacity 变化
 		}
 	}
 
 	.img {
 		img {
-			border-radius: var(--b3-border-radius); /* 图片圆角 */
+			border-radius: var(--b3-border-radius); // 图片圆角
 		}
 
 		.protyle-action__title:has(> span:empty) {
-			display: none; /* 隐藏空标题 */
+			display: none; // 隐藏空标题
 		}
 	}
 
-	/* 半高背景色 */
+	// 半高背景色
 	span[style*="background-color: var(--b3-font-background1)"] {
 		background-color: transparent !important;
 		background: linear-gradient(var(--b3-font-background1), var(--b3-font-background1)) center bottom / 100% .6em no-repeat;
@@ -253,25 +253,25 @@
 		background: linear-gradient(var(--b3-font-background12), var(--b3-font-background12)) center bottom / 100% .6em no-repeat;
 	}
 
-	/* 反色保留全高 */
+	// 反色保留全高
 	span[style*="background-color: var(--b3-font-background13)"] {
 		background-color: transparent !important;
 		background: linear-gradient(var(--b3-font-background13), var(--b3-font-background13)) center bottom / 100% no-repeat;
 	}
 }
 
-/* ————————————————————滚动条———————————————————— */
+// ————————————————————滚动条————————————————————
 
-/* 动态滚动条 */
+// 动态滚动条
 .protyle-scroll :is(.protyle-scroll__down, .protyle-scroll__up) {
 	opacity: 1;
 }
 
-/* 滚动条的厚度保持为 10px，因为其他地方的布局已经考虑到了 10px 的滚动条；原生是 10px 就行了，这里不需要再写样式，否则会影响导出 PDF 的滚动条 */
-/*::-webkit-scrollbar {*/
-/*	width: 10px;*/
-/*	height: 10px;*/
-/*}*/
+// 滚动条的厚度保持为 10px，因为其他地方的布局已经考虑到了 10px 的滚动条；原生是 10px 就行了，这里不需要再写样式，否则会影响导出 PDF 的滚动条
+// ::-webkit-scrollbar {
+// width: 10px;
+// height: 10px;
+// }
 ::-webkit-scrollbar-thumb {
 	background-clip: padding-box;
 	border: 2px solid transparent;
@@ -282,59 +282,59 @@
 }
 
 
-/* ————————————————————编辑器顶部———————————————————— */
+// ————————————————————编辑器顶部————————————————————
 
-/* 文档标题 */
+// 文档标题
 .protyle-title {
 	margin-top: 0 !important;
 }
 
-/* 文档引用计数 */
+// 文档引用计数
 .protyle-title .protyle-attr--refcount {
 	color: var(--b3-theme-on-error);
 	background-color: var(--b3-theme-primary);
 }
 
-/* 有文档图标的情况 */
+// 有文档图标的情况
 .protyle-background__ia:has(.protyle-background__icon:not(.fn__none)) {
 	display: grid;
-	grid-template-columns: auto 1fr; /* 两列 */
-	grid-template-rows: 1fr auto; /* 两行 */
-	justify-self: start; /* 靠左 */
+	grid-template-columns: auto 1fr; // 两列
+	grid-template-rows: 1fr auto; // 两行
+	justify-self: start; // 靠左
 
-	/* 左侧文档图标*/
+	// 左侧文档图标
 	.protyle-background__icon {
 		grid-column: 1;
-		grid-row: 1 / span 2; /* 跨两行 */
+		grid-row: 1 / span 2; // 跨两行
 	}
 
-	/* 右上操作按钮 */
+	// 右上操作按钮
 	&>.protyle-background__action {
 		grid-column: 2;
 		grid-row: 1;
-		align-self: end; /* 靠近底部 */
+		align-self: end; // 靠近底部
 		margin-left: 4px;
 	}
 
-	/* 右下文档标签 */
+	// 右下文档标签
 	.b3-chips__doctag {
 		grid-column: 2;
 		grid-row: 2;
-		align-self: end; /* 靠近底部 */
+		align-self: end; // 靠近底部
 		margin-left: 4px;
 	}
 }
 
-/* 无文档图标的情况 */
+// 无文档图标的情况
 .protyle-background__ia:has(.protyle-background__icon.fn__none) {
 	display: flex;
-	flex-direction: row; /* 水平排列 */
-	align-items: center; /* 垂直居中 */
-	gap: 4px; /* 间隙 */
-	justify-content: start; /* 靠左 */
+	flex-direction: row; // 水平排列
+	align-items: center; // 垂直居中
+	gap: 4px; // 间隙
+	justify-content: start; // 靠左
 }
 
-/* 添加或移除题头图时文档不抖动 */
+// 添加或移除题头图时文档不抖动
 .protyle-content--transition .protyle-background__ia {
 	transition: margin-left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0ms,
 	margin-right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0ms !important;
@@ -352,10 +352,10 @@
 	}
 
 	.protyle-background__ia {
-		/* 文档图标 */
+		// 文档图标
 		.protyle-background__icon {
 			margin: 3px 0 !important;
-			height: 81px; /* 23*3+3*4 */
+			height: 81px; // 23*3+3*4
 			width: 81px;
 			border-radius: var(--b3-border-radius);
 			font-size: 60px;
@@ -372,7 +372,7 @@
 			}
 		}
 
-		/* 文档标签 */
+		// 文档标签
 		.b3-chips__doctag {
 			height: auto;
 			position: relative;
@@ -444,7 +444,7 @@
 			}
 		}
 
-		/* 操作按钮 */
+		// 操作按钮
 		&>.protyle-background__action {
 			display: flex;
 
@@ -458,38 +458,38 @@
 }
 
 #layouts div.layout__center div.protyle-content:not([data-fullwidth="true"]) div.protyle-wysiwyg {
-	padding-bottom: 70vh !important; /* 更改编辑器底部高度 */
+	padding-bottom: 70vh !important; // 更改编辑器底部高度
 }
 
 
-/* ————————————————————内容块———————————————————— */
+// ————————————————————内容块————————————————————
 
-/* 代码块 */
+// 代码块
 .b3-typography .code-block, .protyle-wysiwyg .code-block, .item__readme .hljs {
 	background: var(--b3-protyle-code-background) !important;
 	border-radius: var(--b3-border-radius);
 }
 
-/* 分隔线 */
+// 分隔线
 .protyle-wysiwyg [data-node-id].hr>div::after {
 	height: .2em;
-	top: calc(15px - .2em); /* 与块标对齐 */
+	top: calc(15px - .2em); // 与块标对齐
 }
 .b3-typography hr {
 	border-bottom-width: .2em;
 	position: relative;
 }
 
-/* 给被引用的块增加虚线外框 CSS片段 */
-/* author by JeffreyChen https://ld246.com/article/1728407192369 */
+// 给被引用的块增加虚线外框 CSS片段
+// author by JeffreyChen https://ld246.com/article/1728407192369
 .protyle-wysiwyg [data-node-id][refcount] {
-	outline: 2px dashed rgba(255, 165, 0, .5); /* 橙色虚线 */
+	outline: 2px dashed rgba(255, 165, 0, .5); // 橙色虚线
 }
 [data-type="NodeBlockQueryEmbed"] [data-node-id][refcount] {
-	outline: none; /* 嵌入块内部不显示 */
+	outline: none; // 嵌入块内部不显示
 }
 
-/* 凸显闪卡 */
+// 凸显闪卡
 .protyle-wysiwyg .list[data-node-id][custom-riff-decks],
 .protyle-wysiwyg .li[data-node-id][custom-riff-decks] {
 	border-left: 2px solid #ff6a6a;
@@ -529,59 +529,59 @@
 	}
 }
 
-/* 数据库角标样式 */
+// 数据库角标样式
 .protyle-attr--av svg {
-	display: none; /* 去除数据库图标 */
+	display: none; // 去除数据库图标
 }
 .protyle-attr--av > span {
 	padding: 2px 0.4em;
 	border-radius: var(--b3-border-radius-b);
 }
-.protyle-attr--av > span:nth-child(4n+1) { /* 每组的第1个 */
+.protyle-attr--av > span:nth-child(4n+1) { // 每组的第1个
 	color: var(--b3-card-success-color);
 	background-color: var(--b3-card-success-background);
 }
-.protyle-attr--av > span:nth-child(4n+2) { /* 每组的第2个 */
+.protyle-attr--av > span:nth-child(4n+2) { // 每组的第2个
 	color: var(--b3-card-info-color);
 	background-color: var(--b3-card-info-background);
 }
-.protyle-attr--av > span:nth-child(4n+3) { /* 每组的第3个 */
+.protyle-attr--av > span:nth-child(4n+3) { // 每组的第3个
 	color: var(--b3-card-warning-color);
 	background-color: var(--b3-card-warning-background);
 }
-.protyle-attr--av > span:nth-child(4n) {   /* 每组的第4个 */
+.protyle-attr--av > span:nth-child(4n) {   // 每组的第4个
 	color: var( --b3-card-error-color);
 	background-color: var(--b3-card-error-background);
 }
 
 
-/* 表格。首行不要加粗、首行要灰色背景 */
+// 表格。首行不要加粗、首行要灰色背景
 :is(.b3-typography, .protyle-wysiwyg) table thead th {
 	font-weight: normal;
 	background-color: var(--b3-table-even-background);
 }
 
 
-/* ————————————————————折叠块———————————————————— */
+// ————————————————————折叠块————————————————————
 
-/* 列表 */
+// 列表
 .protyle-wysiwyg [data-node-id].li:has(.block-focus) > .protyle-action {
 	color: var(--b3-theme-primary);
 }
-/* 折叠的列表项 */
+// 折叠的列表项
 .protyle-wysiwyg [data-node-id].li[fold="1"]:has(.block-focus) > .protyle-action::after {
 	background-color: var(--b3-theme-primary-lighter);
 }
 .protyle-wysiwyg [data-node-id].li[fold="1"] > .protyle-action::after {
 	background-color: var(--custom-list-hover-dark);
 }
-/* 无序列表 */
+// 无序列表
 .protyle .protyle-wysiwyg .li[data-subtype="u"] > .protyle-action:hover::after {
 	background-color: var(--custom-list-hover-darker);
 }
-/* 有序列表、任务列表 */
-/* 图标必须是这一个 Size 为 32 的，位置才能刚好对上 https://fonts.google.com/icons?icon.set=Material+Icons&icon.style=Rounded&icon.size=32&icon.color=%235f6368&icon.query=Play&selected=Material+Icons+Round:play_arrow:&icon.platform=web */
-/* svg 里的 fill 填的是 --b3-theme-on-surface-light */
+// 有序列表、任务列表
+// 图标必须是这一个 Size 为 32 的，位置才能刚好对上 https://fonts.google.com/icons?icon.set=Material+Icons&icon.style=Rounded&icon.size=32&icon.color=%235f6368&icon.query=Play&selected=Material+Icons+Round:play_arrow:&icon.platform=web
+// svg 里的 fill 填的是 --b3-theme-on-surface-light
 .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::before {
 	content: '';
 	position: absolute;
@@ -592,33 +592,33 @@
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position-y: center;
-	pointer-events: none; /* 伪元素会影响块标移动 */
+	pointer-events: none; // 伪元素会影响块标移动
 }
 .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::after {
-	background-color: unset; /* 有序列表、任务列表折叠的时候不需要阴影 */
+	background-color: unset; // 有序列表、任务列表折叠的时候不需要阴影
 }
 
-/* 标题块 */
+// 标题块
 .protyle-wysiwyg [data-node-id][data-type="NodeHeading"][fold="1"]::before {
 	display: none;
 }
 
-/* 给折叠的非列表项块添加背景 */
+// 给折叠的非列表项块添加背景
 .protyle-wysiwyg [data-node-id][fold="1"]:not(.li) {
 	background-image: repeating-linear-gradient(-45deg,var(--b3-theme-background-light),var(--b3-theme-background-light) 5px, var(--b3-list-hover) 0, var(--b3-list-hover) 10px);
 }
-/* TODO 给各种类型的块分别弄个合适的折叠样式 */
+// TODO 给各种类型的块分别弄个合适的折叠样式
 
 
-/* ————————————————————标题块———————————————————— */
+// ————————————————————标题块————————————————————
 
-/* 隐藏展开标题块时一闪而过的 loading-pure.svg */
+// 隐藏展开标题块时一闪而过的 loading-pure.svg
 [data-node-id][data-type="NodeHeading"] > div[spin]:last-child {
 	display: none;
 }
 
-/* 标题前的图标 */
-/* 图标文件来自粉色小屋主题 https://github.com/StarDustSheep/pink-room */
+// 标题前的图标
+// 图标文件来自粉色小屋主题 https://github.com/StarDustSheep/pink-room
 .h1 > :first-child {
 	padding-left: .457em;
 
@@ -655,13 +655,13 @@
 	}
 }
 .h6 > :first-child {
-	padding-left: .8em; /* 按倍数算，以H6为基准（1倍），让所有标题的左侧对齐 */
+	padding-left: .8em; // 按倍数算，以H6为基准（1倍），让所有标题的左侧对齐
 
 	&::before{
 		background: url('../icon/headings/h6.svg');
 	}
 }
-/* background-repeat 需要放在后面覆盖 */
+// background-repeat 需要放在后面覆盖
 :is(.h1, .h2, .h3, .h4, .h5, .h6) > :first-child::before {
 	height: 1em;
 	width: 1em;
@@ -669,25 +669,25 @@
 	content: "";
 	filter: hue-rotate(325deg);
 	background-repeat: no-repeat;
-	left: 4px; /* 内容块的 padding 4px */
-	top: 50%; /* 垂直居中 */
+	left: 4px; // 内容块的 padding 4px
+	top: 50%; // 垂直居中
 	transform: translateY(-50%);
 }
 
 
-/* ————————————————————代码块———————————————————— */
+// ————————————————————代码块————————————————————
 
-/* 缩短代码块上下边距，更紧凑 */
-/* TODO跟进 https://github.com/siyuan-note/siyuan/pull/13564 PR 合并后需要移除这部分 */
+// 缩短代码块上下边距，更紧凑
+// TODO跟进 https://github.com/siyuan-note/siyuan/pull/13564 PR 合并后需要移除这部分
 .b3-typography .code-block:not(pre),
 .protyle-wysiwyg .code-block:not(pre) {
 	margin: 2px 0;
 }
 
-/* 代码块滚动时语言和按钮固定在编辑器顶部 CSS片段 */
-/* author by JeffreyChen https://ld246.com/article/1728146248791 */
-/* NOTE 用:not(#preview)排除导出PDF，用.protyle-wysiwyg排除导出预览，.protyle-wysiwyg[data-readonly="true"]是只读模式 */
-/* NOTE 导出预览的代码块没有 .protyle-action */
+// 代码块滚动时语言和按钮固定在编辑器顶部 CSS片段
+// author by JeffreyChen https://ld246.com/article/1728146248791
+// NOTE 用:not(#preview)排除导出PDF，用.protyle-wysiwyg排除导出预览，.protyle-wysiwyg[data-readonly="true"]是只读模式
+// NOTE 导出预览的代码块没有 .protyle-action
 div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	.protyle-action {
 		background-color: var(--b3-theme-background);
@@ -708,24 +708,24 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	}
 }
 
-/* 始终显示设置的代码块语言 */
+// 始终显示设置的代码块语言
 .protyle-wysiwyg .code-block:not(pre):not(:hover) .protyle-action__language {
 	opacity: .86;
 }
-/* 只有 hover 代码块时才显示代码块语言占位符 */
+// 只有 hover 代码块时才显示代码块语言占位符
 .protyle-wysiwyg[data-readonly=false] .code-block:not(pre):not(:hover) .protyle-action .protyle-action__language:empty::after {
 	opacity: 0;
 }
 
 
-/* ————————————————————数据库———————————————————— */
+// ————————————————————数据库————————————————————
 
-/* 标题 */
+// 标题
 .av__title {
 	padding-left: 4px;
 }
 
-/* 筛选 */
+// 筛选
 .av__panel .b3-menu__item .b3-chip.b3-chip--primary[data-type="setFilter"] {
 	background-color: var(--b3-list-hover);
 }
@@ -733,16 +733,16 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	background-color: var(--b3-theme-primary-lightest) !important;
 }
 
-.av__title + .av__counter { /* X 已选中 */
+.av__title + .av__counter { // X 已选中
 	background-color: var(--mix-theme_primary_background);
 	color: var(--b3-theme-on-background);
 }
 
 .av__container .av__row:hover .av__firstcol svg {
-	opacity: 1; /* hover 条目时显示条目的复选框 */
+	opacity: 1; // hover 条目时显示条目的复选框
 }
 
-/* 主键单元格 */
+// 主键单元格
 .av__cell[data-dtype="block"] [data-type="block-more"] {
 	display: none;
 }
@@ -750,26 +750,26 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	display: block;
 }
 
-/* 单选、多选、资源字段选项 */
+// 单选、多选、资源字段选项
 .av__panel .b3-chip,
 .av__row .b3-chip {
 	color: var(--b3-theme-on-background) !important;
 	outline: 1px solid rgb(from var(--b3-theme-on-surface-light) r g b/0.3);
 	outline-offset: -1px;
 
-	/* 数据库选项 */
+	// 数据库选项
 	&[style*="background-color:var(--b3-font-background13)"] {
 		background-color: var(--custom-database-background13) !important;
 	}
 }
 
-/* 资源字段的标题宽度 */
+// 资源字段的标题宽度
 .av__celltext--url.b3-chip {
 	max-width: 15em;
 }
 
-/* 关联字段单元格 */
-/* https://github.com/siyuan-note/siyuan/issues/13692 */
+// 关联字段单元格
+// https://github.com/siyuan-note/siyuan/issues/13692
 .av__cell:not(.av__cell--header)[data-dtype="relation"] {
 	.av__cell--relation {
 		margin-left: 0.5em;
@@ -778,14 +778,14 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 			margin-left: 0;
 		}
 
-		/* 关联条目前的图标: 横杠/文档图标 */
+		// 关联条目前的图标: 横杠/文档图标
 		&>span:first-child {
 			display: none;
 		}
 
 		.av__celltext {
 			&:not([data-type="block-ref"]):hover {
-				/*box-shadow: var(--custom-inline-box-shadow) var(--b3-theme-primary-lighter);*/
+				// box-shadow: var(--custom-inline-box-shadow) var(--b3-theme-primary-lighter);
 				border-bottom: 0.15em solid var(--b3-theme-primary-lighter);
 			}
 
@@ -802,7 +802,7 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	}
 }
 
-/* Notion Database 布局 */
+// Notion Database 布局
 .av__container {
 	width: 100%;
 
@@ -812,21 +812,21 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 		.av__row--header {
 			.block__icons {
 				padding: unset;
-				flex-direction: row; /* "添加字段"和"更多"按钮调换顺序 */
+				flex-direction: row; // "添加字段"和"更多"按钮调换顺序
 				flex-grow: 1;
-				align-items: stretch; /* 使子元素在垂直方向上填满父容器 */
+				align-items: stretch; // 使子元素在垂直方向上填满父容器
 
 				.block__icon {
 					border-radius: unset;
 					padding: 0 10px;
 
 					&:nth-child(1) {
-						order: 2; /* "更多"按钮放在右边铺满 */
+						order: 2; // "更多"按钮放在右边铺满
 						flex-grow: 1;
 					}
 
 					&:nth-child(3) {
-						order: 1; /* "添加字段"按钮放在左边 */
+						order: 1; // "添加字段"按钮放在左边
 					}
 				}
 
@@ -839,7 +839,7 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 		.av__row--util {
 			.av__colsticky {
 				width: 100%;
-				flex-direction: column; /* "添加条目"和"加载更多"按钮分成两行显示 */
+				flex-direction: column; // "添加条目"和"加载更多"按钮分成两行显示
 
 				>.b3-button {
 					border-radius: unset;
@@ -871,11 +871,11 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 				}
 
 				> .b3-button:first-of-type {
-					order: 2; /* "添加条目"按钮放在下方 */
+					order: 2; // "添加条目"按钮放在下方
 				}
 
 				> .b3-button:last-of-type {
-					order: 1; /* "加载更多"按钮放在上方 */
+					order: 1; // "加载更多"按钮放在上方
 				}
 
 				>.fn__space {
@@ -890,25 +890,25 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	}
 }
 
-/* 选择和 hover 条目时的高亮 */
-/* 用伪元素会影响子元素的颜色，所以修改背景色 */
+// 选择和 hover 条目时的高亮
+// 用伪元素会影响子元素的颜色，所以修改背景色
 .av__container .av__row:not(.av__row--header) {
 
 	.av__cell--select,
 	.av__cell--active {
-		background-color: var(--b3-theme-surface); /* 不能用透明的颜色，会出现不一致 */
+		background-color: var(--b3-theme-surface); // 不能用透明的颜色，会出现不一致
 	}
 
 	&.av__row--select,
 	&.av__row--hl {
-		background-color: var(--b3-theme-surface); /* 侧栏面板的颜色 */
+		background-color: var(--b3-theme-surface); // 侧栏面板的颜色
 
 		.av__cell {
-			background-color: unset; /* 重置原生的背景色 */
+			background-color: unset; // 重置原生的背景色
 		}
 
-		.av__colsticky { /* 固定字段 */
-			.av__firstcol, /* 勾选框 */
+		.av__colsticky { // 固定字段
+			.av__firstcol, // 勾选框
 			.av__cell {
 				background-color: var(--b3-theme-surface);
 			}
@@ -916,11 +916,11 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	}
 }
 .av__container .av__row:not(.av__row--header):hover {
-	background-color: var(--b3-list-hover); /* 条目末尾 */
+	background-color: var(--b3-list-hover); // 条目末尾
 
 	.av__cell--select,
 	.av__cell--active {
-		background-color: var(--b3-theme-background-light); /* 不能用透明的颜色，会出现不一致 */
+		background-color: var(--b3-theme-background-light); // 不能用透明的颜色，会出现不一致
 	}
 
 	.av__colsticky {
@@ -936,7 +936,7 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 
 	&.av__row--select,
 	&.av__row--hl {
-		background-color: var(--b3-theme-background-light); /* 条目末尾 */
+		background-color: var(--b3-theme-background-light); // 条目末尾
 
 		.av__colsticky {
 			.av__firstcol,

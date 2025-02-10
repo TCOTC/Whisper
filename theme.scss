@@ -1,94 +1,94 @@
-@import "style/layout";        /* 布局 */
-@import "style/dock";          /* 侧栏和面板 */
-@import "style/status";        /* 底栏 */
-@import "style/editor";        /* 编辑器 */
-@import "style/menu";          /* 菜单、浮窗、弹窗 */
-@import "style/tooltip";       /* 悬浮提示 */
-@import "style/tab-bar";       /* 页签 */
-@import "style/search";        /* 搜索 */
-@import "style/preview";       /* 导出 */
+@import "style/layout";        // 布局
+@import "style/dock";          // 侧栏和面板
+@import "style/status";        // 底栏
+@import "style/editor";        // 编辑器
+@import "style/menu";          // 菜单、浮窗、弹窗
+@import "style/tooltip";       // 悬浮提示
+@import "style/tab-bar";       // 页签
+@import "style/search";        // 搜索
+@import "style/preview";       // 导出
 
-/* NOTE 偶尔需要跟最新版的默认主题文件对比一下，跟进变量的变更 */
-/* —————————————————————————— 配色 —————————————————————————— */
-/* 明亮主题 */
+// NOTE 偶尔需要跟最新版的默认主题文件对比一下，跟进变量的变更
+// —————————————————————————— 配色 ——————————————————————————
+// 明亮主题
 html[data-theme-mode="light"] {
 
-	/* 自定义、混合 */
+	// 自定义、混合
 	--custom-inline-box-shadow: 0 .1em 0 0;
 	--custom-theme-on-shadow: 0px 0px 2px rgb(from var(--b3-theme-on-background) r g b / .2);
 	--custom-link-shadow: 0px 0px 2px rgb(from var(--b3-protyle-inline-link-color) r g b / .2);
 
 	--custom-transition: .2s cubic-bezier(0, 0, .2, 1) 0ms;
 
-	--b3-font-background14: rgb(183, 183, 183);  /* 数据库选项专用 */
-	--custom-database-background13: rgba(232, 233, 235); /* 在数据库选项里显示为灰色 */
+	--b3-font-background14: rgb(183, 183, 183);  // 数据库选项专用
+	--custom-database-background13: rgba(232, 233, 235); // 在数据库选项里显示为灰色
 	--custom-color-blue-light: rgba(0, 202, 255, .85);
 	--custom-list-hover-dark: rgba(51, 49, 44, .15);
 	--custom-list-hover-darker: rgba(51, 49, 44, .2);
-	--custom-protyle-kbd-background: rgb(from var(--b3-theme-surface) r g b / .65); /* 键盘样式背景 */
-	--mix-theme_primary_background: rgb(225, 223, 216); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245) */
+	--custom-protyle-kbd-background: rgb(from var(--b3-theme-surface) r g b / .65); // 键盘样式背景
+	--mix-theme_primary_background: rgb(225, 223, 216); // --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245)
 
-	/* 主色 */
-	--b3-theme-primary: rgb(126, 121, 0);                   /* 主题色。各种按钮 */
+	// 主色
+	--b3-theme-primary: rgb(126, 121, 0);                   // 主题色。各种按钮
 	--b3-theme-primary-light: rgba(165, 157, 51, .54);
-	--b3-theme-primary-lighter: rgba(165, 157, 51, .38);    /* 与白色混合为 rgb(221, 218, 177) ，与 --b3-theme-background rgb(249, 248, 245) 混合后为 rgb(217, 213, 171) */
-	--b3-theme-primary-lightest: rgba(45, 43, 1, .12);      /* 选中块后的高亮。与 --b3-theme-background rgb(249, 248, 245) 混合后为 rgb(225, 223, 216) */
+	--b3-theme-primary-lighter: rgba(165, 157, 51, .38);    // 与白色混合为 rgb(221, 218, 177) ，与 --b3-theme-background rgb(249, 248, 245) 混合后为 rgb(217, 213, 171)
+	--b3-theme-primary-lightest: rgba(45, 43, 1, .12);      // 选中块后的高亮。与 --b3-theme-background rgb(249, 248, 245) 混合后为 rgb(225, 223, 216)
 	--b3-theme-secondary: #f3a92f;
-	--b3-theme-background: rgb(249, 248, 245);              /* 编辑器。 */
-	--b3-theme-background-light: rgb(237, 227, 225);        /* 侧栏按钮。--b3-theme-surface 与 --b3-list-hover 混合 */
-	--b3-theme-surface: rgb(249, 238, 237);                 /* 侧栏面板。 */
+	--b3-theme-background: rgb(249, 248, 245);              // 编辑器。
+	--b3-theme-background-light: rgb(237, 227, 225);        // 侧栏按钮。--b3-theme-surface 与 --b3-list-hover 混合
+	--b3-theme-surface: rgb(249, 238, 237);                 // 侧栏面板。
 	--b3-theme-surface-light: rgba(249, 238, 237, .86);
 	--b3-theme-surface-lighter: #e0e0e0;
 	--b3-theme-error: #d23f31;
 	--b3-theme-success: #65b84d;
 
-	/* 文字颜色 */
+	// 文字颜色
 	--b3-theme-on-primary: #fff;
 	--b3-theme-on-secondary: #fff;
-	--b3-theme-on-background: #222; /* 文本默认颜色 */
+	--b3-theme-on-background: #222; // 文本默认颜色
 	--b3-theme-on-surface: #5f6368;
 	--b3-theme-on-surface-light: rgba(95, 99, 104, .68);
 	--b3-theme-on-error: #fff;
 
-	/* 字体 */
-	/* 字体用默认主题的 */
+	// 字体
+	// 字体用默认主题的
 
-	/* 顶部工具栏 */
+	// 顶部工具栏
 	--b3-toolbar-background: var(--b3-theme-surface);
-	--b3-toolbar-blur-background: var(--b3-toolbar-background); /* 不需要没聚焦的颜色 */
+	--b3-toolbar-blur-background: var(--b3-toolbar-background); // 不需要没聚焦的颜色
 	--b3-toolbar-color: var(--b3-theme-on-surface);
 	--b3-toolbar-hover: var(--b3-theme-background-light);
 	--b3-toolbar-left-mac: 69px;
 
-	/* 线条 */
+	// 线条
 	--b3-border-color: var(--b3-theme-surface-lighter);
 	--b3-border-radius: 6px;
 	--b3-border-radius-s: 3px;
 	--b3-border-radius-b: 12px;
 
-	/* 滚动条 */
-	--b3-scroll-color: rgba(0, 0, 0, .1); /* 原来是 rgba(0, 0, 0, .2) */
+	// 滚动条
+	--b3-scroll-color: rgba(0, 0, 0, .1); // 原来是 rgba(0, 0, 0, .2)
 
-	/* 列表 */
-	--b3-list-hover: rgba(51, 49, 44, 0.06);    /* 鼠标悬浮在选项上 */
-	--b3-list-icon-hover: rgba(51, 49, 44, .1); /* 文档树的文档图标 */
+	// 列表
+	--b3-list-hover: rgba(51, 49, 44, 0.06);    // 鼠标悬浮在选项上
+	--b3-list-icon-hover: rgba(51, 49, 44, .1); // 文档树的文档图标
 
-	/* 菜单 */
+	// 菜单
 	--b3-menu-background: var(--b3-theme-surface);
 
-	/* 提示 */
+	// 提示
 	--b3-tooltips-background: #312f35;
 	--b3-tooltips-color: var(--b3-theme-background-light);
 	--b3-tooltips-second-color: #7d7c7a;
 	--b3-tooltips-shadow: 0 2px 8px rgba(0, 0, 0, .1);
 
-	/* 为空提示 */
+	// 为空提示
 	--b3-empty-color: var(--b3-theme-on-surface-light);
 
-	/* 遮罩 */
+	// 遮罩
 	--b3-mask-background: rgba(220, 220, 220, .4);
 
-	/* 卡片背景 */
+	// 卡片背景
 	--b3-card-error-color: rgb(97, 26, 21);
 	--b3-card-error-background: #f5d1cf;
 	--b3-card-warning-color: rgb(102, 60, 0);
@@ -98,49 +98,49 @@ html[data-theme-mode="light"] {
 	--b3-card-success-color: rgb(30, 70, 32);
 	--b3-card-success-background: #d7eed8;
 
-	/* 自定义文字 */
-	--b3-font-color1: rgb(216, 133, 129);        /*浅红*/
-	--b3-font-color2: rgb(217, 154, 81);         /*浅橙*/
-	--b3-font-color3: rgb(255, 216, 78);         /*浅黄*/
-	--b3-font-color4: rgb(183, 237, 177);        /*浅绿*/
-	--b3-font-color5: rgb(186, 206, 253);        /*浅蓝*/
-	--b3-font-color6: rgb(205, 178, 250);        /*浅紫*/
-	--b3-font-color7: rgb(216, 57, 49);          /*红*/
-	--b3-font-color8: rgb(222, 120, 2);          /*橙*/
-	--b3-font-color9: rgb(220, 155, 4);          /*黄*/
-	--b3-font-color10: rgb(130, 197, 123);       /*绿*/
-	--b3-font-color11: rgb(136, 123, 203);       /*蓝*/
-	--b3-font-color12: rgb(126, 103, 167);       /*紫*/
+	// 自定义文字
+	--b3-font-color1: rgb(216, 133, 129);        // 浅红
+	--b3-font-color2: rgb(217, 154, 81);         // 浅橙
+	--b3-font-color3: rgb(255, 216, 78);         // 浅黄
+	--b3-font-color4: rgb(183, 237, 177);        // 浅绿
+	--b3-font-color5: rgb(186, 206, 253);        // 浅蓝
+	--b3-font-color6: rgb(205, 178, 250);        // 浅紫
+	--b3-font-color7: rgb(216, 57, 49);          // 红
+	--b3-font-color8: rgb(222, 120, 2);          // 橙
+	--b3-font-color9: rgb(220, 155, 4);          // 黄
+	--b3-font-color10: rgb(130, 197, 123);       // 绿
+	--b3-font-color11: rgb(136, 123, 203);       // 蓝
+	--b3-font-color12: rgb(126, 103, 167);       // 紫
 	--b3-font-color13: var(--b3-theme-background);
-	--b3-font-background1: rgb(253, 226, 226);   /*浅红*/
-	--b3-font-background2: rgb(254, 234, 210);   /*浅橙*/
-	--b3-font-background3: rgb(255, 255, 204);   /*浅黄*/
-	--b3-font-background4: rgb(217, 245, 214);   /*浅绿*/
-	--b3-font-background5: rgb(225, 234, 255);   /*浅蓝*/
-	--b3-font-background6: rgb(236, 226, 254);   /*浅紫*/
-	--b3-font-background7: rgb(251, 191, 188);   /*红*/
-	--b3-font-background8: rgb(254, 212, 164);   /*橙*/
-	--b3-font-background9: rgb(255, 252, 163);   /*黄*/
-	--b3-font-background10: rgb(183, 237, 177);  /*绿*/
-	--b3-font-background11: rgb(186, 206, 253);  /*蓝*/
-	--b3-font-background12: rgb(205, 178, 250);  /*紫*/
+	--b3-font-background1: rgb(253, 226, 226);   // 浅红
+	--b3-font-background2: rgb(254, 234, 210);   // 浅橙
+	--b3-font-background3: rgb(255, 255, 204);   // 浅黄
+	--b3-font-background4: rgb(217, 245, 214);   // 浅绿
+	--b3-font-background5: rgb(225, 234, 255);   // 浅蓝
+	--b3-font-background6: rgb(236, 226, 254);   // 浅紫
+	--b3-font-background7: rgb(251, 191, 188);   // 红
+	--b3-font-background8: rgb(254, 212, 164);   // 橙
+	--b3-font-background9: rgb(255, 252, 163);   // 黄
+	--b3-font-background10: rgb(183, 237, 177);  // 绿
+	--b3-font-background11: rgb(186, 206, 253);  // 蓝
+	--b3-font-background12: rgb(205, 178, 250);  // 紫
 	--b3-font-background13: var(--b3-theme-on-background);
 
-	/* 动画效果 */
+	// 动画效果
 	--b3-transition: all .2s cubic-bezier(0, 0, .2, 1) 0ms;
 	--b3-width-transition: width .2s cubic-bezier(0, 0, .2, 1) 0ms;
 	--b3-color-transition: color .2s cubic-bezier(0, 0, .2, 1) 0ms;
 	--b3-background-transition: background 20ms ease-in 0s;
 
-	/* 高亮 */
+	// 高亮
 	--b3-highlight-color: #222;
 	--b3-highlight-background: #ffff00;
 	--b3-highlight-current-background: #ff9632;
 
-	/* 下拉菜单 */
+	// 下拉菜单
 	--b3-select-background: url("data:image/svg+xml;utf8,<svg fill='rgba(95, 99, 104, .68)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>") no-repeat right 2px center var(--b3-theme-background);
 
-	/* switch */
+	// switch
 	--b3-switch-background: #e1e3e1;
 	--b3-switch-border: var(--b3-theme-on-surface-light);
 	--b3-switch-hover: rgba(31, 31, 31, 0.06);
@@ -149,35 +149,35 @@ html[data-theme-mode="light"] {
 	--b3-switch-checked-hover: #d3e3fd;
 	--b3-switch-checked-hover2: rgba(31, 31, 31, .06);
 
-	/* 阴影 */
+	// 阴影
 	--b3-point-shadow: 0 0 1px 0 rgba(0, 0, 0, .1), 0 0 2px 0 rgba(0, 0, 0, .2);
 	--b3-dialog-shadow: 0 8px 24px rgba(0, 0, 0, .2);
 	--b3-button-shadow: 0 5px 5px -3px rgb(0 0 0 / .2), 0 8px 10px 1px rgb(0 0 0 / .14), 0 3px 14px 2px rgb(0 0 0 / .12);
 
-	/* 图表颜色 */
+	// 图表颜色
 	--b3-graph-p-point: #076f7e;
-	/*--b3-graph-heading-point: #8250df;*/
-	/*--b3-graph-math-point: #80FFA5;*/
-	/*--b3-graph-code-point: #00DDFF;*/
-	/*--b3-graph-table-point: #37A2FF;*/
-	/*--b3-graph-list-point: #FF0087;*/
+	// --b3-graph-heading-point: #8250df;
+	// --b3-graph-math-point: #80FFA5;
+	// --b3-graph-code-point: #00DDFF;
+	// --b3-graph-table-point: #37A2FF;
+	// --b3-graph-list-point: #FF0087;
 	--b3-graph-todo-point: #FFBF00;
 	--b3-graph-olist-point: #b3005f;
-	/*--b3-graph-listitem-point: #f65b00;*/
-	/*--b3-graph-bq-point: #8d48e3;*/
-	/*--b3-graph-super-point: #dd79ff;*/
-	/*--b3-graph-doc-point: #202124;*/
-	/*--b3-graph-tag-point: #dbf32f;*/
+	// --b3-graph-listitem-point: #f65b00;
+	// --b3-graph-bq-point: #8d48e3;
+	// --b3-graph-super-point: #dd79ff;
+	// --b3-graph-doc-point: #202124;
+	// --b3-graph-tag-point: #dbf32f;
 	--b3-graph-asset-point: #05c091;
 	--b3-graph-line: #5f6368;
-	/*--b3-graph-ref-line: #d23f31;*/
+	// --b3-graph-ref-line: #d23f31;
 	--b3-graph-tag-line: #5f6b06;
 	--b3-graph-tag-tag-line: #dbf32f;
 	--b3-graph-asset-line: #037457;
 	--b3-graph-hl-point: #f3a92f;
 	--b3-graph-hl-line: #4285f4;
 
-	/* 从 Asri 拿的关系图配色 */
+	// 从 Asri 拿的关系图配色
 	--b3-graph-heading-point: #ef6b9a;
 	--b3-graph-math-point: #24a5ff;
 	--b3-graph-code-point: #6a9bff;
@@ -190,27 +190,27 @@ html[data-theme-mode="light"] {
 	--b3-graph-tag-point: #ef7747;
 	--b3-graph-ref-line: var(--b3-theme-primary-light);
 
-	/* 编辑器搜索颜色 */
+	// 编辑器搜索颜色
 	--b3-protyle-search-background: #ffe955;
 	--b3-protyle-search-border-color: #f2e680;
 	--b3-protyle-search-current-background: #a5d3fe;
 
-	/* 代码片段背景 */
-	--b3-protyle-code-background: rgba(27, 31, 35, .05); /* 代码块背景 */
+	// 代码片段背景
+	--b3-protyle-code-background: rgba(27, 31, 35, .05); // 代码块背景
 
-	/* 所见即所得行内元素颜色 */
+	// 所见即所得行内元素颜色
 	--b3-protyle-inline-strong-color: inherit;
 	--b3-protyle-inline-em-color: inherit;
 	--b3-protyle-inline-u-color: inherit;
-	--b3-protyle-inline-s-color: rgb(148, 150, 152); /* 原来是 inherit */
+	--b3-protyle-inline-s-color: rgb(148, 150, 152); // 原来是 inherit
 	--b3-protyle-inline-link-color: #4285f4;
 	--b3-protyle-inline-mark-background: rgb(249, 249, 160);
-	--b3-protyle-inline-mark-color: inherit; /* 原来是 #202124 */
+	--b3-protyle-inline-mark-color: inherit; // 原来是 #202124
 	--b3-protyle-inline-tag-color: #5f6368;
 	--b3-protyle-inline-blockref-color: #8957e5;
-	--b3-protyle-inline-fileref-color: rgb(27, 97, 36); /* 原来是 #21862e */
+	--b3-protyle-inline-fileref-color: rgb(27, 97, 36); // 原来是 #21862e
 
-	/* PDF */
+	// PDF
 	--b3-pdf-selection: #d0e9c8;
 	--sidebar-width: 200px;
 	--b3-pdf-offset: 0;
@@ -223,39 +223,39 @@ html[data-theme-mode="light"] {
 	--b3-pdf-background7: #C885DA;
 	--b3-pdf-dark: #212224;
 
-	/* 表格 */
+	// 表格
 	--b3-table-even-background: rgba(0, 0, 0, .02);
 
-	/* 嵌入块 */
+	// 嵌入块
 	--b3-embed-background: transparent;
 
-	/* 引述块 */
+	// 引述块
 	--b3-bq-background: transparent;
 
-	/* 父块颜色 */
+	// 父块颜色
 	--b3-parent-background: var(--b3-theme-background);
 }
 
-/* TODO 1 暗黑主题 */
+// TODO 1 暗黑主题
 html[data-theme-mode="dark"] {
-	/* 自定义、混合 */
+	// 自定义、混合
 	--custom-inline-box-shadow: 0 .1em 0 0;
 	--custom-theme-on-shadow: 0px 0px 2px rgb(from var(--b3-theme-on-background) r g b / .5);
 	--custom-link-shadow: 0px 0px 2px rgb(from var(--b3-protyle-inline-link-color) r g b / .5);
 
-	--b3-font-background14: rgb(183, 183, 183);  /* 数据库选项专用 */
-	--custom-database-background13: rgba(232, 233, 235); /* 在数据库选项里显示为灰色 */
+	--b3-font-background14: rgb(183, 183, 183);  // 数据库选项专用
+	--custom-database-background13: rgba(232, 233, 235); // 在数据库选项里显示为灰色
 	--custom-color-blue-light: rgba(0, 202, 255, .85);
 	--custom-list-hover-dark: rgba(51, 49, 44, .15);
 	--custom-list-hover-darker: rgba(51, 49, 44, .2);
-	--mix-theme_primary_background: rgb(225, 223, 216); /* --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245) */
+	--mix-theme_primary_background: rgb(225, 223, 216); // --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245)
 
-	/* 代码片段背景 */
-	--b3-protyle-code-background: rgba(126, 129, 133, .3); /* 代码块背景 */
+	// 代码片段背景
+	--b3-protyle-code-background: rgba(126, 129, 133, .3); // 代码块背景
 }
 
-/* —————————————————————————— 全局样式 —————————————————————————— */
+// —————————————————————————— 全局样式 ——————————————————————————
 
 * {
-	font-variant-numeric: tabular-nums; /* 使用等宽数字 */
+	font-variant-numeric: tabular-nums; // 使用等宽数字
 }

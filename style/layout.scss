@@ -1,6 +1,6 @@
-/* NOTE 确保布局不会跟全屏模式冲突：编辑器全屏、关系图全屏 */
+// NOTE 确保布局不会跟全屏模式冲突：编辑器全屏、关系图全屏
 
-/* 界面圆角 */
+// 界面圆角
 body:not(.body--mobile,.body--window) #layouts {
     background-color: var(--b3-theme-surface);
 }
@@ -9,12 +9,12 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
 }
 
 #layouts .fn__flex-1 {
-    overflow-x: hidden; /* 有的情况下会出现横向滚动条。TODO跟进 跟进 https://github.com/siyuan-note/siyuan/issues/12264 */
+    overflow-x: hidden; // 有的情况下会出现横向滚动条。TODO跟进 跟进 https://github.com/siyuan-note/siyuan/issues/12264
 }
 
-.protyle-content{width:unset!important;} /* TODO跟进 动态加载时编辑器抖动。跟进 https://github.com/siyuan-note/siyuan/issues/13913 */
+.protyle-content{width:unset!important;} // TODO跟进 动态加载时编辑器抖动。跟进 https://github.com/siyuan-note/siyuan/issues/13913
 
-/* 隐藏 border 边框 https://github.com/siyuan-note/siyuan/issues/12970 */
+// 隐藏 border 边框 https://github.com/siyuan-note/siyuan/issues/12970
 .toolbar {
     border-bottom: unset;
 }
@@ -33,19 +33,19 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
 }
 .layout__resize:hover::after {
     background-color: var(--b3-scroll-color);
-    height: 2px; /* hover 时加粗便于判断 */
+    height: 2px; // hover 时加粗便于判断
 }
 .layout__resize--lr:hover::after {
     height: 100%;
-    width: 2px; /* hover 时加粗便于判断 */
+    width: 2px; // hover 时加粗便于判断
 }
 .layout-tab-bar {
-    border-bottom: unset; /* 页签 */
+    border-bottom: unset; // 页签
 }
 
-/* ————————————————————顶栏———————————————————— */
+// ————————————————————顶栏————————————————————
 
-/* 主菜单 */
+// 主菜单
 #barWorkspace {
     min-width: 50px;
     justify-content: center;
@@ -55,6 +55,6 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
 }
 
 .toolbar > .fn__ellipsis {
-    opacity: 0; /* 不显示文档名 */
+    opacity: 0; // 不显示文档名
 }
 

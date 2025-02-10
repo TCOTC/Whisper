@@ -1,27 +1,27 @@
 .block__icon, .toolbar__item, .protyle-icons, .protyle-icon, .dock__item--pin {
-	transition: unset !important; /* 按钮感觉不跟手，不要过渡样式 */
+	transition: unset !important; // 按钮感觉不跟手，不要过渡样式
 }
 
-/* 工具栏 */
+// 工具栏
 .protyle-toolbar {
-	transition: none; /* 禁用工具栏平移效果 */
+	transition: none; // 禁用工具栏平移效果
 }
 
-/* 菜单中的部分输入框默认两行高 */
+// 菜单中的部分输入框默认两行高
 .b3-menu__item[data-id="链接"] .b3-text-field,
 .b3-menu__item[data-id="锚文本"] .b3-text-field,
 .b3-menu__item[data-id="标题"] .b3-text-field {
 	height: 50px;
-	/* TODO 图片菜单、链接菜单、数据库资源字段链接菜单 里的选项都没有 data-id，需要 PR 给思源 */
-	/* TODO 参考 https://blog.dkvirus.com/css/css_selector_placeholder_shown/ 排除空输入框，必要时给思源 PR 或者提 issue */
+	// TODO 图片菜单、链接菜单、数据库资源字段链接菜单 里的选项都没有 data-id，需要 PR 给思源
+	// TODO 参考 https://blog.dkvirus.com/css/css_selector_placeholder_shown/ 排除空输入框，必要时给思源 PR 或者提 issue
 }
 
-/* 菜单里的链接跟行内链接用同样的颜色 */
+// 菜单里的链接跟行内链接用同样的颜色
 a {
     color: var(--b3-protyle-inline-link-color);
 }
 
-/* 开关按钮：隐藏悬浮样式 */
+// 开关按钮：隐藏悬浮样式
 label:hover .b3-switch:checked:not(:disabled)::after, .b3-switch:checked:hover:not(:disabled)::after {
 	background-color: var(--b3-switch-checked);
 }
@@ -31,14 +31,14 @@ label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:n
 }
 
 
-/* 选项菜单 */
+// 选项菜单
 .b3-menu__item {
 	line-height: 27px;
 	min-width: 100px;
 
-	/* 隐藏不常用的块标选项 */
+	// 隐藏不常用的块标选项
 	&[data-id="jumpToParentNext"],&[data-id="jumpToParentPrev"],&[data-id="jumpToParent"],&[data-id="enterBack"],
-	/* 隐藏不常用的页签菜单选项 */
+	// 隐藏不常用的页签菜单选项
 	&[data-id="closeOthers"],&[data-id="closeAll"],&[data-id="closeUnmodified"],&[data-id="closeLeft"],&[data-id="closeRight"] {
 		display: none;
 	}
@@ -47,7 +47,7 @@ label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:n
 		font-size: 85%;
 	}
 
-	/* 菜单宽度：文本的宽度 */
+	// 菜单宽度：文本的宽度
 	.b3-menu__label {
 		min-width: 25px;
 	}
@@ -56,30 +56,30 @@ button, input, select, textarea {
 	font-size: 97%;
 }
 .b3-button {
-	transition: unset; /* 按钮不需要过渡 */
+	transition: unset; // 按钮不需要过渡
 }
 
-/* 输入框、下拉框聚焦状态 */
+// 输入框、下拉框聚焦状态
 .b3-text-field:not(.b3-text-field--text):focus,.pcr-app .pcr-interaction .pcr-result:not(.b3-text-field--text):focus,
 .b3-select:focus {
     box-shadow: inset 0 0 0 .6px var(--b3-theme-on-background);
 }
 
-/* 隐藏闪卡按钮上的图标 */
+// 隐藏闪卡按钮上的图标
 .card__icon {
 	display: none;
 }
 
-/* 设置窗口 */
+// 设置窗口
 .b3-dialog--open[data-key="dialog-setting"] .config__tab-title.resize__move {
-	cursor: grab; /* 表示可拖拽窗口 */
+	cursor: grab; // 表示可拖拽窗口
 
 	&+.b3-form__icon +.config__tab-hr {
-		display: none; /* 隐藏分隔线 */
+		display: none; // 隐藏分隔线
 	}
 }
 
-/* 按钮样式 */
+// 按钮样式
 .b3-button {
 	&:active {
 		box-shadow: unset;
@@ -95,23 +95,23 @@ button, input, select, textarea {
 }
 
 
-/* ————————————————————外观菜单———————————————————— */
-/* TODO 需要给标题元素 PR 不同的属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器) */
-/* 隐藏 最近使用 */
+// ————————————————————外观菜单————————————————————
+// TODO 需要给标题元素 PR 不同的属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器)
+// 隐藏 最近使用
 .protyle-font > div.fn__flex:first-child,
 .protyle-font > div.fn__flex:first-child + .fn__hr--small,
 .protyle-font > div.fn__flex:first-child + .fn__hr--small + .fn__flex-wrap,
 .protyle-font > div.fn__flex:first-child + .fn__hr--small + .fn__flex-wrap + .fn__hr {
 	display: none;
 }
-/* 隐藏 字体效果 */
+// 隐藏 字体效果
 .protyle-font > div:has(+ .fn__hr--small + .fn__flex > .protyle-font__style),
 .protyle-font > div:has(+ .fn__flex > .protyle-font__style),
 .protyle-font > div:has(> .protyle-font__style),
 .protyle-font > div:has(> .protyle-font__style) + .fn__hr {
 	display: none;
 }
-/* 隐藏 字号 */
+// 隐藏 字号
 .protyle-font > div:has(+ .fn__hr--small + .fn__flex > .b3-select),
 .protyle-font > div:has(+ .fn__flex > .b3-select),
 .protyle-font > div:has(> .b3-select),
@@ -122,11 +122,11 @@ button, input, select, textarea {
 	max-width: 238px;
 	scrollbar-gutter: auto;
 }
-/* 颜色选项 */
+// 颜色选项
 .color__square {
 	&[data-type="color"],&[data-type="style1"] {
 		font-size: 18px;
-		font-weight: bold; /* 字体加粗更清晰 */
+		font-weight: bold; // 字体加粗更清晰
 	}
 	&[style*="--b3-font-color1"],&[style*="--b3-font-background1"] {
 		order: 1;
@@ -168,7 +168,7 @@ button, input, select, textarea {
 		order: 13;
 	}
 	&[style*="--b3-font-color13"],&[style*="--b3-font-background13"] {
-		order: 7; /* 把 13 号颜色排到默认色正下方；在数据库选项颜色弹窗里是第一行最右边 */
+		order: 7; // 把 13 号颜色排到默认色正下方；在数据库选项颜色弹窗里是第一行最右边
 
 		&[data-type="color"]{
 			color: var(--b3-theme-on-background) !important;
@@ -177,10 +177,10 @@ button, input, select, textarea {
 		}
 	}
 	&[style*="--b3-font-color14"],&[style*="--b3-font-background14"] {
-		order: 14; /* 数据库选项颜色 */
+		order: 14; // 数据库选项颜色
 	}
 }
-/* 数据库选项颜色菜单 */
+// 数据库选项颜色菜单
 .b3-menu[data-name="av-col-option"] .color__square {
 	color: transparent !important;
 
@@ -189,11 +189,11 @@ button, input, select, textarea {
 	}
 }
 
-/* ————————————————————集市———————————————————— */
-/* 已下载页面 */
+// ————————————————————集市————————————————————
+// 已下载页面
 .config-bazaar__panel {
 	&[data-type=downloaded] {
-		/* 并列显示 */
+		// 并列显示
 		.config-bazaar__content {
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
@@ -223,7 +223,7 @@ button, input, select, textarea {
 		}
 
 		.fn__hr {
-			display: none; /* “未找到相关内容” */
+			display: none; // “未找到相关内容”
 		}
 		.b3-list--empty {
 			margin-top: 15px;
@@ -255,7 +255,7 @@ button, input, select, textarea {
 	}
 }
 
-/* 集市 README */
+// 集市 README
 #configBazaarReadme .item__main {
 	.item__preview {
 		border-radius: var(--b3-border-radius-b);
@@ -276,8 +276,8 @@ button, input, select, textarea {
 		}
 	}
 }
-/* 给 TCOTC 的插件和主题的 README 加点特效 */
-/* 原始样式来源于 https://www.bilibili.com/video/BV1b44y1e7Wx/ https://codepen.io/stevenlei/pen/ZEJxXGL */
+// 给 TCOTC 的插件和主题的 README 加点特效
+// 原始样式来源于 https://www.bilibili.com/video/BV1b44y1e7Wx/ https://codepen.io/stevenlei/pen/ZEJxXGL
 #configBazaarReadme.config-bazaar__readme--show:has(> .item__side[data-obj*="TCOTC"]) {
 	background: var(--b3-theme-surface);
 
@@ -332,7 +332,7 @@ button, input, select, textarea {
 	}
 
 	.item__title {
-		text-shadow: 0 0 1em var(--b3-protyle-inline-mark-background), 0 0 0.2em var(--b3-protyle-inline-mark-background); /* 标题文本光晕 */
+		text-shadow: 0 0 1em var(--b3-protyle-inline-mark-background), 0 0 0.2em var(--b3-protyle-inline-mark-background); // 标题文本光晕
 	}
 }
 @keyframes movement {
@@ -394,18 +394,18 @@ button, input, select, textarea {
 	}
 }
 
-/* 表情选择器 */
+// 表情选择器
 .emojis__panel {
-	/*overflow-x: hidden;*/
+	// overflow-x: hidden;
 
 	.emojis__title[data-type="0"] + .emojis__content {
-		max-height: 68px; /* 最近使用的表情只显示两行 */
-		/*width: calc(100% + 10px);*/
+		max-height: 68px; // 最近使用的表情只显示两行
+		// width: calc(100% + 10px);
 		overflow: hidden;
 	}
 
 	.emojis__title[data-type="1"]:not(:has(+ .emojis__content > .emojis__item)),
 	.emojis__title[data-type="1"] + .emojis__content:not(:has(> .emojis__item)) {
-		display: none; /* 如果没有自定义表情就隐藏 */
+		display: none; // 如果没有自定义表情就隐藏
 	}
 }

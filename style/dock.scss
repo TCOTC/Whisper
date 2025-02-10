@@ -1,66 +1,66 @@
-/* ————————————————————侧栏面板布局———————————————————— */
+// ————————————————————侧栏面板布局————————————————————
 
 .file-tree {
 	&>.block__icons {
-		padding-left: 3px; /* 跟下面的 .b3-list 对齐 */
-		padding-right: 13px; /* 滚动条的宽度 + .b3-list 的 margin-right */
+		padding-left: 3px; // 跟下面的 .b3-list 对齐
+		padding-right: 13px; // 滚动条的宽度 + .b3-list 的 margin-right
 	}
 
 	&>.fn__flex-1 {
 		scrollbar-gutter: stable;
 
 		&>.b3-list {
-			margin-left: 3px; /* 尽可能利用空间 */
+			margin-left: 3px; // 尽可能利用空间
 			margin-right: 3px;
 		}
 	}
 }
 .sy__backlink > .fn__flex-1 > .b3-list {
-	margin: 0; /* 反链面板编辑器尽可能宽 */
+	margin: 0; // 反链面板编辑器尽可能宽
 }
 
-/*.layout__dockr > .fn__flex-1:not(.fn__none) {*/
-/*	margin-left: 3px; !* TODO跟进 这里会导致侧栏面板宽度异常，暂时用下面的 min-width 解决。需要跟进 https://github.com/siyuan-note/siyuan/issues/13516 *!*/
-/*}*/
+// .layout__dockr > .fn__flex-1:not(.fn__none) {
+// margin-left: 3px; !* TODO跟进 这里会导致侧栏面板宽度异常，暂时用下面的 min-width 解决。需要跟进 https://github.com/siyuan-note/siyuan/issues/13516 *!
+// }
 .layout__dockr .file-tree {
 	margin-left: 3px;
 }
 
-/* 有底栏的情况下，未钉住的右侧栏弹出之后要隐藏底栏，更美观 */
+// 有底栏的情况下，未钉住的右侧栏弹出之后要隐藏底栏，更美观
 body[data-whisper-status="show"] .layout__dockr.layout--float {
 	overflow: visible;
 
 	&::after {
 		content: "";
 		position: absolute;
-		right: calc(28px - 42px); /* 侧栏的宽度 */ /* 露出"显示/隐藏停靠栏"按钮 */
+		right: calc(28px - 42px); // 侧栏的宽度 // 露出"显示/隐藏停靠栏"按钮
 		bottom: 0;
-		height: 24px; /* 底栏的高度 */
-		width: calc(42px - 28px); /* 侧栏的宽度 */ /* 露出"显示/隐藏停靠栏"按钮 */
+		height: 24px; // 底栏的高度
+		width: calc(42px - 28px); // 侧栏的宽度 // 露出"显示/隐藏停靠栏"按钮
 		background-color: var(--b3-theme-surface);
 	}
 }
-/* TODO 需要考虑使用 :has 选择器以外的方案 */
+// TODO 需要考虑使用 :has 选择器以外的方案
 .layout__dockl:not(.layout--float):has(> .fn__flex-1:not(.fn__none)),
 .layout__dockr:not(.layout--float):has(> .fn__flex-1:not(.fn__none)) {
 	min-width: 232px;
 }
 
-/* 调整侧栏浮窗高度与层级 CSS片段 */
+// 调整侧栏浮窗高度与层级 CSS片段
 .layout__dockl.layout--float,
 .layout__dockr.layout--float {
-	top: 32px !important; /* 顶栏的高度 */
-	bottom: 0 !important; /* 直接把底栏盖住 */
-	/*z-index: 4 !important;*/ /* 不改侧栏层级了 */
+	top: 32px !important; // 顶栏的高度
+	bottom: 0 !important; // 直接把底栏盖住
+	// z-index: 4 !important; // 不改侧栏层级了
 	border: unset;
 	border-radius: unset;
-	box-shadow: unset; /* 阴影样式比较奇怪，先去掉 */
+	box-shadow: unset; // 阴影样式比较奇怪，先去掉
 	opacity: 1 !important;
-	/*transition-delay: 1s; !* TODO跟进 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!*/
+	// transition-delay: 1s; !* TODO跟进 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!
 }
 
-/* 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔 */
-/* 右侧没有 .layout__resize--lr 的编辑器就是最靠右的编辑器 */
+// 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔
+// 右侧没有 .layout__resize--lr 的编辑器就是最靠右的编辑器
 .layout__center .fn__flex-1:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .layout-tab-container > .protyle {
 	.protyle-content {
 		margin-right: 15px;
@@ -71,24 +71,24 @@ body[data-whisper-status="show"] .layout__dockr.layout--float {
 	}
 }
 .body--window .protyle-content {
-	margin-right: unset !important; /* 新窗口没有侧栏面板 */
+	margin-right: unset !important; // 新窗口没有侧栏面板
 }
 
-/* 右侧栏 */
-/* 底栏会挡住右下侧栏（如果有底部侧栏的话不会挡住、如果关闭了底栏的话不会挡住） */
+// 右侧栏
+// 底栏会挡住右下侧栏（如果有底部侧栏的话不会挡住、如果关闭了底栏的话不会挡住）
 body[data-whisper-status="show"][data-whisper-dock-bottom="hide"] {
 	#dockRight,
 	.layout__dockr .layout__dockresize {
-		padding-bottom: 24px; /* 等于底栏 status 的高度 */
+		padding-bottom: 24px; // 等于底栏 status 的高度
 	}
 }
 
-/* 底部侧栏 */
+// 底部侧栏
 #dockBottom {
 	padding: 0;
 
 	.dock__item--space {
-		display: none; /* 底部侧栏的左右两边都合并到左边 */
+		display: none; // 底部侧栏的左右两边都合并到左边
 	}
 
 	.dock__item {
@@ -96,32 +96,32 @@ body[data-whisper-status="show"][data-whisper-dock-bottom="hide"] {
 	}
 
 	.dock__item.dock__item--pin {
-		order: 0; /* 钉住按钮始终放在最左边 */
+		order: 0; // 钉住按钮始终放在最左边
 	}
 }
 
-/* 悬浮的底部侧栏面板 */
+// 悬浮的底部侧栏面板
 .layout__dockb.layout--float {
 	border: unset;
 	border-radius: unset;
 	box-shadow: unset;
 	opacity: 1 !important;
-	/*transition-delay: 1s; !* TODO跟进 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!*/
+	// transition-delay: 1s; !* TODO跟进 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!
 
 	&:not([style*="translate"]) {
-		bottom: 42px !important; /* 底部侧栏的高度 */
+		bottom: 42px !important; // 底部侧栏的高度
 	}
 }
 body[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="translate"]) {
-	bottom: 24px !important; /* 隐藏底部侧栏之后。底栏的高度 */
+	bottom: 24px !important; // 隐藏底部侧栏之后。底栏的高度
 	overflow: visible;
 
 	&::after {
 		content: "";
 		position: absolute;
-		bottom: -24px; /* 底栏的高度 */
-		height: 24px; /* 底栏的高度 */
-		width: calc(100% - 28px); /* 露出"显示/隐藏停靠栏"按钮 */
+		bottom: -24px; // 底栏的高度
+		height: 24px; // 底栏的高度
+		width: calc(100% - 28px); // 露出"显示/隐藏停靠栏"按钮
 		background-color: var(--b3-theme-surface);
 	}
 }
@@ -130,65 +130,65 @@ body[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 	border-left: 1px solid var(--b3-scroll-color);
 
 	&:hover {
-		border-left: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
+		border-left: 2px solid var(--b3-scroll-color); // 跟 .layout__resize 相同
 	}
 }
 .layout--float.layout__dockl > .layout__dockresize--lr {
 	border-right: 1px solid var(--b3-scroll-color);
 
 	&:hover {
-		border-right: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
+		border-right: 2px solid var(--b3-scroll-color); // 跟 .layout__resize 相同
 	}
 }
 .layout--float.layout__dockb > .layout__dockresize {
 	border-top: 1px solid var(--b3-scroll-color);
 
 	&:hover {
-		border-top: 2px solid var(--b3-scroll-color); /* 跟 .layout__resize 相同 */
+		border-top: 2px solid var(--b3-scroll-color); // 跟 .layout__resize 相同
 	}
 }
 
-/* 侧栏面板悬浮时始终显示按钮，避免面板弹出时按钮闪烁 */
+// 侧栏面板悬浮时始终显示按钮，避免面板弹出时按钮闪烁
 .layout--float .block__icon:not([disabled]) {
 	opacity: 1;
 }
 
-/* 侧栏面板焦点状态的侧栏按钮样式 */
+// 侧栏面板焦点状态的侧栏按钮样式
 .dock .dock__item.dock__item--activefocus{
 	background-color: var(--b3-theme-primary-lightest);
 	color: var(--b3-theme-primary);
 }
 
 
-/* ————————————————————文档树———————————————————— */
+// ————————————————————文档树————————————————————
 
-/* 笔记本区隔 */
+// 笔记本区隔
 .sy__file ul.b3-list.b3-list--background {
 	border-radius: var(--b3-border-radius);
 	margin: 3px 4px 3px 4px;
 	outline: 1px solid var(--b3-theme-on-surface-light);
-	/* overflow: hidden; */
+	// overflow: hidden;
 }
 .sy__file .b3-list-item {
 	margin-left: 0;
 	margin-right: 0;
 
 	&[data-type="navigation-root"] {
-		line-height: 30px; /* 笔记本行高 */
+		line-height: 30px; // 笔记本行高
 	}
 }
-/* 文档树和大纲的 dragover */
+// 文档树和大纲的 dragover
 .sy__file .dragover[data-type="navigation-root"]::after,
 .sy__outline [data-subtype="h1"]::after {
 	width: 100%;
 	left: 0;
 }
-/* flex 布局避免笔记本外边距合并 */
+// flex 布局避免笔记本外边距合并
 .sy__file > .fn__flex-1 {
 	display: flex;
 	flex-direction: column;
 }
-/* 笔记本 dragover */
+// 笔记本 dragover
 .sy__file [data-type="navigation-root"] {
 	&.dragover__top::after,
 	&.dragover__bottom::after {
@@ -206,7 +206,7 @@ body[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 	}
 }
 
-/* 避免展开文档树误触打开文档：只要箭头颜色变深就能展开下级 */
+// 避免展开文档树误触打开文档：只要箭头颜色变深就能展开下级
 .sy__file .b3-list-item {
 	padding-left: 0;
 
@@ -222,16 +222,16 @@ body[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 	.b3-list-item__toggle {
 		height: 28px;
 		border-radius: unset;
-		transition: unset; /* 即时响应 */
+		transition: unset; // 即时响应
 
 		&.b3-list-item__toggle--hl:hover {
 			background-color: unset;
 		}
 	}
 
-	/* 已关闭的笔记本 */
+	// 已关闭的笔记本
 	&[data-type="toggle"] {
-		padding-left: 3px; /* 跟 .file-tree > .block__icons 一致 */
+		padding-left: 3px; // 跟 .file-tree > .block__icons 一致
 		padding-right: 13px;
 
 		&:not(:hover) {
@@ -242,7 +242,7 @@ body[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 			color: var(--b3-theme-on-background);
 		}
 
-		/* 笔记本 */
+		// 笔记本
 		&+ .fn__flex-1 > .b3-list-item:hover {
 			background-color: var(--b3-list-hover);
 			border-radius: var(--b3-border-radius);
@@ -251,18 +251,18 @@ body[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 }
 
 
-/* ————————————————————反链、提及面板———————————————————— */
+// ————————————————————反链、提及面板————————————————————
 
-/* 反链、提及面板固定文档名称 CSS片段 */
-/* author by JeffreyChen https://ld246.com/article/1737207365006 */
-/* TODO跟进 需要跟进 https://github.com/siyuan-note/siyuan/issues/13679 修改 */
+// 反链、提及面板固定文档名称 CSS片段
+// author by JeffreyChen https://ld246.com/article/1737207365006
+// TODO跟进 需要跟进 https://github.com/siyuan-note/siyuan/issues/13679 修改
 .backlinkMList .b3-list-item,
 .backlinkList .b3-list-item {
 	position: sticky;
 	top: 0;
 	padding: 0;
 	margin: 0;
-	z-index: 4; /* 高于选中块的伪元素高亮 */
+	z-index: 4; // 高于选中块的伪元素高亮
 	background-color: var(--b3-theme-surface) !important;
 	border-radius: unset;
 
@@ -278,7 +278,7 @@ body[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 		}
 
 		&>.b3-list-item__toggle {
-			color: var(--b3-theme-on-background); /* 只要箭头颜色变深就代表能展开 */
+			color: var(--b3-theme-on-background); // 只要箭头颜色变深就代表能展开
 		}
 	}
 

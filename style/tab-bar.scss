@@ -1,8 +1,8 @@
-/* ————————————————————选项卡———————————————————— */
+// ————————————————————选项卡————————————————————
 
 .layout-tab-bar:not(.layout-tab-bar--readonly) {
 	height: unset;
-	padding: 8px 5px 5px; /* 默认边距：距离其他元素 8px（.item本身有3px左右边距），底部留 5px 给伪元素 */
+	padding: 8px 5px 5px; // 默认边距：距离其他元素 8px（.item本身有3px左右边距），底部留 5px 给伪元素
 
 	.item {
 		border-radius: var(--b3-border-radius);
@@ -14,10 +14,10 @@
 		transition: unset;
 
 		&:not(.item--pin) {
-			background-color: var(--b3-theme-surface); /* 默认背景色 */
+			background-color: var(--b3-theme-surface); // 默认背景色
 		}
 
-		&:not(.item--focus):hover { /* 聚焦时背景色不要变 */
+		&:not(.item--focus):hover { // 聚焦时背景色不要变
 			background-color: var(--b3-theme-background-light) !important;
 		}
 
@@ -27,13 +27,13 @@
 		}
 	}
 
-	/* 焦点选项 */
+	// 焦点选项
 	.item--focus {
-		/* 伪元素下划线 */
+		// 伪元素下划线
 		&::after {
 			height: 2px;
 			bottom: -5px;
-			pointer-events: none; /* 伪元素会影响悬浮提示 */
+			pointer-events: none; // 伪元素会影响悬浮提示
 		}
 
 		.item__text {
@@ -43,26 +43,26 @@
 }
 
 
-/* ————————————————————数据库———————————————————— */
+// ————————————————————数据库————————————————————
 
 .av__views > .layout-tab-bar {
 	height: 38px;
 	padding: 0;
 
-	/* 视图图标 */
+	// 视图图标
 	.item__graphic {
 		padding: 0 2px 0 8px;
 	}
 }
 
 
-/* ————————————————————页签———————————————————— */
+// ————————————————————页签————————————————————
 
 #layouts .fn__flex:not(.av__views) {
 	&>.layout-tab-bar:not(.layout-tab-bar--readonly) {
-		padding: 4px 0 5px 5px; /* 跟面包屑对齐 */
+		padding: 4px 0 5px 5px; // 跟面包屑对齐
 
-		/* 关闭页签时的宽度缩小渐变动画 */
+		// 关闭页签时的宽度缩小渐变动画
 		.item[style*="max-width: 0"] {
 			transition: var(--b3-transition);
 			min-width: unset !important;
@@ -72,46 +72,46 @@
 			}
 		}
 
-		/* 页签宽度 */
+		// 页签宽度
 		.item:not(.item--pin) {
 
 			.item__text {
-				min-width: 4em; /* 页签最少显示的字符数宽度 */
-				text-align-last: left; /* 文本居左 */
-				padding-right: 22px; /* 留给叉号图标的位置 */
-				-webkit-mask-image: -webkit-linear-gradient(right, transparent 20px, var(--b3-theme-on-surface) 24px); /* 标题文本渐变，使叉号不与标题文本重叠 */
+				min-width: 4em; // 页签最少显示的字符数宽度
+				text-align-last: left; // 文本居左
+				padding-right: 22px; // 留给叉号图标的位置
+				-webkit-mask-image: -webkit-linear-gradient(right, transparent 20px, var(--b3-theme-on-surface) 24px); // 标题文本渐变，使叉号不与标题文本重叠
 				mask-image: linear-gradient(to left, transparent 20px, var(--b3-theme-on-surface) 24px);
 			}
 
 			.item__close {
-				position: absolute; /* 让叉号靠右 */
+				position: absolute; // 让叉号靠右
 				right: 0;
-				padding: 0 3px 0 0; /* 叉号点击范围 */
+				padding: 0 3px 0 0; // 叉号点击范围
 
 				svg {
-					opacity: .68; /* 始终显示页签叉号 */
+					opacity: .68; // 始终显示页签叉号
 					transition: unset;
-					height: 10px; /* 叉号图标大小 */
+					height: 10px; // 叉号图标大小
 					width: 10px;
 					background-color: unset;
 				}
 			}
 		}
 
-		/* 钉住的页签 */
+		// 钉住的页签
 		.item--pin {
 			.item__icon {
 				padding: 0 5px;
 			}
 
 			.item__text {
-				min-width: 4em; /* 页签最少显示的字符数宽度 */
-				text-align-last: left; /* 文本居左 */
+				min-width: 4em; // 页签最少显示的字符数宽度
+				text-align-last: left; // 文本居左
 				-webkit-mask-image: -webkit-linear-gradient(right, transparent 1px, var(--b3-theme-on-surface) 15px);
 				mask-image: linear-gradient(to left, transparent 1px, var(--b3-theme-on-surface) 15px);
 			}
 
-			/* 颜色 */
+			// 颜色
 			&:nth-child(4n-3) {
 				background-color: var(--b3-card-error-background);
 
@@ -140,7 +140,7 @@
 					background-color: color-mix(in srgb, var(--b3-card-success-background) 90%, rgb(from var(--b3-list-hover) r g b / 1)) !important;
 				}
 			}
-			/* 钉住且聚焦的页签 */
+			// 钉住且聚焦的页签
 			&.item--focus {
 				&:nth-child(4n-3):hover {
 					background-color: var(--b3-card-error-background) !important;
@@ -156,7 +156,7 @@
 				}
 			}
 
-			/* 钉住的页签与未钉住的页签之间添加分隔线 */
+			// 钉住的页签与未钉住的页签之间添加分隔线
 			&+.item:not(.item--pin, .item--readonly) {
 				margin-left: 10px;
 
@@ -183,7 +183,7 @@
 		}
 	}
 }
-/* 新窗口的右上角留一点位置用来拖拽窗口 */
+// 新窗口的右上角留一点位置用来拖拽窗口
 .body--window #layouts .fn__flex-1:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
 	min-width: 100px;
 }
@@ -191,7 +191,7 @@
 	min-width: 69px !important;
 }
 
-/* 窗口失去焦点时 */
+// 窗口失去焦点时
 body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
 	box-shadow: none !important;
 
@@ -200,23 +200,23 @@ body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
 	}
 }
 
-/* ————————————————————窗口———————————————————— */
+// ————————————————————窗口————————————————————
 
-/* 属性面板 */
+// 属性面板
 .b3-dialog--open[data-key="dialog-attr"] .layout-tab-bar {
 	padding: 8px 13px 5px;
 }
 
-/* 数据历史 */
+// 数据历史
 .b3-dialog--open[data-key="dialog-history"] .layout-tab-bar {
 	padding: 8px 5px 5px;
 }
 
-/* 设置 */
+// 设置
 .b3-dialog--open[data-key="dialog-setting"] .config__tab-container {
-	/* AI */
+	// AI
 	&[data-name="AI"] {
-		/* 隐藏唯一的 Tab */
+		// 隐藏唯一的 Tab
 		.layout-tab-bar {
 			padding: 0;
 			opacity: 0;
@@ -225,14 +225,14 @@ body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
 		}
 	}
 
-	/* 资源 */
+	// 资源
 	&[data-name="image"] {
 		.layout-tab-bar {
 			padding: 8px 5px 5px;
 		}
 	}
 
-	/* 集市 */
+	// 集市
 	&[data-name="bazaar"] {
 		.layout-tab-bar {
 			padding: 10px 13px 5px;
