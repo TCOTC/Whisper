@@ -334,6 +334,12 @@
 	justify-content: start; /* 靠左 */
 }
 
+/* 添加或移除题头图时文档不抖动 */
+.protyle-content--transition .protyle-background__ia {
+	transition: margin-left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0ms,
+	margin-right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0ms !important;
+}
+
 .protyle-background {
 	margin-bottom: 14px;
 
@@ -346,9 +352,6 @@
 	}
 
 	.protyle-background__ia {
-		transition: margin-left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0ms,
-		margin-right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0ms !important; /* 添加或移除题头图时文档不抖动 */
-
 		/* 文档图标 */
 		.protyle-background__icon {
 			margin: 3px 0 !important;
