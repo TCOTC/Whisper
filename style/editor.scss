@@ -113,7 +113,7 @@
 		line-height: 1;
 		color: var(--b3-theme-on-background);
 		vertical-align: middle;
-		background-color: var(--custom-protyle-kbd-background); // TODO 在暗黑模式下这个背景颜色不明显
+		background-color: var(--custom-protyle-kbd-background); // TODO 1 在暗黑模式下这个背景颜色不明显
 		border: solid 1px var(--b3-theme-surface-lighter);
 		border-radius: var(--b3-border-radius);
 		box-shadow: inset 0 -1px 0 var(--b3-theme-surface-lighter);
@@ -166,9 +166,8 @@
 		}
 	}
 	// 块引用静态锚文本用虚线下划线
-	// TODO跟进 跟进锚文本类型修复 https://github.com/siyuan-note/siyuan/issues/13889
 	span[data-type~=block-ref][data-subtype="s"]:not(.av__celltext),
-	.av__celltext--ref[data-subtype="s"] {
+	.av__celltext--ref[data-subtype="s"] { // TODO跟进 数据库的锚文本类型是写死的，需要修复 https://github.com/siyuan-note/siyuan/issues/13889
 		border-bottom: 0.15em dashed var(--custom-color-blue-light);
 	}
 
@@ -608,7 +607,7 @@
 .protyle-wysiwyg [data-node-id][fold="1"]:not(.li) {
 	background-image: repeating-linear-gradient(-45deg,var(--b3-theme-background-light),var(--b3-theme-background-light) 5px, var(--b3-list-hover) 0, var(--b3-list-hover) 10px);
 }
-// TODO 给各种类型的块分别弄个合适的折叠样式
+// TODO 1 给各种类型的块分别弄个合适的折叠样式
 
 
 // ————————————————————标题块————————————————————
@@ -677,13 +676,6 @@
 
 
 // ————————————————————代码块————————————————————
-
-// 缩短代码块上下边距，更紧凑
-// TODO跟进 https://github.com/siyuan-note/siyuan/pull/13564 PR 合并后需要移除这部分
-.b3-typography .code-block:not(pre),
-.protyle-wysiwyg .code-block:not(pre) {
-	margin: 2px 0;
-}
 
 // 代码块滚动时语言和按钮固定在编辑器顶部 CSS片段
 // author by JeffreyChen https://ld246.com/article/1728146248791

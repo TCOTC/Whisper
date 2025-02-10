@@ -17,7 +17,7 @@
 // ————————————————————伪元素提示————————————————————
 
 // 动画
-// NOTE 不考虑做淡出效果了，因为 tooltip 只有一个，如果连续弹出的话看起来效果也不好
+// NOTE 不考虑做淡出效果了，因为 tooltip 只有一个，如果连续淡出的话看起来效果也不好
 @keyframes tooltipFadeIn {
     from {
         opacity: 0;
@@ -126,36 +126,35 @@
     max-width: 350px;              // 能够使元素添加 .fn__none 之后宽度不变(用于宽度刚好展开一半的情况)
     transition: max-width 0s 0.3s; // 隐藏超过 0.3s 宽度就立即缩回
 }
-
-// 链接可能有标题，样式单独调整
-// TODO跟进 选择器 span 需要跟进 https://github.com/siyuan-note/siyuan/pull/13966
-.tooltip[data-whisper-tooltip="href"], // 数据库链接字段的 tooltip 不放到左下角，因为确实会需要原地查看
+.tooltip[data-whisper-tooltip="href"],
 .tooltip[data-whisper-tooltip="tab_header"] {
-    // TODO &, &.fn__none 有必要吗？
-    &, &.fn__none {
-        display: flex !important;
-        flex-direction: row;
+    display: flex !important; // 用于淡出
+}
 
-        // 链接
-        span:first-child {
-            order: 3;
-            white-space: nowrap;     // 不换行
-            overflow: hidden;        // 隐藏超出部分
-            text-overflow: ellipsis; // 显示省略号
-        }
+// 带标题的链接
+// TODO跟进 选择器 span 在 PR 合并后才有效 https://github.com/siyuan-note/siyuan/pull/13966
+.tooltip[data-whisper-tooltip="href"] {
+    flex-direction: row;
 
-        // 换行
-        .fn__hr {
-            order: 2;
-            width: 8px;
-        }
+    // 链接
+    span:first-child {
+        order: 3;
+        white-space: nowrap;     // 不换行
+        overflow: hidden;        // 隐藏超出部分
+        text-overflow: ellipsis; // 显示省略号
+    }
 
-        // 标题
-        span:last-child {
-            order: 1;
-            white-space: nowrap;     // 不换行
-            overflow: hidden;        // 隐藏超出部分
-            text-overflow: ellipsis; // 显示省略号
-        }
+    // 换行
+    .fn__hr {
+        order: 2;
+        width: 8px;
+    }
+
+    // 标题
+    span:last-child {
+        order: 1;
+        white-space: nowrap;     // 不换行
+        overflow: hidden;        // 隐藏超出部分
+        text-overflow: ellipsis; // 显示省略号
     }
 }
