@@ -16,6 +16,17 @@
 			.b3-list-item {
 				margin-left: 0;
 				margin-right: 0;
+
+				// 避免点击展开按钮时误触，只要箭头颜色变深就能点击
+				.b3-list-item__toggle {
+					height: 28px; // 列表项的高度
+					border-radius: unset;
+					transition: unset; // 即时响应
+
+					&.b3-list-item__toggle--hl:hover {
+						background-color: unset;
+					}
+				}
 			}
 		}
 	}
@@ -204,26 +215,16 @@ body[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 	}
 }
 
-// 避免展开文档树误触打开文档：只要箭头颜色变深就能展开下级
 .sy__file .b3-list-item {
 	padding-left: 0;
 
+	// 笔记本
 	&[data-type="navigation-root"]  {
 		margin: 0;
 		padding-left: 4px;
 
 		&:hover > .b3-list-item__toggle--hl {
 			color: var(--b3-theme-on-background);
-		}
-	}
-
-	.b3-list-item__toggle {
-		height: 28px;
-		border-radius: unset;
-		transition: unset; // 即时响应
-
-		&.b3-list-item__toggle--hl:hover {
-			background-color: unset;
 		}
 	}
 
