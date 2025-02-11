@@ -281,6 +281,11 @@
 	border-width: unset;
 }
 
+// 右下角的编辑器，滚动条的底部需要留出 24px，否则会被底栏挡住
+body[data-whisper-status="show"][data-whisper-layout-dockr="float"] .layout__center .fn__flex-1:not(:has(+ .layout__resize--lr)):not(:has(+ .layout__resize)) > div[data-type="wnd"] > .layout-tab-container > .protyle .protyle-content::-webkit-scrollbar-track {
+	margin-bottom: 24px
+}
+
 
 // ————————————————————编辑器顶部————————————————————
 
