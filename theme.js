@@ -57,11 +57,13 @@
 
         // 优先获取光标所在块，其次获取点击的元素所在块（例如数据库元素对应的数据库块）
         const block = window.getSelection()?.anchorNode?.parentElement?.closest('[data-node-id]') || event.target.closest('[data-node-id]'); // 光标在选区前面，所以用 anchorNode
-        // 光标不在块内 或者 当前块已经设置类名 时直接返回
-        if (!block || block?.classList.contains(`block-focus`)) return;
+        // 当前块已经设置类名 时直接返回
+        if (block?.classList.contains(`block-focus`)) return;
 
         // 清除当前编辑器内非聚焦块上的类名
         editor.querySelectorAll(`.block-focus`).forEach((element) => element.classList.remove(`block-focus`));
+        // 光标不在块内 / 点击的元素在嵌入块内 时，清除当前编辑器内非聚焦块上的类名后返回
+        if (!block || block?.closest('.protyle-wysiwyg__embed')) return;
 
         block.classList.add(`block-focus`);
     };
