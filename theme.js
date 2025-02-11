@@ -15,10 +15,11 @@
         document.removeEventListener('mouseup', focusBlock); // 卸载事件监听器
         document.removeEventListener('keyup', focusBlock);
 
-        // 监听元素是否隐藏。通过监听来代替使用 :has 选择器，提高性能
+        // 监听元素状态。通过给 body 添加属性来代替使用 :has 选择器，提高性能
         cssObserver?.disconnect();
         document.body.removeAttribute("data-whisper-status");
         document.body.removeAttribute("data-whisper-dock-bottom");
+        document.body.removeAttribute("data-whisper-layout-dockr");
 
         // 鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
         document.removeEventListener('mouseover', updateTooltipData);
@@ -71,36 +72,74 @@
         document.addEventListener('keyup', focusBlock);
     })();
 
-    // 功能：监听元素是否隐藏。通过监听来代替使用 :has 选择器，提高性能
+    // 功能：监听元素状态。通过给 body 添加属性来代替使用 :has 选择器，提高性能
     let cssObserver;
     (async () => {
         if (isMobile) return;
-        // 选择需要观察的目标节点
-        const targetNodeStatus = document.querySelector('#status');
-        const targetNodeDockBottom = document.querySelector('#dockBottom');
 
-        // 手动检查一次并设置初始状态
-        document.body.dataset.whisperStatus = targetNodeStatus.classList.contains('fn__none') ? 'hide' : 'show';
-        document.body.dataset.whisperDockBottom = targetNodeDockBottom.classList.contains('fn__none') ? 'hide' : 'show';
+        // 定义需要查找的目标节点
+        const targetSelectors = {
+            status: '#status',
+            dockBottom: '#dockBottom',
+            layoutDockr: '.layout__dockr'
+        };
 
-        // 创建一个回调函数，当观察到变动时执行
-        const callback = function(mutationsList) {
-            for(let mutation of mutationsList) {
-                const targetNode = mutation.target;
-                const data = targetNode.classList.contains('fn__none') ? 'hide' : 'show';
-                if (targetNode === targetNodeStatus) {
-                    document.body.dataset.whisperStatus = data;
-                } else if (targetNode === targetNodeDockBottom) {
-                    document.body.dataset.whisperDockBottom = data;
-                }
+        // 重试机制
+        const retryInterval = 100; // 重试间隔时间，单位：毫秒
+        const maxRetries = 50; // 最大重试次数
+        let retryCount = 0;
+
+        const findTargetNodes = () => {
+            const targetNodeStatus = document.querySelector(targetSelectors.status);
+            const targetNodeDockBottom = document.querySelector(targetSelectors.dockBottom);
+            const targetNodeLayoutDockr = document.querySelector(targetSelectors.layoutDockr);
+
+            if (targetNodeStatus && targetNodeDockBottom && targetNodeLayoutDockr) {
+                // 找到所有目标节点，清除定时器并继续执行
+                clearInterval(retryIntervalId);
+                setupObserver(targetNodeStatus, targetNodeDockBottom, targetNodeLayoutDockr);
+            } else if (retryCount >= maxRetries) {
+                // 达到最大重试次数仍未找到，清除定时器并退出
+                clearInterval(retryIntervalId);
+                // 输出无法找到的节点
+                if (!targetNodeStatus) console.error('Whisper: failed to find target node:', targetSelectors.status);
+                if (!targetNodeDockBottom) console.error('Whisper: failed to find target node:', targetSelectors.dockBottom);
+                if (!targetNodeLayoutDockr) console.error('Whisper: failed to find target node:', targetSelectors.layoutDockr);
+            } else {
+                retryCount++;
             }
         };
 
-        cssObserver = new MutationObserver(callback);
+        const setupObserver = (targetNodeStatus, targetNodeDockBottom, targetNodeLayoutDockr) => {
+            // 手动检查一次并设置初始状态
+            document.body.dataset.whisperStatus = targetNodeStatus.classList.contains('fn__none') ? 'hide' : 'show';
+            document.body.dataset.whisperDockBottom = targetNodeDockBottom.classList.contains('fn__none') ? 'hide' : 'show';
+            document.body.dataset.whisperLayoutDockr = targetNodeLayoutDockr.classList.contains('layout--float') ? 'float' : 'pin';
 
-        // 传入目标节点和观察选项
-        cssObserver.observe(targetNodeStatus, { attributeFilter: ['class'] });
-        cssObserver.observe(targetNodeDockBottom, { attributeFilter: ['class'] });
+            // 创建一个回调函数，当观察到变动时执行
+            const callback = function(mutationsList) {
+                for(let mutation of mutationsList) {
+                    const targetNode = mutation.target;
+                    if (targetNode === targetNodeStatus) {
+                        document.body.dataset.whisperStatus = targetNode.classList.contains('fn__none') ? 'hide' : 'show';
+                    } else if (targetNode === targetNodeDockBottom) {
+                        document.body.dataset.whisperDockBottom = targetNode.classList.contains('fn__none') ? 'hide' : 'show';
+                    } else if (targetNode === targetNodeLayoutDockr) {
+                        document.body.dataset.whisperLayoutDockr = targetNode.classList.contains('layout--float') ? 'float' : 'pin';
+                    }
+                }
+            };
+
+            cssObserver = new MutationObserver(callback);
+
+            // 传入目标节点和观察选项
+            cssObserver.observe(targetNodeStatus, { attributeFilter: ['class'] });
+            cssObserver.observe(targetNodeDockBottom, { attributeFilter: ['class'] });
+            cssObserver.observe(targetNodeLayoutDockr, { attributeFilter: ['class'] });
+        };
+
+        // 启动重试机制
+        const retryIntervalId = setInterval(findTargetNodes, retryInterval);
     })();
 
     const isLocalPath = (link) => {
@@ -175,7 +214,7 @@
             // 参考原生的 initBlockPopover 函数
             document.addEventListener('mouseover', updateTooltipData);
         } else {
-            console.log("Whisper: tooltip element does not exist.");
+            console.error("Whisper: tooltip element does not exist.");
         }
     })();
 
