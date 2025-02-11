@@ -25,7 +25,8 @@ html[data-theme-mode="light"] {
 	--custom-list-hover-dark: rgba(51, 49, 44, .15);
 	--custom-list-hover-darker: rgba(51, 49, 44, .2);
 	--custom-protyle-kbd-background: rgb(from var(--b3-theme-surface) r g b / .65); // 键盘样式背景
-	--mix-theme_primary_background: rgb(225, 223, 216); // --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245)
+	--custom-toggle-hover: var(--b3-theme-on-background); // 展开按钮的 hover 颜色
+	--mix-theme_primary_background: rgb(225, 223, 216);   // --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245)
 
 	// 主色
 	--b3-theme-primary: rgb(126, 121, 0);                   // 主题色。各种按钮
@@ -250,7 +251,8 @@ html[data-theme-mode="dark"] {
 	--custom-list-hover-dark: rgba(51, 49, 44, .15);
 	--custom-list-hover-darker: rgba(51, 49, 44, .2);
 	--custom-protyle-kbd-background: rgb(from var(--b3-theme-surface) r g b / .65); // 键盘样式背景
-	--mix-theme_primary_background: rgb(225, 223, 216); // --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245)
+	--custom-toggle-hover: #f5f5f5;                      // 展开按钮的 hover 颜色
+	--mix-theme_primary_background: rgb(225, 223, 216);  // --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245)
 
 	// 主色
 	--b3-theme-primary: rgb(126, 121, 0);                   // 主题色。各种按钮
