@@ -107,7 +107,7 @@
 	kbd,
 	span[data-type~="kbd"] {
 		position: relative;
-		bottom: .05em;
+		bottom: .1em;
 		padding: 2px 4px;
 		margin: 0 1px;
 		line-height: 1;
@@ -473,6 +473,18 @@ body[data-whisper-status="show"][data-whisper-layout-dockr="float"] .layout__cen
 .b3-typography .code-block, .protyle-wysiwyg .code-block, .item__readme .hljs {
 	background: var(--b3-protyle-code-background) !important;
 	border-radius: var(--b3-border-radius);
+}
+
+// 引述块和其中的行级元素，都变灰色
+.b3-typography blockquote, .b3-typography .bq, .protyle-wysiwyg blockquote, .protyle-wysiwyg .bq {
+	color: var(--b3-theme-on-surface);
+	background-color: var(--b3-bq-background);
+
+	span[data-type~=kbd] {
+		color: var(--b3-theme-on-surface);
+		border: solid 1px rgb(from var(--b3-theme-surface-lighter) r g b / .65);
+		box-shadow: inset 0 -1px 0 rgb(from var(--b3-theme-surface-lighter) r g b / .65);
+	}
 }
 
 // 分隔线
