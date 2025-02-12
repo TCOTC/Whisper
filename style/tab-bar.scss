@@ -95,6 +95,10 @@
 					width: 10px;
 					background-color: unset;
 				}
+
+				&:hover svg {
+					color: var(--custom-toggle-hover);
+				}
 			}
 		}
 

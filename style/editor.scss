@@ -12,7 +12,7 @@
 	span[data-type~="mark"] {
 		background-color: transparent; // 覆盖标记样式本身的背景色，并且不会影响带背景色的文本
 		// color: inherit; // 注释掉，避免覆盖块引文本的颜色
-		box-shadow: 0 -0.7em 0 0 inset rgb(from var(--b3-protyle-inline-mark-background) r g b / .7), var(--custom-inline-box-shadow) rgb(from var(--b3-protyle-inline-mark-background) r g b / .7); // 添加透明度，避免完全覆盖文本背景色
+		box-shadow: 0 -0.7em 0 0 inset var(--b3-protyle-inline-mark-background), var(--custom-inline-box-shadow) var(--b3-protyle-inline-mark-background); // 添加透明度，避免完全覆盖文本背景色
 
 		&.mark--hl {
 			background-color: var(--b3-theme-primary-lighter);
@@ -73,7 +73,7 @@
 		border-radius: var(--b3-border-radius);
 		padding: .1em .2em;
 		margin: 0 1px;
-		color: var(--b3-card-success-color);
+		//color: var(--b3-card-success-color);
 		background-color: rgb(from var(--b3-card-success-background) r g b / .65); // 背景色透明才能显示出光标
 
 		&:hover {
@@ -157,7 +157,6 @@
 		opacity: 1;
 		// box-shadow: var(--custom-inline-box-shadow) var(--custom-color-blue-light); // 跟标记样式冲突
 		border-bottom: 0.15em solid var(--custom-color-blue-light); // 直接覆盖下划线样式
-		color: inherit;
 		// transition: text-shadow var(--custom-transition);
 		transition: unset;
 
@@ -607,18 +606,23 @@ body[data-whisper-status="show"][data-whisper-layout-dockr="float"] .layout__cen
 }
 // 有序列表、任务列表
 // 图标必须是这一个 Size 为 32 的，位置才能刚好对上 https://fonts.google.com/icons?icon.set=Material+Icons&icon.style=Rounded&icon.size=32&icon.color=%235f6368&icon.query=Play&selected=Material+Icons+Round:play_arrow:&icon.platform=web
-// svg 里的 fill 填的是 --b3-theme-on-surface-light
 .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::before {
 	content: '';
 	position: absolute;
 	left: -19.5px;
 	width: 21px;
 	height: 47px;
-	background-image: url('./icon/play_arrow_5F6368.svg');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position-y: center;
 	pointer-events: none; // 伪元素会影响块标移动
+}
+// svg 里的 fill 填的是 --b3-theme-on-surface-light，两个模式的颜色不同
+html[data-theme-mode="light"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::before {
+	background-image: url('./icon/play_arrow_5F6368_light.svg');
+}
+html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::before {
+	background-image: url('./icon/play_arrow_5F6368_dark.svg');
 }
 .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::after {
 	background-color: unset; // 有序列表、任务列表折叠的时候不需要阴影
