@@ -297,6 +297,10 @@ body[data-whisper-status="show"][data-whisper-layout-dockr="float"] .layout__cen
 // 文档标题
 .protyle-title {
 	margin-top: 0 !important;
+
+	.protyle-title__input {
+		font-size: 2.5em; // 标题字号
+	}
 }
 
 // 文档引用计数
