@@ -76,13 +76,21 @@ body[data-whisper-status="show"] .layout__dockr.layout--float {
 
 // 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔
 // 右侧没有 .layout__resize--lr 的编辑器就是最靠右的编辑器
-body[data-whisper-layout-dockr="float"] .layout__center .fn__flex-1:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .layout-tab-container > .protyle {
-	.protyle-content {
-		margin-right: 15px;
+body[data-whisper-layout-dockr="float"] .layout__center .fn__flex-1:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .layout-tab-container > .fn__flex-1 {
+	// 编辑器
+	&.protyle {
+		.protyle-content {
+			margin-right: 15px;
+		}
+
+		.protyle-scroll {
+			right: 25px;
+		}
 	}
 
-	.protyle-scroll {
-		right: 25px;
+	// PDF 阅读器
+	#viewerContainer {
+		margin-right: 15px;
 	}
 }
 .body--window .protyle-content {
