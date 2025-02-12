@@ -6,15 +6,21 @@
   "minAppVersion": "3.1.21",
   "displayName": {
     "default": "Whisper",
-    "zh_CN": "浅吟"
+    "zh_CN": "浅吟",
+    "zh_CHT": "淺吟",
+    "ja_JP": "囁き"
   },
   "description": {
     "default": "Whisper the words of time gently, and let the soul encounter the splendid dream of blooming flowers in tranquility.",
-    "zh_CN": "浅吟时光的絮语，让心灵于静谧中邂逅繁花盛绽的绮梦。"
+    "zh_CN": "浅吟时光的絮语，让心灵于静谧中邂逅繁花盛绽的绮梦。",
+    "zh_CHT": "淺吟時光的絮語，讓心靈於靜謐中邂逅繁花盛綻的綺夢。",
+    "ja_JP": "時の囁きを優しく紡ぎ、静けさの中で心が咲き誇る花の夢と出会う。"
   },
   "readme": {
     "default": "README.md",
-    "zh_CN": "README_zh_CN.md"
+    "zh_CN": "README_zh_CN.md",
+    "zh_CHT": "README_zh_CHT.md",
+    "ja_JP": "README_ja_JP.md"
   },
   "funding": {
     "custom": [
