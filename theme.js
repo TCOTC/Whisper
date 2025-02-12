@@ -12,8 +12,8 @@
     window.destroyTheme = () => {
         // 给光标所在块添加类名 block-focus
         document.querySelectorAll('.block-focus').forEach((element) => element.classList.remove('block-focus')); // 移除添加的类名
-        document.removeEventListener('mouseup', focusBlock); // 卸载事件监听器
-        document.removeEventListener('keyup', focusBlock);
+        document.removeEventListener('mouseup', focusBlock, true); // 卸载事件监听器
+        document.removeEventListener('keyup', focusBlock, true);
 
         // 监听元素状态。通过给 body 添加属性来代替使用 :has 选择器，提高性能
         cssObserver?.disconnect();
@@ -70,8 +70,8 @@
 
     // 功能：给光标所在块添加类名 block-focus
     (async () => {
-        document.addEventListener('mouseup', focusBlock);
-        document.addEventListener('keyup', focusBlock);
+        document.addEventListener('mouseup', focusBlock, true);
+        document.addEventListener('keyup', focusBlock, true);
     })();
 
     // 功能：监听元素状态。通过给 body 添加属性来代替使用 :has 选择器，提高性能
