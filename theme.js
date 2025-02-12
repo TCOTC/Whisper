@@ -42,7 +42,7 @@
     const focusBlock = (event) => {
         let editor = document.activeElement.classList.contains('protyle-wysiwyg') ? document.activeElement : null;
         if (!editor) {
-            // TODO 看看每种类型的块都行不行
+            // TODO测试 看看每种类型的块都行不行
             // 光标在表格块内
             editor = document.activeElement.tagName === 'TABLE' ? document.activeElement.closest('.protyle-wysiwyg') : null;
         }

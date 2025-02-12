@@ -12,8 +12,8 @@
 .b3-menu__item[data-id="锚文本"] .b3-text-field,
 .b3-menu__item[data-id="标题"] .b3-text-field {
 	height: 50px;
-	// TODO 图片菜单、链接菜单、数据库资源字段链接菜单 里的选项都没有 data-id，需要 PR 给思源
-	// TODO 参考 https://blog.dkvirus.com/css/css_selector_placeholder_shown/ 排除空输入框，必要时给思源 PR 或者提 issue
+	// TODO功能 图片菜单、链接菜单、数据库资源字段链接菜单 里的选项都没有 data-id，需要 PR 给思源
+	// TODO功能 参考 https://blog.dkvirus.com/css/css_selector_placeholder_shown/ 排除空输入框，必要时给思源 PR 或者提 issue
 }
 
 // 菜单里的链接跟行内链接用同样的颜色
@@ -96,7 +96,7 @@ button, input, select, textarea {
 
 
 // ————————————————————外观菜单————————————————————
-// TODO 需要给标题元素 PR 不同的属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器)
+// TODO功能 需要给标题元素 PR 不同的属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器)
 // 隐藏 最近使用
 .protyle-font > div.fn__flex:first-child,
 .protyle-font > div.fn__flex:first-child + .fn__hr--small,
