@@ -14,6 +14,7 @@
         document.querySelectorAll('.block-focus').forEach((element) => element.classList.remove('block-focus')); // 移除添加的类名
         document.removeEventListener('mouseup', focusBlock, true); // 卸载事件监听器
         document.removeEventListener('keyup', focusBlock, true);
+        document.removeEventListener('dragend', focusBlock, true);
 
         // 监听元素状态。通过给 body 添加属性来代替使用 :has 选择器，提高性能
         cssObserver?.disconnect();
@@ -70,8 +71,10 @@
 
     // 功能：给光标所在块添加类名 block-focus
     (async () => {
-        document.addEventListener('mouseup', focusBlock, true);
-        document.addEventListener('keyup', focusBlock, true);
+        // 需要在捕获阶段触发，避免停止冒泡导致无法监听到
+        document.addEventListener('mouseup', focusBlock, true); // 按下按键之后
+        document.addEventListener('keyup', focusBlock, true);   // 鼠标点击之后
+        document.addEventListener('dragend', focusBlock, true); // 拖拽块之后
     })();
 
     // 功能：监听元素状态。通过给 body 添加属性来代替使用 :has 选择器，提高性能
