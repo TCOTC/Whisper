@@ -172,7 +172,7 @@
     // 使用原生的高亮样式方便查看
     mark {
         background-color: var(--b3-protyle-inline-mark-background);
-        color: var(--b3-protyle-inline-mark-color);
+        color: var(--b3-theme-on-background); // 使用文本默认颜色，对比度更高
         box-shadow: unset;
     }
 
