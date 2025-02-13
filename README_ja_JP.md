@@ -15,6 +15,8 @@
 
 このテーマは、[Savor](https://github.com/royc01/notion-theme) と [Asri](https://github.com/mustakshif/Asri) テーマのデザインコンセプトからインスピレーションを得ています。その制作者に心からの感謝を申し上げます。
 
+素敵なタイトルブロックのアイコンを作成してくださった [StarDustSheep/pink-room](https://github.com/StarDustSheep/pink-room) さんに特別感謝申し上げます。
+
 ### 今後の展望
 
 ご意見やご質問がありましたら、[GitHub Issues](https://github.com/TCOTC/Whisper/issues) よりお気軽にご連絡ください。テーマの細部を継続的に最適化する予定です。

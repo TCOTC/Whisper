@@ -15,6 +15,8 @@
 
 本主題的靈感來源於 [Savor](https://github.com/royc01/notion-theme) 和 [Asri](https://github.com/mustakshif/Asri) 主題的設計理念，向它們的創作者致以誠摯的感謝。
 
+特別感謝 [StarDustSheep/pink-room](https://github.com/StarDustSheep/pink-room) 為我們製作了精美的標題塊圖標。
+
 ### 展望
 
 如果您有想法或問題，歡迎通過 [GitHub Issues](https://github.com/TCOTC/Whisper/issues) 與我聯繫。我們計劃持續優化主題的細節。
