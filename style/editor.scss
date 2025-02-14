@@ -264,6 +264,29 @@
 // 动态滚动条
 .protyle-scroll :is(.protyle-scroll__down, .protyle-scroll__up) {
 	opacity: 1;
+	color: var(--b3-scroll-color);
+
+	&:hover {
+		color: var(--custom-scroll-color_50);
+	}
+}
+.protyle-scroll__bar .b3-slider {
+	&::-webkit-slider-runnable-track {
+		background-color: var(--b3-scroll-color);
+	}
+
+	&::-webkit-slider-thumb {
+		background-color: var(--mix-theme-background_scroll-color);
+	}
+
+	// 兼容 Firefox
+	&::-moz-range-track {
+		background-color: var(--b3-scroll-color);
+	}
+
+	&::-moz-range-thumb {
+		background-color: var(--mix-theme-background_scroll-color);
+	}
 }
 
 // 滚动条的厚度保持为 10px，因为其他地方的布局已经考虑到了 10px 的滚动条；原生是 10px 就行了，这里不需要再写样式，否则会影响导出 PDF 的滚动条
