@@ -298,8 +298,11 @@ body[data-whisper-status="show"][data-whisper-layout-dockr="float"] .layout__cen
 	margin-top: 0 !important;
 
 	.protyle-title__input {
-		font-size: 2.5em; // 标题字号
+		font-size: 2.5em; // 文档标题字号
 	}
+}
+.h1[title] {
+	font-size: 2.5em; // 导出图片的文档标题字号
 }
 
 // 文档引用计数
