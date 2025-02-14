@@ -8,7 +8,7 @@
         border-radius: var(--b3-border-radius) !important;
 
         &:hover {
-            background-color: rgb(from var(--b3-card-success-background) r g b / .65) !important; // hover 之后颜色不变
+            background-color: var(--custom-card-success-background_65) !important; // hover 之后颜色不变
         }
 
         // 非最右边的

@@ -15,8 +15,8 @@
 html[data-theme-mode="light"] {
 	// 自定义、混合
 	--custom-inline-box-shadow: 0 .1em 0 0;
-	--custom-theme-on-shadow: 0px 0px 2px rgb(from var(--b3-theme-on-background) r g b / .2);
-	--custom-link-shadow: 0px 0px 2px rgb(from var(--b3-protyle-inline-link-color) r g b / .2);
+	--custom-theme-on-shadow: 0px 0px 2px var(--custom-theme-on-background_20);
+	--custom-link-shadow: 0px 0px 2px var(--custom-protyle-inline-link-color_20);
 
 	--custom-transition: .2s cubic-bezier(0, 0, .2, 1) 0ms;
 
@@ -25,8 +25,9 @@ html[data-theme-mode="light"] {
 	--custom-color-blue-light: rgba(0, 202, 255, .85);
 	--custom-list-hover-dark: rgba(50, 50, 50, .15);
 	--custom-list-hover-darker: rgba(50, 50, 50, .25);
-	--custom-protyle-kbd-background: rgb(from var(--b3-theme-surface) r g b / .65); // 键盘样式背景
+	--custom-protyle-kbd-background: var(--custom-theme-surface_65); // 键盘样式背景
 	--custom-protyle-kbd-border-color: rgb(176, 176, 176, .6);                      // 键盘样式外框颜色
+	--custom-protyle-kbd-border-color_30: rgb(176, 176, 176, .3);
 	--custom-toggle-hover: var(--b3-theme-on-background); // 展开按钮、页签叉号的 hover 颜色
 	--mix-theme_primary_background: rgb(225, 223, 216);   // --b3-theme-primary-lightest rgba(45, 43, 1, .12) & --b3-theme-background rgb(249, 248, 245)
 
@@ -39,6 +40,7 @@ html[data-theme-mode="light"] {
 	--b3-theme-background: rgb(249, 248, 245);            // 编辑器。
 	--b3-theme-background-light: rgb(237, 227, 225);      // 侧栏按钮。--b3-theme-surface 与 --b3-list-hover 混合
 	--b3-theme-surface: rgb(249, 238, 237);               // 侧栏面板。
+	--custom-theme-surface_65: rgb(249, 238, 237, .65);
 	--b3-theme-surface-light: rgba(249, 238, 237, .86);
 	--b3-theme-surface-lighter: rgba(224, 224, 224, .86);
 	--b3-theme-error: #d23f31;
@@ -47,9 +49,12 @@ html[data-theme-mode="light"] {
 	// 文字颜色（与默认主题一致）
 	--b3-theme-on-primary: #fff;
 	--b3-theme-on-secondary: #fff;
-	--b3-theme-on-background: #222; // 文本默认颜色
+	--b3-theme-on-background: rgb(34, 34, 34); // 文本默认颜色
+	--custom-theme-on-background_20: rgba(34, 34, 34, .2);
+	--custom-theme-on-background_85: rgba(34, 34, 34, .85);
 	--b3-theme-on-surface: #5f6368;
 	--b3-theme-on-surface-light: rgba(95, 99, 104, .68);
+	--custom-theme-on-surface-light_30: rgba(95, 99, 104, .3);
 	--b3-theme-on-error: #fff;
 
 	// 字体（与默认主题一致）
@@ -69,8 +74,10 @@ html[data-theme-mode="light"] {
 
 	// 滚动条
 	--b3-scroll-color: rgba(0, 0, 0, .1); // 原来是 rgba(0, 0, 0, .2)
+	--custom-scroll-color_15: rgba(0, 0, 0, .15);
 
 	// 列表
+	--custom-list-hover_100: rgb(51, 49, 44);
 	--b3-list-hover: rgba(51, 49, 44, 0.06);    // 鼠标悬浮在选项上
 	--b3-list-icon-hover: rgba(51, 49, 44, .1); // 文档树的文档图标
 
@@ -98,6 +105,7 @@ html[data-theme-mode="light"] {
 	--b3-card-info-background: rgb(214, 234, 249);
 	--b3-card-success-color: rgb(0, 134, 6);
 	--b3-card-success-background: rgb(183, 248, 185);
+	--custom-card-success-background_65: rgba(183, 248, 185, .65);
 
 	// 自定义文字
 	--b3-font-color1: rgb(216, 133, 129);        // 浅红
@@ -199,7 +207,9 @@ html[data-theme-mode="light"] {
 	--b3-protyle-inline-em-color: inherit;
 	--b3-protyle-inline-u-color: inherit;
 	--b3-protyle-inline-s-color: rgb(178, 178, 178); // 原来是 inherit
-	--b3-protyle-inline-link-color: #4285f4;
+	--custom-protyle-inline-s-color_50: rgba(178, 178, 178, .5);
+	--b3-protyle-inline-link-color: rgb(66, 133, 244);
+	--custom-protyle-inline-link-color_20: rgba(66, 133, 244, .2);
 	--b3-protyle-inline-mark-background: rgba(237, 237, 13, .5); // 原来是 rgb(252, 212, 126)
 	--b3-protyle-inline-mark-color: inherit; // 原来是 #202124
 	--b3-protyle-inline-tag-color: var(--b3-card-success-color); // 原来是 #5f636
@@ -236,8 +246,8 @@ html[data-theme-mode="light"] {
 html[data-theme-mode="dark"] {
 	// 自定义、混合
 	--custom-inline-box-shadow: 0 .1em 0 0;
-	--custom-theme-on-shadow: 0px 0px 2px rgb(from var(--b3-theme-on-background) r g b / .5);
-	--custom-link-shadow: 0px 0px 2px rgb(from var(--b3-protyle-inline-link-color) r g b / .5);
+	--custom-theme-on-shadow: 0px 0px 2px var(--custom-theme-on-background_50);
+	--custom-link-shadow: 0px 0px 2px var(--custom-protyle-inline-link-color_50);
 
 	--custom-transition: .2s cubic-bezier(0, 0, .2, 1) 0ms;
 
@@ -246,8 +256,9 @@ html[data-theme-mode="dark"] {
 	--custom-color-blue-light: rgba(0, 202, 255, .85);
 	--custom-list-hover-dark: rgba(206, 206, 206, .15);
 	--custom-list-hover-darker: rgba(206, 206, 206, .25);
-	--custom-protyle-kbd-background: rgb(from var(--b3-theme-surface) r g b / .65); // 键盘样式背景
+	--custom-protyle-kbd-background: var(--custom-theme-surface_65); // 键盘样式背景
 	--custom-protyle-kbd-border-color: rgb(176, 176, 176, .6);                      // 键盘样式外框颜色
+	--custom-protyle-kbd-border-color_30: rgb(176, 176, 176, .3);
 	--custom-toggle-hover: #f5f5f5;                      // 展开按钮、页签叉号的 hover 颜色
 	--mix-theme_primary_background: rgb(56, 60, 45);     // --b3-theme-primary-lightest rgb(154, 147, 0, .12) & --b3-theme-background rgb(43, 48, 51)
 
@@ -260,6 +271,7 @@ html[data-theme-mode="dark"] {
 	--b3-theme-background: rgb(43, 48, 51);              // 编辑器。
 	--b3-theme-background-light: rgb(70, 75, 77);        // 侧栏按钮。--b3-theme-surface 与 --b3-list-hover 混合
 	--b3-theme-surface: rgb(55, 60, 63);                 // 侧栏面板。
+	--custom-theme-surface_65: rgb(55, 60, 63, .65);
 	--b3-theme-surface-light: rgba(41, 42, 45, .86);
 	--b3-theme-surface-lighter: rgba(230, 230, 230, .12);
 	--b3-theme-error: #d23f31;
@@ -268,9 +280,12 @@ html[data-theme-mode="dark"] {
 	// 文字颜色（与默认主题一致）
 	--b3-theme-on-primary: #fff;
 	--b3-theme-on-secondary: #fff;
-	--b3-theme-on-background: #dadada; // 文本默认颜色
+	--b3-theme-on-background: rgb(218, 218, 218); // 文本默认颜色
+	--custom-theme-on-background_50: rgba(218, 218, 218, .5);
+	--custom-theme-on-background_85: rgba(218, 218, 218, .85);
 	--b3-theme-on-surface: #9aa0a6;
-	--b3-theme-on-surface-light: #bababa;
+	--b3-theme-on-surface-light: rgb(186, 186, 186);
+	--custom-theme-on-surface-light_30: rgba(186, 186, 186, .3);
 	--b3-theme-on-error: #fff;
 
 	// 字体（与默认主题一致）
@@ -290,8 +305,10 @@ html[data-theme-mode="dark"] {
 
 	// 滚动条
 	--b3-scroll-color: rgba(230, 230, 230, .1); // 原来是 rgba(230, 230, 230, .2)
+	--custom-scroll-color_15: rgba(230, 230, 230, .15);
 
 	// 列表（与默认主题一致）
+	--custom-list-hover_100: rgb(255, 255, 255);
 	--b3-list-hover: rgba(255, 255, 255, .075);    // 鼠标悬浮在选项上
 	--b3-list-icon-hover: rgba(201, 209, 217, .1); // 文档树的文档图标
 
@@ -319,6 +336,7 @@ html[data-theme-mode="dark"] {
 	--b3-card-info-background: rgb(44, 73, 107);
 	--b3-card-success-color: rgb(183, 223, 185);
 	--b3-card-success-background: rgb(52, 104, 67);
+	--custom-card-success-background_65: rgba(52, 104, 67, .65);
 
 	// 自定义文字（文本色是明亮模式上下互换，背景色浅色比明亮模式低160左右、深色比明亮模式低100左右）
 	--b3-font-color1: rgb(216, 57, 49);        // 红
@@ -420,7 +438,9 @@ html[data-theme-mode="dark"] {
 	--b3-protyle-inline-em-color: inherit;
 	--b3-protyle-inline-u-color: inherit;
 	--b3-protyle-inline-s-color: rgb(95, 95, 95); // 原来是 inherit
-	--b3-protyle-inline-link-color: #4285f4;
+	--custom-protyle-inline-s-color_50: rgba(95, 95, 95, .5);
+	--b3-protyle-inline-link-color: rgb(66, 133, 244);
+	--custom-protyle-inline-link-color_50: rgba(66, 133, 244, .5);
 	--b3-protyle-inline-mark-background: rgba(191, 191, 22, .5); // 原来是 #b29100
 	--b3-protyle-inline-mark-color: inherit; // 原来是 var(--b3-theme-on-background)
 	--b3-protyle-inline-tag-color: var(--b3-card-success-color); // 原来是 #5f636
