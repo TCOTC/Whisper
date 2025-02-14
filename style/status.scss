@@ -1,72 +1,73 @@
 // ———————————————————— 底栏 ————————————————————
-
-#status {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-	height: 24px;
-	border: unset;
-	border-radius: var(--b3-border-radius) 0 0 0;
-	padding: 0 28px 0 0;
-	align-items: center;
-	z-index: 3; // 高于选中块的高亮伪元素
-
-	.toolbar__item {
+body:not([data-whisper-device="mobile"]) {
+	#status {
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		height: 24px;
+		border: unset;
+		border-radius: var(--b3-border-radius) 0 0 0;
+		padding: 0 28px 0 0;
 		align-items: center;
-		margin: 0;
-		// z-index: 8; // 暂时不知道这个有什么用
+		z-index: 3; // 高于选中块的高亮伪元素
 
-		svg {
-			height: 12px;
-			width: 12px;
+		.toolbar__item {
+			align-items: center;
+			margin: 0;
+			// z-index: 8; // 暂时不知道这个有什么用
+
+			svg {
+				height: 12px;
+				width: 12px;
+			}
+		}
+
+		// 停靠栏按钮
+		#barDock {
+			position: absolute;
+			right: 4px;
 		}
 	}
 
-	// 停靠栏按钮
-	#barDock {
-		position: absolute;
-		right: 4px;
-	}
-}
-
-// 新窗口没有停靠栏按钮
-.body--window #status {
-	padding: 0 2px 0 0;
-}
-
-.status__counter:not(:empty) {
-	padding: 0 0 0 .1em;
-	line-height: 24px;
-}
-
-.status__msg:not(:empty) {
-	animation: statusmsg 5s ease-in-out;
-	max-width: 140px;
-	padding-right: 8px;
-	transition: max-width 300ms, opacity 300ms;
-	transition-delay: 200ms;
-	position: relative;
-	height: 24px;
-	line-height: 24px;
-
-	&:hover {
-		max-width: 600px;
-		transition: max-width 300ms ease-out;
+	// 新窗口没有停靠栏按钮
+	.body--window #status {
+		padding: 0 2px 0 0;
 	}
 
-	&::before {
-		content: "📢";
-		padding-right: 2px;
+	.status__counter:not(:empty) {
+		padding: 0 0 0 .1em;
+		line-height: 24px;
 	}
-}
 
-.status > .fn__flex-1 {
-	display: none;
-}
+	.status__msg:not(:empty) {
+		animation: statusmsg 5s ease-in-out;
+		max-width: 140px;
+		padding-right: 8px;
+		transition: max-width 300ms, opacity 300ms;
+		transition-delay: 200ms;
+		position: relative;
+		height: 24px;
+		line-height: 24px;
 
-.status__backgroundtask {
-	height: 24px;
-	line-height: 24px;
+		&:hover {
+			max-width: 600px;
+			transition: max-width 300ms ease-out;
+		}
+
+		&::before {
+			content: "📢";
+			padding-right: 2px;
+		}
+	}
+
+	.status > .fn__flex-1 {
+		display: none;
+	}
+
+	.status__backgroundtask {
+		height: 24px;
+		line-height: 24px;
+	}
 }
 
 // 下面这些不知道有啥用
