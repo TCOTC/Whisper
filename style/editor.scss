@@ -9,7 +9,7 @@
 :is(.b3-typography, [data-node-id], .protyle-wysiwyg [data-node-id]) {
 	// 行级标记。放在最前面用于覆盖原生的颜色
 	mark,
-	span[data-type~="mark"] {
+	span[data-type~=mark] {
 		background-color: transparent; // 覆盖标记样式本身的背景色，并且不会影响带背景色的文本
 		// color: inherit; // 注释掉，避免覆盖块引文本的颜色
 		box-shadow: 0 -0.7em 0 0 inset var(--b3-protyle-inline-mark-background), var(--custom-inline-box-shadow) var(--b3-protyle-inline-mark-background); // 添加透明度，避免完全覆盖文本背景色
@@ -21,51 +21,51 @@
 	}
 
 	// 行级标记。放在最前面用于覆盖原生的颜色。主题色虚线 CSS片段 https://github.com/TCOTC/siyuan-css-dashed-line-memo
-	span[data-type~="inline-memo"] {
+	span[data-type~=inline-memo] {
 		background-color: transparent; // 覆盖备注样式本身的背景色，并且不会影响带背景色的文本
 		border-bottom: medium dashed var(--b3-theme-primary);
 	}
 
-	span[data-type~="sup"],
-	span[data-type~="sub"] {
+	span[data-type~=sup],
+	span[data-type~=sub] {
 		position: relative;
 		font-size: 75%;
 		line-height: 0;
 		vertical-align: baseline;
 	}
 
-	span[data-type~="sup"] {
+	span[data-type~=sup] {
 		top: -.5em;
 	}
 
-	span[data-type~="sub"] {
+	span[data-type~=sub] {
 		bottom: -.25em;
 	}
 
 	em,
-	span[data-type~="em"] {
+	span[data-type~=em] {
 		font-style: italic;
 		color: var(--b3-protyle-inline-em-color);
 	}
 
 	s,
-	span[data-type~="s"] {
+	span[data-type~=s] {
 		color: var(--b3-protyle-inline-s-color);
 		text-decoration: line-through;
 	}
 	// 已完成的任务列表项
-	.protyle-task--done > [data-node-id] > [spellcheck] > span[data-type~="s"] {
+	.protyle-task--done > [data-node-id] > [spellcheck] > span[data-type~=s] {
 		color: rgb(from var(--b3-protyle-inline-s-color) r g b / .5);
 	}
 
 	strong,
-	span[data-type~="strong"] {
+	span[data-type~=strong] {
 		font-weight: bold;
 		color: var(--b3-protyle-inline-strong-color);
 	}
 
 	// 行级标签。导出预览是纯文本所以没有行级标签样式
-	span[data-type~="tag"] {
+	span[data-type~=tag] {
 		position: relative;
 		font-size: .75em;
 		bottom: .1em;
@@ -87,7 +87,7 @@
 		}
 	}
 
-	span[data-type~="inline-math"] {
+	span[data-type~=inline-math] {
 		user-select: text;
 		display: inline;
 	}
@@ -105,7 +105,7 @@
 
 	// 键盘样式
 	kbd,
-	span[data-type~="kbd"] {
+	span[data-type~=kbd] {
 		position: relative;
 		bottom: .1em;
 		padding: 2px 4px;
@@ -126,13 +126,13 @@
 
 	// 下划线
 	u,
-	span[data-type~="u"] {
+	span[data-type~=u] {
 		border-bottom: 0.1em solid;
 		color: var(--b3-protyle-inline-u-color);
 	}
 
 	a,
-	span[data-type~="a"] {
+	span[data-type~=a] {
 		// opacity: 0.86;
 		opacity: 1;
 		// transition: text-shadow var(--custom-transition);
@@ -147,7 +147,7 @@
 	}
 
 	// 虚拟引用
-	span[data-type~="virtual-block-ref"] {
+	span[data-type~=virtual-block-ref] {
 		transition: unset;
 	}
 
@@ -491,7 +491,7 @@ body[data-whisper-status="show"][data-whisper-layout-dockr="float"] .layout__cen
 	color: var(--b3-theme-on-surface);
 	background-color: var(--b3-bq-background);
 
-	span[data-type~="kbd"] {
+	span[data-type~=kbd] {
 		color: var(--b3-theme-on-surface);
 		border: solid 1px rgb(from var(--custom-protyle-kbd-border-color) r g b / .3);
 		box-shadow: inset 0 -1px 0 rgb(from var(--custom-protyle-kbd-border-color) r g b / .3);

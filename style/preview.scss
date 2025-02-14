@@ -2,7 +2,7 @@
 
 // 导出图片时，行级元素会被拆分 https://github.com/siyuan-note/siyuan/issues/13856
 .export-img {
-    span[data-type~="tag"] {
+    span[data-type~=tag] {
         padding-left: 2.4px !important;
         padding-right: 2.4px !important;
         border-radius: var(--b3-border-radius) !important;
@@ -12,7 +12,7 @@
         }
 
         // 非最右边的
-        &:has(+ span[data-type~="tag"]) {
+        &:has(+ span[data-type~=tag]) {
             margin-right: 0;
             padding-right: 0 !important;
             border-top-right-radius: 0 !important;
@@ -20,7 +20,7 @@
         }
 
         // 非最左边的
-        &+span[data-type~="tag"] {
+        &+span[data-type~=tag] {
             margin-left: 0;
             padding-left: 0 !important;
             border-top-left-radius: 0 !important;
@@ -131,7 +131,7 @@
 // !* text-decoration: underline; *!
 // }
 // !* 行内代码 *!
-// .protyle-preview>.b3-typography span[data-type~='code']{
+// .protyle-preview>.b3-typography span[data-type~=code]{
 // color:#3779b3;
 // background-color:#f3f4f4;
 // }
