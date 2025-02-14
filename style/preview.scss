@@ -31,6 +31,28 @@
             }
         }
     }
+
+    span[data-type~=code] {
+        margin: 0 1px;
+        padding: .2em .4em !important;
+        border-radius: var(--b3-border-radius) !important;
+
+        // 非最右边的
+        &:has(+ span[data-type~=code]) {
+            margin-right: 0;
+            padding-right: 0 !important;
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+        // 非最左边的
+        &+span[data-type~=code] {
+            margin-left: 0;
+            padding-left: 0 !important;
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+        }
+    }
 }
 
 // ————————————————————导出预览————————————————————
