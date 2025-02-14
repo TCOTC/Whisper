@@ -19,6 +19,11 @@
 			box-shadow: 0 0 0 .5px var(--b3-theme-on-background);
 		}
 	}
+	// 反链匹配文本的高亮
+	.def--mark {
+		color: var(--b3-theme-on-background) !important;
+		background-color: var(--b3-theme-secondary);
+	}
 
 	// 行级标记。放在最前面用于覆盖原生的颜色。主题色虚线 CSS片段 https://github.com/TCOTC/siyuan-css-dashed-line-memo
 	span[data-type~=inline-memo] {
