@@ -2,14 +2,20 @@
     console.log('Whisper: loaded');
 
     // 判断是否为手机
-    let isMobile;
+    // TODO跟进 https://github.com/siyuan-note/siyuan/issues/13952 如果支持了切换界面，需要在切换界面之后重新执行被跳过的程序
+    const isMobile = !!window.siyuan?.mobile;
     (async () => {
-        // TODO跟进 https://github.com/siyuan-note/siyuan/issues/13952 如果支持了切换界面，需要在切换界面之后重新执行被跳过的程序
-        isMobile = !!document.getElementById("sidebar");
+        if (isMobile) {
+            // 添加设备类型标识
+            document.body.dataset.whisperDevice = "mobile";
+        }
     })();
 
     // 关闭或卸载主题
     window.destroyTheme = () => {
+        // 移除设备类型标识
+        document.body.removeAttribute("data-whisper-device");
+
         // 给光标所在块添加类名 block-focus
         document.querySelectorAll('.block-focus').forEach((element) => element.classList.remove('block-focus')); // 移除添加的类名
         document.removeEventListener('mouseup', focusBlock, true); // 卸载事件监听器
