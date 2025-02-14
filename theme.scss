@@ -191,12 +191,6 @@ html[data-theme-mode="light"] {
 	--b3-graph-tag-point: #ef7747;
 	--b3-graph-ref-line: var(--b3-theme-primary-light);
 
-	// 编辑器搜索颜色（与默认主题一致）
-	// TODO跟进 可能需要移除 https://github.com/siyuan-note/siyuan/issues/14063
-	--b3-protyle-search-background: #ffe955;
-	--b3-protyle-search-border-color: #f2e680;
-	--b3-protyle-search-current-background: #a5d3fe;
-
 	// 代码片段背景（与默认主题一致）
 	--b3-protyle-code-background: rgba(27, 31, 35, .05); // 代码块背景
 
@@ -417,11 +411,6 @@ html[data-theme-mode="dark"] {
 	--b3-graph-doc-point: var(--b3-theme-on-background);
 	--b3-graph-tag-point: #ef7747;
 	--b3-graph-ref-line: var(--b3-theme-primary-light);
-
-	// 编辑器搜索颜色（与默认主题一致）
-	--b3-protyle-search-background: #32593c;
-	--b3-protyle-search-border-color: #486a51;
-	--b3-protyle-search-current-background: #204282;
 
 	// 代码片段背景（与默认主题一致）
 	--b3-protyle-code-background: rgba(240, 246, 252, .15); // 代码块背景
