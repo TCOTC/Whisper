@@ -409,3 +409,14 @@ button, input, select, textarea {
 		display: none; // 如果没有自定义表情就隐藏
 	}
 }
+
+// 属性菜单 - 数据库
+// 数据库标题
+.custom-attr__avheader .block__logo {
+	color: var(--b3-theme-primary);
+	font-size: 1.25em;
+
+	&>.block__logoicon {
+		display: none;
+	}
+}
