@@ -650,59 +650,62 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 // 标题前的图标
 // 图标文件来自粉色小屋主题 https://github.com/StarDustSheep/pink-room
 // TODO跟进 更换新的统一圆角的 svg
-.h1 > :first-child {
-	padding-left: .457em;
+body > div:not(.b3-dialog--open[data-key="dialog-exportimage"]) {
+	// 排除导出图片时的文档标题，因为导出图片时 svg 不正常
+	.h1 > :first-child {
+		padding-left: .457em;
 
-	&::before {
-		background: url('./icon/headings/h1.svg');
+		&::before {
+			background: url('./icon/headings/h1.svg');
+		}
 	}
-}
-.h2 > :first-child {
-	padding-left: .516em;
+	.h2 > :first-child {
+		padding-left: .516em;
 
-	&::before {
-		background: url('./icon/headings/h2.svg');
+		&::before {
+			background: url('./icon/headings/h2.svg');
+		}
 	}
-}
-.h3 > :first-child {
-	padding-left: .58em;
+	.h3 > :first-child {
+		padding-left: .58em;
 
-	&::before {
-		background: url('./icon/headings/h3.svg');
+		&::before {
+			background: url('./icon/headings/h3.svg');
+		}
 	}
-}
-.h4 > :first-child {
-	padding-left: .64em;
+	.h4 > :first-child {
+		padding-left: .64em;
 
-	&::before {
-		background: url('./icon/headings/h4.svg');
+		&::before {
+			background: url('./icon/headings/h4.svg');
+		}
 	}
-}
-.h5 > :first-child {
-	padding-left: .708em;
+	.h5 > :first-child {
+		padding-left: .708em;
 
-	&::before {
-		background: url('./icon/headings/h5.svg');
+		&::before {
+			background: url('./icon/headings/h5.svg');
+		}
 	}
-}
-.h6 > :first-child {
-	padding-left: .8em; // 按倍数算，以H6为基准（1倍），让所有标题的左侧对齐
+	.h6 > :first-child {
+		padding-left: .8em; // 按倍数算，以H6为基准（1倍），让所有标题的左侧对齐
 
-	&::before {
-		background: url('./icon/headings/h6.svg');
+		&::before {
+			background: url('./icon/headings/h6.svg');
+		}
 	}
-}
-// background-repeat 需要放在后面覆盖
-:is(.h1, .h2, .h3, .h4, .h5, .h6) > :first-child::before {
-	height: 1em;
-	width: 1em;
-	position: absolute;
-	content: "";
-	filter: hue-rotate(325deg);
-	background-repeat: no-repeat;
-	left: 4px; // 内容块的 padding 4px
-	top: 50%; // 垂直居中
-	transform: translateY(-50%);
+	// background-repeat 需要放在后面覆盖
+	:is(.h1, .h2, .h3, .h4, .h5, .h6) > :first-child::before {
+		height: 1em;
+		width: 1em;
+		position: absolute;
+		content: "";
+		filter: hue-rotate(325deg);
+		background-repeat: no-repeat;
+		left: 4px; // 内容块的 padding 4px
+		top: 50%; // 垂直居中
+		transform: translateY(-50%);
+	}
 }
 
 
