@@ -607,11 +607,21 @@ body[data-whisper-status="show"][data-whisper-layout-dockr="float"] .layout__cen
 	background-color: var(--b3-card-error-background);
 }
 
-
 // 表格。首行不要加粗、首行要灰色背景
 :is(.b3-typography, .protyle-wysiwyg) table thead th {
 	font-weight: normal;
 	background-color: var(--b3-table-even-background);
+}
+
+// 列表竖线
+.protyle-wysiwyg [data-node-id].li {
+	&::before {
+		border-left-color: var(--b3-theme-background-light);
+	}
+
+	&:hover::before {
+		border-left-color: var(--b3-theme-background-light); // hover 时颜色不变
+	}
 }
 
 
