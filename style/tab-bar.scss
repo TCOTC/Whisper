@@ -111,8 +111,9 @@
 			.item__text {
 				min-width: 4em; // 页签最少显示的字符数宽度
 				text-align-last: left; // 文本居左
-				-webkit-mask-image: -webkit-linear-gradient(right, transparent 1px, var(--b3-theme-on-surface) 15px);
-				mask-image: linear-gradient(to left, transparent 1px, var(--b3-theme-on-surface) 15px);
+				// padding-right 为 8px
+				-webkit-mask-image: -webkit-linear-gradient(right, transparent 4px, var(--b3-theme-on-surface) 8px);
+				mask-image: linear-gradient(to left, transparent 4px, var(--b3-theme-on-surface) 8px);
 			}
 
 			// 颜色
