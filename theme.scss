@@ -38,7 +38,7 @@ html[data-theme-mode="light"] {
 	--b3-theme-primary-lighter: rgba(165, 157, 51, .38);  // 选中文本的颜色。与白色混合为 rgb(221, 218, 177) ，与 --b3-theme-background rgb(249, 248, 245) 混合后为 rgb(217, 213, 171)
 	--b3-theme-primary-lightest: rgba(45, 43, 1, .12);    // 选中块后的高亮。
 	--b3-theme-secondary: #f3a92f;
-	--b3-theme-background: rgb(249, 248, 245);            // 编辑器。
+	--b3-theme-background: #f9f8f5;//即rgb(249, 248, 245);// 编辑器。必须是十六进制，否则移动端状态栏会变成黑色
 	--b3-theme-background-light: rgb(237, 227, 225);      // 侧栏按钮。--b3-theme-surface 与 --b3-list-hover 混合
 	--b3-theme-surface: rgb(249, 238, 237);               // 侧栏面板。
 	--custom-theme-surface_65: rgb(249, 238, 237, .65);
@@ -271,7 +271,7 @@ html[data-theme-mode="dark"] {
 	--b3-theme-primary-lighter: rgba(165, 157, 51, .38); // 选中文本的颜色。……
 	--b3-theme-primary-lightest: rgb(154, 147, 0, .12);  // 选中块后的高亮。
 	--b3-theme-secondary: #f3a92f;
-	--b3-theme-background: rgb(43, 48, 51);              // 编辑器。
+	--b3-theme-background: #2b3033;//即rgb(43, 48, 51);  // 编辑器。必须是十六进制，否则移动端状态栏会变成黑色
 	--b3-theme-background-light: rgb(70, 75, 77);        // 侧栏按钮。--b3-theme-surface 与 --b3-list-hover 混合
 	--b3-theme-surface: rgb(55, 60, 63);                 // 侧栏面板。
 	--custom-theme-surface_65: rgb(55, 60, 63, .65);
