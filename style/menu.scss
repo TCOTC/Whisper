@@ -262,7 +262,7 @@ button, input, select, textarea {
 		transition: unset;
 	}
 
-	.b3-typography > blockquote:first-child {
+	&>.b3-typography:nth-child(2) > blockquote:first-child {
 		border-radius: var(--b3-border-radius-b);
 		padding: 12px 20px;
 		color: var(--custom-theme-on-background_85);
@@ -272,7 +272,15 @@ button, input, select, textarea {
 		outline-offset: -2px;
 
 		&::before {
-			content: unset;
+			display: none;
+		}
+	}
+
+	.b3-typography blockquote {
+		color: var(--custom-theme-on-background_85);
+
+		&::before {
+			background-color: var(--custom-theme-on-background_85);
 		}
 	}
 }
