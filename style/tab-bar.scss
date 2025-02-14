@@ -252,3 +252,22 @@ body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
 		}
 	}
 }
+
+
+// ————————————————————切换页签 菜单————————————————————
+
+#commonMenu[data-name="tabList"] .b3-menu__items {
+	scrollbar-gutter: stable;
+	padding-right: 0;
+
+	.b3-menu__label {
+		padding-right: 8px;
+		// padding-right 为 8px
+		-webkit-mask-image: -webkit-linear-gradient(right, transparent 4px, var(--b3-theme-on-surface) 8px);
+		mask-image: linear-gradient(to left, transparent 4px, var(--b3-theme-on-surface) 8px);
+	}
+
+	.b3-menu__action {
+		margin-left: 0;
+	}
+}
