@@ -1,8 +1,6 @@
 // 搜索窗口、搜索页签的布局和样式
-// 原始样式来自 Savor 主题 v5.2.9 https://github.com/royc01/notion-theme/blob/27ee462ef0eb2e1ff244f860d317014fa56ac75c/style/module/search.css
-.b3-dialog--open[data-key="dialog-search"] .b3-dialog__container .fn__flex-column,
-.b3-dialog--open[data-key="dialog-replace"] .b3-dialog__container .fn__flex-column,
-.b3-dialog--open[data-key="dialog-globalsearch"] .b3-dialog__container .fn__flex-column {
+// 原始样式参考 Savor 主题 v5.2.9 https://github.com/royc01/notion-theme/blob/27ee462ef0eb2e1ff244f860d317014fa56ac75c/style/module/search.css
+.b3-dialog--open:is([data-key="dialog-search"],[data-key="dialog-replace"],[data-key="dialog-globalsearch"]) .b3-dialog__container .fn__flex-column{
     display: flex;
     flex-direction: column;
     background-color: var(--b3-theme-surface);
@@ -137,8 +135,7 @@
 }
 
 // 搜素类型和替换类型弹窗
-[data-key="dialog-searchtype"] .b3-dialog__content,
-[data-key="dialog-replacetype"] .b3-dialog__content {
+:is([data-key="dialog-searchtype"],[data-key="dialog-replacetype"]) .b3-dialog__content {
     display: grid;
     gap: 0 40px;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -164,7 +161,12 @@
 
 // 搜索结果显示多行、样式改进
 #searchList {
+    // 搜索结果列表
     padding-top: 0;
+}
+.search__layout.search__layout--row #searchUnRefPreview {
+    // 左右布局，列出引用失效的块 预览文档
+    padding-top: 8px;
 }
 :is(#searchList, #searchAssetList) {
     scrollbar-gutter: stable;
