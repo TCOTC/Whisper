@@ -239,8 +239,9 @@ body[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 
 	// 已关闭的笔记本
 	&[data-type="toggle"] {
-		padding-left: 3px; // 跟 .file-tree > .block__icons 一致
-		padding-right: 13px;
+		margin: 1px 0;
+		padding-left: 8px; // 跟文档树笔记本的展开图标对齐
+		padding-right: 18px; // 跟文档树文档的块引计数对齐
 
 		&:not(:hover) {
 			opacity: 0.6;
@@ -250,12 +251,28 @@ body[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 			color: var(--b3-theme-on-background);
 		}
 
+		.b3-list-item__text {
+			padding-left: 4px; // 跟文档树笔记本的图标对齐
+		}
+
 		// 笔记本
-		&+ .fn__flex-1 > .b3-list-item:hover {
-			background-color: var(--b3-list-hover);
-			border-radius: var(--b3-border-radius);
+		&+ ul > li {
+			margin: 1px 14px 1px 4px; // 跟文档树的笔记本对齐
+
+			.b3-list-item__icon {
+				margin-left: 4px; // 跟文档树笔记本的图标对齐
+			}
+
+			&:hover {
+				background-color: var(--b3-list-hover);
+				border-radius: var(--b3-border-radius);
+			}
 		}
 	}
+}
+// 不存在已关闭的笔记本时，隐藏元素 https://github.com/siyuan-note/siyuan/issues/13887
+.sy__file > .b3-list:not(:has(> ul > li)) {
+	display: none;
 }
 
 
