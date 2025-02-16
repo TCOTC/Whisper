@@ -624,6 +624,10 @@ body[data-whisper-status="show"][data-whisper-layout-dockr="float"] .layout__cen
 	}
 }
 
+// 任务列表项前的方框，伪元素用圆角
+.protyle-wysiwyg [data-node-id].li[data-subtype="t"] > .protyle-action::after {
+	border-radius: var(--b3-border-radius);
+}
 
 // ————————————————————折叠块————————————————————
 
@@ -644,7 +648,7 @@ body[data-whisper-status="show"][data-whisper-layout-dockr="float"] .layout__cen
 }
 // 有序列表、任务列表
 // 图标必须是这一个 Size 为 32 的，位置才能刚好对上 https://fonts.google.com/icons?icon.set=Material+Icons&icon.style=Rounded&icon.size=32&icon.color=%235f6368&icon.query=Play&selected=Material+Icons+Round:play_arrow:&icon.platform=web
-.protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::before {
+.protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
 	content: '';
 	position: absolute;
 	left: -19.5px;
@@ -656,10 +660,10 @@ body[data-whisper-status="show"][data-whisper-layout-dockr="float"] .layout__cen
 	pointer-events: none; // 伪元素会影响块标移动
 }
 // svg 里的 fill 填的是 --b3-theme-on-surface-light，两个模式的颜色不同
-html[data-theme-mode="light"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::before {
+html[data-theme-mode="light"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
 	background-image: url('./icon/play_arrow_5F6368_light.svg');
 }
-html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::before {
+html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
 	background-image: url('./icon/play_arrow_5F6368_dark.svg');
 }
 .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::after {
