@@ -10,6 +10,11 @@
 .b3-snackbar--error .b3-snackbar__content {
     padding-left: 30px;
 }
+
+// 需要点击才能关闭的消息 https://ld246.com/article/1739431983843
+.b3-snackbar__content--close {
+    background-color: var(--b3-theme-secondary);
+}
 .b3-snackbar__close {
     display: none;
 }
