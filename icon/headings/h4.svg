@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.38 93.54"><defs><style>.cls-1{fill:#89d9d4;}</style></defs><g id="图层_2" data-name="图层 2"><g id="图层_1-2" data-name="图层 1"><rect class="cls-1" x="-17" y="17" width="44.48" height="10.48" rx="2" transform="translate(27.48 17) rotate(90)"/><rect class="cls-1" x="-17" y="66.06" width="44.48" height="10.48" rx="2" transform="translate(76.54 66.06) rotate(90)"/><rect class="cls-1" x="-0.1" y="17" width="44.48" height="10.48" rx="2" transform="translate(44.38 0.1) rotate(90)"/><rect class="cls-1" x="-0.1" y="66.06" width="44.48" height="10.48" rx="2" transform="translate(93.44 49.15) rotate(90)"/></g></g></svg>
+<svg viewBox="0 0 19 47" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M11 28C11 26.3431 12.3431 25 14 25H16C17.6569 25 19 26.3431 19 28V44C19 45.6569 17.6569 47 16 47H14C12.3431 47 11 45.6569 11 44V28Z" fill="#8DDCAE"/>
+    <path d="M0 28C0 26.3431 1.34315 25 3 25H5C6.65685 25 8 26.3431 8 28V44C8 45.6569 6.65685 47 5 47H3C1.34315 47 0 45.6569 0 44V28Z" fill="#8DDCAE"/>
+    <path d="M11 3C11 1.34315 12.3431 0 14 0H16C17.6569 0 19 1.34315 19 3V19C19 20.6569 17.6569 22 16 22H14C12.3431 22 11 20.6569 11 19V3Z" fill="#8DDCAE"/>
+    <path d="M0 3C0 1.34315 1.34315 0 3 0H5C6.65685 0 8 1.34315 8 3V19C8 20.6569 6.65685 22 5 22H3C1.34315 22 0 20.6569 0 19V3Z" fill="#8DDCAE"/>
+</svg>

@@ -689,64 +689,48 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 	display: none;
 }
 
-// 标题前的图标
-// 图标文件来自粉色小屋主题 https://github.com/StarDustSheep/pink-room
-// TODO跟进 更换新的统一圆角的 svg
+// TODO跟进 标题块高度修改 https://github.com/siyuan-note/siyuan/issues/14120
+// 标题前的图标。图标样式参考了粉色小屋主题 https://github.com/StarDustSheep/pink-room
+// 当前图标用 figma 设计 https://www.figma.com/design/ZVi3rMLjzsDfnhBvZYI1S1/ ，导出为 svg、去掉 width 和 height、添加 preserveAspectRatio="none"
 body > div:not(.b3-dialog--open[data-key="dialog-exportimage"]) {
-	// 排除导出图片时的文档标题，因为导出图片时 svg 不正常
-	.h1 > :first-child {
-		padding-left: .457em;
-
-		&::before {
-			background: url('./icon/headings/h1.svg');
-		}
+	// 导出图片时不应用样式，因为导出的图片不显示 svg；导出 PDF 的文档标题不应用样式，用 :not([title]) 排除
+	:is(.h1:not([title]), .h2, .h3, .h4, .h5, .h6) > [spellcheck] {
+		padding-left: calc(var(--b3-font-size-editor) * 0.7);
 	}
-	.h2 > :first-child {
-		padding-left: .516em;
 
-		&::before {
-			background: url('./icon/headings/h2.svg');
-		}
+	.h1:not([title]) > [spellcheck]::before {
+		background: url('./icon/headings/h1.svg');
 	}
-	.h3 > :first-child {
-		padding-left: .58em;
-
-		&::before {
-			background: url('./icon/headings/h3.svg');
-		}
+	.h2 > [spellcheck]::before {
+		background: url('./icon/headings/h2.svg');
 	}
-	.h4 > :first-child {
-		padding-left: .64em;
-
-		&::before {
-			background: url('./icon/headings/h4.svg');
-		}
+	.h3 > [spellcheck]::before {
+		background: url('./icon/headings/h3.svg');
 	}
-	.h5 > :first-child {
-		padding-left: .708em;
-
-		&::before {
-			background: url('./icon/headings/h5.svg');
-		}
+	.h4 > [spellcheck]::before {
+		background: url('./icon/headings/h4.svg');
 	}
-	.h6 > :first-child {
-		padding-left: .8em; // 按倍数算，以H6为基准（1倍），让所有标题的左侧对齐
-
-		&::before {
-			background: url('./icon/headings/h6.svg');
-		}
+	.h5 > [spellcheck]::before {
+		background: url('./icon/headings/h5.svg');
+	}
+	.h6 > [spellcheck]::before {
+		background: url('./icon/headings/h6.svg');
 	}
 	// background-repeat 需要放在后面覆盖
-	:is(.h1, .h2, .h3, .h4, .h5, .h6) > :first-child::before {
-		height: 1em;
-		width: 1em;
-		position: absolute;
+	:is(.h1, .h2, .h3, .h4, .h5, .h6) > [spellcheck]::before {
 		content: "";
-		filter: hue-rotate(325deg);
-		background-repeat: no-repeat;
-		left: 4px; // 内容块的 padding 4px
-		top: 50%; // 垂直居中
-		transform: translateY(-50%);
+		position: absolute;
+		left: 4px; // 内容块的 padding-left 4px
+		top: 6px; // 内容块的 padding-top 4px，再额外缩小 2px；多行标题时，图标应该在第一行左边，跟第一个字的相对位置不变
+		height: calc(1.25em - 4px); // 标题块 line-height 1.25，减去两倍的额外缩小
+		width: .3em;
+		//filter: hue-rotate(325deg); // 转换颜色
+		//background-repeat: no-repeat; // 防止重复
+	}
+	.protyle-wysiwyg [data-node-id].li > .protyle-action ~ :is(.h1, .h2, .h3, .h4, .h5, .h6) > [spellcheck]::before{
+		// 列表项内的 line-height 动态计算：calc(var(--b3-font-size-editor) * 1.625)
+		//height: min(calc(var(--b3-font-size-editor) * 1.625 - 4px), calc(1.25em - 4px)); // 标题块 line-height 1.25，减去两倍的额外缩小
+		height: calc(var(--b3-font-size-editor) * 1.625 - 4px); // 标题块 line-height 1.25，减去两倍的额外缩小
 	}
 }
 

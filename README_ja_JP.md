@@ -13,9 +13,7 @@
 
 ### 謝辞
 
-このテーマは、[Savor](https://github.com/royc01/notion-theme) と [Asri](https://github.com/mustakshif/Asri) テーマのデザインコンセプトからインスピレーションを得ています。その制作者に心からの感謝を申し上げます。
-
-素敵なタイトルブロックのアイコンを作成してくださった [StarDustSheep/pink-room](https://github.com/StarDustSheep/pink-room) さんに特別感謝申し上げます。
+本テーマは [Savor](https://github.com/royc01/notion-theme)、[Asri](https://github.com/mustakshif/Asri)、[pink-room](https://github.com/StarDustSheep/pink-room) の各テーマデザインコンセプトに触発されて作成されました。これらの素晴らしいテーマの作者の方々に、心より感謝申し上げます。
 
 ### 今後の展望
 

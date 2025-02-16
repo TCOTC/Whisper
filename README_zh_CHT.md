@@ -13,9 +13,7 @@
 
 ### 致謝
 
-本主題的靈感來源於 [Savor](https://github.com/royc01/notion-theme) 和 [Asri](https://github.com/mustakshif/Asri) 主題的設計理念，向它們的創作者致以誠摯的感謝。
-
-特別感謝 [StarDustSheep/pink-room](https://github.com/StarDustSheep/pink-room) 為我們製作了精美的標題塊圖標。
+本主題的靈感來源於 [Savor](https://github.com/royc01/notion-theme)、[Asri](https://github.com/mustakshif/Asri) 和 [pink-room](https://github.com/StarDustSheep/pink-room) 主題的設計理念，向它們的創作者致以誠摯的感謝。
 
 ### 展望
 

@@ -13,9 +13,7 @@ This is a personally styled SiYuan Note theme, designed to provide SiYuan users 
 
 ### Acknowledgements
 
-This theme draws inspiration from the design concepts of [Savor](https://github.com/royc01/notion-theme) and [Asri](https://github.com/mustakshif/Asri) themes. We extend our heartfelt thanks to their creators.
-
-Special thanks to [StarDustSheep/pink-room](https://github.com/StarDustSheep/pink-room) for creating the beautiful heading block icons for us.
+This theme draws inspiration from the design concepts of [Savor](https://github.com/royc01/notion-theme), [Asri](https://github.com/mustakshif/Asri) and [pink-room](https://github.com/StarDustSheep/pink-room) themes. We extend our heartfelt thanks to their creators.
 
 ### Future Plans
 

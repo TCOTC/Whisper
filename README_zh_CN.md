@@ -13,9 +13,7 @@
 
 ### 致谢
 
-本主题的灵感来源于 [Savor](https://github.com/royc01/notion-theme) 和 [Asri](https://github.com/mustakshif/Asri) 主题的设计理念，向它们的创作者致以诚挚的感谢。
-
-特别鸣谢 [StarDustSheep/pink-room](https://github.com/StarDustSheep/pink-room) 为我们制作了精美的标题块图标。
+本主题的灵感来源于 [Savor](https://github.com/royc01/notion-theme)、[Asri](https://github.com/mustakshif/Asri) 和 [pink-room](https://github.com/StarDustSheep/pink-room) 主题的设计理念，向它们的创作者致以诚挚的感谢。
 
 ### 展望
 
