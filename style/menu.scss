@@ -255,6 +255,11 @@ button, input, select, textarea {
 	}
 }
 
+// 华为设备上显示集市
+.config__panel > .b3-tab-bar .b3-list-item[data-name="bazaar"] {
+	display: flex !important;
+}
+
 // 集市 README
 #configBazaarReadme .item__main {
 	.item__preview {
