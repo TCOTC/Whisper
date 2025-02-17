@@ -24,6 +24,8 @@
 
         // 监听元素状态。通过给 body 添加属性来代替使用 :has 选择器，提高性能
         cssObserver?.disconnect();
+        cssObserver = null;
+        clearInterval(retryIntervalId);
         document.body.removeAttribute("data-whisper-status");
         document.body.removeAttribute("data-whisper-dock-bottom");
         document.body.removeAttribute("data-whisper-layout-dockr");
@@ -31,20 +33,15 @@
         // 鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
         document.removeEventListener('mouseover', updateTooltipData);
         tooltipElement?.removeAttribute("data-whisper-tooltip");
+        tooltipElement = null;
+
+        // 切换外观模式时背景色过渡
+        commonMenuObserver?.disconnect();
+        commonMenu?.removeEventListener('click', handleMenuClick, true);
+        commonMenu = null;
 
         console.log('Whisper: unloaded');
     }
-
-    // // 通用防抖函数，func 为执行的函数，delay 为延迟时间（单位：毫秒）
-    // const debounce = (func, delay) => {
-    //     let timeoutId;
-    //     return (...args) => {
-    //         clearTimeout(timeoutId);
-    //         timeoutId = setTimeout(() => {
-    //             func.apply(this, args);
-    //         }, delay);
-    //     };
-    // };
 
     const focusBlock = (event) => {
         let editor = document.activeElement.classList.contains('protyle-wysiwyg') ? document.activeElement : null;
@@ -76,15 +73,13 @@
     };
 
     // 功能：给光标所在块添加类名 block-focus
-    (async () => {
-        // 需要在捕获阶段触发，避免停止冒泡导致无法监听到
-        document.addEventListener('mouseup', focusBlock, true); // 按下按键之后
-        document.addEventListener('keyup', focusBlock, true);   // 鼠标点击之后
-        document.addEventListener('dragend', focusBlock, true); // 拖拽块之后
-    })();
+    // 需要在捕获阶段触发，避免停止冒泡导致无法监听到
+    document.addEventListener('mouseup', focusBlock, true); // 按下按键之后
+    document.addEventListener('keyup', focusBlock, true);   // 鼠标点击之后
+    document.addEventListener('dragend', focusBlock, true); // 拖拽块之后
 
     // 功能：监听元素状态。通过给 body 添加属性来代替使用 :has 选择器，提高性能
-    let cssObserver;
+    let cssObserver, retryIntervalId;
     (async () => {
         if (isMobile) return;
 
@@ -141,6 +136,7 @@
                 }
             };
 
+            cssObserver?.disconnect();
             cssObserver = new MutationObserver(callback);
 
             // 传入目标节点和观察选项
@@ -150,7 +146,7 @@
         };
 
         // 启动重试机制
-        const retryIntervalId = setInterval(findTargetNodes, retryInterval);
+        retryIntervalId = setInterval(findTargetNodes, retryInterval);
     })();
 
     const isLocalPath = (link) => {
@@ -229,68 +225,90 @@
         }
     })();
 
+    // 处理外观模式菜单的点击事件
+    const handleMenuClick = (e) => {
+        const modeButton = e.target.closest(".b3-menu__item");
+        const currentModeButton = commonMenu.querySelector(".b3-menu__item--selected");
+        // 如果没有点击按钮，或者点击的是当前模式按钮，则跳过
+        if (!modeButton || modeButton === currentModeButton) {
+            // TODO跟进 点击当前模式之后不应该有反应 https://github.com/siyuan-note/siyuan/issues/13478#issuecomment-2663818595
+            e.preventDefault(); // 阻止默认行为
+            e.stopPropagation(); // 阻止事件传递
+            return;
+        }
+        // 如果切换之后的主题不是 whisper 主题，则跳过
+        // 如果 modeButton 的文本内容是 window.siyuan.config.appearance.themeLight && html 的 data-light-theme 属性 !== "Whisper"
+        // 或者 modeButton 的文本内容是 window.siyuan.config.appearance.themeDark  && html 的 data-dark-theme  属性 !== "Whisper"
+        if ((modeButton.textContent === window.siyuan.languages.themeLight && document.documentElement.getAttribute('data-light-theme') !== "Whisper") ||
+            (modeButton.textContent === window.siyuan.languages.themeDark && document.documentElement.getAttribute('data-dark-theme') !== "Whisper")) return;
+
+        // 点击到按钮之后就卸载监听
+        commonMenu.removeEventListener('click', handleMenuClick, true);
+
+        const transition = document.startViewTransition();
+
+        const x = e.clientX;
+        const y = e.clientY;
+
+        const targetRadius = Math.hypot(
+            Math.max(x, window.innerWidth - x),
+            Math.max(y, window.innerHeight - y)
+        );
+
+        const style = document.createElement("style");
+        style.innerHTML = `::view-transition-old(root),::view-transition-new(root){animation: none;}`;
+        document.head.appendChild(style);
+
+        transition.ready.then(() => {
+            const animation = document.documentElement.animate(
+                {
+                    clipPath: [
+                        `circle(0 at ${x}px ${y}px)`,
+                        `circle(${targetRadius}px at ${x}px ${y}px)`
+                    ]
+                },
+                {
+                    duration: 550,
+                    pseudoElement: '::view-transition-new(root)',
+                    easing: 'ease-in-out'
+                }
+            );
+
+            // 过程中点击，立即结束动画
+            document.addEventListener('click', () => {
+                animation.finish();
+            }, { once: true }); // 事件只触发一次
+
+            // 动画结束后需要延迟一点移除 style 元素，否则会闪烁
+            animation.onfinish = () => {
+                setTimeout(() => {style?.remove();}, 500);
+            };
+        });
+    }
+
     // 功能：切换外观模式时背景色过渡
+    let commonMenuObserver, commonMenu;
     (async () => {
-        const root = document.documentElement; // 获取 :root 元素
-
-        const initRootObserver = () => {
-            let switchTimer, lastThemeMode;
-            const rootObserver = new MutationObserver((mutations) => {
-                mutations.forEach(mutation => {
-                    if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme-mode') {
-                        // 读取 data-theme-mode 属性的值
-                        const currentThemeMode = root.dataset.themeMode;
-
-                        // 将上一次的值写入 data-whisper-last-theme-mode 属性
-                        if (lastThemeMode) {
-                            root.dataset.whisperLastThemeMode = lastThemeMode;
-                        }
-
-                        // 快速切换主题时取消前一次计时器
-                        if (switchTimer) {
-                            clearTimeout(switchTimer);
-                        }
-
-                        root.dataset.whisperSwitching = "true";
-                        switchTimer = setTimeout(() => {
-                            root.dataset.whisperSwitching = "false";
-                        }, 300); // transition 耗时
-
-                        // 更新 lastThemeMode 为当前值
-                        lastThemeMode = currentThemeMode;
+        // 如果不支持 View Transitions API 就直接返回
+        if (!document.startViewTransition) {
+            console.error('Whisper: View Transitions API is not supported');
+            return;
+        }
+        commonMenuObserver = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                if (mutation.attributeName === 'data-name') {
+                    if (commonMenu.getAttribute("data-name") === "barmode") {
+                        commonMenu.addEventListener('click', handleMenuClick, true)
+                        return;
                     }
-                });
+                    // 菜单关闭后卸载监听
+                    commonMenu.removeEventListener('click', handleMenuClick, true);
+                }
             });
+        });
 
-            // 监听属性变化
-            rootObserver.observe(root, {  attributes: true });
-        }
-
-        // 如果 :root 元素不存在 data-whisper-last-switching 属性，则开始监听属性变化(只添加一次监听，并且不停止)
-        if (!root.dataset.whisperSwitching) {
-            // 初始化属性
-            root.dataset.whisperLastThemeMode = root.dataset.themeMode;
-            root.dataset.whisperSwitching = "false";
-            initRootObserver();
-        }
-
-        // 切换到明亮模式的 Whisper 主题；切换到暗黑模式的 Whisper 主题
-        const innerHTML = `:root:is([data-whisper-last-theme-mode="dark"][data-light-theme="Whisper"], [data-whisper-last-theme-mode="light"][data-dark-theme="Whisper"]):not([data-whisper-switching="false"]) {
-            *, *::before, *::after {
-                transition: background-color .3s ease-in-out 0ms !important;
-            }
-        }`;
-
-        // 查找 head 中是否已存在样式
-        if (!document.getElementById('whisperThemeSwitchStyle')) {
-            // 如果不存在，则创建并添加样式(只添加一次，并且不移除)
-            const style = document.createElement("style");
-            style.id = "whisperThemeSwitchStyle";
-            style.innerHTML = innerHTML;
-            document.head.appendChild(style);
-        } else {
-            // 如果存在，则更新样式（更新主题可以更新样式）
-            document.getElementById('whisperThemeSwitchStyle').innerHTML = innerHTML;
-        }
+        // 监听菜单的属性变化
+        commonMenu = document.getElementById("commonMenu");
+        commonMenuObserver.observe(commonMenu, { attributes: true });
     })();
 })();
