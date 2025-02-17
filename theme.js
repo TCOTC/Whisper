@@ -22,13 +22,8 @@
         document.removeEventListener('keyup', focusBlock, true);
         document.removeEventListener('dragend', focusBlock, true);
 
-        // 监听元素状态。通过给 body 添加属性来代替使用 :has 选择器，提高性能
-        cssObserver?.disconnect();
-        cssObserver = null;
+        // 监听元素状态。通过给 html 添加属性来代替使用 :has 选择器，提高性能
         clearInterval(retryIntervalId);
-        document.body.removeAttribute("data-whisper-status");
-        document.body.removeAttribute("data-whisper-dock-bottom");
-        document.body.removeAttribute("data-whisper-layout-dockr");
 
         // 鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
         document.removeEventListener('mouseover', updateTooltipData);
@@ -78,10 +73,12 @@
     document.addEventListener('keyup', focusBlock, true);   // 鼠标点击之后
     document.addEventListener('dragend', focusBlock, true); // 拖拽块之后
 
-    // 功能：监听元素状态。通过给 body 添加属性来代替使用 :has 选择器，提高性能
-    let cssObserver, retryIntervalId;
+    // 功能：监听元素状态。通过给 html 添加属性来代替使用 :has 选择器，提高性能
+    let retryIntervalId;
     (async () => {
         if (isMobile) return;
+        // 如果已经监听了就不再重复监听
+        if (document.documentElement.dataset.whisperStatus || document.documentElement.dataset.whisperDockBottom || document.documentElement.dataset.whisperLayoutDockr) return;
 
         // 定义需要查找的目标节点
         const targetSelectors = {
@@ -118,26 +115,25 @@
 
         const setupObserver = (targetNodeStatus, targetNodeDockBottom, targetNodeLayoutDockr) => {
             // 手动检查一次并设置初始状态
-            document.body.dataset.whisperStatus = targetNodeStatus.classList.contains('fn__none') ? 'hide' : 'show';
-            document.body.dataset.whisperDockBottom = targetNodeDockBottom.classList.contains('fn__none') ? 'hide' : 'show';
-            document.body.dataset.whisperLayoutDockr = targetNodeLayoutDockr.classList.contains('layout--float') ? 'float' : 'pin';
+            document.documentElement.dataset.whisperStatus = targetNodeStatus.classList.contains('fn__none') ? 'hide' : 'show';
+            document.documentElement.dataset.whisperDockBottom = targetNodeDockBottom.classList.contains('fn__none') ? 'hide' : 'show';
+            document.documentElement.dataset.whisperLayoutDockr = targetNodeLayoutDockr.classList.contains('layout--float') ? 'float' : 'pin';
 
             // 创建一个回调函数，当观察到变动时执行
             const callback = function(mutationsList) {
                 for(let mutation of mutationsList) {
                     const targetNode = mutation.target;
                     if (targetNode === targetNodeStatus) {
-                        document.body.dataset.whisperStatus = targetNode.classList.contains('fn__none') ? 'hide' : 'show';
+                        document.documentElement.dataset.whisperStatus = targetNodeStatus.classList.contains('fn__none') ? 'hide' : 'show';
                     } else if (targetNode === targetNodeDockBottom) {
-                        document.body.dataset.whisperDockBottom = targetNode.classList.contains('fn__none') ? 'hide' : 'show';
+                        document.documentElement.dataset.whisperDockBottom = targetNodeDockBottom.classList.contains('fn__none') ? 'hide' : 'show';
                     } else if (targetNode === targetNodeLayoutDockr) {
-                        document.body.dataset.whisperLayoutDockr = targetNode.classList.contains('layout--float') ? 'float' : 'pin';
+                        document.documentElement.dataset.whisperLayoutDockr = targetNodeLayoutDockr.classList.contains('layout--float') ? 'float' : 'pin';
                     }
                 }
             };
 
-            cssObserver?.disconnect();
-            cssObserver = new MutationObserver(callback);
+            const cssObserver = new MutationObserver(callback);
 
             // 传入目标节点和观察选项
             cssObserver.observe(targetNodeStatus, { attributeFilter: ['class'] });
