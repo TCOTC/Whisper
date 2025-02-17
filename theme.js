@@ -330,4 +330,45 @@
         commonMenu = document.getElementById("commonMenu");
         commonMenuObserver.observe(commonMenu, { attributes: true });
     })();
+
+    // 功能：移动端补上 AI 配置选项
+    (async () => {
+        if (isMobile) {
+            const mobileMenu = document.getElementById("menu");
+            if (!mobileMenu) {
+                console.error("Whisper: mobileMenu element does not exist.");
+                return;
+            }
+
+            // 监听 mobileMenu 元素，直到 menuRiffCard 元素存在
+            const observer = new MutationObserver((mutationsList, observer) => {
+                const mobileRiffCardMenu = document.getElementById("menuRiffCard");
+                if (mobileRiffCardMenu) {
+                    // 找到 menuRiffCard 元素后，停止监听
+                    observer.disconnect();
+
+                    const mobileAiMenu = document.getElementById("menuAI");
+                    if (!mobileAiMenu) {
+                        const aiHTML = `<div class="b3-menu__item${window.siyuan.config.readonly ? " fn__none" : ""}" id="menuAI">
+                            <svg class="b3-menu__icon"><use xlink:href="#iconSparkles"></use></svg><span class="b3-menu__label">AI</span>
+                        </div>`;
+                        // 插入 AI 选项
+                        mobileRiffCardMenu.insertAdjacentHTML('afterend', aiHTML);
+                    }
+                }
+            });
+
+            // 开始监听 mobileMenu 的子元素变化
+            observer.observe(mobileMenu, { childList: true, subtree: true });
+
+            // 设置超时时间，一分钟后停止监听并报错
+            setTimeout(() => {
+                const mobileRiffCardMenu = document.getElementById("menuRiffCard");
+                if (!mobileRiffCardMenu) {
+                    observer.disconnect();
+                    console.error("Whisper: menuRiffCard element does not exist.");
+                }
+            }, 60000); // 1 分钟超时
+        }
+    })();
 })();
