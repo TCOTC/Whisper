@@ -252,7 +252,10 @@ body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
 		}
 	}
 }
-
+// 手机设置。隐藏唯一的 AI Tab
+.layout-tab-bar:has(>.item[data-type="openai"]) {
+	display: none;
+}
 
 // ————————————————————切换页签 菜单————————————————————
 
