@@ -682,6 +682,11 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 	display: none;
 }
 
+// 代码块
+.protyle-wysiwyg [data-node-id][fold="1"].code-block {
+	height: 5em !important; // 显示前两行半的代码
+}
+
 // 给折叠的非列表项块添加背景
 .protyle-wysiwyg [data-node-id][fold="1"]:not(.li) {
 	background-image: repeating-linear-gradient(-45deg,var(--b3-theme-background-light),var(--b3-theme-background-light) 5px, var(--b3-list-hover) 0, var(--b3-list-hover) 10px);
