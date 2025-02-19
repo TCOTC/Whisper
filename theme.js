@@ -263,19 +263,43 @@
     // 处理外观模式菜单的点击事件
     const handleMenuClick = (e) => {
         const modeButton = e.target.closest(".b3-menu__item");
+        const targetMode = modeButton.textContent;
         const currentModeButton = commonMenu.querySelector(".b3-menu__item--selected");
+        const currentMode = currentModeButton.textContent;
         // 如果没有点击按钮，或者点击的是当前模式按钮，则跳过
         if (!modeButton || modeButton === currentModeButton) {
-            // TODO跟进 点击当前模式之后不应该有反应 https://github.com/siyuan-note/siyuan/issues/13478#issuecomment-2663818595
+            // TODO跟进 点击当前模式之后不应该有反应，改进了之后看看还需不需要判断 modeButton === currentModeButton https://github.com/siyuan-note/siyuan/issues/13478#issuecomment-2663818595
             e.preventDefault(); // 阻止默认行为
             e.stopPropagation(); // 阻止事件传递
             return;
         }
-        // 如果切换之后的主题不是 whisper 主题，则跳过
-        // 如果 modeButton 的文本内容是 window.siyuan.config.appearance.themeLight && html 的 data-light-theme 属性 !== "Whisper"
-        // 或者 modeButton 的文本内容是 window.siyuan.config.appearance.themeDark  && html 的 data-dark-theme  属性 !== "Whisper"
-        if ((modeButton.textContent === window.siyuan.languages.themeLight && document.documentElement.getAttribute('data-light-theme') !== "Whisper") ||
-            (modeButton.textContent === window.siyuan.languages.themeDark && document.documentElement.getAttribute('data-dark-theme') !== "Whisper")) return;
+
+        const { themeLight, themeDark, themeOS } = window.siyuan.languages;
+
+        // 检查指定模式对应的主题是否为 Whisper
+        const isThemeWhisper = (mode) => {
+            const themeAttr = mode === themeLight ? 'data-light-theme' : 'data-dark-theme';
+            return document.documentElement.getAttribute(themeAttr) === 'Whisper';
+        };
+
+        // 点击“明亮”或“暗黑”按钮，如果切换后对应的主题不是 Whisper，就不应该有动画，所以跳过
+        if (targetMode !== themeOS && !isThemeWhisper(targetMode)) return;
+
+        // 当前是“明亮”或“暗黑”，点击"跟随系统"按钮之后
+        if (targetMode === themeOS) {
+            const systemMode = window.matchMedia('(prefers-color-scheme: light)').matches ? themeLight : themeDark;
+                // 如果当前模式跟系统模式一样的话就不会变，所以跳过动画
+            if ((currentMode === systemMode ||
+                // 如果切换后的系统模式对应的主题不是 Whisper，就不应该有动画，所以跳过动画
+                !isThemeWhisper(systemMode))) return;
+        }
+
+        // 当前是"跟随系统"
+        if (currentMode === themeOS) {
+            const systemMode = window.matchMedia('(prefers-color-scheme: light)').matches ? themeLight : themeDark;
+            // 如果切换之后模式没变的话就不应该有动画，所以跳过
+            if (targetMode === systemMode) return;
+        }
 
         // 点击到按钮之后就卸载监听
         commonMenu.removeEventListener('click', handleMenuClick, true);
