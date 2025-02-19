@@ -79,6 +79,55 @@
             border-left: 0 !important;
         }
     }
+
+    .protyle-attr--memo {
+        display: none; // 因为无法显示备注，所以隐藏备注图标
+    }
+}
+
+// ————————————————————导出 PDF————————————————————
+body > #preview {
+    // 显示内容块备注（导出图片时这个伪元素不显示，所以导出图片不支持显示内容块备注）
+    .protyle-attr--memo.b3-tooltips {
+        max-width: 25vw;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+
+        svg {
+            overflow: initial;
+            margin-right: 2px;
+        }
+
+        &::before {
+            display: none;
+        }
+
+        &::after {
+            opacity: 1;
+            display: contents;
+            position: inherit;
+            content: attr(aria-label);
+            white-space: pre;
+            z-index: inherit;
+            padding: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            -webkit-font-smoothing: inherit;
+            color: inherit;
+            word-wrap: inherit;
+            background-color: inherit;
+            border-radius: inherit;
+            line-height: inherit;
+            transform: inherit;
+            max-width: inherit;
+            overflow: inherit;
+            text-overflow: inherit;
+            box-sizing: inherit;
+            box-shadow: inherit;
+            font-family: inherit;
+        }
+    }
 }
 
 // ————————————————————导出预览————————————————————
