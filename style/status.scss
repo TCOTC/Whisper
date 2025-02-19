@@ -67,6 +67,10 @@ body:not([data-whisper-device="mobile"]) {
 	.status__backgroundtask {
 		height: 24px;
 		line-height: 24px;
+
+		&> div {
+			width: 24px;
+		}
 	}
 }
 
