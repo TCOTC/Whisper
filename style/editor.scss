@@ -769,7 +769,7 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 		}
 	}
 	.hljs {
-		padding: 0 1em 1em;
+		padding: 0 1em 24px; // .protyle-icon 的高度是 24px，要让上下边距对称的话底部也要留 24px
 	}
 }
 
