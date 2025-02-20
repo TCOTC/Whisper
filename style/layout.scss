@@ -46,10 +46,18 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
 // 主菜单
 #barWorkspace {
     min-width: 50px;
-    justify-content: center;
-}
-#barWorkspace:hover {
-    background-color: var(--b3-theme-primary-lightest);
+
+    &:hover {
+        background-color: var(--b3-theme-primary-lightest);
+    }
+
+    .toolbar__text {
+        margin-right: 4px;
+    }
+
+    .toolbar__svg {
+        margin-left: auto;
+    }
 }
 
 .toolbar > .fn__ellipsis {
