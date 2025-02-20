@@ -231,6 +231,26 @@
     let tooltipElement;
     (async () => {
         if (isMobile) return;
+        // 版本检查逻辑。查找 <link id="themeDefaultStyle" rel="stylesheet" type="text/css" href="/appearance/themes/daylight/theme.css?v=3.1.22"> 元素
+        //  提取版本号，如果版本号不满足要求就直接 return
+        const TARGET_VERSION = '3.1.24'; // 可以使用该功能的最低版本号
+        const themeLink = document.getElementById("themeDefaultStyle");
+        if (themeLink) {
+            const versionMatch = themeLink.href.match(/v=(\d+\.\d+\.\d+)/);
+            if (versionMatch) {
+                // 解析当前版本和目标版本
+                const [currentVersion, targetVersion] = [versionMatch[1], TARGET_VERSION]
+                    .map(v => v.split('.').map(Number));
+
+                // 版本号比较逻辑
+                const isVersionValid = currentVersion.every((part, index) =>
+                    part >= (targetVersion[index] || 0)
+                );
+
+                if (!isVersionValid) return;
+            }
+        }
+
         tooltipElement = document.getElementById("tooltip");
         if (tooltipElement) {
             // 参考原生的 initBlockPopover 函数
