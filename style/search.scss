@@ -239,6 +239,11 @@
         // 其他属性
         .b3-list-item__meta {
             line-height: 20px;
+            opacity: .54; // 减弱元信息的干扰
+
+            &:has(> mark) {
+                opacity: 1; // 突出显示搜索结果文本
+            }
 
             // 属性图标
             .b3-list-item__hinticon {
