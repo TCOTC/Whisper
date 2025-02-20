@@ -272,36 +272,24 @@
             return;
         }
 
-        const targetMode = modeButton.textContent;
-        const currentMode = currentModeButton.textContent;
         const { themeLight, themeDark, themeOS } = window.siyuan.languages;
 
-        // 检查指定模式对应的主题是否为 Whisper
-        const isThemeWhisper = (mode) => {
-            const themeValue = mode === themeLight ? window.siyuan.config.appearance.themeLight : window.siyuan.config.appearance.themeDark;
-            return themeValue === "Whisper";
-        };
+        // 当前模式
+        const currentMode = window.siyuan.config.appearance.mode === 0 ? themeLight : themeDark;
 
-        // 点击“明亮”或“暗黑”按钮
-        if (targetMode !== themeOS) {
-            // 如果切换后对应的主题不是 Whisper，就不应该有动画，所以跳过
-            if (!isThemeWhisper(targetMode)) return;
+        // 获取切换后的模式（通过点击的按钮判断）
+        let targetMode = modeButton.textContent;
+        if (targetMode === themeOS) {
+            // 如果点击了“跟随系统”，则切换后的模式是系统模式
+            targetMode = window.matchMedia('(prefers-color-scheme: light)').matches ? themeLight : themeDark;
+        }
+        // 如果切换后的模式不变，则跳过
+        if (targetMode === currentMode) return;
 
-            // 当前是"跟随系统"
-            if (currentMode === themeOS) {
-                const systemMode = window.matchMedia('(prefers-color-scheme: light)').matches ? themeLight : themeDark;
-                // 如果切换之后模式没变的话就不应该有动画，所以跳过
-                if (targetMode === systemMode) return;
-            }
-        }
-        // 点击"跟随系统"按钮（当前是“明亮”或“暗黑”）
-        else {
-            const systemMode = window.matchMedia('(prefers-color-scheme: light)').matches ? themeLight : themeDark;
-                // 如果当前模式跟系统模式一样的话就不会变，所以跳过动画
-            if ((currentMode === systemMode ||
-                // 如果切换后的系统模式对应的主题不是 Whisper，就不应该有动画，所以跳过动画
-                !isThemeWhisper(systemMode))) return;
-        }
+        // 获取切换后的主题（切换后的模式对应的主题）
+        const targetTheme = targetMode === themeLight ? window.siyuan.config.appearance.themeLight : window.siyuan.config.appearance.themeDark;
+        // 如果切换后的主题不是 Whisper，则跳过
+        if (targetTheme !== "Whisper") return;
 
         // 点击到按钮之后就卸载监听
         commonMenu.removeEventListener('click', handleMenuClick, true);
