@@ -30,7 +30,7 @@
         tooltipElement?.removeAttribute("data-whisper-tooltip");
         tooltipElement = null;
 
-        // 切换外观模式时背景色过渡
+        // 监听 #commonMenu 菜单
         commonMenuObserver?.disconnect();
         commonMenu?.removeEventListener('click', handleMenuClick, true);
         commonMenu = null;
@@ -260,8 +260,14 @@
         }
     })();
 
-    // 处理外观模式菜单的点击事件
-    const handleMenuClick = (e) => {
+    // 功能：切换外观模式时背景动画
+    const themeSwitchAnimation = (e) => {
+        // 如果不支持 View Transitions API 就直接返回
+        if (!document.startViewTransition) {
+            console.error('Whisper: View Transitions API is not supported');
+            return;
+        }
+
         const modeButton = e.target.closest(".b3-menu__item");
         const currentModeButton = commonMenu.querySelector(".b3-menu__item--selected");
         // 如果没有点击按钮，或者点击的是当前模式按钮，则跳过
@@ -290,9 +296,6 @@
         const targetTheme = targetMode === themeLight ? window.siyuan.config.appearance.themeLight : window.siyuan.config.appearance.themeDark;
         // 如果切换后的主题不是 Whisper，则跳过
         if (targetTheme !== "Whisper") return;
-
-        // 点击到按钮之后就卸载监听
-        commonMenu.removeEventListener('click', handleMenuClick, true);
 
         const transition = document.startViewTransition();
 
@@ -333,25 +336,30 @@
                 setTimeout(() => {style?.remove();}, 500);
             };
         });
+    };
+
+    // 处理 #commonMenu 菜单的点击事件
+    const handleMenuClick = (e) => {
+        switch (commonMenuType) {
+            case "barmode":
+                themeSwitchAnimation(e);
+                break;
+        }
+
     }
 
-    // 功能：切换外观模式时背景色过渡
-    let commonMenuObserver, commonMenu;
+    // 功能：监听 #commonMenu 菜单
+    let commonMenuObserver, commonMenu, commonMenuType;
     (async () => {
-        // 如果不支持 View Transitions API 就直接返回
-        if (!document.startViewTransition) {
-            console.error('Whisper: View Transitions API is not supported');
-            return;
-        }
         commonMenuObserver = new MutationObserver((mutations) => {
             mutations.forEach(mutation => {
                 if (mutation.attributeName === 'data-name') {
-                    if (commonMenu.getAttribute("data-name") === "barmode") {
-                        commonMenu.addEventListener('click', handleMenuClick, true)
-                        return;
-                    }
-                    // 菜单关闭后卸载监听
+                    // 先卸载监听再添加，避免重复添加
                     commonMenu.removeEventListener('click', handleMenuClick, true);
+                    if (commonMenu.getAttribute("data-name") === "barmode") {
+                        commonMenuType = "barmode";
+                        commonMenu.addEventListener('click', handleMenuClick, true)
+                    }
                 }
             });
         });
