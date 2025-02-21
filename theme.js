@@ -379,7 +379,7 @@
     }
 
     // 功能：监听 #commonMenu 菜单
-    let commonMenuObserver, commonMenu, whisperCommonMenu, commonMenuType, timeoutId;
+    let commonMenuObserver, commonMenu, whisperCommonMenu, commonMenuType;
     (async () => {
         if (isMobile) return;
 
