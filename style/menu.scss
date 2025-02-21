@@ -37,9 +37,7 @@ label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:n
 	min-width: 100px;
 
 	// 隐藏不常用的块标选项
-	&[data-id="jumpToParentNext"],&[data-id="jumpToParentPrev"],&[data-id="jumpToParent"],&[data-id="enterBack"],
-	// 隐藏不常用的页签菜单选项
-	&[data-id="closeOthers"],&[data-id="closeAll"],&[data-id="closeUnmodified"],&[data-id="closeLeft"],&[data-id="closeRight"] {
+	&[data-id="jumpToParentNext"],&[data-id="jumpToParentPrev"],&[data-id="jumpToParent"],&[data-id="enterBack"] {
 		display: none;
 	}
 	&[data-id="docInfo"] .b3-menu__label,&[data-id="updateAndCreatedAt"] .b3-menu__label {
@@ -52,6 +50,41 @@ label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:n
 		min-width: 25px;
 	}
 }
+// 页签菜单
+// TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑
+#whisperCommonMenu[data-name="tab-header"] + #commonMenu > .b3-menu__items {
+	display: flex;
+	flex-direction: column;
+
+	[data-id="copy"] {
+		order: 1;
+	}
+
+	[data-id="split"] {
+		order: 2;
+	}
+
+	[data-id="pin"] {
+		order: 3;
+	}
+
+	[data-id="unpin"] {
+		order: 3;
+	}
+
+	[data-id="tabToWindow"] {
+		order: 4;
+	}
+
+	[data-id="separator_1"] {
+		order: 5;
+	}
+
+	[data-id="close"] {
+		order: 6;
+	}
+}
+
 button, input, select, textarea {
 	font-size: 97%;
 }
@@ -135,9 +168,6 @@ button, input, select, textarea {
 	&[data-type="color"],&[data-type="style1"] {
 		font-size: 18px;
 		font-weight: bold; // 字体加粗更清晰
-	}
-	&[style*="--b3-font-color1"],&[style*="--b3-font-background1"] {
-		order: 1;
 	}
 	&[style*="--b3-font-color1"],&[style*="--b3-font-background1"] {
 		order: 1;

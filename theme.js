@@ -34,6 +34,7 @@
         commonMenuObserver?.disconnect();
         commonMenu?.removeEventListener('click', handleMenuClick, true);
         commonMenu = null;
+        whisperCommonMenu?.remove();
 
         console.log('Whisper: unloaded');
     }
@@ -338,6 +339,35 @@
         });
     };
 
+    // 功能：页签右键菜单中的多个“关闭”选项移到二级菜单
+    const handleTabClose = () => {
+        const closeMenu = commonMenu.querySelector('[data-id="close"]');
+        if (!closeMenu) return;
+
+        const clonedCloseMenu = closeMenu.cloneNode(true);
+        clonedCloseMenu.querySelector('.b3-menu__icon')?.remove(); // 克隆选项移除图标
+
+        closeMenu.querySelector('.b3-menu__accelerator')?.remove(); // 选项移除快捷键
+        // 添加图标和子菜单容器
+        closeMenu.insertAdjacentHTML('beforeend', `<svg class="b3-menu__icon b3-menu__icon--small"><use xlink:href="#iconRight"></use></svg><div class="b3-menu__submenu"><div class="b3-menu__items"></div></div>`);
+        const submenuItems = closeMenu.querySelector('.b3-menu__items');
+
+        // 克隆选项添加到子菜单中
+        submenuItems.appendChild(clonedCloseMenu);
+
+        // 移动其他关闭选项到子菜单中
+        commonMenu.querySelectorAll('[data-id="closeOthers"], [data-id="closeAll"], [data-id="closeUnmodified"], [data-id="closeLeft"], [data-id="closeRight"]').forEach(element => {
+            element.querySelector('.b3-menu__icon')?.remove(); // 移除空图标
+            submenuItems.appendChild(element); // 移动元素到子菜单
+        });
+
+        // 给分屏选项添加图标
+        const splitMenu = commonMenu.querySelector('[data-id="split"] > .b3-menu__icon > use');
+        if (splitMenu) {
+            splitMenu.setAttribute("xlink:href", "#iconSplitLR");
+        }
+    };
+
     // 处理 #commonMenu 菜单的点击事件
     const handleMenuClick = (e) => {
         switch (commonMenuType) {
@@ -349,23 +379,42 @@
     }
 
     // 功能：监听 #commonMenu 菜单
-    let commonMenuObserver, commonMenu, commonMenuType;
+    let commonMenuObserver, commonMenu, whisperCommonMenu, commonMenuType, timeoutId;
     (async () => {
+        if (isMobile) return;
+
         commonMenuObserver = new MutationObserver((mutations) => {
-            mutations.forEach(mutation => {
-                if (mutation.attributeName === 'data-name') {
-                    // 先卸载监听再添加，避免重复添加
-                    commonMenu.removeEventListener('click', handleMenuClick, true);
-                    if (commonMenu.getAttribute("data-name") === "barmode") {
-                        commonMenuType = "barmode";
-                        commonMenu.addEventListener('click', handleMenuClick, true)
-                    }
+            // 使用一个标志位来确保只处理一次
+            let processed = false;
+
+            mutations.forEach(() => {
+                if (processed) return; // 如果已经处理过，直接返回
+
+                // 先卸载监听再添加，避免重复添加
+                commonMenu.removeEventListener('click', handleMenuClick, true);
+                whisperCommonMenu.dataset.name = "";
+
+                if (commonMenu.getAttribute("data-name") === "barmode") {
+                    commonMenuType = "barmode";
+                    commonMenu.addEventListener('click', handleMenuClick, true)
+                } else if ( // TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑
+                    commonMenu.querySelector('[data-id="close"]') &&
+                    commonMenu.querySelector('[data-id="split"]') &&
+                    commonMenu.querySelector('[data-id="copy"]') &&
+                    commonMenu.querySelector('[data-id="tabToWindow"]')
+                ) {
+                    whisperCommonMenu.dataset.name = "tab-header";
+                    handleTabClose();
                 }
+
+                processed = true; // 标记为已处理
             });
         });
 
         // 监听菜单的属性变化
         commonMenu = document.getElementById("commonMenu");
+        commonMenu.insertAdjacentHTML('beforebegin', '<div id="whisperCommonMenu"></div>');
+        whisperCommonMenu = document.getElementById("whisperCommonMenu");
         commonMenuObserver.observe(commonMenu, { attributes: true });
     })();
 
