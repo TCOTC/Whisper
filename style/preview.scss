@@ -130,6 +130,22 @@ body > #preview {
     }
 }
 
+// 覆盖整个页面的伪元素，避免把 hover 样式导出 https://github.com/siyuan-note/siyuan/issues/14153
+// 导出状态时没有 #action
+body > #preview::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    z-index: 5;
+}
+body > #action + #preview::before {
+    display: none;
+}
+
 // ————————————————————导出预览————————————————————
 
 // !* 导出预览适配公众号 CSS片段 https://ld246.com/article/1714297201478 *!
