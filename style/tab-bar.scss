@@ -188,12 +188,53 @@
 		}
 	}
 }
-// 新窗口的右上角留一点位置用来拖拽窗口
-.body--window #layouts .fn__flex:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
-	min-width: 100px;
+
+// 窗口左上角留一点空位用于拖拽窗口
+#toolbar {
+	padding-left: 0; // 预留 5px
+
+	#barWorkspace {
+		margin-left: 0; // 预留 2px
+	}
+
+	&::before {
+		content: "";
+		width: 7px; // 前面预留出来的 7px 区域
+		app-region: drag;
+	}
 }
-.body--window .layout__resize + .fn__flex-1 > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
-	min-width: 69px !important;
+
+// 新窗口
+.body--window {
+	// 窗口左上角和顶部留一点空位用于拖拽窗口
+	&::before {
+		content: "";
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 8px;
+		height: 42px; // 页签元素的高度
+		app-region: drag;
+	}
+
+	&::after {
+		content: "";
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: calc(100% - 42px * 4); // 避开新窗口右上角的四个控制按钮
+		height: 8px;
+		app-region: drag;
+	}
+
+	// 页签右边留一点位置用来拖拽窗口
+	#layouts .fn__flex:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
+		min-width: 100px;
+	}
+
+	.layout__resize + .fn__flex-1 > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
+		min-width: 69px !important;
+	}
 }
 
 // 窗口失去焦点时
