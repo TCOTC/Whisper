@@ -29,8 +29,8 @@ body:not([data-whisper-device="mobile"]) {
 		}
 	}
 
-	// 新窗口没有停靠栏按钮
-	.body--window #status {
+	// 新窗口底栏没有停靠栏按钮
+	&.body--window #status {
 		padding: 0 2px 0 0;
 	}
 
