@@ -222,8 +222,7 @@ html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 }
 // 笔记本 dragover
 .sy__file [data-type="navigation-root"] {
-	&.dragover__top::after,
-	&.dragover__bottom::after {
+	&:is(.dragover__top, .dragover__bottom)::after {
 		height: 4px;
 		width: calc(100% - 10px);
 		left: 5px;

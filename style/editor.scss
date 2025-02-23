@@ -519,8 +519,7 @@ html[data-whisper-status="show"][data-whisper-dock-bottom="hide"] .layout__cente
 body > .protyle-wysiwyg [data-node-id] {
 	background-color: transparent !important;
 
-	&.protyle-wysiwyg--select::after,
-	&.protyle-wysiwyg--hl::after {
+	&:is(.protyle-wysiwyg--select, .protyle-wysiwyg--hl)::after {
 		display: none;
 	}
 }
