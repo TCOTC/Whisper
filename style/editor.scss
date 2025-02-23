@@ -520,6 +520,9 @@ html[data-whisper-status="show"][data-whisper-dock-bottom="hide"] .layout__cente
 	background: var(--b3-protyle-code-background) !important;
 	border-radius: var(--b3-border-radius);
 }
+.hljs ::selection,.hljs::selection {
+	background-color: var(--b3-theme-primary-lighter) !important; // 覆盖代码块主题
+}
 
 // 引述块和其中的行级元素，都变灰色
 .b3-typography blockquote, .b3-typography .bq, .protyle-wysiwyg blockquote, .protyle-wysiwyg .bq {
