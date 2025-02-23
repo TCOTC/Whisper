@@ -72,6 +72,10 @@
                     background-color: var(--b3-scroll-color);
                     height: 2px;
                 }
+
+                &:active::after {
+                    background-color: var(--b3-theme-primary);
+                }
             }
         }
 
@@ -91,6 +95,10 @@
                     background-color: var(--b3-scroll-color);
                     height: 100%;
                     width: 2px;
+                }
+
+                &:active::after {
+                    background-color: var(--b3-theme-primary);
                 }
             }
         }
