@@ -515,6 +515,16 @@ html[data-whisper-status="show"][data-whisper-dock-bottom="hide"] .layout__cente
 
 // ————————————————————内容块————————————————————
 
+// 内容块拖影 https://github.com/siyuan-note/siyuan/pull/13821
+body > .protyle-wysiwyg [data-node-id] {
+	background-color: transparent !important;
+
+	&.protyle-wysiwyg--select::after,
+	&.protyle-wysiwyg--hl::after {
+		display: none;
+	}
+}
+
 // 代码块
 .b3-typography .code-block, .protyle-wysiwyg .code-block, .item__readme .hljs {
 	background: var(--b3-protyle-code-background) !important;
