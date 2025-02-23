@@ -26,13 +26,18 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
 .dock#dockBottom {
     border-top: unset;
 }
-.layout__dockl + .layout__resize::after,
-.layout__center + .layout__resize::after {
+:is(.layout__dockl, .layout__center) + .layout__resize::after {
     background-color: transparent;
 }
-.layout__resize:hover::after {
-    background-color: var(--b3-scroll-color);
-    height: 2px; // hover 时加粗便于判断
+.layout__resize {
+    &:hover::after {
+        background-color: var(--b3-scroll-color);
+        height: 2px; // hover 时加粗便于判断
+    }
+
+    &:active::after {
+        background-color: var(--b3-theme-primary);
+    }
 }
 .layout__resize--lr:hover::after {
     height: 100%;

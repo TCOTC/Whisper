@@ -150,17 +150,27 @@ html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 }
 
 .layout--float.layout__dockr > .layout__dockresize--lr {
+	top: -1px; // 元素有宽度，要避免顶部露出一点 border
 	border-left: 1px solid var(--b3-scroll-color);
 
 	&:hover {
 		border-left: 2px solid var(--b3-scroll-color); // 跟 .layout__resize 相同
 	}
+
+	&:active {
+		border-color: var(--b3-theme-primary);
+	}
 }
 .layout--float.layout__dockl > .layout__dockresize--lr {
+	top: -1px; // 元素有宽度，要避免顶部露出一点 border
 	border-right: 1px solid var(--b3-scroll-color);
 
 	&:hover {
 		border-right: 2px solid var(--b3-scroll-color); // 跟 .layout__resize 相同
+	}
+
+	&:active {
+		border-color: var(--b3-theme-primary);
 	}
 }
 .layout--float.layout__dockb > .layout__dockresize {
@@ -168,6 +178,10 @@ html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 
 	&:hover {
 		border-top: 2px solid var(--b3-scroll-color); // 跟 .layout__resize 相同
+	}
+
+	&:active {
+		border-color: var(--b3-theme-primary);
 	}
 }
 
