@@ -232,7 +232,7 @@
     let tooltipElement;
     (async () => {
         if (isMobile) return;
-        // 版本检查逻辑。查找 <link id="themeDefaultStyle" rel="stylesheet" type="text/css" href="/appearance/themes/daylight/theme.css?v=3.1.22"> 元素
+        // 版本检查逻辑。查找 <link id="themeDefaultStyle" rel="stylesheet" type="text/css" href="/appearance/themes/daylight/theme.css?v=3.1.24"> 元素
         //  提取版本号，如果版本号不满足要求就直接 return
         const TARGET_VERSION = '3.1.24'; // 可以使用该功能的最低版本号
         const themeLink = document.getElementById("themeDefaultStyle");
