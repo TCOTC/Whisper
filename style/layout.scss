@@ -47,6 +47,7 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
     border-bottom: unset; // 页签
 }
 
+
 // ————————————————————顶栏————————————————————
 
 // 主菜单
@@ -70,3 +71,13 @@ body:not(.body--mobile,.body--window) #layouts .layout__center {
     opacity: 0; // 不显示文档名
 }
 
+
+// ————————————————————浮窗————————————————————
+
+.block__popover > .block__icons {
+    min-height: 34px;
+
+    &> .resize__move {
+        height: 34px;
+    }
+}
