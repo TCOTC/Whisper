@@ -3,11 +3,24 @@
 
     // 判断是否为手机
     // TODO跟进 https://github.com/siyuan-note/siyuan/issues/13952 如果支持了切换界面，需要在切换界面之后重新执行被跳过的程序
-    const isMobile = !!window.siyuan?.mobile;
+    const isMobile = () => {
+        return !!window.siyuan?.mobile;
+    };
+
+    const isWindows = () => {
+        return navigator.platform.toUpperCase().indexOf("WIN") > -1;
+    };
+
+    const isMac = () => {
+        return navigator.platform.toUpperCase().indexOf("MAC") > -1;
+    };
+
     (async () => {
         if (isMobile) {
             // 添加设备类型标识
             document.body.dataset.whisperDevice = "mobile";
+        } else if (isMac) {
+            document.body.dataset.whisperDevice = "mac";
         }
     })();
 
@@ -145,10 +158,6 @@
         // 启动重试机制
         retryIntervalId = setInterval(findTargetNodes, retryInterval);
     })();
-
-    const isWindows = () => {
-        return navigator.platform.toUpperCase().indexOf("WIN") > -1;
-    };
 
     const isLocalPath = (link) => {
         if (!link) {

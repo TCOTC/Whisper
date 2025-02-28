@@ -190,7 +190,7 @@
 }
 
 // 窗口左上角留一点空位用于拖拽窗口
-#toolbar {
+body:not([data-whisper-device="mac"]) #toolbar {
 	padding-left: 0; // 预留 5px
 
 	#barWorkspace {
@@ -207,7 +207,7 @@
 // 新窗口
 .body--window {
 	// 窗口左上角和顶部留一点空位用于拖拽窗口
-	&::before {
+	&:not([data-whisper-device="mac"])::before {
 		content: "";
 		position: fixed;
 		top: 0;
