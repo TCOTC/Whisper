@@ -273,7 +273,7 @@
         const currentModeButton = commonMenu.querySelector(".b3-menu__item--selected");
         // 如果没有点击按钮，或者点击的是当前模式按钮，则跳过
         if (!modeButton || modeButton === currentModeButton) {
-            // TODO跟进 点击当前模式之后不应该有反应，改进了之后看看还需不需要判断 modeButton === currentModeButton https://github.com/siyuan-note/siyuan/issues/13478#issuecomment-2663818595
+            // TODO跟进 点击当前模式之后不应该有反应，改进了之后看看还需不需要判断 modeButton === currentModeButton https://github.com/siyuan-note/siyuan/issues/14238
             e.preventDefault(); // 阻止默认行为
             e.stopPropagation(); // 阻止事件传递
             return;
