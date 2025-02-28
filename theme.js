@@ -1,26 +1,30 @@
 (function() {
     console.log('Whisper: loaded');
 
-    // 判断是否为手机
+    // 竖屏手机
     // TODO跟进 https://github.com/siyuan-note/siyuan/issues/13952 如果支持了切换界面，需要在切换界面之后重新执行被跳过的程序
     const isMobile = () => {
         return !!window.siyuan?.mobile;
     };
 
+    // Windows 系统
     const isWindows = () => {
         return navigator.platform.toUpperCase().indexOf("WIN") > -1;
     };
 
+    // Mac 系统
     const isMac = () => {
         return navigator.platform.toUpperCase().indexOf("MAC") > -1;
     };
 
+    // 添加设备类型标识
     (async () => {
-        if (isMobile) {
-            // 添加设备类型标识
+        if (isMobile()) {
             document.body.dataset.whisperDevice = "mobile";
-        } else if (isMac) {
+        } else if (isMac()) {
             document.body.dataset.whisperDevice = "mac";
+        } else if (isWindows()) {
+            document.body.dataset.whisperDevice = "windows";
         }
     })();
 
