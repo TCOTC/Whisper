@@ -94,7 +94,7 @@
     // 功能：监听元素状态。通过给 html 添加属性来代替使用 :has 选择器，提高性能
     let retryIntervalId;
     (async () => {
-        if (isMobile) return;
+        if (isMobile()) return;
         // 如果已经监听了就不再重复监听
         if (document.documentElement.dataset.whisperStatus || document.documentElement.dataset.whisperDockBottom || document.documentElement.dataset.whisperLayoutDockr) return;
 
@@ -244,7 +244,7 @@
     // TODO跟进 https://github.com/siyuan-note/siyuan/pull/13966 PR 合并后才能用这个功能，不过没合并之前也几乎不会有问题，会执行 else 分支
     let tooltipElement;
     (async () => {
-        if (isMobile) return;
+        if (isMobile()) return;
         // 版本检查逻辑。查找 <link id="themeDefaultStyle" rel="stylesheet" type="text/css" href="/appearance/themes/daylight/theme.css?v=3.1.24"> 元素
         //  提取版本号，如果版本号不满足要求就直接 return
         const TARGET_VERSION = '3.1.24'; // 可以使用该功能的最低版本号
@@ -394,7 +394,7 @@
     // 功能：监听 #commonMenu 菜单
     let commonMenuObserver, commonMenu, whisperCommonMenu, commonMenuType;
     (async () => {
-        if (isMobile) return;
+        if (isMobile()) return;
 
         commonMenuObserver = new MutationObserver((mutations) => {
             // 使用一个标志位来确保只处理一次
@@ -433,7 +433,7 @@
 
     // 功能：移动端补上 AI 配置选项
     (async () => {
-        if (isMobile) {
+        if (isMobile()) {
             const mobileMenu = document.getElementById("menu");
             if (!mobileMenu) {
                 console.error("Whisper: mobileMenu element does not exist.");
