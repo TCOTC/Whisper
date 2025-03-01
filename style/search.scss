@@ -66,17 +66,6 @@
                 border-radius: var(--b3-border-radius-b) var(--b3-border-radius-b) 0 0;
                 border-top: none;
             }
-
-            .search__drag { // 拖拽线
-                &:hover::after {
-                    background-color: var(--b3-scroll-color);
-                    height: 2px;
-                }
-
-                &:active::after {
-                    background-color: var(--b3-theme-primary);
-                }
-            }
         }
 
         &.search__layout--row { // 左右布局
@@ -88,18 +77,6 @@
 
             #searchAssetPreview {
                 border-radius: 0 var(--b3-border-radius-b) 0 0;
-            }
-
-            .search__drag { // 拖拽线
-                &:hover::after {
-                    background-color: var(--b3-scroll-color);
-                    height: 100%;
-                    width: 2px;
-                }
-
-                &:active::after {
-                    background-color: var(--b3-theme-primary);
-                }
             }
         }
     }
@@ -139,6 +116,32 @@
     .search__tip { // 底部快捷键提示
         order: 5;
         border: none;
+    }
+}
+
+// 搜索界面拖拽线
+.search__layout {
+    &:not(.search__layout--row) .search__drag { // 上下布局
+        &:hover::after {
+            background-color: var(--b3-scroll-color);
+            height: 2px;
+        }
+
+        &:active::after {
+            background-color: var(--b3-theme-primary);
+        }
+    }
+
+    &.search__layout--row .search__drag { // 左右布局
+        &:hover::after {
+            background-color: var(--b3-scroll-color);
+            height: 100%;
+            width: 2px;
+        }
+
+        &:active::after {
+            background-color: var(--b3-theme-primary);
+        }
     }
 }
 
