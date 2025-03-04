@@ -153,10 +153,9 @@ button, input, select, textarea {
 	display: none;
 }
 // 隐藏 字号
-.protyle-font > div:has(+ .fn__hr--small + .fn__flex > .b3-select),
-.protyle-font > div:has(+ .fn__flex > .b3-select),
-.protyle-font > div:has(> .b3-select),
-.protyle-font > div:has(> .b3-select) + .fn__hr--b {
+.protyle-font > div:has(> .fn__flex > .b3-switch),
+.protyle-font > div:has(> .fn__flex > .b3-slider),
+.protyle-font > div.fn__hr--b {
 	display: none;
 }
 .protyle-font {
