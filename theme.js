@@ -263,27 +263,17 @@
             return;
         }
 
-        const modeButton = e.target.closest(".b3-menu__item");
-        const currentModeButton = commonMenu.querySelector(".b3-menu__item--selected");
-        // 如果没有点击按钮，或者点击的是当前模式按钮，则跳过
-        if (!modeButton || modeButton === currentModeButton) {
-            // TODO跟进 点击当前模式之后不应该有反应，改进了之后看看还需不需要判断 modeButton === currentModeButton https://github.com/siyuan-note/siyuan/issues/14238
-            e.preventDefault(); // 阻止默认行为
-            e.stopPropagation(); // 阻止事件传递
-            return;
-        }
-
         const { themeLight, themeDark, themeOS } = window.siyuan.languages;
 
-        // 当前模式
-        const currentMode = window.siyuan.config.appearance.mode === 0 ? themeLight : themeDark;
-
         // 获取切换后的模式（通过点击的按钮判断）
-        let targetMode = modeButton.textContent;
+        let targetMode = e.target.closest(".b3-menu__item").textContent;
         if (targetMode === themeOS) {
             // 如果点击了“跟随系统”，则切换后的模式是系统模式
             targetMode = window.matchMedia('(prefers-color-scheme: light)').matches ? themeLight : themeDark;
         }
+
+        // 当前模式
+        const currentMode = window.siyuan.config.appearance.mode === 0 ? themeLight : themeDark;
         // 如果切换后的模式不变，则跳过
         if (targetMode === currentMode) return;
 
