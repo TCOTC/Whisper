@@ -51,7 +51,7 @@
     display: none; // 隐藏小三角
 }
 .b3-tooltips::after, .b3-tooltips:hover::after {
-    box-shadow: 0 2px 6px 0 rgba(0,0,0,.1); // 阴影
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .1); // 阴影
     outline: 1px solid rgba(0, 0, 0, 0.1);  // 外框
     outline-offset: -1px;
     background-color: var(--mix-theme_primary_background);
@@ -79,7 +79,7 @@
 
 // ————————————————————悬浮提示————————————————————
 .tooltip {
-    box-shadow: 0 2px 6px 0 rgba(0,0,0,.1); // 阴影
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .1); // 阴影
     outline: 1px solid rgba(0, 0, 0, 0.1);  // 外框
     outline-offset: -1px;
     background-color: var(--mix-theme_primary_background);

@@ -1,10 +1,10 @@
 // NOTE 确保布局不会跟全屏模式冲突：编辑器全屏、关系图全屏
 
 // 界面圆角
-body:not(.body--mobile,.body--window) #layouts {
+body:not(.body--mobile, .body--window) #layouts {
     background-color: var(--b3-theme-surface);
 }
-body:not(.body--mobile,.body--window) #layouts .layout__center {
+body:not(.body--mobile, .body--window) #layouts .layout__center {
     border-radius: var(--b3-border-radius) var(--b3-border-radius) 0 0;
 }
 

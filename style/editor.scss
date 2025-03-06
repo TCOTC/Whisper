@@ -529,7 +529,7 @@ body > .protyle-wysiwyg [data-node-id] {
 	background: var(--b3-protyle-code-background) !important;
 	border-radius: var(--b3-border-radius);
 }
-.hljs ::selection,.hljs::selection {
+.hljs ::selection, .hljs::selection {
 	background-color: var(--b3-theme-primary-lighter) !important; // 覆盖代码块主题
 }
 

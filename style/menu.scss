@@ -26,7 +26,7 @@ label:hover .b3-switch:checked:not(:disabled)::after, .b3-switch:checked:hover:n
 	background-color: var(--b3-switch-checked);
 }
 .b3-switch::before,
-label:hover .b3-switch:checked:not(:disabled)::before,.b3-switch:checked:hover:not(:disabled)::before {
+label:hover .b3-switch:checked:not(:disabled)::before, .b3-switch:checked:hover:not(:disabled)::before {
 	background-color: unset;
 }
 
@@ -93,7 +93,7 @@ button, input, select, textarea {
 }
 
 // 输入框、下拉框聚焦状态
-.b3-text-field:not(.b3-text-field--text):focus,.pcr-app .pcr-interaction .pcr-result:not(.b3-text-field--text):focus,
+.b3-text-field:not(.b3-text-field--text):focus, .pcr-app .pcr-interaction .pcr-result:not(.b3-text-field--text):focus,
 .b3-select:focus {
     box-shadow: inset 0 0 0 .6px var(--b3-theme-on-background);
 }

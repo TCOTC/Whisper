@@ -4,7 +4,7 @@
 // ————————————————————悬浮提示————————————————————
 
 .tooltip {
-    box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 2px 6px 0 rgba(0,0,0,.1);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .1),0 2px 6px 0 rgba(0, 0, 0, .1);
     background-color: var(--mix-theme_primary_background);
     color: var(--b3-theme-on-background);
     animation-duration: 10ms; // 默认动画 zoomIn 更快过渡
