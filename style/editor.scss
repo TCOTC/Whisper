@@ -767,7 +767,7 @@ body > div:not(.b3-dialog--open[data-key="dialog-exportimage"]) {
 // NOTE 导出预览的代码块没有 .protyle-action
 div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	.protyle-action {
-		background-color: var(--b3-theme-background);
+		background-color: var(--b3-parent-background);
 		position: sticky;
 		top: 0;
 
