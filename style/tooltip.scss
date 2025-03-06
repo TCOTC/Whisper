@@ -65,10 +65,15 @@
     opacity: 0;
 }
 
-// “从数据库中移除”按钮需要立即显示
-.block__icon--warning.b3-tooltips:hover::after {
-    animation: unset;
-    opacity: 1;
+// 需要立即显示的伪元素提示
+.b3-tooltips {
+    &.block__icon--warning, // “从数据库中移除”按钮
+    &:has(> .b3-slider) {   // 横向拖拽滚动条
+        &:hover::after {
+            animation: unset;
+            opacity: 1;
+        }
+    }
 }
 
 
