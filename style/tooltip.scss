@@ -136,10 +136,6 @@
     max-width: 350px;              // 能够使元素添加 .fn__none 之后宽度不变(用于宽度刚好展开一半的情况)
     transition: max-width 0s 0.3s; // 隐藏超过 0.3s 宽度就立即缩回
 }
-.tooltip[data-whisper-tooltip="href"],
-.tooltip[data-whisper-tooltip="tab_header"] {
-    display: flex !important; // 用于淡出
-}
 
 // 带标题的链接
 .tooltip[data-whisper-tooltip="href"] {

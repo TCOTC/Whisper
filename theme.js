@@ -186,9 +186,17 @@
     };
 
     // 给 tooltip 元素添加 data-whisper-tooltip 属性值
-    const setTooltipData = (data) => {
+    const setTooltipData = (data, display) => {
         if (tooltipElement.dataset?.whisperTooltip !== data) {
             tooltipElement.dataset.whisperTooltip = data;
+        }
+        if (display) {
+            // 设置 tooltip 元素的 display 属性
+            // display:flex 用于普通链接和页签提示淡出。样式会被原生的 messageElement.removeAttribute("style"); 方法移除，不需要管理
+            const tooltipStyle = tooltipElement.getAttribute('style');
+            tooltipElement.setAttribute('style', `${tooltipStyle} display: flex !important`);
+        } else {
+            tooltipElement.style.removeProperty('display');
         }
     };
 
@@ -208,13 +216,13 @@
                 return;
             }
             // 普通链接
-            setTooltipData("href");
+            setTooltipData("href", true);
             return;
         }
 
         // 页签
         if (e.closest('[data-type="tab-header"]')) {
-            setTooltipData("tab_header");
+            setTooltipData("tab_header", true);
             return;
         }
 
