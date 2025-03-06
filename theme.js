@@ -240,6 +240,12 @@
             return;
         }
 
+        // 块标 TODO跟进 临时解决块标的问题，等 https://github.com/siyuan-note/siyuan/issues/14224 修复后移除
+        if (e.closest(".protyle-gutters")) {
+            setTooltipData("gutter");
+            return;
+        }
+
         // 如果正在显示的 tooltip 不属于特定元素，就将属性置空
         if (!tooltipElement.classList.contains("fn__none")) {
             tooltipElement.dataset.whisperTooltip = "";
