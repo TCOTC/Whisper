@@ -475,3 +475,15 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 		display: none;
 	}
 }
+
+// 闪卡窗口背景变暗一点
+.b3-dialog--open[data-key="dialog-opencard"] .b3-dialog__scrim::before {
+	content: '';
+	display: block;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background-color: var(--b3-mask-background);
+}
