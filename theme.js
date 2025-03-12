@@ -33,8 +33,8 @@
         // 移除设备类型标识
         document.body.removeAttribute("data-whisper-device");
 
-        // 给光标所在块添加类名 block-focus
-        document.querySelectorAll('.block-focus').forEach((element) => element.classList.remove('block-focus')); // 移除添加的类名
+        // 给光标所在块添加属性 data-whisper-block-focus
+        document.querySelectorAll('[data-whisper-block-focus]').forEach((element) => delete element.dataset.whisperBlockFocus); // 移除添加的属性
         document.removeEventListener('mouseup', focusBlock, true); // 卸载事件监听器
         document.removeEventListener('keyup', focusBlock, true);
         document.removeEventListener('dragend', focusBlock, true);
@@ -65,27 +65,27 @@
         }
         if (!editor) return; // 焦点不在编辑器内就直接返回
 
-        // 编辑器内有选中块时不必凸显聚焦块，清除类名后返回
+        // 编辑器内有选中块时不必凸显聚焦块，清除属性后返回
         if (editor?.querySelector(`.protyle-wysiwyg--select`)) {
-            // 清除当前编辑器内所有块上的类名
-            editor.querySelectorAll(`.block-focus`).forEach((element) => element.classList.remove(`block-focus`));
+            // 清除当前编辑器内所有块上的属性
+            editor.querySelectorAll('[data-whisper-block-focus]').forEach((element) => delete element.dataset.whisperBlockFocus);
             return;
         }
 
         // 优先获取光标所在块，其次获取点击的元素所在块（例如数据库元素对应的数据库块）
         const block = window.getSelection()?.anchorNode?.parentElement?.closest('[data-node-id]') || event.target.closest('[data-node-id]'); // 光标在选区前面，所以用 anchorNode
-        // 当前块已经设置类名 时直接返回
-        if (block?.classList.contains(`block-focus`)) return;
+        // 当前块已经设置属性 时直接返回
+        if (block?.hasAttribute('data-whisper-block-focus')) return;
 
-        // 清除当前编辑器内非聚焦块上的类名
-        editor.querySelectorAll(`.block-focus`).forEach((element) => element.classList.remove(`block-focus`));
-        // 光标不在块内 / 点击的元素在嵌入块内 时，清除当前编辑器内非聚焦块上的类名后返回
+        // 清除当前编辑器内非聚焦块上的属性
+        editor.querySelectorAll('[data-whisper-block-focus]').forEach((element) => delete element.dataset.whisperBlockFocus);
+        // 光标不在块内 / 点击的元素在嵌入块内 时，清除当前编辑器内非聚焦块上的属性后返回
         if (!block || block?.closest('.protyle-wysiwyg__embed')) return;
 
-        block.classList.add(`block-focus`);
+        block.dataset.whisperBlockFocus = "";
     };
 
-    // 功能：给光标所在块添加类名 block-focus
+    // 功能：给光标所在块添加属性 data-whisper-block-focus
     // 需要在捕获阶段触发，避免停止冒泡导致无法监听到
     document.addEventListener('mouseup', focusBlock, true); // 按下按键之后
     document.addEventListener('keyup', focusBlock, true);   // 鼠标点击之后
