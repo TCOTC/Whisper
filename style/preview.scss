@@ -132,8 +132,8 @@ body > #preview {
     }
 }
 
-// 覆盖整个页面的伪元素，避免把 hover 样式导出 https://github.com/siyuan-note/siyuan/issues/14153
-// 导出状态时没有 #action
+// 添加覆盖整个导出页面的伪元素，避免把 hover 样式导出 https://github.com/siyuan-note/siyuan/issues/14153
+// PDF 导出状态时没有 #action
 body > #preview::before {
     content: '';
     position: fixed;
@@ -144,7 +144,19 @@ body > #preview::before {
     background-color: transparent;
     z-index: 5;
 }
-body > #action + #preview::before {
+// 图片导出状态时 .b3-dialog__container 的内联样式中没有 height
+.export-img::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    z-index: 5;
+}
+body > #action + #preview::before,
+.b3-dialog__container[style*="height"] .export-img::before {
     display: none;
 }
 
