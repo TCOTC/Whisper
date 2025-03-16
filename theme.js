@@ -53,6 +53,11 @@
         commonMenu = null;
         whisperCommonMenu?.remove();
 
+        // 监听 body 元素的子元素增删
+        bodyObserver?.disconnect();
+        searchTipElement.forEach((element) => element?.classList.remove("resize__move"));
+        searchTipElement = null;
+
         console.log('Whisper: unloaded');
     }
 
@@ -408,6 +413,51 @@
         commonMenu.insertAdjacentHTML('beforebegin', '<div id="whisperCommonMenu"></div>');
         whisperCommonMenu = document.getElementById("whisperCommonMenu");
         commonMenuObserver.observe(commonMenu, { attributes: true });
+    })();
+
+    // 处理 弹出模态窗口
+    const handleDialogOpen = (node) => {
+        const dialogKey = node.dataset.key;
+        // 搜索窗口
+        if (dialogKey === "dialog-globalsearch" || dialogKey === "dialog-search") {
+            // TODO跟进 `搜索资源文件内容` 窗口的子元素在打开之前是不存在的，所以没法添加类名，需要 https://github.com/siyuan-note/siyuan/issues/14372 支持
+            searchTipElement = [];
+            node.querySelectorAll('.search__tip').forEach(e => {
+                e.classList.add("resize__move");
+                searchTipElement.push(e);
+            });
+        }
+    };
+
+    let bodyObserver, searchTipElement = [];
+    // 功能：监听 body 元素的子元素增删
+    (async () => {
+        if (isMobile()) return;
+
+        // 启用主题时可能已经打开了窗口，预先处理
+        document.querySelectorAll('.search__tip').forEach(e => {
+            e.classList.add("resize__move");
+            searchTipElement.push(e);
+        });
+
+        // 监听 body 元素的直接子元素变化
+        bodyObserver = new MutationObserver((mutationsList) => {
+            mutationsList.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        setTimeout(() => {
+                            // 弹出模态窗口
+                            if (node.classList.contains('b3-dialog--open')) {
+                                handleDialogOpen(node);
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // 观察 body 元素子节点的变化
+        bodyObserver.observe(document.body, { childList: true });
     })();
 
     // 功能：移动端补上 AI 配置选项

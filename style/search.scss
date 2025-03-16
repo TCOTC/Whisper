@@ -292,3 +292,9 @@
         }
     }
 }
+
+// 搜索窗口底部的快捷键提示栏
+.search__tip {
+    cursor: grab;
+    user-select: none;
+}
