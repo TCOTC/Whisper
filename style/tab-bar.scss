@@ -227,7 +227,7 @@ body:not([data-whisper-device="mac"]) #toolbar {
 		app-region: drag;
 	}
 
-	// 页签右边留一点位置用来拖拽窗口
+	// 页签右边留一点位置用来拖拽窗口 TODO跟进 等 https://github.com/siyuan-note/siyuan/issues/12302 改进了应该就能移除这个样式
 	#layouts .fn__flex:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
 		min-width: 100px;
 	}

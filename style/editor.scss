@@ -11,7 +11,6 @@
 	mark,
 	span[data-type~=mark] {
 		background-color: transparent; // 覆盖标记样式本身的背景色，并且不会影响带背景色的文本
-		// color: inherit; // 注释掉，避免覆盖块引文本的颜色
 		box-shadow: 0 -0.7em 0 0 inset var(--b3-protyle-inline-mark-background), var(--custom-inline-box-shadow) var(--b3-protyle-inline-mark-background); // 添加透明度，避免完全覆盖文本背景色
 
 		&.mark--hl {
@@ -66,7 +65,6 @@
 	strong,
 	span[data-type~=strong] {
 		font-weight: bold;
-		color: var(--b3-protyle-inline-strong-color);
 	}
 
 	// 行级标签。导出预览是纯文本所以没有行级标签样式
@@ -78,7 +76,6 @@
 		border-radius: var(--b3-border-radius);
 		padding: .1em .2em;
 		margin: 0 1px;
-		//color: var(--b3-card-success-color);
 		background-color: var(--custom-card-success-background_65); // 背景色透明才能显示出光标
 
 		&:hover {
@@ -138,14 +135,10 @@
 
 	a,
 	span[data-type~=a] {
-		// opacity: 0.86;
 		opacity: 1;
-		// transition: text-shadow var(--custom-transition);
 		transition: unset;
 
 		&:hover {
-			// opacity: 1;
-			// border-bottom: 0.1em solid;
 			border-bottom: unset; // 简约，不必要下划线
 			text-shadow: var(--custom-link-shadow); // 代替 opacity 变化
 		}
@@ -160,9 +153,7 @@
 	span[data-type~=block-ref]:not(.av__celltext),
 	.av__celltext--ref {
 		opacity: 1;
-		// box-shadow: var(--custom-inline-box-shadow) var(--custom-color-blue-light); // 跟标记样式冲突
-		border-bottom: 0.15em solid var(--custom-color-blue-light); // 直接覆盖下划线样式
-		// transition: text-shadow var(--custom-transition);
+		border-bottom: 0.15em solid var(--custom-color-blue-light); // 直接覆盖下划线样式、box-shadow 跟标记样式冲突
 		transition: unset;
 
 		&:hover {
