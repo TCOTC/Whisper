@@ -465,8 +465,8 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 	}
 }
 
-// 属性菜单 - 数据库
-// 数据库标题
+// 属性面板
+// 数据库 - 标题
 .custom-attr__avheader .block__logo {
 	color: var(--b3-theme-primary);
 	font-size: 1.25em;
@@ -474,6 +474,10 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 	&>.block__logoicon {
 		display: none;
 	}
+}
+// 内置属性 - 备注
+.custom-attr textarea[data-name="memo"] {
+	field-sizing: content; // 输入框高度适应内容，仅适用于 Chromium
 }
 
 // 闪卡窗口背景变暗一点
