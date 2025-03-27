@@ -53,6 +53,9 @@
         commonMenu = null;
         whisperCommonMenu?.remove();
 
+        // 处理 弹出模态窗口
+        searchAssetsObserver?.disconnect();
+
         // 监听 body 元素的子元素增删
         bodyObserver?.disconnect();
         searchTipElement.forEach((element) => element?.classList.remove("resize__move"));
@@ -415,17 +418,52 @@
         commonMenuObserver.observe(commonMenu, { attributes: true });
     })();
 
+    const addResizeMoveToSearchTip = (e) => {
+        e.classList.add("resize__move");
+        searchTipElement.push(e);
+    }
+
+    const AddResizeMoveToSearchTip = (node) => {
+        node.querySelectorAll('.search__tip').forEach(e => {
+            addResizeMoveToSearchTip(e);
+        });
+    }
+
     // 处理 弹出模态窗口
+    let searchAssetsObserver;
     const handleDialogOpen = (node) => {
         const dialogKey = node.dataset.key;
         // 搜索窗口
         if (dialogKey === "dialog-globalsearch" || dialogKey === "dialog-search") {
-            // TODO跟进 `搜索资源文件内容` 窗口的子元素在打开之前是不存在的，所以没法添加类名，需要 https://github.com/siyuan-note/siyuan/issues/14372 支持
             searchTipElement = [];
-            node.querySelectorAll('.search__tip').forEach(e => {
-                e.classList.add("resize__move");
-                searchTipElement.push(e);
-            });
+            AddResizeMoveToSearchTip(node);
+
+            // `搜索资源文件内容` 窗口的子元素在打开之前是不存在的，所以需要监听到子元素添加之后再添加类名
+            // 查找 #searchAssets 元素
+            const searchAssetsElement = document.getElementById('searchAssets');
+
+            if (searchAssetsElement) {
+                // 如果 #searchAssets 元素存在，检查是否有子元素
+                if (searchAssetsElement.children.length === 0) {
+                    // 如果没有子元素，监听子元素的添加
+                    searchAssetsObserver = new MutationObserver((mutationsList) => {
+                        mutationsList.forEach((mutation) => {
+                            mutation.addedNodes.forEach((node) => {
+                                if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains('search__tip')) {
+                                    addResizeMoveToSearchTip(node);
+                                    searchAssetsObserver?.disconnect();
+                                }
+                            });
+                        });
+                    });
+
+                    // 开始监听 #searchAssets 元素的子节点变化
+                    searchAssetsObserver.observe(searchAssetsElement, { childList: true });
+                } else {
+                    // 如果有子元素，直接处理现有的子元素
+                    AddResizeMoveToSearchTip(searchAssetsElement);
+                }
+            }
         }
     };
 
@@ -435,10 +473,7 @@
         if (isMobile()) return;
 
         // 启用主题时可能已经打开了窗口，预先处理
-        document.querySelectorAll('.search__tip').forEach(e => {
-            e.classList.add("resize__move");
-            searchTipElement.push(e);
-        });
+        AddResizeMoveToSearchTip(document);
 
         // 监听 body 元素的直接子元素变化
         bodyObserver = new MutationObserver((mutationsList) => {
