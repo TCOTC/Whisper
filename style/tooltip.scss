@@ -108,7 +108,7 @@
 // 路径信息的悬浮提示显示在左下角
 .tooltip[data-whisper-tooltip="href"],
 .tooltip[data-whisper-tooltip="tab_header"] {
-    // 底栏高度 24px
+    // line-height: 16px + padding: 4px * 2 = 底栏高度 24px
     line-height: 16px;
     padding: 4px 8px;
     box-shadow: unset; // 阴影

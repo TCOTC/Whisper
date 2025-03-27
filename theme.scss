@@ -8,8 +8,8 @@
 @import "style/search";        // 搜索
 @import "style/preview";       // 导出
 
-// NOTE 偶尔需要跟最新版的默认主题文件对比一下，跟进变量的变更
 // —————————————————————————— 配色 ——————————————————————————
+// NOTE 偶尔需要跟最新版的默认主题文件对比一下，跟进变量的变更
 // 明亮主题
 html[data-theme-mode="light"] {
 	// 自定义、混合
@@ -481,4 +481,8 @@ html[data-theme-mode="dark"] {
 
 * {
 	font-variant-numeric: tabular-nums; // 使用等宽数字
+}
+
+:root {
+	--custom-status-height: 24px; // 底栏高度
 }

@@ -55,7 +55,7 @@ html[data-whisper-status="show"] .layout__dockr.layout--float {
 		position: absolute;
 		right: calc(28px - 42px); // 侧栏的宽度 // 露出"显示/隐藏停靠栏"按钮
 		bottom: 0;
-		height: 24px; // 底栏的高度
+		height: var(--custom-status-height);
 		width: calc(42px - 28px); // 侧栏的宽度 // 露出"显示/隐藏停靠栏"按钮
 		background-color: var(--b3-theme-surface);
 	}
@@ -102,7 +102,7 @@ html[data-whisper-layout-dockr="float"] .layout__center .fn__flex:not(:has(+ .la
 html[data-whisper-status="show"][data-whisper-dock-bottom="hide"] {
 	#dockRight,
 	.layout__dockr .layout__dockresize {
-		padding-bottom: 24px; // 等于底栏 status 的高度
+		padding-bottom: var(--custom-status-height);
 	}
 }
 
@@ -136,14 +136,14 @@ html[data-whisper-status="show"][data-whisper-dock-bottom="hide"] {
 	}
 }
 html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="translate"]) {
-	bottom: 24px !important; // 隐藏底部侧栏之后。底栏的高度
+	bottom: var(--custom-status-height) !important; // 隐藏底部侧栏之后
 	overflow: visible;
 
 	&::after {
 		content: "";
 		position: absolute;
-		bottom: -24px; // 底栏的高度
-		height: 24px; // 底栏的高度
+		bottom: calc(-1 * var(--custom-status-height));
+		height: var(--custom-status-height);
 		width: calc(100% - 28px); // 露出"显示/隐藏停靠栏"按钮
 		background-color: var(--b3-theme-surface);
 	}
