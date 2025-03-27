@@ -307,10 +307,11 @@ html[data-whisper-status="show"][data-whisper-layout-dockr="float"] .layout__cen
 		}
 	}
 }
-// 底栏会挡住右下角的反链或者大纲页签
+// 底栏会挡住右下角的 反链/大纲页签/闪卡按钮
 html[data-whisper-status="show"][data-whisper-dock-bottom="hide"] .layout__center .fn__flex:not(:has(+ .layout__resize--lr)):not(:has(+ .layout__resize)) > div[data-type="wnd"] > .layout-tab-container > .fn__flex-1 {
 	&.sy__backlink .backlinkList + .block__icons,
-	&.sy__outline > .fn__flex-1 {
+	&.sy__outline > .fn__flex-1,
+	.card__main .card__action {
 		padding-bottom: 24px !important; // 等于底栏 status 的高度
 	}
 }
