@@ -133,8 +133,8 @@ body > #preview {
 }
 
 // 添加覆盖整个导出页面的伪元素，避免把 hover 样式导出 https://github.com/siyuan-note/siyuan/issues/14153
-// PDF 导出状态时没有 #action
-body > #preview::before {
+// HTML 导出后没有 .exporting；PDF 导出状态时没有 #action
+body > #preview.exporting::before {
     content: '';
     position: fixed;
     top: 0;
