@@ -3,6 +3,10 @@
     padding: 8px 16px;
     color: var(--b3-theme-on-background);
     background-color: var(--mix-theme_primary_background);
+
+    a {
+        color: var(--b3-protyle-inline-link-color);
+    }
 }
 .b3-snackbar--error .b3-snackbar__content::after {
     left: 6px;
