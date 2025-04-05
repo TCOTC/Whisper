@@ -178,6 +178,7 @@
 	.img {
 		img {
 			border-radius: var(--b3-border-radius); // 图片圆角
+			box-shadow: var(--custom-img-shadow);
 		}
 
 		.protyle-action__title:has(> span:empty) {
