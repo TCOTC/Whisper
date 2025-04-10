@@ -819,9 +819,10 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	display: block;
 }
 
-// 单选、多选、资源字段选项
+// 单选、多选、资源字段选项，筛选菜单选项
 .av__panel .b3-chip,
-.av__row .b3-chip {
+.av__row .b3-chip,
+.b3-menu .b3-chip {
 	color: var(--b3-theme-on-background) !important;
 	outline: 1px solid var(--custom-theme-on-surface-light_30);
 	outline-offset: -1px;
