@@ -211,12 +211,14 @@ html[data-theme-mode="light"] {
 	--b3-protyle-inline-s-color: rgb(178, 178, 178); // 原来是 inherit
 	--custom-protyle-inline-s-color_50: rgba(178, 178, 178, .5);
 	--b3-protyle-inline-link-color: rgb(66, 133, 244);
+	--b3-protyle-inline-link-s-color: rgb(148, 177, 224);
 	--custom-protyle-inline-link-color_20: rgba(66, 133, 244, .2);
 	--b3-protyle-inline-mark-background: rgba(237, 237, 13, .5); // 原来是 rgb(252, 212, 126)
 	--b3-protyle-inline-mark-color: inherit; // 原来是 #202124
 	--b3-protyle-inline-tag-color: var(--b3-card-success-color); // 原来是 #5f636
 	--b3-protyle-inline-blockref-color: inherit; // 原来是 #8957e5
 	--b3-protyle-inline-fileref-color: rgb(27, 97, 36); // 原来是 #21862e
+	--b3-protyle-inline-fileref-s-color: rgb(147, 216, 155);
 
 	// PDF
 	--b3-pdf-selection: rgb(208, 233, 200);
@@ -445,12 +447,14 @@ html[data-theme-mode="dark"] {
 	--b3-protyle-inline-s-color: rgb(95, 95, 95); // 原来是 inherit
 	--custom-protyle-inline-s-color_50: rgba(95, 95, 95, .5);
 	--b3-protyle-inline-link-color: rgb(66, 133, 244);
+	--b3-protyle-inline-link-s-color: rgb(43, 97, 186);
 	--custom-protyle-inline-link-color_50: rgba(66, 133, 244, .5);
 	--b3-protyle-inline-mark-background: rgba(191, 191, 22, .5); // 原来是 #b29100
 	--b3-protyle-inline-mark-color: inherit; // 原来是 var(--b3-theme-on-background)
 	--b3-protyle-inline-tag-color: var(--b3-card-success-color); // 原来是 #5f636
 	--b3-protyle-inline-blockref-color: inherit; // 原来是 #8957e5
 	--b3-protyle-inline-fileref-color: rgb(158, 218, 158); // 原来是 var(--b3-theme-secondary)
+	--b3-protyle-inline-fileref-s-color: rgb(85, 119, 85);
 
 	// PDF
 	// TODO跟进 https://github.com/siyuan-note/siyuan/issues/14065 修改

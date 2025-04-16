@@ -118,7 +118,7 @@
 		font-variant-numeric: tabular-nums;
 		font-variant-ligatures: no-common-ligatures;
 		font-size: .9em;
-		font-family: var(--b3-font-family-protyle);
+		font-family: var(--b3-font-family-protyle), serif;
 	}
 
 	u {
@@ -134,8 +134,13 @@
 
 	a,
 	span[data-type~=a] {
+		color: var(--b3-protyle-inline-link-color);
 		opacity: 1;
 		transition: unset;
+
+		&[data-type~=s] {
+			color: var(--b3-protyle-inline-link-s-color); // 删除线下的文本变淡
+		}
 
 		&:hover {
 			border-bottom: unset; // 简约，不必要下划线
@@ -159,6 +164,9 @@
 			text-shadow: var(--custom-theme-on-shadow); // 代替 opacity 变化
 		}
 	}
+	span[data-type~=block-ref]:not(.av__celltext)[data-type~=s] {
+		color: var(--b3-protyle-inline-s-color); // 删除线下的文本变淡
+	}
 	// 块引用静态锚文本用虚线下划线
 	span[data-type~=block-ref][data-subtype="s"]:not(.av__celltext),
 	.av__celltext--ref[data-subtype="s"] { // TODO跟进 数据库的锚文本类型是写死的，需要修复 https://github.com/siyuan-note/siyuan/issues/13889
@@ -169,6 +177,10 @@
 	span[data-type~=file-annotation-ref] {
 		opacity: 1;
 		transition: unset;
+
+		&[data-type~=s] {
+			color: var(--b3-protyle-inline-fileref-s-color); // 删除线下的文本变淡
+		}
 
 		&:hover {
 			text-shadow: var(--custom-theme-on-shadow); // 代替 opacity 变化
