@@ -298,7 +298,7 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 }
 
 // 华为设备上显示集市
-.config__panel > .b3-tab-bar .b3-list-item[data-name="bazaar"] {
+.config__panel > .b3-tab-bar .b3-list-item[data-name="bazaar"].fn__none {
 	display: flex !important;
 }
 
