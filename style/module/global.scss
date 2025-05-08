@@ -1,0 +1,9 @@
+// —————————————— 全局样式和 CSS 变量 —————————————————
+
+* {
+  font-variant-numeric: tabular-nums; // 使用等宽数字
+}
+
+:root {
+  --custom-status-height: 24px;       // 底栏高度
+}

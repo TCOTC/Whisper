@@ -1,6 +1,8 @@
 (function() {
     console.log('Whisper: loaded');
 
+    // TODO 看看能不能直接从 windows.siyuan 获取设备类型，如果可行的话就更换下面的方法
+
     // 竖屏手机
     // TODO跟进 https://github.com/siyuan-note/siyuan/issues/13952 如果支持了切换界面，需要在切换界面之后重新执行被跳过的程序
     const isMobile = () => {
@@ -508,7 +510,7 @@
         bodyObserver.observe(document.body, { childList: true });
     })();
 
-    // 功能：移动端补上 AI 配置选项
+    // 功能：移动端补上 AI 配置选项（国内应用商店渠道）
     (async () => {
         if (isMobile()) {
             const mobileMenu = document.getElementById("menu");

@@ -1,0 +1,80 @@
+// ————————————————————导出图片————————————————————
+
+.export-img {
+    .protyle-attr--memo {
+        display: none; // 因为无法显示备注，所以隐藏备注图标
+    }
+}
+
+// ————————————————————导出 PDF————————————————————
+body > #preview {
+    // 显示内容块备注（导出图片时这个伪元素不显示，所以导出图片不支持显示内容块备注）
+    .protyle-attr--memo.b3-tooltips {
+        max-width: 25vw;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+
+        svg {
+            overflow: initial;
+            margin-right: 2px;
+        }
+
+        &::before {
+            display: none;
+        }
+
+        &::after {
+            opacity: 1;
+            display: contents;
+            position: inherit;
+            content: attr(aria-label);
+            white-space: pre;
+            z-index: inherit;
+            padding: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            -webkit-font-smoothing: inherit;
+            color: inherit;
+            word-wrap: inherit;
+            background-color: inherit;
+            border-radius: inherit;
+            line-height: inherit;
+            transform: inherit;
+            max-width: inherit;
+            overflow: inherit;
+            text-overflow: inherit;
+            box-sizing: inherit;
+            box-shadow: inherit;
+            font-family: inherit;
+        }
+    }
+}
+
+// 添加覆盖整个导出页面的伪元素，避免把 hover 样式导出 https://github.com/siyuan-note/siyuan/issues/14153
+// HTML 导出后没有 .exporting；PDF 导出状态时没有 #action
+body > #preview.exporting::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    z-index: 5;
+}
+// 图片导出状态时 .b3-dialog__container 的内联样式中没有 height
+.export-img::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    z-index: 5;
+}
+body > #action + #preview::before,
+.b3-dialog__container[style*="height"] .export-img::before {
+    display: none;
+}

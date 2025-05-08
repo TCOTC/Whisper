@@ -684,10 +684,10 @@ body > .protyle-wysiwyg [data-node-id] {
 }
 // svg 里的 fill 填的是 --b3-theme-on-surface-light，两个模式的颜色不同
 html[data-theme-mode="light"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
-	background-image: url('./icon/play_arrow_5F6368_light.svg');
+	background-image: url('./icons/task-lists/play_arrow_5F6368_light.svg');
 }
 html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
-	background-image: url('./icon/play_arrow_5F6368_dark.svg');
+	background-image: url('./icons/task-lists/play_arrow_5F6368_dark.svg');
 }
 .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::after {
 	background-color: unset; // 有序列表、任务列表折叠的时候不需要阴影
@@ -727,22 +727,22 @@ body > div:not(.b3-dialog--open[data-key="dialog-exportimage"]) {
 	}
 
 	.h1:not([title]) > [spellcheck]::before {
-		background: url('./icon/headings/h1.svg');
+		background: url('./icons/headings/h1.svg');
 	}
 	.h2 > [spellcheck]::before {
-		background: url('./icon/headings/h2.svg');
+		background: url('./icons/headings/h2.svg');
 	}
 	.h3 > [spellcheck]::before {
-		background: url('./icon/headings/h3.svg');
+		background: url('./icons/headings/h3.svg');
 	}
 	.h4 > [spellcheck]::before {
-		background: url('./icon/headings/h4.svg');
+		background: url('./icons/headings/h4.svg');
 	}
 	.h5 > [spellcheck]::before {
-		background: url('./icon/headings/h5.svg');
+		background: url('./icons/headings/h5.svg');
 	}
 	.h6 > [spellcheck]::before {
-		background: url('./icon/headings/h6.svg');
+		background: url('./icons/headings/h6.svg');
 	}
 	// background-repeat 需要放在后面覆盖
 	:is(.h1, .h2, .h3, .h4, .h5, .h6) > [spellcheck]::before {
