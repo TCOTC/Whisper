@@ -208,12 +208,25 @@
         }
     };
 
+    // 移除 tooltip 元素的特定 data-whisper-tooltip 属性值
+    const removeTooltipData = (data) => {
+        if (tooltipElement.dataset?.whisperTooltip === data) {
+            tooltipElement.dataset.whisperTooltip = "";
+        }
+    };
+
     // 判断元素是否需要添加特定属性。原生的 showTooltip() 会覆盖掉类名，改成添加 data-* 属性就不会冲突了
     const updateTooltipData = (event) => {
         if (!event.target || event.target.nodeType === 9) return;
         const e = event.target.nodeType === 3 ? event.target.parentElement : event.target;
 
         // 按照触发频率排序
+
+        // 文档树
+        const doc = e.closest('[data-type="navigation-file"]');
+        if (doc) {
+            removeTooltipData("href");
+        }
 
         // 文本超链接
         const href = e.getAttribute("data-href")
