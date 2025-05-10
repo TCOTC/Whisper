@@ -212,7 +212,7 @@
 
     // 移除 tooltip 元素的特定 data-whisper-tooltip 属性值
     const removeTooltipData = (data) => {
-        if (tooltipElement.dataset?.whisperTooltip === data) {
+        if (!data || tooltipElement.dataset?.whisperTooltip === data) {
             tooltipElement.dataset.whisperTooltip = "";
         }
     };
@@ -227,7 +227,7 @@
         // 文档树
         const doc = e.closest('[data-type="navigation-file"]');
         if (doc) {
-            removeTooltipData("href");
+            removeTooltipData();
         }
 
         // 文本超链接
