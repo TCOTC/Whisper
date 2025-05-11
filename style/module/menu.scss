@@ -477,7 +477,7 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 }
 // 内置属性 - 备注
 .custom-attr textarea[data-name="memo"] {
-	field-sizing: content; // 输入框高度适应内容，仅适用于 Chromium
+	field-sizing: content; // 输入框高度适应内容，仅适用于 Chromium ; https://caniuse.com/?search=field-sizing
 }
 
 // 闪卡窗口背景变暗一点

@@ -537,6 +537,7 @@ body > .protyle-wysiwyg [data-node-id] {
 	background-color: var(--b3-theme-primary-lighter); // 覆盖代码块主题
 	color: inherit;
 }
+
 // 引述块和其中的行级元素，都变灰色
 .b3-typography blockquote, .b3-typography .bq, .protyle-wysiwyg blockquote, .protyle-wysiwyg .bq {
 	color: var(--b3-theme-on-surface);
