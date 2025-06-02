@@ -71,6 +71,16 @@ body:not(.body--mobile, .body--window) #layouts .layout__center {
     opacity: 0; // 不显示文档名
 }
 
+// 让三个窗口控制按钮一样宽
+.toolbar__item--win {
+    padding-left: 14.25px;
+    padding-right: 14.25px;
+}
+// 新窗口
+.toolbar__window .toolbar__item--close {
+    padding-left: 16px;
+    padding-right: 16px;
+}
 
 // ————————————————————浮窗————————————————————
 
