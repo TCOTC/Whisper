@@ -672,12 +672,14 @@ body > .protyle-wysiwyg [data-node-id] {
 }
 // 有序列表、任务列表
 // 图标必须是这一个 Size 为 32 的，位置才能刚好对上 https://fonts.google.com/icons?icon.set=Material+Icons&icon.style=Rounded&icon.size=32&icon.color=%235f6368&icon.query=Play&selected=Material+Icons+Round:play_arrow:&icon.platform=web
+// 在 figma 基于上面这个图标改成了中空的：https://www.figma.com/design/d4H0T3mfcSljDQBm6G6eic
 .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
 	content: '';
 	position: absolute;
-	left: -19.5px;
-	width: 21px;
-	height: 47px;
+	left: -13px;
+	width: 14px;
+	height: 14px;
+	margin-top: 1.5px;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position-y: center;
