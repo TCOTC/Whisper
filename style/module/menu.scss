@@ -232,8 +232,8 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 }
 
 // ————————————————————集市————————————————————
-// 已下载页面
 .config-bazaar__panel {
+	// 已下载页面
 	&[data-type=downloaded] {
 		// 并列显示
 		.config-bazaar__content {
@@ -245,6 +245,11 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 				display: grid;
 				grid-template-columns: 90px 1fr;
 				margin: 16px 0 0 16px;
+				transition: unset;
+
+				&:hover {
+					background-color: var(--b3-theme-background-light);
+				}
 
 				.b3-card__info {
 					white-space: nowrap;
@@ -285,6 +290,12 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 			display: grid;
 			grid-template-columns: 90px 1fr;
 			margin: 16px 0 0 16px;
+			transition: unset;
+
+			&:hover {
+				background-color: var(--b3-theme-background-light);
+			}
+
 			.b3-card__info {
 				overflow: hidden;
 
