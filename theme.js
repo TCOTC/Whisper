@@ -484,10 +484,19 @@
         searchTipElement.push(e);
     }
 
-    const AddResizeMoveToSearchTip = (node) => {
+    const AddResizeMoveToSearchDialog = (node, isDocument) => {
         node.querySelectorAll('.search__tip').forEach(e => {
             addResizeMoveToSearchTip(e);
         });
+        if (isDocument) {
+            node.querySelectorAll('[data-key="dialog-globalsearch"] .fn__flex-column > .block__icons').forEach(e => {
+                addResizeMoveToSearchTip(e);
+            });
+        } else {
+            node.querySelectorAll('.fn__flex-column > .block__icons').forEach(e => {
+                addResizeMoveToSearchTip(e);
+            });
+        }
     }
 
     // 处理 弹出模态窗口
@@ -497,7 +506,7 @@
         // 搜索窗口
         if (dialogKey === "dialog-globalsearch" || dialogKey === "dialog-search") {
             searchTipElement = [];
-            AddResizeMoveToSearchTip(node);
+            AddResizeMoveToSearchDialog(node);
 
             // `搜索资源文件内容` 窗口的子元素在打开之前是不存在的，所以需要监听到子元素添加之后再添加类名
             // 查找 #searchAssets 元素
@@ -511,7 +520,7 @@
                         mutationsList.forEach((mutation) => {
                             mutation.addedNodes.forEach((node) => {
                                 if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains('search__tip')) {
-                                    addResizeMoveToSearchTip(node);
+                                    AddResizeMoveToSearchDialog(searchAssetsElement);
                                     searchAssetsObserver?.disconnect();
                                 }
                             });
@@ -522,7 +531,7 @@
                     searchAssetsObserver.observe(searchAssetsElement, { childList: true });
                 } else {
                     // 如果有子元素，直接处理现有的子元素
-                    AddResizeMoveToSearchTip(searchAssetsElement);
+                    AddResizeMoveToSearchDialog(searchAssetsElement);
                 }
             }
         }
@@ -534,7 +543,7 @@
         if (isMobile()) return;
 
         // 启用主题时可能已经打开了窗口，预先处理
-        AddResizeMoveToSearchTip(document);
+        AddResizeMoveToSearchDialog(document, true);
 
         // 监听 body 元素的直接子元素变化
         bodyObserver = new MutationObserver((mutationsList) => {
