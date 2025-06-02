@@ -1,8 +1,8 @@
-<svg viewBox="0 0 13 48" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M8 36C8 34.8954 8.89543 34 10 34H11C12.1046 34 13 34.8954 13 36V46C13 47.1046 12.1046 48 11 48H10C8.89543 48 8 47.1046 8 46V36Z" fill="#8DDCAE"/>
-    <path d="M0 36C0 34.8954 0.895431 34 2 34H3C4.10457 34 5 34.8954 5 36V46C5 47.1046 4.10457 48 3 48H2C0.89543 48 0 47.1046 0 46V36Z" fill="#8DDCAE"/>
-    <path d="M8 19C8 17.8954 8.89543 17 10 17H11C12.1046 17 13 17.8954 13 19V29C13 30.1046 12.1046 31 11 31H10C8.89543 31 8 30.1046 8 29V19Z" fill="#8DDCAE"/>
-    <path d="M0 19C0 17.8954 0.895431 17 2 17H3C4.10457 17 5 17.8954 5 19V29C5 30.1046 4.10457 31 3 31H2C0.89543 31 0 30.1046 0 29V19Z" fill="#8DDCAE"/>
-    <path d="M8 2C8 0.89543 8.89543 0 10 0H11C12.1046 0 13 0.895431 13 2V12C13 13.1046 12.1046 14 11 14H10C8.89543 14 8 13.1046 8 12V2Z" fill="#8DDCAE"/>
-    <path d="M0 2C0 0.89543 0.895431 0 2 0H3C4.10457 0 5 0.895431 5 2V12C5 13.1046 4.10457 14 3 14H2C0.89543 14 0 13.1046 0 12V2Z" fill="#8DDCAE"/>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="4.5" width="3.5" height="7" rx="1.75" fill="#8DDCAE"/>
+<rect width="3.5" height="7" rx="1.75" fill="#8DDCAE"/>
+<rect x="4.5" y="8.5" width="3.5" height="7" rx="1.75" fill="#8DDCAE"/>
+<rect y="8.5" width="3.5" height="7" rx="1.75" fill="#8DDCAE"/>
+<rect x="4.5" y="17" width="3.5" height="7" rx="1.75" fill="#8DDCAE"/>
+<rect y="17" width="3.5" height="7" rx="1.75" fill="#8DDCAE"/>
 </svg>

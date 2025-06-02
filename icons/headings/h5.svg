@@ -1,7 +1,7 @@
-<svg viewBox="0 0 17 48" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 36C10 34.8954 10.8954 34 12 34H15C16.1046 34 17 34.8954 17 36V46C17 47.1046 16.1046 48 15 48H12C10.8954 48 10 47.1046 10 46V36Z" fill="#8DDCAE"/>
-    <path d="M10 19C10 17.8954 10.8954 17 12 17H15C16.1046 17 17 17.8954 17 19V29C17 30.1046 16.1046 31 15 31H12C10.8954 31 10 30.1046 10 29V19Z" fill="#8DDCAE"/>
-    <path d="M10 2C10 0.89543 10.8954 0 12 0H15C16.1046 0 17 0.895431 17 2V12C17 13.1046 16.1046 14 15 14H12C10.8954 14 10 13.1046 10 12V2Z" fill="#8DDCAE"/>
-    <path d="M0 28C0 26.8954 0.895431 26 2 26H5C6.10457 26 7 26.8954 7 28V46C7 47.1046 6.10457 48 5 48H2C0.89543 48 0 47.1046 0 46V28Z" fill="#8DDCAE"/>
-    <path d="M0 2C0 0.89543 0.895431 0 2 0H5C6.10457 0 7 0.895431 7 2V20C7 21.1046 6.10457 22 5 22H2C0.89543 22 0 21.1046 0 20V2Z" fill="#8DDCAE"/>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="3.5" height="11" rx="1.75" fill="#8DDCAE"/>
+<rect y="13" width="3.5" height="11" rx="1.75" fill="#8DDCAE"/>
+<rect x="4.5" width="3.5" height="7" rx="1.75" fill="#8DDCAE"/>
+<rect x="4.5" y="8.5" width="3.5" height="7" rx="1.75" fill="#8DDCAE"/>
+<rect x="4.5" y="17" width="3.5" height="7" rx="1.75" fill="#8DDCAE"/>
 </svg>
