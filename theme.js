@@ -105,77 +105,118 @@
     let retryIntervalId;
     (async () => {
         if (isMobile()) return;
-        // 如果已经监听了就不再重复监听
-        if (document.documentElement.dataset.whisperStatus || document.documentElement.dataset.whisperDockBottom || document.documentElement.dataset.whisperLayoutDockr) return;
 
-        // 定义需要查找的目标节点
-        const targetSelectors = {
-            status: '#status',
-            dockBottom: '#dockBottom',
-            layoutDockr: '.layout__dockr'
-        };
+        // 定义需要查找的目标节点配置
+        const targets = [
+            {
+                key: 'status',
+                selector: '#status',
+                datasetProp: 'whisperStatus',
+                classCheck: el => el.classList.contains('fn__none'),
+                stateMap: { true: 'hide', false: 'show' },
+                found: false,
+                timedOut: false,
+                element: null
+            },
+            {
+                key: 'dockBottom',
+                selector: '#dockBottom',
+                datasetProp: 'whisperDockBottom',
+                classCheck: el => el.classList.contains('fn__none'),
+                stateMap: { true: 'hide', false: 'show' },
+                found: false,
+                timedOut: false,
+                element: null
+            },
+            {
+                key: 'layoutDockr',
+                selector: '.layout__dockr',
+                datasetProp: 'whisperLayoutDockr',
+                classCheck: el => el.classList.contains('layout--float'),
+                stateMap: { true: 'float', false: 'pin' },
+                found: false,
+                timedOut: false,
+                element: null
+            }
+        ];
 
-        // 重试机制
+        // 如果已经监听了就不再重复监听（逐个检查每个目标节点）
+        targets.forEach(target => {
+            if (document.documentElement.dataset[target.datasetProp]) {
+                target.found = true;
+            }
+        });
+
+        // 如果所有目标节点都已存在对应 dataset 属性则直接返回
+        if (targets.every(target => target.found)) return;
+
+        // 重试机制配置
         const retryInterval = 100; // 重试间隔时间，单位：毫秒
         const maxRetries = 50; // 最大重试次数
         let retryCount = 0;
 
-        const findTargetNodes = () => {
-            const targetNodeStatus = document.querySelector(targetSelectors.status);
-            const targetNodeDockBottom = document.querySelector(targetSelectors.dockBottom);
-            const targetNodeLayoutDockr = document.querySelector(targetSelectors.layoutDockr);
+        // 创建一个 MutationObserver 实例来观察所有目标节点的 class 变化
+        const cssObserver = new MutationObserver(mutationsList => {
+            for (let mutation of mutationsList) {
+                const targetNode = mutation.target;
+                // 找出对应的目标节点配置
+                const target = targets.find(t => t.element === targetNode);
+                if (!target) continue;
 
-            if (targetNodeStatus && targetNodeDockBottom && targetNodeLayoutDockr) {
-                // 找到所有目标节点，清除定时器并继续执行
-                clearInterval(retryIntervalId);
-                setupObserver(targetNodeStatus, targetNodeDockBottom, targetNodeLayoutDockr);
-            } else if (retryCount >= maxRetries) {
-                // 达到最大重试次数仍未找到，清除定时器并退出
-                clearInterval(retryIntervalId);
-                setupObserver(targetNodeStatus, targetNodeDockBottom, targetNodeLayoutDockr);
-                // 输出无法找到的节点
-                if (!targetNodeStatus) console.error('Whisper: failed to find target node:', targetSelectors.status);
-                if (!targetNodeDockBottom) console.error('Whisper: failed to find target node:', targetSelectors.dockBottom);
-                if (!targetNodeLayoutDockr) console.error('Whisper: failed to find target node:', targetSelectors.layoutDockr);
-            } else {
-                retryCount++;
+                // 更新对应的 dataset 属性
+                const containsClass = target.classCheck(targetNode);
+                document.documentElement.dataset[target.datasetProp] = target.stateMap[containsClass];
             }
+        });
+
+        // 设置单个目标节点的观察
+        const setupObserver = (target) => {
+            if (!target.element) return;
+
+            // 初始设置 dataset 状态
+            const containsClass = target.classCheck(target.element);
+            document.documentElement.dataset[target.datasetProp] = target.stateMap[containsClass];
+
+            // 开始观察该节点的 class 变化
+            cssObserver.observe(target.element, { attributeFilter: ['class'] });
         };
 
-        const setupObserver = (targetNodeStatus, targetNodeDockBottom, targetNodeLayoutDockr) => {
-            // 创建一个回调函数，当观察到变动时执行
-            const callback = function(mutationsList) {
-                for(let mutation of mutationsList) {
-                    const targetNode = mutation.target;
-                    if (targetNode === targetNodeStatus) {
-                        document.documentElement.dataset.whisperStatus = targetNodeStatus.classList.contains('fn__none') ? 'hide' : 'show';
-                    } else if (targetNode === targetNodeDockBottom) {
-                        document.documentElement.dataset.whisperDockBottom = targetNodeDockBottom.classList.contains('fn__none') ? 'hide' : 'show';
-                    } else if (targetNode === targetNodeLayoutDockr) {
-                        document.documentElement.dataset.whisperLayoutDockr = targetNodeLayoutDockr.classList.contains('layout--float') ? 'float' : 'pin';
-                    }
+        // 重试查找目标节点
+        const findTargetNodes = () => {
+            retryCount++;
+            let hasRemainingTargets = false;
+
+            targets.forEach(target => {
+                // 如果已经找到或已超时，跳过
+                if (target.found || target.timedOut) return;
+
+                // 查找目标节点
+                const element = document.querySelector(target.selector);
+                if (element) {
+                    // 找到该节点
+                    target.element = element;
+                    target.found = true;
+                    setupObserver(target); // 设置观察和初始状态
+                } else if (retryCount >= maxRetries) {
+                    // 达到最大重试次数仍未找到
+                    target.timedOut = true;
+                    console.error(`Whisper: failed to find target node: ${target.selector}`);
+                } else {
+                    // 继续重试
+                    hasRemainingTargets = true;
                 }
-            };
+            });
 
-            const cssObserver = new MutationObserver(callback);
-
-            // 手动检查一次并设置初始状态、传入目标节点和观察选项
-            if (targetNodeStatus) {
-                document.documentElement.dataset.whisperStatus = targetNodeStatus.classList.contains('fn__none') ? 'hide' : 'show';
-                cssObserver.observe(targetNodeStatus, { attributeFilter: ['class'] });
-            }
-            if (targetNodeDockBottom) {
-                document.documentElement.dataset.whisperDockBottom = targetNodeDockBottom.classList.contains('fn__none') ? 'hide' : 'show';
-                cssObserver.observe(targetNodeDockBottom, { attributeFilter: ['class'] });
-            }
-            if (targetNodeLayoutDockr) {
-                document.documentElement.dataset.whisperLayoutDockr = targetNodeLayoutDockr.classList.contains('layout--float') ? 'float' : 'pin';
-                cssObserver.observe(targetNodeLayoutDockr, { attributeFilter: ['class'] });
+            // 如果所有节点都处理完毕或达到最大重试次数，停止定时器
+            if (!hasRemainingTargets || retryCount >= maxRetries) {
+                clearInterval(retryIntervalId);
             }
         };
 
         // 启动重试机制
         retryIntervalId = setInterval(findTargetNodes, retryInterval);
+        // 立即执行一次查找
+        findTargetNodes();
     })();
 
     const isLocalPath = (link) => {
