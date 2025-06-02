@@ -62,19 +62,8 @@
 	&>.layout-tab-bar:not(.layout-tab-bar--readonly) {
 		padding: 4px 0 5px 5px; // 跟面包屑对齐
 
-		// 关闭页签时的宽度缩小渐变动画
-		.item[style*="max-width: 0"] {
-			transition: var(--b3-transition);
-			min-width: unset !important;
-
-			.item__close svg {
-				opacity: 0 !important;
-			}
-		}
-
 		// 页签宽度
 		.item:not(.item--pin) {
-
 			.item__text {
 				min-width: 4em; // 页签最少显示的字符数宽度
 				text-align-last: left; // 文本居左
@@ -176,6 +165,20 @@
 					border-radius: var(--b3-border-radius);
 					pointer-events: none;
 				}
+			}
+		}
+
+		// 关闭页签时的宽度缩小渐变动画 https://github.com/siyuan-note/siyuan/blob/a05faf6fc1c8fc44471fe8102899be72d3940f48/app/src/layout/Wnd.ts#L835
+		.item[style*="max-width: 0"] {
+			transition: var(--b3-transition);
+			min-width: unset !important;
+
+			.item__text {
+				min-width: unset; // 文本也需要一并缩小
+			}
+
+			.item__close svg {
+				opacity: 0 !important;
 			}
 		}
 	}
