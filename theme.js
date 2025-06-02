@@ -132,6 +132,7 @@
             } else if (retryCount >= maxRetries) {
                 // 达到最大重试次数仍未找到，清除定时器并退出
                 clearInterval(retryIntervalId);
+                setupObserver(targetNodeStatus, targetNodeDockBottom, targetNodeLayoutDockr);
                 // 输出无法找到的节点
                 if (!targetNodeStatus) console.error('Whisper: failed to find target node:', targetSelectors.status);
                 if (!targetNodeDockBottom) console.error('Whisper: failed to find target node:', targetSelectors.dockBottom);
@@ -142,11 +143,6 @@
         };
 
         const setupObserver = (targetNodeStatus, targetNodeDockBottom, targetNodeLayoutDockr) => {
-            // 手动检查一次并设置初始状态
-            document.documentElement.dataset.whisperStatus = targetNodeStatus.classList.contains('fn__none') ? 'hide' : 'show';
-            document.documentElement.dataset.whisperDockBottom = targetNodeDockBottom.classList.contains('fn__none') ? 'hide' : 'show';
-            document.documentElement.dataset.whisperLayoutDockr = targetNodeLayoutDockr.classList.contains('layout--float') ? 'float' : 'pin';
-
             // 创建一个回调函数，当观察到变动时执行
             const callback = function(mutationsList) {
                 for(let mutation of mutationsList) {
@@ -163,10 +159,19 @@
 
             const cssObserver = new MutationObserver(callback);
 
-            // 传入目标节点和观察选项
-            cssObserver.observe(targetNodeStatus, { attributeFilter: ['class'] });
-            cssObserver.observe(targetNodeDockBottom, { attributeFilter: ['class'] });
-            cssObserver.observe(targetNodeLayoutDockr, { attributeFilter: ['class'] });
+            // 手动检查一次并设置初始状态、传入目标节点和观察选项
+            if (targetNodeStatus) {
+                document.documentElement.dataset.whisperStatus = targetNodeStatus.classList.contains('fn__none') ? 'hide' : 'show';
+                cssObserver.observe(targetNodeStatus, { attributeFilter: ['class'] });
+            }
+            if (targetNodeDockBottom) {
+                document.documentElement.dataset.whisperDockBottom = targetNodeDockBottom.classList.contains('fn__none') ? 'hide' : 'show';
+                cssObserver.observe(targetNodeDockBottom, { attributeFilter: ['class'] });
+            }
+            if (targetNodeLayoutDockr) {
+                document.documentElement.dataset.whisperLayoutDockr = targetNodeLayoutDockr.classList.contains('layout--float') ? 'float' : 'pin';
+                cssObserver.observe(targetNodeLayoutDockr, { attributeFilter: ['class'] });
+            }
         };
 
         // 启动重试机制
