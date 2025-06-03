@@ -63,6 +63,9 @@
         searchTipElement.forEach((element) => element?.classList.remove("resize__move"));
         searchTipElement = null;
 
+        // 取消绑定思源事件总线
+        removeMyTheme();
+
         console.log('Whisper: unloaded');
     }
 
@@ -605,4 +608,105 @@
             }, 60000); // 1 分钟超时
         }
     })();
+
+    // 绑定思源事件总线（eventBus） https://ld246.com/article/1746977623250
+    function eventBusOn(eventName, callback) {
+        const plugin = getMyTheme();
+        plugin.eventBus.on(eventName, callback);
+    }
+    function eventBusOff(eventName, callback) {
+        const plugin = getMyTheme();
+        plugin.eventBus.off(eventName, callback);
+    }
+
+    function getMyTheme(themeName = "whisper-theme") {
+        let myTheme = window.siyuan.ws.app.plugins.find(item=>item.name === themeName);
+        if(myTheme) return myTheme;
+        class EventBus {
+            constructor(name = "") {
+                this.eventTarget = document.createComment(name);
+                document.appendChild(this.eventTarget);
+            }
+            on(type, listener) {
+                this.eventTarget.addEventListener(type, listener);
+            }
+            once(type, listener) {
+                this.eventTarget.addEventListener(type, listener, { once: true });
+            }
+            off(type, listener) {
+                this.eventTarget.removeEventListener(type, listener);
+            }
+            emit(type, detail) {
+                return this.eventTarget.dispatchEvent(new CustomEvent(type, { detail, cancelable: true }));
+            }
+        }
+        class Theme {
+            constructor(options) {
+                this.app = options.app || window.siyuan.ws.app.appId;
+                this.i18n = options.i18n;
+                this.displayName = options.displayName || options.name;
+                this.name = options.name;
+                this.eventBus = new EventBus(options.name);
+                this.protyleSlash = [];
+                this.customBlockRenders = {};
+                this.topBarIcons = [];
+                this.statusBarIcons = [];
+                this.commands = [];
+                this.models = {};
+                this.docks = {};
+                this.data = {};
+                this.protyleOptionsValue = null;
+            }
+            onload() {}
+            onunload() {}
+            uninstall() {}
+            async updateCards(options) { return options; } // 返回选项本身
+            onLayoutReady() {}
+            addCommand(command) {}
+            addIcons(svg) {}
+            addTopBar(options) { return null; } // 模拟返回null
+            addStatusBar(options) { return null; } // 模拟返回null
+            // 去掉设置，参考 https://github.com/siyuan-note/siyuan/blob/dae6158860cc704e353454565c96e874278c6f47/app/src/plugin/openTopBarMenu.ts#L25
+            // 不去掉的话会在右上角的插件菜单添加一个选项
+            // openSetting() {}
+            loadData(storageName) { return Promise.resolve(null); }
+            saveData(storageName, data) { return Promise.resolve(); }
+            removeData(storageName) { return Promise.resolve(); }
+            getOpenedTab() { return {}; } // 返回空对象
+            addTab(options) { return () => {}; } // 返回空函数模拟模型
+            addDock(options) { return {}; } // 返回空对象模拟 dock
+            addFloatLayer(options) {}
+            updateProtyleToolbar(toolbar) { return toolbar; } // 返回 toolbar 本身，否则不显示工具栏 https://github.com/TCOTC/Whisper/issues/8
+            set protyleOptions(options) {}
+            get protyleOptions() { return this.protyleOptionsValue; }
+        }
+        myTheme = new Theme({name:themeName});
+        window.siyuan.ws.app.plugins.push(myTheme);
+        return myTheme;
+    }
+
+    eventBusOn("loaded-protyle-static", eventBusHandler)
+
+    function removeMyTheme(themeName = "whisper-theme") {
+        eventBusOff("loaded-protyle-static", eventBusHandler)
+
+        const index = window.siyuan.ws.app.plugins.findIndex(item => item.name === themeName);
+        if (index > -1) {
+            window.siyuan.ws.app.plugins.splice(index, 1); // 移除插件
+        }
+    }
+
+    // 处理思源事件
+    function eventBusHandler(args) {
+        if (args.type === "loaded-protyle-static") {
+            // 编辑器加载完成
+            const wysiwyg = args.detail.protyle.wysiwyg.element;
+            // 功能：聚焦折叠的列表项时自动展开 https://ld246.com/article/1748934188341
+            // 原理：只使用 CSS 覆盖的话，块标不会改变，因此要用 JS；移除列表项块的 fold="1" 属性之后，编辑内容只影响子块，所以不会保存列表项块的展开状态
+            if (wysiwyg?.dataset.docType  === "NodeListItem") {
+                // 移除首个块（列表项块）的折叠状态
+                wysiwyg.querySelector(":scope > [data-node-id].li")?.removeAttribute("fold");
+            }
+        }
+    }
 })();
