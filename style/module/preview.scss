@@ -1,13 +1,5 @@
-// ————————————————————导出图片————————————————————
-
-.export-img {
-    .protyle-attr--memo {
-        display: none; // 因为无法显示备注，所以隐藏备注图标
-    }
-}
-
-// ————————————————————导出 PDF————————————————————
-body > #preview {
+// 导出 PDF 或图片时显示内容块备注
+body > #preview, .export-img {
     // 显示内容块备注（导出图片时这个伪元素不显示，所以导出图片不支持显示内容块备注）
     .protyle-attr--memo.b3-tooltips {
         max-width: 25vw;
@@ -63,7 +55,7 @@ body > #preview.exporting::before {
     background-color: transparent;
     z-index: 5;
 }
-// 图片导出状态时 .b3-dialog__container 的内联样式中没有 height
+// 图片处于导出中的状态时 .b3-dialog__container 的内联样式中没有 height，此时添加覆盖整个导出页面的伪元素
 .export-img::before {
     content: '';
     position: absolute;
