@@ -288,6 +288,11 @@ html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 	display: none;
 }
 
+// 在达到 max-height 之前，高度由已关闭的笔记本的数量决定
+.sy__file > .b3-list {
+	height: unset !important;
+	max-height: 40%;
+}
 
 // ————————————————————反链、提及面板————————————————————
 
