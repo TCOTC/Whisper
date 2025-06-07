@@ -721,39 +721,44 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 	display: none;
 }
 
-// 标题前的图标。图标样式参考了粉色小屋主题 https://github.com/StarDustSheep/pink-room
+// 标题块前的图标。图标样式参考了粉色小屋主题 https://github.com/StarDustSheep/pink-room
 // 当前图标用 figma 设计 https://www.figma.com/design/ZVi3rMLjzsDfnhBvZYI1S1/ ，导出为 svg、去掉 width 和 height、添加 preserveAspectRatio="none"
 .protyle-wysiwyg [data-node-id] {
 	// 导出 PDF 的文档标题不应用样式，用 :not([title]) 排除
 	&:is(.h1:not([title]), .h2, .h3, .h4, .h5, .h6) > [spellcheck] {
-		padding-left: calc(var(--b3-font-size-editor) * 0.7);
 		background-size: 1em;
 		background-repeat: no-repeat;
 	}
 
 	&.h1:not([title]) > [spellcheck] {
+		padding-left: calc(1.75em / 1.75 * .4);
 		background-image: url('./icons/headings/h1.svg');
-		background-position: 0 calc(var(--b3-font-size-editor)*.55);
+		background-position: calc(1.75px / 1.75 * 0) calc(1.75em / 1.75 * .3 + .04em);
 	}
 	&.h2 > [spellcheck] {
+		padding-left: calc(1.75em / 1.55 * .4);
 		background-image: url('./icons/headings/h2.svg');
-		background-position: 0 calc(var(--b3-font-size-editor)*.47);
+		background-position: calc(1.75px / 1.55 * .5) calc(1.75em / 1.55 * .3 - .02em);
 	}
 	&.h3 > [spellcheck] {
+		padding-left: calc(1.75em / 1.38 * .4);
 		background-image: url('./icons/headings/h3.svg');
-		background-position: 0 calc(var(--b3-font-size-editor)*.43);
+		background-position: calc(1.75px / 1.38 * .8) calc(1.75em / 1.38 * .3 - .06em);
 	}
 	&.h4 > [spellcheck] {
+		padding-left: calc(1.75em / 1.25 * .4);
 		background-image: url('./icons/headings/h4.svg');
-		background-position: 0 calc(var(--b3-font-size-editor)*.38);
+		background-position: calc(1.75px / 1.25 * 1) calc(1.75em / 1.25 * .3 - .08em);
 	}
 	&.h5 > [spellcheck] {
+		padding-left: calc(1.75em / 1.13 * .4);
 		background-image: url('./icons/headings/h5.svg');
-		background-position: 0 calc(var(--b3-font-size-editor)*.35);
+		background-position: calc(1.75px / 1.13 * 1.2) calc(1.75em / 1.13 * .3 - .14em);
 	}
 	&.h6 > [spellcheck] {
+		padding-left: calc(1.75em / 1 * .4);
 		background-image: url('./icons/headings/h6.svg');
-		background-position: 0 calc(var(--b3-font-size-editor)*.32);
+		background-position: calc(1.75px / 1 * 1.5) calc(1.75em / 1 * .3 - .2em);
 	}
 
 	// 列表内的首个块是标题块
