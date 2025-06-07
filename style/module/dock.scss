@@ -283,11 +283,6 @@ html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 		}
 	}
 }
-// 不存在已关闭的笔记本时，隐藏元素 https://github.com/siyuan-note/siyuan/issues/13887
-.sy__file > .b3-list:not(:has(> ul > li)) {
-	display: none;
-}
-
 // 在达到 max-height 之前，高度由已关闭的笔记本的数量决定
 .sy__file > .b3-list {
 	height: unset !important;
