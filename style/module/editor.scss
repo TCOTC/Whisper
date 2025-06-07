@@ -782,6 +782,12 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 			background-position: 0 calc(var(--b3-font-size-editor)*.35);
 		}
 	}
+
+	// 居中、居右的标题块不需要显示图标
+	&:is(.h1:not([title]), .h2, .h3, .h4, .h5, .h6):is([style*="text-align: center"], [style*="text-align: right"]) > [spellcheck] {
+		background: unset !important;
+		padding-left: unset;
+	}
 }
 
 
