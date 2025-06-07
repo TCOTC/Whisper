@@ -779,9 +779,13 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 	}
 }
 
-// 列表内的标题块
-body .protyle-wysiwyg [data-node-id].li {
-	&> .protyle-action ~ div:not(.code-block) {
+
+// ————————————————————列表块————————————————————
+
+// 列表内的块
+body .protyle-wysiwyg [data-node-id].li > .protyle-action {
+	// 子块
+	&~ div:not(.code-block) {
 		line-height: 1.625;
 
 		&> [spellcheck] {
@@ -789,23 +793,20 @@ body .protyle-wysiwyg [data-node-id].li {
 		}
 	}
 
-	&> div:nth-child(2){
+	// 子块中的标题块
+	&~ div[data-type=NodeHeading] > [spellcheck] {
+		min-height: 1em;
+	}
+
+	// 首个子块
+	&+ [data-node-id] {
 		&:not(.code-block) {
 			line-height: calc(var(--b3-font-size-editor) * 1.625);
-
-			& > [spellcheck] {
-				min-height: calc(var(--b3-font-size-editor) * 1.625);
-			}
 		}
 
+		// 一级标题加一点行间距 https://github.com/siyuan-note/siyuan/issues/14062#issuecomment-2661340834
 		&.h1 {
-			line-height: 1; // 一级标题行间距 https://github.com/siyuan-note/siyuan/issues/14062
-		}
-
-		&:is(.h1, .h2, .h3, .h4, .h5, .h6) > [spellcheck]::before{
-			// 列表项内的 line-height 动态计算：calc(var(--b3-font-size-editor) * 1.625)
-			//height: min(calc(var(--b3-font-size-editor) * 1.625 - 4px), calc(1.25em - 4px)); // 标题块 line-height 1.25，减去两倍的额外缩小
-			height: calc(var(--b3-font-size-editor) * 1.625 - 4px); // 标题块 line-height 1.25，减去两倍的额外缩小
+			line-height: 1em;
 		}
 	}
 }
