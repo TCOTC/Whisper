@@ -274,6 +274,8 @@
         // 按照触发频率排序
 
         // 文档树
+        // TODO跟进 文档信息显示在左下角的问题还是没解决，估计是思源本体的问题：鼠标划过笔记本之后 tooltip 不隐藏 https://github.com/siyuan-note/siyuan/issues/14823
+        //  到时候把这部分代码注释掉测试看看还会不会有问题
         const doc = e.closest('[data-type="navigation-file"]');
         if (doc) {
             removeTooltipData();

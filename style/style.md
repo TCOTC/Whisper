@@ -4,7 +4,7 @@
 - 模块外观: module
 - 文本外观: text
 
-// TODO 支持切换配色方案
+// TODO功能 支持切换配色方案
 
 方法: 使用 JS 给根元素添加属性，比如 data-whisper-theme-scheme，然后在 SCSS 中使用属性选择器
 
