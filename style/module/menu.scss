@@ -7,13 +7,13 @@
 	transition: none; // 禁用工具栏平移效果
 }
 
-// 菜单中的部分输入框默认两行高
-.b3-menu__item[data-id="链接"] .b3-text-field,
-.b3-menu__item[data-id="锚文本"] .b3-text-field,
-.b3-menu__item[data-id="标题"] .b3-text-field {
-	height: 50px;
-	// TODO功能 图片菜单、链接菜单、数据库资源字段链接菜单 里的选项都没有 data-id，需要 PR 给思源
-	// TODO功能 参考 https://blog.dkvirus.com/css/css_selector_placeholder_shown/ 排除空输入框，必要时给思源 PR 或者提 issue
+// 超链接菜单（链接&锚文本&标题）
+button[data-id="linkAndAnchorAndTitle"] textarea {
+	// 链接和锚文本输入框默认两行高（不显示滚动条就需要 50px）
+	&:nth-of-type(1),
+	&:nth-of-type(2) {
+		height: 50px;
+	}
 }
 
 // 菜单里的链接跟行内链接用同样的颜色
