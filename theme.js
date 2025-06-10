@@ -1,7 +1,7 @@
 (function() {
     console.log('Whisper: loaded');
 
-    // TODO 看看能不能直接从 windows.siyuan 获取设备类型，如果可行的话就更换下面的方法
+    // TODO功能 看看能不能直接从 windows.siyuan 获取设备类型，如果可行的话就更换下面的方法
 
     // 竖屏手机
     // TODO跟进 https://github.com/siyuan-note/siyuan/issues/13952 如果支持了切换界面，需要在切换界面之后重新执行被跳过的程序
@@ -43,6 +43,24 @@
 
         // 监听元素状态。通过给 html 添加属性来代替使用 :has 选择器，提高性能
         clearInterval(retryIntervalId);
+        elementObserver?.disconnect();
+        setTimeout(() => {
+            // 3 秒后检查当前主题是否为 Whisper，如果不是则移除主题添加的属性
+            // 留 3 秒是为了确保主题在明亮和暗黑模式之间切换之后，依赖这些属性的样式不变
+            const mode = document.documentElement.getAttribute("data-theme-mode");
+            const lightTheme = document.documentElement.getAttribute("data-light-theme");
+            const darkTheme = document.documentElement.getAttribute("data-dark-theme");
+            if ((mode === "light" && lightTheme !== "Whisper") || (mode === "dark" && darkTheme !== "Whisper")) {
+                document.documentElement.removeAttribute("data-whisper-status");
+                document.documentElement.removeAttribute("data-whisper-dock-left");
+                document.documentElement.removeAttribute("data-whisper-dock-right");
+                document.documentElement.removeAttribute("data-whisper-dock-bottom");
+                document.documentElement.removeAttribute("data-whisper-layout-dockl");
+                document.documentElement.removeAttribute("data-whisper-layout-dockl-float");
+                document.documentElement.removeAttribute("data-whisper-layout-dockr");
+                document.documentElement.removeAttribute("data-whisper-layout-dockr-float");
+            }
+        }, 3000);
 
         // 鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
         document.removeEventListener('mouseover', updateTooltipData);
@@ -106,49 +124,109 @@
 
     // 功能：监听元素状态。通过给 html 添加属性来代替使用 :has 选择器，提高性能
     let retryIntervalId;
+    let elementObserver;
     (async () => {
         if (isMobile()) return;
 
         // 定义需要查找的目标节点配置
         const targets = [
             {
-                key: 'status',
                 selector: '#status',
-                datasetProp: 'whisperStatus',
-                classCheck: el => el.classList.contains('fn__none'),
-                stateMap: { true: 'hide', false: 'show' },
+                checks: [
+                    {
+                        datasetProp: 'whisperStatus',
+                        attributeFilter: 'class',
+                        check: el => el.classList.contains('fn__none'),
+                        stateMap: { true: 'hide', false: 'show' }
+                    }
+                ],
                 found: false,
                 timedOut: false,
                 element: null
             },
             {
-                key: 'dockBottom',
+                selector: '#dockLeft',
+                checks: [
+                    {
+                        datasetProp: 'whisperDockLeft',
+                        attributeFilter: 'class',
+                        check: el => el.classList.contains('fn__none'),
+                        stateMap: { true: 'hide', false: 'show' }
+                    }
+                ],
+                found: false,
+                timedOut: false,
+                element: null
+            },
+            {
+                selector: '#dockRight',
+                checks: [
+                    {
+                        datasetProp: 'whisperDockRight',
+                        attributeFilter: 'class',
+                        check: el => el.classList.contains('fn__none'),
+                        stateMap: { true: 'hide', false: 'show' }
+                    }
+                ],
+                found: false,
+                timedOut: false,
+                element: null
+            },
+            {
                 selector: '#dockBottom',
-                datasetProp: 'whisperDockBottom',
-                classCheck: el => el.classList.contains('fn__none'),
-                stateMap: { true: 'hide', false: 'show' },
+                checks: [
+                    {
+                        datasetProp: 'whisperDockBottom',
+                        attributeFilter: 'class',
+                        check: el => el.classList.contains('fn__none'),
+                        stateMap: { true: 'hide', false: 'show' }
+                    }
+                ],
                 found: false,
                 timedOut: false,
                 element: null
             },
             {
-                key: 'layoutDockr',
+                selector: '.layout__dockl',
+                checks: [
+                    {
+                        datasetProp: 'whisperLayoutDockl',
+                        attributeFilter: 'style',
+                        check: el => el.style.width === '0px',
+                        stateMap: { true: 'hide', false: 'show' }
+                    },
+                    {
+                        datasetProp: 'whisperLayoutDocklFloat',
+                        attributeFilter: 'class',
+                        check: el => el.classList.contains('layout--float'),
+                        stateMap: { true: 'float', false: 'pin' }
+                    }
+                ],
+                found: false,
+                timedOut: false,
+                element: null
+            },
+            {
                 selector: '.layout__dockr',
-                datasetProp: 'whisperLayoutDockr',
-                classCheck: el => el.classList.contains('layout--float'),
-                stateMap: { true: 'float', false: 'pin' },
+                checks: [
+                    {
+                        datasetProp: 'whisperLayoutDockr',
+                        attributeFilter: 'style',
+                        check: el => el.style.width === '0px',
+                        stateMap: { true: 'hide', false: 'show' }
+                    },
+                    {
+                        datasetProp: 'whisperLayoutDockrFloat',
+                        attributeFilter: 'class',
+                        check: el => el.classList.contains('layout--float'),
+                        stateMap: { true: 'float', false: 'pin' }
+                    }
+                ],
                 found: false,
                 timedOut: false,
                 element: null
             }
         ];
-
-        // 如果已经监听了就不再重复监听（逐个检查每个目标节点）
-        targets.forEach(target => {
-            if (document.documentElement.dataset[target.datasetProp]) {
-                target.found = true;
-            }
-        });
 
         // 如果所有目标节点都已存在对应 dataset 属性则直接返回
         if (targets.every(target => target.found)) return;
@@ -158,17 +236,21 @@
         const maxRetries = 50; // 最大重试次数
         let retryCount = 0;
 
-        // 创建一个 MutationObserver 实例来观察所有目标节点的 class 变化
-        const cssObserver = new MutationObserver(mutationsList => {
+        // 创建一个 MutationObserver 实例来观察所有目标节点的变化
+        elementObserver = new MutationObserver(mutationsList => {
             for (let mutation of mutationsList) {
                 const targetNode = mutation.target;
                 // 找出对应的目标节点配置
                 const target = targets.find(t => t.element === targetNode);
                 if (!target) continue;
 
-                // 更新对应的 dataset 属性
-                const containsClass = target.classCheck(targetNode);
-                document.documentElement.dataset[target.datasetProp] = target.stateMap[containsClass];
+                // 更新所有相关的 dataset 属性
+                target.checks.forEach(check => {
+                    if (check.attributeFilter === mutation.attributeName) {
+                        const checkResult = check.check(targetNode);
+                        document.documentElement.dataset[check.datasetProp] = check.stateMap[checkResult];
+                    }
+                });
             }
         });
 
@@ -176,12 +258,18 @@
         const setupObserver = (target) => {
             if (!target.element) return;
 
-            // 初始设置 dataset 状态
-            const containsClass = target.classCheck(target.element);
-            document.documentElement.dataset[target.datasetProp] = target.stateMap[containsClass];
+            // 初始设置所有 dataset 状态
+            target.checks.forEach(check => {
+                const checkResult = check.check(target.element);
+                document.documentElement.dataset[check.datasetProp] = check.stateMap[checkResult];
+            });
 
-            // 开始观察该节点的 class 变化
-            cssObserver.observe(target.element, { attributeFilter: ['class'] });
+            // 开始观察该节点的所有相关属性变化
+            const attributesToObserve = [...new Set(target.checks.map(check => check.attributeFilter))];
+            elementObserver.observe(target.element, { 
+                attributes: true,
+                attributeFilter: attributesToObserve
+            });
         };
 
         // 重试查找目标节点

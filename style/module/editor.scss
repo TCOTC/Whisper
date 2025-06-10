@@ -321,8 +321,8 @@ html[data-whisper-status="show"] .layout__center .fn__flex:not(:has(+ .layout__r
 	}
 }
 // 底栏会挡住右下角的 反链/大纲页签/闪卡按钮
-// 新窗口不存在 data-whisper-layout-dockr 属性，所以用 :not() 判断
-html[data-whisper-status="show"]:not([data-whisper-layout-dockr="float"]) .layout__center .fn__flex:not(:has(+ .layout__resize--lr)):not(:has(+ .layout__resize)) > div[data-type="wnd"] > .layout-tab-container > .fn__flex-1 {
+// 新窗口不存在 data-whisper-layout-dockr-float 属性，所以用 :not() 判断
+html[data-whisper-status="show"]:not([data-whisper-layout-dockr-float="float"]) .layout__center .fn__flex:not(:has(+ .layout__resize--lr)):not(:has(+ .layout__resize)) > div[data-type="wnd"] > .layout-tab-container > .fn__flex-1 {
 	&.sy__backlink .backlinkList + .block__icons,
 	&.sy__outline > .fn__flex-1,
 	.card__main .card__action {

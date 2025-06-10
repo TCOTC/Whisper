@@ -6,7 +6,13 @@ body:not(.body--mobile, .body--window) #layouts {
 }
 body:not(.body--mobile, .body--window) #layouts .layout__center {
     border-radius: var(--b3-border-radius) var(--b3-border-radius) 0 0;
-    // TODO功能 如果侧栏隐藏、侧栏面板没打开或未钉住，则那一侧就不需要圆角。可能需要用 JS 判断添加属性
+}
+// 如果侧栏隐藏、侧栏面板没打开或未钉住，则那一侧就不需要圆角
+html[data-whisper-dock-left="hide"]:is([data-whisper-layout-dockl="hide"], [data-whisper-layout-dockl-float="float"]) body:not(.body--mobile, .body--window) #layouts .layout__center {
+    border-top-left-radius: 0;
+}
+html[data-whisper-dock-right="hide"]:is([data-whisper-layout-dockr="hide"], [data-whisper-layout-dockr-float="float"]) body:not(.body--mobile, .body--window) #layouts .layout__center {
+    border-top-right-radius: 0;
 }
 
 // 伪元素提示会超出去，不能 overflow: hidden
