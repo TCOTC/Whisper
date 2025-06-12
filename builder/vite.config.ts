@@ -6,8 +6,8 @@ import * as fs from 'fs';
 function compileSass() {
   return {
     name: 'compile-sass',
-    writeBundle() {
-      const sass = require('sass');
+    async writeBundle() {
+      const sass = await import('sass');
       const result = sass.compile('../style/theme.scss', {
         style: 'compressed',
         sourceMap: true,
