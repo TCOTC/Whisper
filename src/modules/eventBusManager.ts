@@ -123,22 +123,22 @@ export class EventBusManager implements ThemeModule {
             uninstall(): void {}
             async updateCards(options: any): Promise<any> { return options; } // 返回选项本身
             onLayoutReady(): void {}
-            addCommand(command: any): void {}
-            addIcons(svg: string): void {}
-            addTopBar(options: any): null { return null; } // 模拟返回 null
-            addStatusBar(options: any): null { return null; } // 模拟返回 null
+            addCommand(_command: any): void {}
+            addIcons(_svg: string): void {}
+            addTopBar(_options: any): null { return null; } // 模拟返回 null
+            addStatusBar(_options: any): null { return null; } // 模拟返回 null
             // openSetting() {}
             // 去掉设置，参考 https://github.com/siyuan-note/siyuan/blob/dae6158860cc704e353454565c96e874278c6f47/app/src/plugin/openTopBarMenu.ts#L25
             // 不去掉的话会在右上角的插件菜单添加一个选项
-            async loadData(storageName: string): Promise<any> { return Promise.resolve(null); }
-            async saveData(storageName: string, data: any): Promise<void> { return Promise.resolve(); }
-            async removeData(storageName: string): Promise<void> { return Promise.resolve(); }
+            async loadData(_storageName: string): Promise<any> { return Promise.resolve(null); }
+            async saveData(_storageName: string, _data: any): Promise<void> { return Promise.resolve(); }
+            async removeData(_storageName: string): Promise<void> { return Promise.resolve(); }
             getOpenedTab(): Record<string, any> { return {}; } // 返回空对象
-            addTab(options: any): () => void { return () => {}; } // 返回空函数模拟模型
-            addDock(options: any): Record<string, any> { return {}; } // 返回空对象模拟 dock
-            addFloatLayer(options: any): void {}
+            addTab(_options: any): () => void { return () => {}; } // 返回空函数模拟模型
+            addDock(_options: any): Record<string, any> { return {}; } // 返回空对象模拟 dock
+            addFloatLayer(_options: any): void {}
             updateProtyleToolbar(toolbar: any): any { return toolbar; } // 返回 toolbar 本身，否则不显示工具栏 https://github.com/TCOTC/Whisper/issues/8
-            set protyleOptions(options: any) {}
+            set protyleOptions(_options: any) {}
             get protyleOptions(): any { return this.protyleOptionsValue; }
         }
 

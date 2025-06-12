@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "pnpm --filter ./builder dev",
-    "build": "pnpm --filter ./builder build"
+    "build": "pnpm --filter ./builder build",
+    "lint": "pnpm oxlint"
   }
 }

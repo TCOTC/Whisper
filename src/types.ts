@@ -49,6 +49,3 @@ export interface ThemeModule {
     init: () => void;
     destroy: () => void;
 }
-
-// 空出口，让这个文件被视为模块
-export {}; 
