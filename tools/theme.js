@@ -1,10 +1,12 @@
+// 重构为 TypeScript 前的 JS 代码，用于查看 Git 历史
+
 (function() {
     console.log('Whisper: loaded');
 
-    // TODO功能 看看能不能直接从 windows.siyuan 获取设备类型，如果可行的话就更换下面的方法
+    // 功能 看看能不能直接从 windows.siyuan 获取设备类型，如果可行的话就更换下面的方法
 
     // 竖屏手机
-    // TODO跟进 https://github.com/siyuan-note/siyuan/issues/13952 如果支持了切换界面，需要在切换界面之后重新执行被跳过的程序
+    // 跟进 https://github.com/siyuan-note/siyuan/issues/13952 如果支持了切换界面，需要在切换界面之后重新执行被跳过的程序
     const isMobile = () => {
         return !!window.siyuan?.mobile;
     };
@@ -90,7 +92,7 @@
     const focusBlock = (event) => {
         let editor = document.activeElement.classList.contains('protyle-wysiwyg') ? document.activeElement : null;
         if (!editor) {
-            // TODO测试 看看每种类型的块都行不行
+            // 测试 看看每种类型的块都行不行
             // 光标在表格块内
             editor = document.activeElement.tagName === 'TABLE' ? document.activeElement.closest('.protyle-wysiwyg') : null;
         }
@@ -266,7 +268,7 @@
 
             // 开始观察该节点的所有相关属性变化
             const attributesToObserve = [...new Set(target.checks.map(check => check.attributeFilter))];
-            elementObserver.observe(target.element, { 
+            elementObserver.observe(target.element, {
                 attributes: true,
                 attributeFilter: attributesToObserve
             });
@@ -362,7 +364,7 @@
         // 按照触发频率排序
 
         // 文档树
-        // TODO跟进 文档信息显示在左下角的问题还是没解决，估计是思源本体的问题：鼠标划过笔记本之后 tooltip 不隐藏 https://github.com/siyuan-note/siyuan/issues/14823
+        // 跟进 文档信息显示在左下角的问题还是没解决，估计是思源本体的问题：鼠标划过笔记本之后 tooltip 不隐藏 https://github.com/siyuan-note/siyuan/issues/14823
         //  到时候把这部分代码注释掉测试看看还会不会有问题
         const doc = e.closest('[data-type="navigation-file"]');
         if (doc) {
@@ -411,7 +413,7 @@
     // const debouncedUpdateTooltipData = debounce(updateTooltipData, 1);
 
     // 功能：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
-    // TODO跟进 https://github.com/siyuan-note/siyuan/pull/13966 PR 合并后才能用这个功能，不过没合并之前也几乎不会有问题，会执行 else 分支
+    // 跟进 https://github.com/siyuan-note/siyuan/pull/13966 PR 合并后才能用这个功能，不过没合并之前也几乎不会有问题，会执行 else 分支
     let tooltipElement;
     (async () => {
         if (isMobile()) return;
@@ -551,7 +553,7 @@
                 if (commonMenu.getAttribute("data-name") === "barmode") {
                     commonMenuType = "barmode";
                     commonMenu.addEventListener('click', handleMenuClick, true)
-                } else if ( // TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑
+                } else if ( // 功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑
                     commonMenu.querySelector('[data-id="close"]') &&
                     commonMenu.querySelector('[data-id="split"]') &&
                     commonMenu.querySelector('[data-id="copy"]') &&
