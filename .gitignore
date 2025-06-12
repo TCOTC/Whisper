@@ -1,6 +1,10 @@
-.idea
-node_modules
+pnpm-lock.yaml
+node_modules/
+dist/
 .DS_Store
+*.log
+*.map
+.idea/
+.vscode/
 .eslintcache
-dist
 package.zip
