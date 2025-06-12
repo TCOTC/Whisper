@@ -1,0 +1,21 @@
+// ————————————————————— 模块 ————————————————————————
+
+@use "module/layout" as *;       // 布局
+@use "module/dock" as *;         // 侧栏和面板
+@use "module/status" as *;       // 底栏
+@use "module/editor" as *;       // 编辑器
+@use "module/menu" as *;         // 菜单、浮窗、弹窗
+@use "module/tooltip" as *;      // 悬浮提示
+@use "module/tab-bar" as *;      // 页签
+@use "module/search" as *;       // 搜索
+@use "module/preview" as *;      // 导出
+@use "module/global.scss" as *;  // 全局样式和 CSS 变量
+
+// ————————————————————— 配色 ————————————————————————
+// NOTE 偶尔需要跟最新版的默认主题文件对比一下，跟进变量的变更
+
+@use "appearance/light-basic" as *; // 明亮主题
+
+@use "appearance/dark-basic" as *;  // 暗黑主题
+
+@use "text/text.scss" as *;         // 文本外观
