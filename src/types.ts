@@ -2,8 +2,25 @@
 declare global {
     interface Window {
         siyuan?: {
+            version?: string;
             mobile?: boolean;
             config?: {
+                system?: {
+                    container?: string;
+                    os?: string;
+                    osPlatform?: string;
+                    disableGoogleAnalytics?: boolean;
+                };
+                sync?: {
+                    enabled?: boolean;
+                    provider?: string;
+                };
+                stat?: {
+                    cTreeCount?: number;
+                    cBlockCount?: number;
+                    cDataSize?: number;
+                    cAssetsSize?: number;
+                };
                 appearance?: {
                     mode?: number;
                     themeLight?: string;
@@ -21,6 +38,14 @@ declare global {
                     plugins?: any[];
                     appId?: string;
                 };
+            };
+            user?: {
+                userId?: string;
+                userName?: string;
+                userSiYuanSubscriptionStatus?: string;
+                userSiYuanSubscriptionPlan?: string;
+                userSiYuanSubscriptionType?: string;
+                userSiYuanOneTimePayStatus?: string;
             };
         };
         destroyTheme?: () => void;
