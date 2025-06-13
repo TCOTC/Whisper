@@ -20,7 +20,7 @@ export class MobileAIConfig implements ThemeModule {
             this.observer = null;
         }
 
-        document.getElementById("menuAI")?.remove;
+        document.getElementById("menuAI")?.remove();
     }
 
     /**

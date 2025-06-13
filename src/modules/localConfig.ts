@@ -2,11 +2,23 @@ import { themeLogger } from './logger';
 import { getFile, putFile } from './utils';
 
 /**
+ * 配置值类型，支持嵌套结构
+ */
+type ConfigValue = string | number | boolean | null | ConfigObject | ConfigValue[];
+
+/**
+ * 配置对象类型
+ */
+interface ConfigObject {
+    [key: string]: ConfigValue;
+}
+
+/**
  * 文件操作队列管理器，用于确保文件操作的顺序执行
  */
 class FileOperationQueue {
     // 使用静态 Map 存储每个文件路径对应的操作队列
-    private static queues: Map<string, Promise<any>> = new Map();
+    private static queues: Map<string, Promise<unknown>> = new Map();
 
     /**
      * 将操作添加到队列中，确保按顺序执行
@@ -76,7 +88,7 @@ export class LocalConfig {
      * 读取配置文件内容
      * @returns 配置对象，如果读取失败则返回空对象
      */
-    private async readConfig(): Promise<Record<string, any>> {
+    private async readConfig(): Promise<ConfigObject> {
         // 将读取操作添加到队列
         return FileOperationQueue.enqueue(this.configPath, async () => {
             try {
@@ -87,7 +99,7 @@ export class LocalConfig {
                     return {};
                 }
                 
-                return JSON.parse(content);
+                return JSON.parse(content) as ConfigObject;
             } catch (e) {
                 themeLogger.error(`Failed to read configuration: ${e instanceof Error ? e.message : String(e)}`);
                 return {};
@@ -100,7 +112,7 @@ export class LocalConfig {
      * @param config 要写入的配置对象
      * @returns 保存操作的结果
      */
-    private async writeConfig(config: Record<string, any>): Promise<boolean> {
+    private async writeConfig(config: ConfigObject): Promise<boolean> {
         // 将写入操作添加到队列
         return FileOperationQueue.enqueue(this.configPath, async () => {
             try {
@@ -167,8 +179,8 @@ export class LocalConfig {
      * @param defaultValue 默认值
      * @returns 找到的值或默认值
      */
-    private getValueByPath(obj: Record<string, any>, pathSegments: string[], defaultValue?: any): any {
-        let current = obj;
+    private getValueByPath<T>(obj: ConfigObject, pathSegments: string[], defaultValue?: T): T | undefined {
+        let current: unknown = obj;
         
         for (const segment of pathSegments) {
             // 如果当前对象不存在或不是对象类型，无法继续访问
@@ -176,10 +188,10 @@ export class LocalConfig {
                 return defaultValue;
             }
             
-            current = current[segment];
+            current = (current as Record<string, unknown>)[segment];
         }
         
-        return current !== undefined ? current : defaultValue;
+        return current !== undefined ? current as T : defaultValue;
     }
 
     /**
@@ -188,12 +200,12 @@ export class LocalConfig {
      * @param pathSegments 路径段数组
      * @param value 要设置的值
      */
-    private setValueByPath(obj: Record<string, any>, pathSegments: string[], value: any): void {
+    private setValueByPath(obj: ConfigObject, pathSegments: string[], value: ConfigValue): void {
         if (pathSegments.length === 0) {
             return;
         }
         
-        let current = obj;
+        let current: Record<string, unknown> = obj;
         const lastIndex = pathSegments.length - 1;
         
         // 遍历路径，确保中间节点都存在
@@ -205,7 +217,7 @@ export class LocalConfig {
                 current[segment] = {};
             }
             
-            current = current[segment];
+            current = current[segment] as Record<string, unknown>;
         }
         
         // 设置最终值
@@ -218,12 +230,12 @@ export class LocalConfig {
      * @param pathSegments 路径段数组
      * @returns 是否成功删除
      */
-    private removeValueByPath(obj: Record<string, any>, pathSegments: string[]): boolean {
+    private removeValueByPath(obj: ConfigObject, pathSegments: string[]): boolean {
         if (pathSegments.length === 0) {
             return false;
         }
         
-        let current = obj;
+        let current: Record<string, unknown> = obj;
         const lastIndex = pathSegments.length - 1;
         
         // 遍历路径，确保中间节点都存在
@@ -235,7 +247,7 @@ export class LocalConfig {
                 return false;
             }
             
-            current = current[segment];
+            current = current[segment] as Record<string, unknown>;
         }
         
         // 删除最终值
@@ -254,17 +266,17 @@ export class LocalConfig {
      * @param defaultValue 默认值，当配置项不存在时返回
      * @returns 配置项的值或默认值
      */
-    async get<T>(path: string, defaultValue?: T): Promise<T> {
+    async get<T>(path: string, defaultValue?: T): Promise<T | undefined> {
         const config = await this.readConfig();
         const pathSegments = this.parsePath(path);
         
         // 如果是简单路径，直接访问
         if (pathSegments.length === 1) {
-            return (config[pathSegments[0]] !== undefined) ? config[pathSegments[0]] : defaultValue;
+            return (config[pathSegments[0]] !== undefined) ? config[pathSegments[0]] as unknown as T : defaultValue;
         }
         
         // 处理嵌套路径
-        return this.getValueByPath(config, pathSegments, defaultValue);
+        return this.getValueByPath<T>(config, pathSegments, defaultValue);
     }
 
     /**
@@ -273,7 +285,7 @@ export class LocalConfig {
      * @param value 要设置的值
      * @returns 是否成功设置并保存
      */
-    async set<T>(path: string, value: T): Promise<boolean> {
+    async set<T extends ConfigValue>(path: string, value: T): Promise<boolean> {
         const config = await this.readConfig();
         const pathSegments = this.parsePath(path);
         
@@ -293,7 +305,7 @@ export class LocalConfig {
      * @param updates 要更新的配置项键值对，键可以是嵌套路径
      * @returns 是否成功设置并保存
      */
-    async batchUpdate(updates: Record<string, any>): Promise<boolean> {
+    async batchUpdate(updates: Record<string, ConfigValue>): Promise<boolean> {
         const config = await this.readConfig();
         
         Object.entries(updates).forEach(([path, value]) => {

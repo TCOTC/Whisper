@@ -36,7 +36,7 @@ declare global {
             };
             ws?: {
                 app?: {
-                    plugins?: any[];
+                    plugins?: SiYuanPlugin[];
                     appId?: string;
                 };
             };
@@ -51,6 +51,18 @@ declare global {
         };
         destroyTheme?: () => void;
     }
+}
+
+// SiYuan 插件接口
+interface SiYuanPlugin {
+    name: string;
+    i18n?: Record<string, string>;
+    eventBus?: {
+        on: (event: string, callback: (detail: unknown) => void) => void;
+        off: (event: string, callback: (detail: unknown) => void) => void;
+        emit: (event: string, detail: unknown) => void;
+    };
+    [key: string]: unknown;
 }
 
 // 状态观察器的目标配置
@@ -77,4 +89,4 @@ interface ThemeModule {
 }
 
 // 导出这些接口以便在需要时显式导入
-export { TargetConfig, CheckConfig, ThemeModule };
+export { TargetConfig, CheckConfig, ThemeModule, SiYuanPlugin };

@@ -12,16 +12,24 @@ import { LocalConfig } from './modules/localConfig';
 import { isMobile, isPublish } from './modules/utils';
 
 /**
+ * 模块接口，定义所有模块必须实现的方法
+ */
+interface Module {
+    init?: () => void;
+    destroy?: () => void | Promise<void>;
+}
+
+/**
  * 模块管理器，统一处理模块的初始化和销毁
  */
 class ModuleManager {
-    private modules: any[] = [];
+    private modules: Module[] = [];
 
     /**
      * 注册模块
      * @param instance 模块实例
      */
-    register(instance: any): void {
+    register(instance: Module): void {
         this.modules.push(instance);
     }
 
@@ -89,7 +97,7 @@ class ModuleManager {
     moduleManager.initAll();
 
     // 关闭或卸载主题
-    (window as any).destroyTheme = async () => {
+    (window as Window & { destroyTheme?: () => Promise<void> }).destroyTheme = async () => {
         await moduleManager.destroyAll();
         themeLogger.log('unloaded');
     };

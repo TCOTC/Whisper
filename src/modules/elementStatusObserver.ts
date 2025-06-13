@@ -136,7 +136,7 @@ export class ElementStatusObserver implements ThemeModule {
 
         // 创建一个 MutationObserver 实例来观察所有目标节点的变化
         this.elementObserver = new MutationObserver(mutationsList => {
-            for (let mutation of mutationsList) {
+            for (const mutation of mutationsList) {
                 const targetNode = mutation.target as HTMLElement;
                 // 找出对应的目标节点配置
                 const target = this.targets.find(t => t.element === targetNode);

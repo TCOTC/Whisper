@@ -22,7 +22,7 @@ export class Logger {
      * 输出普通日志
      * @param args 要输出的内容
      */
-    log(...args: any[]): void {
+    log(...args: unknown[]): void {
         console.log(`[${this.prefix}]`, ...args);
     }
 
@@ -30,7 +30,7 @@ export class Logger {
      * 输出错误日志
      * @param args 要输出的内容
      */
-    error(...args: any[]): void {
+    error(...args: unknown[]): void {
         console.error(`[${this.prefix}]`, ...args);
     }
 
@@ -38,7 +38,7 @@ export class Logger {
      * 输出警告日志
      * @param args 要输出的内容
      */
-    warn(...args: any[]): void {
+    warn(...args: unknown[]): void {
         console.warn(`[${this.prefix}]`, ...args);
     }
 
@@ -46,7 +46,7 @@ export class Logger {
      * 输出信息日志
      * @param args 要输出的内容
      */
-    info(...args: any[]): void {
+    info(...args: unknown[]): void {
         console.info(`[${this.prefix}]`, ...args);
     }
 
@@ -54,7 +54,7 @@ export class Logger {
      * 输出调试日志
      * @param args 要输出的内容
      */
-    debug(...args: any[]): void {
+    debug(...args: unknown[]): void {
         console.debug(`[${this.prefix}]`, ...args);
     }
 

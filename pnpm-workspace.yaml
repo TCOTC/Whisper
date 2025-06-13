@@ -1,2 +1,5 @@
 packages:
-  - 'builder' 
+  - builder
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'

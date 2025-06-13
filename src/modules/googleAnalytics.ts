@@ -7,8 +7,8 @@ import { getFile } from "./utils";
 // 扩展 Window 接口以包含 Google Analytics 相关属性
 declare global {
     interface Window {
-        dataLayer: any[] | undefined;
-        whisper_theme_gtag: ((...args: any[]) => void) | undefined;
+        dataLayer: unknown[] | undefined;
+        whisper_theme_gtag: ((...args: unknown[]) => void) | undefined;
     }
 }
 
@@ -41,7 +41,7 @@ export class GoogleAnalytics {
         // 检查今天是否已发送过数据，避免重复发送
         const today = new Date().toISOString().split('T')[0]; // 获取今天的日期，格式为 YYYY-MM-DD
         const localConfig = new LocalConfig();
-        let config = await localConfig.get('theme.googleAnalytics.date');
+        const config = await localConfig.get('theme.googleAnalytics.date');
         if (config && config === today) {
             return;
         }
@@ -62,8 +62,8 @@ export class GoogleAnalytics {
         if (!window.dataLayer) return;
 
         // 初始化 GA 配置
-        function gtag(..._args: any[]) {
-            window.dataLayer!.push(arguments);
+        function gtag(...args: unknown[]) {
+            window.dataLayer!.push(args);
         }
         window.whisper_theme_gtag = gtag;
 
@@ -84,7 +84,7 @@ export class GoogleAnalytics {
     private sendBasicInfo() {
         if (!window.whisper_theme_gtag) return;
 
-        const params: Record<string, any> = {
+        const params: Record<string, unknown> = {
             theme_version: this.themeVersion,
             screen_width: window.innerWidth,
             screen_height: window.innerHeight,
@@ -146,7 +146,7 @@ export class GoogleAnalytics {
      * @param eventName 事件名称
      * @param params 事件参数
      */
-    trackEvent(eventName: string, params: Record<string, any> = {}) {
+    trackEvent(eventName: string, params: Record<string, unknown> = {}) {
         if (!window.whisper_theme_gtag) return;
         
         // 添加主题版本信息
@@ -169,7 +169,7 @@ export class GoogleAnalytics {
      * @param featureName 功能名称
      * @param params 附加参数
      */
-    trackFeatureUse(featureName: string, params: Record<string, any> = {}) {
+    trackFeatureUse(featureName: string, params: Record<string, unknown> = {}) {
         this.trackEvent('feature_use', { feature_name: featureName, ...params });
     }
 
