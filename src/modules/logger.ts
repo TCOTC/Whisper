@@ -67,64 +67,13 @@ export class Logger {
     }
 }
 
-// /**
-//  * 创建默认的日志记录器实例
-//  */
-// export const logger = new Logger('Whisper');
+// 创建主题专用的日志实例
+export const themeLogger = new Logger();
 
 /**
- * 创建自定义前缀的日志记录器
- * @param prefix 自定义前缀
- * @returns 日志记录器实例
- */
-export function createLogger(prefix: string): Logger {
-    return new Logger(prefix);
-}
-
-/**
- * 保存原始的console方法
- */
-const originalConsole = {
-    log: console.log,
-    error: console.error,
-    warn: console.warn,
-    info: console.info,
-    debug: console.debug
-};
-
-/**
- * 覆盖全局console对象
+ * 设置主题日志前缀
  * @param prefix 日志前缀
  */
-export function overrideConsole(prefix: string = 'Whisper'): void {
-    console.log = function(...args: any[]): void {
-        originalConsole.log(`[${prefix}]`, ...args);
-    };
-    
-    console.error = function(...args: any[]): void {
-        originalConsole.error(`[${prefix}]`, ...args);
-    };
-    
-    console.warn = function(...args: any[]): void {
-        originalConsole.warn(`[${prefix}]`, ...args);
-    };
-    
-    console.info = function(...args: any[]): void {
-        originalConsole.info(`[${prefix}]`, ...args);
-    };
-    
-    console.debug = function(...args: any[]): void {
-        originalConsole.debug(`[${prefix}]`, ...args);
-    };
+export function setThemeLoggerPrefix(prefix: string = 'Whisper'): void {
+    themeLogger.setPrefix(prefix);
 }
-
-/**
- * 恢复原始的console对象
- */
-export function restoreConsole(): void {
-    console.log = originalConsole.log;
-    console.error = originalConsole.error;
-    console.warn = originalConsole.warn;
-    console.info = originalConsole.info;
-    console.debug = originalConsole.debug;
-} 

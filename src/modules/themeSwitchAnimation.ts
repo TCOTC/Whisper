@@ -1,4 +1,5 @@
 import { ThemeModule } from '../types';
+import { themeLogger } from './logger';
 
 export class ThemeSwitchAnimation implements ThemeModule {
     /**
@@ -21,13 +22,13 @@ export class ThemeSwitchAnimation implements ThemeModule {
     public execute(e: MouseEvent): void {
         // 如果不支持 View Transitions API 就直接返回
         if (!document.startViewTransition) {
-            console.error('View Transitions API is not supported');
+            themeLogger.error('View Transitions API is not supported');
             return;
         }
 
         const siyuanLanguages = window.siyuan?.languages;
         if (!siyuanLanguages) {
-            console.error('window.siyuan.languages is not available');
+            themeLogger.error('window.siyuan.languages is not available');
             return;
         }
 
@@ -35,7 +36,7 @@ export class ThemeSwitchAnimation implements ThemeModule {
 
         // 确保主题模式变量存在
         if (!themeLight || !themeDark || !themeOS) {
-            console.error('Theme mode variables are not properly defined');
+            themeLogger.error('Theme mode variables are not properly defined');
             return;
         }
 

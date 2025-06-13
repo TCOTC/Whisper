@@ -1,3 +1,4 @@
+import { themeLogger } from './logger';
 import { getFile, putFile } from './utils';
 
 /**
@@ -26,7 +27,7 @@ class FileOperationQueue {
         
         // 返回操作结果，但不将可能的错误传播到队列中
         return newPromise.catch(error => {
-            console.error(`Operation error for ${filePath}:`, error);
+            themeLogger.error(`Operation error for ${filePath}:`, error);
             throw error; // 重新抛出错误给调用者
         });
     }
@@ -88,7 +89,7 @@ export class LocalConfig {
                 
                 return JSON.parse(content);
             } catch (e) {
-                console.error(`Failed to read configuration: ${e instanceof Error ? e.message : String(e)}`);
+                themeLogger.error(`Failed to read configuration: ${e instanceof Error ? e.message : String(e)}`);
                 return {};
             }
         });
@@ -115,11 +116,11 @@ export class LocalConfig {
                 if (result.code === 0) {
                     return true;
                 } else {
-                    console.error(`Failed to save configuration: ${result.msg}`);
+                    themeLogger.error(`Failed to save configuration: ${result.msg}`);
                     return false;
                 }
             } catch (e) {
-                console.error(`Save configuration exception: ${e instanceof Error ? e.message : String(e)}`);
+                themeLogger.error(`Save configuration exception: ${e instanceof Error ? e.message : String(e)}`);
                 return false;
             }
         });

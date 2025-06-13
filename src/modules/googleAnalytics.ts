@@ -1,6 +1,7 @@
 // 添加 Google Analytics 脚本并初始化
 
 import { LocalConfig } from "./localConfig";
+import { themeLogger } from "./logger";
 import { getFile } from "./utils";
 
 // 扩展 Window 接口以包含 Google Analytics 相关属性
@@ -24,7 +25,7 @@ export class GoogleAnalytics {
                 this.themeVersion = data.version;
             }
         } catch {
-            console.error('Failed to get theme version');
+            themeLogger.error('Failed to get theme version');
         }
     }
 
@@ -133,7 +134,7 @@ export class GoogleAnalytics {
                 }
             }
         } catch (e) {
-            console.error('Error collecting SiYuan data for analytics:', e);
+            themeLogger.error('Error collecting SiYuan data for analytics:', e);
         }
 
         // 发送事件

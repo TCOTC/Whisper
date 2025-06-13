@@ -1,5 +1,6 @@
 import { ThemeModule } from '../types';
 import { isLocalPath } from './utils';
+import { themeLogger } from './logger';
 
 export class TooltipHandler implements ThemeModule {
     private tooltipElement: HTMLElement | null = null;
@@ -33,7 +34,7 @@ export class TooltipHandler implements ThemeModule {
             // 参考原生的 initBlockPopover 函数
             document.addEventListener('mouseover', this.updateTooltipData);
         } else {
-            console.error("tooltip element does not exist.");
+            themeLogger.error("tooltip element does not exist.");
         }
     }
 

@@ -1,5 +1,5 @@
 import { ThemeModule, TargetConfig } from '../types';
-
+import { themeLogger } from "./logger";
 
 export class ElementStatusObserver implements ThemeModule {
     private retryIntervalId: number | null = null;
@@ -178,7 +178,7 @@ export class ElementStatusObserver implements ThemeModule {
                 } else if (retryCount >= maxRetries) {
                     // 达到最大重试次数仍未找到
                     target.timedOut = true;
-                    console.error(`Whisper: failed to find target node: ${target.selector}`);
+                    themeLogger.error(`failed to find target node: ${target.selector}`);
                 } else {
                     // 继续重试
                     hasRemainingTargets = true;

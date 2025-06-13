@@ -1,5 +1,6 @@
 import { ThemeModule } from '../types';
 import { ThemeSwitchAnimation } from './themeSwitchAnimation';
+import { themeLogger } from './logger';
 
 export class MenuHandler implements ThemeModule {
     private commonMenuObserver: MutationObserver | null = null;
@@ -45,7 +46,7 @@ export class MenuHandler implements ThemeModule {
     private setupMenuObserver(): void {
         this.commonMenu = document.getElementById("commonMenu");
         if (!this.commonMenu) {
-            console.error("commonMenu element does not exist.");
+            themeLogger.error("commonMenu element does not exist.");
             return;
         }
         

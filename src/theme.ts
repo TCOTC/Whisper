@@ -7,7 +7,7 @@ import { DialogHandler } from './modules/dialogHandler';
 import { MobileAIConfig } from './modules/mobileAIConfig';
 import { EventBusManager } from './modules/eventBusManager';
 import { GoogleAnalytics } from './modules/googleAnalytics';
-import { overrideConsole, restoreConsole } from './modules/logger';
+import { themeLogger } from './modules/logger';
 import { LocalConfig } from './modules/localConfig';
 import { isMobile, isPublish } from './modules/utils';
 
@@ -56,10 +56,7 @@ class ModuleManager {
  * Whisper 主题初始化函数
  */
 (() => {
-    // 覆盖全局console对象，添加前缀
-    overrideConsole('Whisper');
-    
-    console.log('loaded');
+    themeLogger.log('loaded');
 
     // 创建模块管理器
     const moduleManager = new ModuleManager();
@@ -94,9 +91,6 @@ class ModuleManager {
     // 关闭或卸载主题
     (window as any).destroyTheme = async () => {
         await moduleManager.destroyAll();
-        console.log('unloaded');
-
-        // 恢复原始console对象
-        restoreConsole();
+        themeLogger.log('unloaded');
     };
 })(); 
