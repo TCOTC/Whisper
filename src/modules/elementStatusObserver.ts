@@ -216,7 +216,7 @@ export class ElementStatusObserver implements ThemeModule {
         });
 
         // 开始观察该节点的所有相关属性变化
-        const attributesToObserve = [...new Set(target.checks.map(check => check.attributeFilter))];
+        const attributesToObserve = Array.from(new Set(target.checks.map(check => check.attributeFilter)));
         this.elementObserver.observe(target.element, { 
             attributes: true,
             attributeFilter: attributesToObserve
