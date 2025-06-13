@@ -8,7 +8,7 @@ function compileSass() {
     name: 'compile-sass',
     async writeBundle() {
       const sass = await import('sass');
-      const result = sass.compile('../style/theme.scss', {
+      const result = sass.compile('../styles/theme.scss', {
         style: 'compressed',
         sourceMap: true,
       });
