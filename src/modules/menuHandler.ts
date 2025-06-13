@@ -47,7 +47,7 @@ export class MenuHandler implements ThemeModule {
     private setupMenuObserver(): void {
         this.commonMenu = document.getElementById("commonMenu");
         if (!this.commonMenu) {
-            console.error("Whisper: commonMenu element does not exist.");
+            console.error("commonMenu element does not exist.");
             return;
         }
         

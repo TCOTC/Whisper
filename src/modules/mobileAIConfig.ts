@@ -30,7 +30,7 @@ export class MobileAIConfig implements ThemeModule {
     private setupMobileAIConfig(): void {
         const mobileMenu = document.getElementById("menu");
         if (!mobileMenu) {
-            console.error("Whisper: mobileMenu element does not exist.");
+            console.error("mobileMenu element does not exist.");
             return;
         }
 
@@ -62,7 +62,7 @@ export class MobileAIConfig implements ThemeModule {
                 if (!mobileRiffCardMenu) {
                     this.observer.disconnect();
                     this.observer = null;
-                    console.error("Whisper: menuRiffCard element does not exist.");
+                    console.error("menuRiffCard element does not exist.");
                 }
             }
         }, 60000); // 1 分钟超时

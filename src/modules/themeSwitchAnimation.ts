@@ -21,13 +21,13 @@ export class ThemeSwitchAnimation implements ThemeModule {
     public execute(e: MouseEvent): void {
         // 如果不支持 View Transitions API 就直接返回
         if (!document.startViewTransition) {
-            console.error('Whisper: View Transitions API is not supported');
+            console.error('View Transitions API is not supported');
             return;
         }
 
         const siyuanLanguages = window.siyuan?.languages;
         if (!siyuanLanguages) {
-            console.error('Whisper: window.siyuan.languages is not available');
+            console.error('window.siyuan.languages is not available');
             return;
         }
 
@@ -35,7 +35,7 @@ export class ThemeSwitchAnimation implements ThemeModule {
 
         // 确保主题模式变量存在
         if (!themeLight || !themeDark || !themeOS) {
-            console.error('Whisper: Theme mode variables are not properly defined');
+            console.error('Theme mode variables are not properly defined');
             return;
         }
 

@@ -34,7 +34,7 @@ export class TooltipHandler implements ThemeModule {
             // 参考原生的 initBlockPopover 函数
             document.addEventListener('mouseover', this.updateTooltipData);
         } else {
-            console.error("Whisper: tooltip element does not exist.");
+            console.error("tooltip element does not exist.");
         }
     }
 

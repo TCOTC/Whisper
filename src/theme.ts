@@ -6,12 +6,16 @@ import { MenuHandler } from './modules/menuHandler';
 import { DialogHandler } from './modules/dialogHandler';
 import { MobileAIConfig } from './modules/mobileAIConfig';
 import { EventBusManager } from './modules/eventBusManager';
+import { overrideConsole, restoreConsole } from './modules/logger';
 
 /**
  * Whisper主题初始化函数
  */
 (() => {
-    console.log('Whisper: loaded');
+    // 覆盖全局console对象，添加前缀
+    overrideConsole('Whisper');
+    
+    console.log('loaded');
 
     // 初始化设备检测
     const deviceDetector = new DeviceDetector();
@@ -56,6 +60,9 @@ import { EventBusManager } from './modules/eventBusManager';
         mobileAIConfig.destroy();
         eventBusManager.destroy();
 
-        console.log('Whisper: unloaded');
+        console.log('unloaded');
+        
+        // 恢复原始console对象
+        restoreConsole();
     };
 })(); 
