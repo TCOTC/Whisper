@@ -13,7 +13,8 @@
     "strict": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "typeRoots": ["../src/types"]
   },
   "include": ["../src/**/*.ts"]
 } 

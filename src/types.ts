@@ -54,7 +54,7 @@ declare global {
 }
 
 // 状态观察器的目标配置
-export interface TargetConfig {
+interface TargetConfig {
     selector: string;
     checks: CheckConfig[];
     found: boolean;
@@ -63,7 +63,7 @@ export interface TargetConfig {
 }
 
 // 检查配置
-export interface CheckConfig {
+interface CheckConfig {
     datasetProp: string;
     attributeFilter: string;
     check: (el: HTMLElement) => boolean;
@@ -71,7 +71,10 @@ export interface CheckConfig {
 }
 
 // 事件处理器接口
-export interface ThemeModule {
+interface ThemeModule {
     init: () => void;
     destroy: () => void;
 }
+
+// 导出这些接口以便在需要时显式导入
+export { TargetConfig, CheckConfig, ThemeModule };
