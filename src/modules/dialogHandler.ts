@@ -1,5 +1,4 @@
 import { ThemeModule } from '../types';
-import { isMobile } from './utils';
 
 export class DialogHandler implements ThemeModule {
     private bodyObserver: MutationObserver | null = null;
@@ -10,8 +9,6 @@ export class DialogHandler implements ThemeModule {
      * 初始化对话框处理器
      */
     public init(): void {
-        if (isMobile()) return;
-        
         // 启用主题时可能已经打开了窗口，预先处理
         this.addResizeMoveToSearchDialog();
         

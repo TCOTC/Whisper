@@ -60,6 +60,18 @@ export class LocalConfig {
     }
 
     /**
+     * 销毁实例，清理资源
+     * 当不再需要使用此配置实例时调用
+     */
+    async destroy(): Promise<void> {
+        // 确保所有待处理的文件操作都已完成
+        await FileOperationQueue.enqueue(this.configPath, async () => {
+            // 空操作，仅用于确保之前的所有操作都已完成
+            return Promise.resolve();
+        });
+    }
+
+    /**
      * 读取配置文件内容
      * @returns 配置对象，如果读取失败则返回空对象
      */
@@ -339,16 +351,4 @@ export class LocalConfig {
     // async resetConfig(defaultConfig: Record<string, any> = {}): Promise<boolean> {
     //     return await this.writeConfig(defaultConfig);
     // }
-
-    /**
-     * 销毁实例，清理资源
-     * 当不再需要使用此配置实例时调用
-     */
-    async destroy(): Promise<void> {
-        // 确保所有待处理的文件操作都已完成
-        await FileOperationQueue.enqueue(this.configPath, async () => {
-            // 空操作，仅用于确保之前的所有操作都已完成
-            return Promise.resolve();
-        });
-    }
 }

@@ -1,4 +1,11 @@
 /**
+ * 判断是否为发布服务
+ */
+export const isPublish = (): boolean => {
+    return !!window.siyuan?.isPublish;
+};
+
+/**
  * 判断是否为移动设备
  */
 export const isMobile = (): boolean => {
@@ -100,6 +107,13 @@ export const putFile = async (
     } = {}
 ): Promise<{ code: number; msg: string; data: null }> => {
     try {
+        if (window.siyuan?.isPublish) {
+            return {
+                code: 403,
+                msg: 'You are not allowed to write files in published workspace',
+                data: null
+            };
+        }
         const formData = new FormData();
         formData.append('path', path);
         

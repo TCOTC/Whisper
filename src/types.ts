@@ -4,6 +4,7 @@ declare global {
         siyuan?: {
             version?: string;
             mobile?: boolean;
+            isPublish?: boolean;
             config?: {
                 system?: {
                     container?: string;

@@ -1,5 +1,5 @@
 import { ThemeModule, TargetConfig } from '../types';
-import { isMobile } from './utils';
+
 
 export class ElementStatusObserver implements ThemeModule {
     private retryIntervalId: number | null = null;
@@ -11,7 +11,6 @@ export class ElementStatusObserver implements ThemeModule {
      * 初始化元素状态观察器
      */
     public init(): void {
-        if (isMobile()) return;
         this.setupTargets();
         this.startObserving();
     }

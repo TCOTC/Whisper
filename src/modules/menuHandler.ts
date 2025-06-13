@@ -1,5 +1,4 @@
 import { ThemeModule } from '../types';
-import { isMobile } from './utils';
 import { ThemeSwitchAnimation } from './themeSwitchAnimation';
 
 export class MenuHandler implements ThemeModule {
@@ -17,7 +16,6 @@ export class MenuHandler implements ThemeModule {
      * 初始化菜单处理器
      */
     public init(): void {
-        if (isMobile()) return;
         this.setupMenuObserver();
     }
 

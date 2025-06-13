@@ -1,5 +1,4 @@
 import { ThemeModule } from '../types';
-import { isMobile } from './utils';
 
 export class MobileAIConfig implements ThemeModule {
     private observer: MutationObserver | null = null;
@@ -8,7 +7,6 @@ export class MobileAIConfig implements ThemeModule {
      * 初始化移动端 AI 按钮
      */
     public init(): void {
-        if (!isMobile()) return;
         this.setupMobileAIConfig();
     }
 

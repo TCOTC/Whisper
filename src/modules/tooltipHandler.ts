@@ -1,19 +1,18 @@
 import { ThemeModule } from '../types';
-import { isMobile, isLocalPath } from './utils';
+import { isLocalPath } from './utils';
 
 export class TooltipHandler implements ThemeModule {
     private tooltipElement: HTMLElement | null = null;
 
     /**
-     * 初始化工具提示处理器
+     * 初始化悬浮提示处理器
      */
     public init(): void {
-        if (isMobile()) return;
         this.setupTooltipObserver();
     }
 
     /**
-     * 销毁工具提示处理器
+     * 销毁悬浮提示处理器
      */
     public destroy(): void {
         document.removeEventListener('mouseover', this.updateTooltipData);
@@ -25,7 +24,7 @@ export class TooltipHandler implements ThemeModule {
     }
 
     /**
-     * 设置工具提示观察器
+     * 设置悬浮提示观察器
      */
     private setupTooltipObserver(): void {
         this.tooltipElement = document.getElementById("tooltip");
@@ -39,7 +38,7 @@ export class TooltipHandler implements ThemeModule {
     }
 
     /**
-     * 更新工具提示数据属性
+     * 更新悬浮提示数据属性
      */
     private updateTooltipData = (event: MouseEvent): void => {
         if (!event.target || (event.target as Node).nodeType === 9) return;
@@ -100,7 +99,7 @@ export class TooltipHandler implements ThemeModule {
     };
 
     /**
-     * 设置工具提示数据属性
+     * 设置悬浮提示数据属性
      */
     private setTooltipData(data: string, display: boolean = false): void {
         if (!this.tooltipElement) return;
@@ -120,7 +119,7 @@ export class TooltipHandler implements ThemeModule {
     }
 
     /**
-     * 移除工具提示数据属性
+     * 移除悬浮提示数据属性
      */
     private removeTooltipData(data?: string): void {
         if (!this.tooltipElement) return;

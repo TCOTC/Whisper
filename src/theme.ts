@@ -9,6 +9,7 @@ import { EventBusManager } from './modules/eventBusManager';
 import { GoogleAnalytics } from './modules/googleAnalytics';
 import { overrideConsole, restoreConsole } from './modules/logger';
 import { LocalConfig } from './modules/localConfig';
+import { isMobile, isPublish } from './modules/utils';
 
 /**
  * 模块管理器，统一处理模块的初始化和销毁
@@ -64,16 +65,28 @@ class ModuleManager {
     const moduleManager = new ModuleManager();
     
     // 注册所有模块
-    moduleManager.register(new LocalConfig());
-    moduleManager.register(new DeviceDetector());
-    moduleManager.register(new BlockFocusHandler());
-    moduleManager.register(new ElementStatusObserver());
-    moduleManager.register(new TooltipHandler());
-    moduleManager.register(new MenuHandler());
-    moduleManager.register(new DialogHandler());
-    moduleManager.register(new MobileAIConfig());
-    moduleManager.register(new EventBusManager());
-    moduleManager.register(new GoogleAnalytics());
+    moduleManager.register(new DeviceDetector());            // 设备检测
+    moduleManager.register(new BlockFocusHandler());         // 块聚焦处理
+    moduleManager.register(new EventBusManager());           // 事件总线管理
+
+    // 在非发布模式下才注册
+    if (!isPublish()) {
+        moduleManager.register(new LocalConfig());           // 本地配置管理
+        moduleManager.register(new GoogleAnalytics());       // Google 分析
+    }
+
+    // 在非移动端才注册
+    if (!isMobile()) {
+        moduleManager.register(new TooltipHandler());        // 悬浮提示处理
+        moduleManager.register(new ElementStatusObserver()); // 元素状态观察
+        moduleManager.register(new DialogHandler());         // 对话框处理
+        moduleManager.register(new MenuHandler());           // 菜单处理
+    }
+    
+    // 在移动端才注册
+    if (isMobile()) {
+        moduleManager.register(new MobileAIConfig());        // 移动端 AI 按钮
+    }
     
     // 初始化所有模块
     moduleManager.initAll();
