@@ -14,7 +14,7 @@ export class DeviceDetector implements ThemeModule {
      */
     public destroy(): void {
         // 移除设备类型标识
-        document.body.removeAttribute("data-whisper-device");
+        document.body.removeAttribute('data-whisper-device');
     }
 
     /**
@@ -22,11 +22,11 @@ export class DeviceDetector implements ThemeModule {
      */
     private addDeviceTypeAttribute(): void {
         if (isMobile()) {
-            document.body.dataset.whisperDevice = "mobile";
+            document.body.dataset.whisperDevice = 'mobile';
         } else if (isMac()) {
-            document.body.dataset.whisperDevice = "mac";
+            document.body.dataset.whisperDevice = 'mac';
         } else if (isWindows()) {
-            document.body.dataset.whisperDevice = "windows";
+            document.body.dataset.whisperDevice = 'windows';
         }
     }
 } 

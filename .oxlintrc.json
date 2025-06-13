@@ -1,7 +1,6 @@
 {
   "ignorePatterns": ["tools/**", "theme.js"],
   "rules": {
-    "quotes": [2, "single", { "avoidEscape": true }],
     "no-template-curly-in-string": "error"
   }
 }

@@ -94,7 +94,7 @@ export class BlockFocusHandler implements ThemeModule {
         // 光标不在块内或点击的元素在嵌入块内时，清除当前编辑器内非聚焦块上的属性后返回
         if (!block || block.closest('.protyle-wysiwyg__embed')) return;
 
-        block.dataset.whisperBlockFocus = "";
+        block.dataset.whisperBlockFocus = '';
     };
 
     /**

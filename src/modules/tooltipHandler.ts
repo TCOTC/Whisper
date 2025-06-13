@@ -19,7 +19,7 @@ export class TooltipHandler implements ThemeModule {
         document.removeEventListener('mouseover', this.updateTooltipData);
         
         if (this.tooltipElement) {
-            this.tooltipElement.removeAttribute("data-whisper-tooltip");
+            this.tooltipElement.removeAttribute('data-whisper-tooltip');
             this.tooltipElement = null;
         }
     }
@@ -28,13 +28,13 @@ export class TooltipHandler implements ThemeModule {
      * 设置悬浮提示观察器
      */
     private setupTooltipObserver(): void {
-        this.tooltipElement = document.getElementById("tooltip");
+        this.tooltipElement = document.getElementById('tooltip');
         
         if (this.tooltipElement) {
             // 参考原生的 initBlockPopover 函数
             document.addEventListener('mouseover', this.updateTooltipData);
         } else {
-            themeLogger.error("tooltip element does not exist.");
+            themeLogger.error('tooltip element does not exist.');
         }
     }
 
@@ -61,41 +61,41 @@ export class TooltipHandler implements ThemeModule {
         }
 
         // 文本超链接
-        const href = e.getAttribute("data-href");
+        const href = e.getAttribute('data-href');
         if (href) {
             // 资源文件链接
             if (isLocalPath(href)) {
-                this.setTooltipData("href_asset");
+                this.setTooltipData('href_asset');
                 return;
             }
             // 普通链接
-            this.setTooltipData("href", true);
+            this.setTooltipData('href', true);
             return;
         }
 
         // 页签
         if (e.closest('[data-type="tab-header"]')) {
-            this.setTooltipData("tab_header", true);
+            this.setTooltipData('tab_header', true);
             return;
         }
 
         // 数据库单元格、"添加"按钮、视图
-        if (e.closest(".av__cell") ||
+        if (e.closest('.av__cell') ||
             e.closest('[data-type="av-add"]') || e.closest('[data-type="av-add-more"]') || e.closest('[data-type="av-header-add"]') ||
             e.closest('[data-page]')) {
-            this.setTooltipData("av");
+            this.setTooltipData('av');
             return;
         }
 
         // 表情选择器上的表情、底部选项
-        if (e.classList.contains("emojis__item") || e.classList.contains("emojis__type")) {
-            this.setTooltipData("emoji");
+        if (e.classList.contains('emojis__item') || e.classList.contains('emojis__type')) {
+            this.setTooltipData('emoji');
             return;
         }
 
         // 如果正在显示的 tooltip 不属于特定元素，就将属性置空
-        if (this.tooltipElement && !this.tooltipElement.classList.contains("fn__none")) {
-            this.tooltipElement.dataset.whisperTooltip = "";
+        if (this.tooltipElement && !this.tooltipElement.classList.contains('fn__none')) {
+            this.tooltipElement.dataset.whisperTooltip = '';
         }
     };
 
@@ -126,7 +126,7 @@ export class TooltipHandler implements ThemeModule {
         if (!this.tooltipElement) return;
         
         if (!data || this.tooltipElement.dataset?.whisperTooltip === data) {
-            this.tooltipElement.dataset.whisperTooltip = "";
+            this.tooltipElement.dataset.whisperTooltip = '';
         }
     }
 } 

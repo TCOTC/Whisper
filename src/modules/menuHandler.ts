@@ -44,14 +44,14 @@ export class MenuHandler implements ThemeModule {
      * 设置菜单观察器
      */
     private setupMenuObserver(): void {
-        this.commonMenu = document.getElementById("commonMenu");
+        this.commonMenu = document.getElementById('commonMenu');
         if (!this.commonMenu) {
-            themeLogger.error("commonMenu element does not exist.");
+            themeLogger.error('commonMenu element does not exist.');
             return;
         }
         
         this.commonMenu.insertAdjacentHTML('beforebegin', '<div id="whisperCommonMenu"></div>');
-        this.whisperCommonMenu = document.getElementById("whisperCommonMenu");
+        this.whisperCommonMenu = document.getElementById('whisperCommonMenu');
         
         this.commonMenuObserver = new MutationObserver((mutations) => {
             // 使用一个标志位来确保只处理一次
@@ -66,11 +66,11 @@ export class MenuHandler implements ThemeModule {
                 }
                 
                 if (this.whisperCommonMenu) {
-                    this.whisperCommonMenu.dataset.name = "";
+                    this.whisperCommonMenu.dataset.name = '';
                 }
 
-                if (this.commonMenu?.getAttribute("data-name") === "barmode") {
-                    this.commonMenuType = "barmode";
+                if (this.commonMenu?.getAttribute('data-name') === 'barmode') {
+                    this.commonMenuType = 'barmode';
                     this.commonMenu.addEventListener('click', this.handleMenuClick, true);
                 } else if ( // TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑
                     this.commonMenu?.querySelector('[data-id="close"]') &&
@@ -79,7 +79,7 @@ export class MenuHandler implements ThemeModule {
                     this.commonMenu?.querySelector('[data-id="tabToWindow"]')
                 ) {
                     if (this.whisperCommonMenu) {
-                        this.whisperCommonMenu.dataset.name = "tab-header";
+                        this.whisperCommonMenu.dataset.name = 'tab-header';
                     }
                     this.handleTabClose();
                 }
@@ -97,7 +97,7 @@ export class MenuHandler implements ThemeModule {
      */
     private handleMenuClick = (e: MouseEvent): void => {
         switch (this.commonMenuType) {
-            case "barmode":
+            case 'barmode':
                 this.themeSwitchAnimation.execute(e);
                 break;
         }
@@ -117,7 +117,7 @@ export class MenuHandler implements ThemeModule {
 
         closeMenu.querySelector('.b3-menu__accelerator')?.remove(); // 选项移除快捷键
         // 添加图标和子菜单容器
-        closeMenu.insertAdjacentHTML('beforeend', `<svg class="b3-menu__icon b3-menu__icon--small"><use xlink:href="#iconRight"></use></svg><div class="b3-menu__submenu"><div class="b3-menu__items"></div></div>`);
+        closeMenu.insertAdjacentHTML('beforeend', '<svg class="b3-menu__icon b3-menu__icon--small"><use xlink:href="#iconRight"></use></svg><div class="b3-menu__submenu"><div class="b3-menu__items"></div></div>');
         const submenuItems = closeMenu.querySelector('.b3-menu__items');
         if (!submenuItems) return;
 
@@ -133,7 +133,7 @@ export class MenuHandler implements ThemeModule {
         // 给分屏选项添加图标
         const splitMenu = this.commonMenu.querySelector('[data-id="split"] > .b3-menu__icon > use');
         if (splitMenu) {
-            splitMenu.setAttribute("xlink:href", "#iconSplitLR");
+            splitMenu.setAttribute('xlink:href', '#iconSplitLR');
         }
     }
 } 

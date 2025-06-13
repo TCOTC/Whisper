@@ -41,7 +41,7 @@ export class ThemeSwitchAnimation implements ThemeModule {
         }
 
         // 获取切换后的模式（通过点击的按钮判断）
-        const menuItem = (e.target as HTMLElement).closest(".b3-menu__item");
+        const menuItem = (e.target as HTMLElement).closest('.b3-menu__item');
         if (!menuItem) return;
         
         let targetMode = menuItem.textContent || '';
@@ -61,7 +61,7 @@ export class ThemeSwitchAnimation implements ThemeModule {
             : window.siyuan?.config?.appearance?.themeDark;
             
         // 如果切换后的主题不是 Whisper，则跳过
-        if (targetTheme !== "Whisper") return;
+        if (targetTheme !== 'Whisper') return;
 
         const transition = document.startViewTransition();
 
@@ -73,8 +73,8 @@ export class ThemeSwitchAnimation implements ThemeModule {
             Math.max(y, window.innerHeight - y)
         );
 
-        const style = document.createElement("style");
-        style.innerHTML = `::view-transition-old(root),::view-transition-new(root){animation: none;}`;
+        const style = document.createElement('style');
+        style.innerHTML = '::view-transition-old(root),::view-transition-new(root){animation: none;}';
         document.head.appendChild(style);
 
         transition.ready.then(() => {

@@ -74,22 +74,20 @@ class ModuleManager {
     moduleManager.register(new BlockFocusHandler());         // 块聚焦处理
     moduleManager.register(new EventBusManager());           // 事件总线管理
 
-    // 在非发布模式下才注册
     if (!isPublish()) {
+        // 非发布模式
         moduleManager.register(new LocalConfig());           // 本地配置管理
         moduleManager.register(new GoogleAnalytics());       // Google 分析
     }
 
-    // 在非移动端才注册
     if (!isMobile()) {
+        // 在非移动端
         moduleManager.register(new TooltipHandler());        // 悬浮提示处理
         moduleManager.register(new ElementStatusObserver()); // 元素状态观察
         moduleManager.register(new DialogHandler());         // 对话框处理
         moduleManager.register(new MenuHandler());           // 菜单处理
-    }
-    
-    // 在移动端才注册
-    if (isMobile()) {
+    } else {
+        // 移动端
         moduleManager.register(new MobileAIConfig());        // 移动端 AI 按钮
     }
     

@@ -30,7 +30,7 @@ export class DialogHandler implements ThemeModule {
         }
         
         this.searchTipElements.forEach((element) => {
-            element.classList.remove("resize__move");
+            element.classList.remove('resize__move');
         });
         this.searchTipElements = [];
     }
@@ -65,7 +65,7 @@ export class DialogHandler implements ThemeModule {
     private handleDialogOpen(node: HTMLElement): void {
         const dialogKey = node.dataset.key;
         // 搜索窗口
-        if (dialogKey === "dialog-globalsearch" || dialogKey === "dialog-search") {
+        if (dialogKey === 'dialog-globalsearch' || dialogKey === 'dialog-search') {
             this.searchTipElements = [];
             this.addResizeMoveToSearchDialog(node);
 
@@ -125,7 +125,7 @@ export class DialogHandler implements ThemeModule {
      * 为搜索提示元素添加 resize__move 类
      */
     private addResizeMoveToSearchTip(element: HTMLElement): void {
-        element.classList.add("resize__move");
+        element.classList.add('resize__move');
         this.searchTipElements.push(element);
     }
 } 

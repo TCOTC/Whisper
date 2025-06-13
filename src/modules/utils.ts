@@ -19,14 +19,14 @@ export const isMobile = (): boolean => {
  * 判断是否为 Windows 系统
  */
 export const isWindows = (): boolean => {
-    return navigator.platform.toUpperCase().indexOf("WIN") > -1;
+    return navigator.platform.toUpperCase().indexOf('WIN') > -1;
 };
 
 /**
  * 判断是否为 Mac 系统
  */
 export const isMac = (): boolean => {
-    return navigator.platform.toUpperCase().indexOf("MAC") > -1;
+    return navigator.platform.toUpperCase().indexOf('MAC') > -1;
 };
 
 /**
@@ -43,15 +43,15 @@ export const isLocalPath = (link: string) => {
     }
 
     link = link.toLowerCase();
-    if (link.startsWith("assets/") || link.startsWith("file://") || link.startsWith("\\\\") /* Windows 网络共享路径 */) {
+    if (link.startsWith('assets/') || link.startsWith('file://') || link.startsWith('\\\\') /* Windows 网络共享路径 */) {
         return true;
     }
 
     if (isWindows()) {
-        const colonIdx = link.indexOf(":");
+        const colonIdx = link.indexOf(':');
         return 1 === colonIdx; // 冒号前面只有一个字符认为是 Windows 盘符而不是网络协议
     }
-    return link.startsWith("/");
+    return link.startsWith('/');
 };
 
 /**

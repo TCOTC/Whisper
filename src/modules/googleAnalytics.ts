@@ -1,8 +1,8 @@
 // 添加 Google Analytics 脚本并初始化
 
-import { LocalConfig } from "./localConfig";
-import { themeLogger } from "./logger";
-import { getFile } from "./utils";
+import { LocalConfig } from './localConfig';
+import { themeLogger } from './logger';
+import { getFile } from './utils';
 
 const GA_DATE_ISO_KEY = 'theme.googleAnalytics.dateISO';
 
@@ -43,8 +43,9 @@ export class GoogleAnalytics {
         // 检查今天是否已发送过数据，避免重复发送
         const today = new Date().toISOString().split('T')[0]; // 获取今天的日期，格式为 YYYY-MM-DD
         const localConfig = new LocalConfig();
-        const config = await localConfig.get('theme.googleAnalytics.date');
         const config = await localConfig.get(GA_DATE_ISO_KEY);
+        console.log('config:',config);
+        console.log('today:',new Date().toISOString());
         if (config && config === today) {
             return;
         }

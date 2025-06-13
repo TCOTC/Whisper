@@ -1,4 +1,4 @@
-import { Plugin as Theme, TEventBus } from "siyuan";
+import { Plugin as Theme, TEventBus } from 'siyuan';
 import { ThemeModule } from '../types';
 
 // 定义基本的插件接口，只包含我们需要的属性
@@ -8,7 +8,7 @@ interface BasicPlugin {
 }
 
 export class EventBusManager implements ThemeModule {
-    private themeName: string = "whisper-theme";
+    private themeName: string = 'whisper-theme';
     private eventHandlers: Map<TEventBus, (event: CustomEvent) => void> = new Map();
 
     /**
@@ -16,7 +16,7 @@ export class EventBusManager implements ThemeModule {
      */
     public init(): void {
         // 绑定事件处理器
-        this.eventBusOn("loaded-protyle-static", this.eventBusHandler);
+        this.eventBusOn('loaded-protyle-static', this.eventBusHandler);
     }
 
     /**
@@ -24,7 +24,7 @@ export class EventBusManager implements ThemeModule {
      */
     public destroy(): void {
         // 解绑事件处理器
-        this.eventBusOff("loaded-protyle-static", this.eventBusHandler);
+        this.eventBusOff('loaded-protyle-static', this.eventBusHandler);
         this.removeMyTheme();
     }
 
@@ -125,18 +125,18 @@ export class EventBusManager implements ThemeModule {
      * 事件处理器
      */
     private eventBusHandler = (event: CustomEvent): void => {
-        if (event.type === "loaded-protyle-static") {
+        if (event.type === 'loaded-protyle-static') {
             // 编辑器加载完成
             const protyle = event.detail.protyle;
             const wysiwyg = protyle?.wysiwyg?.element;
             
             // 功能：聚焦折叠的列表项时自动展开
             // 原理：只使用 CSS 覆盖的话，块标不会改变，因此要用 JS；移除列表项块的 fold="1" 属性之后，编辑内容只影响子块，所以不会保存列表项块的展开状态
-            if (wysiwyg?.dataset.docType === "NodeListItem") {
+            if (wysiwyg?.dataset.docType === 'NodeListItem') {
                 // 移除首个块（列表项块）的折叠状态
-                const firstListItem = wysiwyg.querySelector(":scope > [data-node-id].li");
+                const firstListItem = wysiwyg.querySelector(':scope > [data-node-id].li');
                 if (firstListItem instanceof HTMLElement) {
-                    firstListItem.removeAttribute("fold");
+                    firstListItem.removeAttribute('fold');
                 }
             }
         }

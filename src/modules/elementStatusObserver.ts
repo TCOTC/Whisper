@@ -1,5 +1,5 @@
 import { ThemeModule, TargetConfig } from '../types';
-import { themeLogger } from "./logger";
+import { themeLogger } from './logger';
 
 export class ElementStatusObserver implements ThemeModule {
     private retryIntervalId: number | null = null;
@@ -32,11 +32,11 @@ export class ElementStatusObserver implements ThemeModule {
         setTimeout(() => {
             // 3 秒后检查当前主题是否为 Whisper，如果不是则移除主题添加的属性
             // 留 3 秒是为了确保主题在明亮和暗黑模式之间切换之后，依赖这些属性的样式不变
-            const mode = document.documentElement.getAttribute("data-theme-mode");
-            const lightTheme = document.documentElement.getAttribute("data-light-theme");
-            const darkTheme = document.documentElement.getAttribute("data-dark-theme");
+            const mode = document.documentElement.getAttribute('data-theme-mode');
+            const lightTheme = document.documentElement.getAttribute('data-light-theme');
+            const darkTheme = document.documentElement.getAttribute('data-dark-theme');
             
-            if ((mode === "light" && lightTheme !== "Whisper") || (mode === "dark" && darkTheme !== "Whisper")) {
+            if ((mode === 'light' && lightTheme !== 'Whisper') || (mode === 'dark' && darkTheme !== 'Whisper')) {
                 // 移除所有已添加的属性
                 this.addedAttributes.forEach(attr => {
                     document.documentElement.removeAttribute(attr);
