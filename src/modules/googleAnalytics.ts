@@ -4,6 +4,8 @@ import { LocalConfig } from "./localConfig";
 import { themeLogger } from "./logger";
 import { getFile } from "./utils";
 
+const GA_DATE_ISO_KEY = 'theme.googleAnalytics.dateISO';
+
 // 扩展 Window 接口以包含 Google Analytics 相关属性
 declare global {
     interface Window {
@@ -42,10 +44,11 @@ export class GoogleAnalytics {
         const today = new Date().toISOString().split('T')[0]; // 获取今天的日期，格式为 YYYY-MM-DD
         const localConfig = new LocalConfig();
         const config = await localConfig.get('theme.googleAnalytics.date');
+        const config = await localConfig.get(GA_DATE_ISO_KEY);
         if (config && config === today) {
             return;
         }
-        await localConfig.set('theme.googleAnalytics.date', today);
+        await localConfig.set(GA_DATE_ISO_KEY, today);
 
         // 检查是否已添加脚本，避免重复插入
         if (document.getElementById(this.scriptId)) return;
