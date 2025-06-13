@@ -37,13 +37,13 @@ class FileOperationQueue {
  * 本地配置，不参与同步
  */
 export class LocalConfig {
-    private configPath: string; // 配置文件路径，相对于工作空间根目录
+    private configPath: string = '/conf/whisper-theme-config.json'; // 配置文件路径，相对于工作空间根目录
 
     /**
      * 构造函数
      * @param configPath 配置文件路径，相对于工作空间根目录
      */
-    constructor(configPath: string = '/conf/whisper-theme-config.json') {
+    constructor(configPath?: string) {
         if (configPath) {
             this.configPath = configPath;
         }
