@@ -8,7 +8,6 @@ import { MobileAIConfig } from './modules/mobileAIConfig';
 import { EventBusManager } from './modules/eventBusManager';
 import { GoogleAnalytics } from './modules/googleAnalytics';
 import { logging } from './modules/logger';
-import { LocalConfig } from './modules/localConfig';
 import { isIPad, isMobile, isPublish, isTouchDevice } from './modules/utils';
 import { showMessage } from './modules/message';
 
@@ -90,7 +89,6 @@ class ModuleManager {
     const moduleManager = new ModuleManager();
     
     // 注册所有模块
-    moduleManager.register(new LocalConfig());               // 本地配置管理
     // TODO功能 主题配置菜单（发布模式下只读取配置，不写入，也不添加配置菜单）（移动设备和非移动设备的配置菜单要做在不同的地方）
     moduleManager.register(new DeviceDetector());            // 设备检测：添加设备类型标识
     moduleManager.register(new BlockFocusHandler());         // 块焦点处理：给焦点所在块添加属性 data-whisper-block-focus

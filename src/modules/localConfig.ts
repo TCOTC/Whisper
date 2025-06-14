@@ -45,45 +45,57 @@ class FileOperationQueue {
     }
 }
 
+const CONFIG_VERSION = 1;
+
 /**
  * 本地配置，不参与同步
  */
 export class LocalConfig {
     private configPath: string = '/conf/whisper-theme-config.json'; // 配置文件路径，相对于工作空间根目录
+    private defaultConfig: ConfigObject = { version: CONFIG_VERSION }; // 默认配置
+    private initPromise: Promise<void>; // 初始化完成的 Promise
 
     /**
      * 构造函数
      * @param configPath 配置文件路径，相对于工作空间根目录
+     * @param defaultConfig 默认配置对象，可选
      */
-    constructor(configPath?: string) {
+    constructor(configPath?: string, defaultConfig?: ConfigObject) {
+        if (isPublish()) {
+            // 在发布模式下创建一个已解决的 Promise
+            this.initPromise = Promise.resolve();
+            return;
+        }
+        
         if (configPath) {
             this.configPath = configPath;
         }
+        if (defaultConfig) {
+            this.defaultConfig = defaultConfig;
+        }
+
+        // 保存初始化 Promise 以便其他方法等待它完成
+        this.initPromise = this.init();
     }
 
     /**
      * 初始化配置
      */
-    async init() {
-        if (isPublish()) return;
-
-        const config = await this.readConfig();
-        if (!config.version) {
-            config.version = 1;
-            await this.writeConfig(config);
+    private async init(): Promise<void> {
+        try {
+            // 尝试读取配置，如果失败则重置为默认配置
+            const config = await this.readConfig();
+            if (Object.keys(config).length === 0) {
+                await this.resetConfig();
+            } else if (config.version !== CONFIG_VERSION) {
+                // 如果 version 不为 CONFIG_VERSION 或不存在，则设置为 CONFIG_VERSION
+                config.version = CONFIG_VERSION;
+                await this.writeConfig(config);
+            }
+        } catch {
+            // 如果读取失败，重置为默认配置
+            await this.resetConfig();
         }
-    }
-
-    /**
-     * 销毁实例，清理资源
-     * 当不再需要使用此配置实例时调用
-     */
-    async destroy(): Promise<void> {
-        // 确保所有待处理的文件操作都已完成
-        await FileOperationQueue.enqueue(this.configPath, async () => {
-            // 空操作，仅用于确保之前的所有操作都已完成
-            return Promise.resolve();
-        });
     }
 
     /**
@@ -97,11 +109,12 @@ export class LocalConfig {
                 const content = await getFile(this.configPath);
                 
                 // 如果文件不存在或出错，返回空对象
-                if (typeof content !== 'string') {
+                if (typeof content !== 'string' || content.trim() === '') {
                     return {};
                 }
                 
-                return JSON.parse(content) as ConfigObject;
+                const parsedConfig = JSON.parse(content) as ConfigObject;
+                return parsedConfig || {};
             } catch (e) {
                 logging.error(`Failed to read configuration: ${e instanceof Error ? e.message : String(e)}`);
                 return {};
@@ -115,6 +128,11 @@ export class LocalConfig {
      * @returns 保存操作的结果
      */
     private async writeConfig(config: ConfigObject): Promise<boolean> {
+        // 在发布服务下不进行写入
+        if (isPublish()) {
+            logging.error('Writing configuration is not supported in publish service');
+            return false;
+        }
         // 将写入操作添加到队列
         return FileOperationQueue.enqueue(this.configPath, async () => {
             try {
@@ -141,229 +159,159 @@ export class LocalConfig {
     }
 
     /**
-     * 解析路径，支持嵌套属性访问，如 'time.["2025-06-13"]' 或 'user.preferences.theme'
-     * @param path 配置路径，可以是简单键名或嵌套路径
-     * @returns 解析后的路径数组
-     */
-    private parsePath(path: string): string[] {
-        // 处理特殊格式如 'time["2025-06-13"]'，将其转换为 ['time', '2025-06-13']
-        // 支持两种格式: time["key"] 和 time.["key"]
-        const bracketPattern = /(\w+)(?:\.|)(?:\[(["'])(.+?)\2\])/g;
-        let normalizedPath = path;
-        let match;
-        
-        // 收集所有匹配项
-        const matches: {original: string, replacement: string}[] = [];
-        while ((match = bracketPattern.exec(path)) !== null) {
-            const original = match[0];
-            const prefix = match[1];
-            const key = match[3];
-            matches.push({
-                original,
-                replacement: `${prefix}.${key}`
-            });
-        }
-        
-        // 从后向前替换，避免替换位置变化
-        for (let i = matches.length - 1; i >= 0; i--) {
-            const { original, replacement } = matches[i];
-            normalizedPath = normalizedPath.replace(original, replacement);
-        }
-        
-        // 处理普通的点分隔路径
-        return normalizedPath.split('.').filter(segment => segment.length > 0);
-    }
-
-    /**
-     * 根据路径获取配置对象中的值
-     * @param obj 配置对象
-     * @param pathSegments 路径段数组
-     * @param defaultValue 默认值
-     * @returns 找到的值或默认值
-     */
-    private getValueByPath<T>(obj: ConfigObject, pathSegments: string[], defaultValue?: T): T | undefined {
-        let current: unknown = obj;
-        
-        for (const segment of pathSegments) {
-            // 如果当前对象不存在或不是对象类型，无法继续访问
-            if (current === undefined || current === null || typeof current !== 'object') {
-                return defaultValue;
-            }
-            
-            current = (current as Record<string, unknown>)[segment];
-        }
-        
-        return current !== undefined ? current as T : defaultValue;
-    }
-
-    /**
-     * 根据路径设置配置对象中的值
-     * @param obj 配置对象
-     * @param pathSegments 路径段数组
-     * @param value 要设置的值
-     */
-    private setValueByPath(obj: ConfigObject, pathSegments: string[], value: ConfigValue): void {
-        if (pathSegments.length === 0) {
-            return;
-        }
-        
-        let current: Record<string, unknown> = obj;
-        const lastIndex = pathSegments.length - 1;
-        
-        // 遍历路径，确保中间节点都存在
-        for (let i = 0; i < lastIndex; i++) {
-            const segment = pathSegments[i];
-            
-            // 如果下一级不存在或不是对象，则创建一个空对象
-            if (current[segment] === undefined || current[segment] === null || typeof current[segment] !== 'object') {
-                current[segment] = {};
-            }
-            
-            current = current[segment] as Record<string, unknown>;
-        }
-        
-        // 设置最终值
-        current[pathSegments[lastIndex]] = value;
-    }
-
-    // /**
-    //  * 根据路径删除配置对象中的值
-    //  * @param obj 配置对象
-    //  * @param pathSegments 路径段数组
-    //  * @returns 是否成功删除
-    //  */
-    // private removeValueByPath(obj: ConfigObject, pathSegments: string[]): boolean {
-    //     if (pathSegments.length === 0) {
-    //         return false;
-    //     }
-        
-    //     let current: Record<string, unknown> = obj;
-    //     const lastIndex = pathSegments.length - 1;
-        
-    //     // 遍历路径，确保中间节点都存在
-    //     for (let i = 0; i < lastIndex; i++) {
-    //         const segment = pathSegments[i];
-            
-    //         // 如果路径中的某个节点不存在，则无法删除
-    //         if (current[segment] === undefined || current[segment] === null || typeof current[segment] !== 'object') {
-    //             return false;
-    //         }
-            
-    //         current = current[segment] as Record<string, unknown>;
-    //     }
-        
-    //     // 删除最终值
-    //     const lastSegment = pathSegments[lastIndex];
-    //     if (current[lastSegment] !== undefined) {
-    //         delete current[lastSegment];
-    //         return true;
-    //     }
-        
-    //     return false;
-    // }
-
-    /**
      * 获取配置项的值，调用时必须使用 await
-     * @param path 配置项的路径，可以是简单键名或嵌套路径，如 'time.["2025-06-13"]' 或 'user.preferences.theme'
+     * @param path 配置项的路径，使用点表示法访问嵌套属性，如 "user.preferences.theme"
      * @param defaultValue 默认值，当配置项不存在时返回
      * @returns 配置项的值或默认值
      */
     async get<T>(path: string, defaultValue?: T): Promise<T | undefined> {
-        const config = await this.readConfig();
-        const pathSegments = this.parsePath(path);
-        
-        // 如果是简单路径，直接访问
-        if (pathSegments.length === 1) {
-            return (config[pathSegments[0]] !== undefined) ? config[pathSegments[0]] as unknown as T : defaultValue;
+        try {
+            // 确保初始化完成
+            await this.initPromise;
+            
+            const config = await this.readConfig();
+            
+            // 使用点表示法访问嵌套属性
+            const value = path.split('.').reduce((obj: unknown, key: string) => {
+                return obj && typeof obj === 'object' ? (obj as Record<string, unknown>)[key] : undefined;
+            }, config);
+            
+            return value !== undefined ? value as unknown as T : defaultValue;
+        } catch (e) {
+            logging.error(`Error getting config value at path '${path}': ${e instanceof Error ? e.message : String(e)}`);
+            return defaultValue;
         }
-        
-        // 处理嵌套路径
-        return this.getValueByPath<T>(config, pathSegments, defaultValue);
     }
 
     /**
-     * 设置配置项的值，调用时必须使用 await，不允许在任何 destroy() 方法内调用
-     * @param path 配置项的路径，可以是简单键名或嵌套路径，如 'time.["2025-06-13"]' 或 'user.preferences.theme'
+     * 设置配置项的值，调用时必须使用 await
+     * @param path 配置项的路径，使用点表示法访问嵌套属性，如 "user.preferences.theme"
      * @param value 要设置的值
      * @returns 是否成功设置并保存
      */
     async set<T extends ConfigValue>(path: string, value: T): Promise<boolean> {
-        const config = await this.readConfig();
-        const pathSegments = this.parsePath(path);
-        
-        // 如果是简单路径，直接设置
-        if (pathSegments.length === 1) {
-            config[pathSegments[0]] = value;
-        } else {
+        try {
+            // 确保初始化完成
+            await this.initPromise;
+            
+            const config = await this.readConfig();
+            const keys = path.split('.');
+            
             // 处理嵌套路径
-            this.setValueByPath(config, pathSegments, value);
+            let current = config;
+            for (let i = 0; i < keys.length - 1; i++) {
+                const key = keys[i];
+                if (!current[key] || typeof current[key] !== 'object' || Array.isArray(current[key])) {
+                    current[key] = {};
+                }
+                current = current[key] as ConfigObject;
+            }
+            
+            // 设置最终值
+            const lastKey = keys[keys.length - 1];
+            current[lastKey] = value;
+            
+            return await this.writeConfig(config);
+        } catch (e) {
+            logging.error(`Error setting config value at path '${path}': ${e instanceof Error ? e.message : String(e)}`);
+            return false;
         }
-        
-        return await this.writeConfig(config);
     }
 
     /**
      * 批量更新配置
-     * @param updates 要更新的配置项键值对，键可以是嵌套路径
+     * @param updates 要更新的配置项键值对，键可以是点表示法的嵌套路径
      * @returns 是否成功设置并保存
      */
     async batchUpdate(updates: Record<string, ConfigValue>): Promise<boolean> {
-        const config = await this.readConfig();
-        
-        Object.entries(updates).forEach(([path, value]) => {
-            const pathSegments = this.parsePath(path);
+        try {
+            // 确保初始化完成
+            await this.initPromise;
             
-            // 如果是简单路径，直接设置
-            if (pathSegments.length === 1) {
-                config[pathSegments[0]] = value;
-            } else {
-                // 处理嵌套路径
-                this.setValueByPath(config, pathSegments, value);
+            const config = await this.readConfig();
+            
+            // 逐个应用更新
+            for (const [path, value] of Object.entries(updates)) {
+                const keys = path.split('.');
+                
+                let current = config;
+                for (let i = 0; i < keys.length - 1; i++) {
+                    const key = keys[i];
+                    if (!current[key] || typeof current[key] !== 'object' || Array.isArray(current[key])) {
+                        current[key] = {};
+                    }
+                    current = current[key] as ConfigObject;
+                }
+                
+                const lastKey = keys[keys.length - 1];
+                current[lastKey] = value;
             }
-        });
-        
-        return await this.writeConfig(config);
+            
+            return await this.writeConfig(config);
+        } catch (e) {
+            logging.error(`Error during batch update: ${e instanceof Error ? e.message : String(e)}`);
+            return false;
+        }
     }
 
-    // /**
-    //  * 删除配置项，支持嵌套路径
-    //  * @param path 要删除的配置项的路径，可以是简单键名或嵌套路径
-    //  * @returns 是否成功删除并保存
-    //  */
-    // async remove(path: string): Promise<boolean> {
-    //     const config = await this.readConfig();
-    //     const pathSegments = this.parsePath(path);
-        
-    //     let modified = false;
-        
-    //     // 如果是简单路径，直接删除
-    //     if (pathSegments.length === 1) {
-    //         if (config[pathSegments[0]] !== undefined) {
-    //             delete config[pathSegments[0]];
-    //             modified = true;
-    //         }
-    //     } else {
-    //         // 处理嵌套路径
-    //         modified = this.removeValueByPath(config, pathSegments);
-    //     }
-        
-    //     return modified ? await this.writeConfig(config) : true;
-    // }
+    /**
+     * 重置所有配置为默认值
+     * @returns 是否成功重置并保存
+     */
+    async resetConfig(): Promise<boolean> {
+        logging.info('Reset configuration to default values');
+        return await this.writeConfig({...this.defaultConfig});
+    }
 
-    // /**
-    //  * 获取所有配置
-    //  * @returns 所有配置项
-    //  */
-    // async getAll(): Promise<Record<string, any>> {
-    //     return await this.readConfig();
-    // }
+    /**
+     * 获取所有配置
+     * @returns 所有配置项
+     */
+    async getAll(): Promise<ConfigObject> {
+        // 确保初始化完成
+        await this.initPromise;
+        return await this.readConfig();
+    }
 
-    // /**
-    //  * 重置所有配置
-    //  * @param defaultConfig 默认配置，可选
-    //  * @returns 是否成功重置并保存
-    //  */
-    // async resetConfig(defaultConfig: Record<string, any> = {}): Promise<boolean> {
-    //     return await this.writeConfig(defaultConfig);
-    // }
+    /**
+     * 删除配置项，支持点表示法的嵌套路径
+     * @param path 要删除的配置项的路径，使用点表示法访问嵌套属性
+     * @returns 是否成功删除并保存
+     */
+    async remove(path: string): Promise<boolean> {
+        try {
+            // 确保初始化完成
+            await this.initPromise;
+            
+            const config = await this.readConfig();
+            const keys = path.split('.');
+            
+            let current = config;
+            const lastIndex = keys.length - 1;
+            
+            // 遍历路径，确保中间节点都存在
+            for (let i = 0; i < lastIndex; i++) {
+                const segment = keys[i];
+                
+                // 如果路径中的某个节点不存在，则无法删除
+                if (current[segment] === undefined || current[segment] === null || typeof current[segment] !== 'object') {
+                    return true; // 节点不存在，视为删除成功
+                }
+                
+                current = current[segment] as ConfigObject;
+            }
+            
+            // 删除最终值
+            const lastSegment = keys[lastIndex];
+            if (current[lastSegment] !== undefined) {
+                delete current[lastSegment];
+                return await this.writeConfig(config);
+            }
+            
+            return true; // 要删除的键不存在，视为删除成功
+        } catch (e) {
+            logging.error(`Error removing config value at path '${path}': ${e instanceof Error ? e.message : String(e)}`);
+            return false;
+        }
+    }
 }
