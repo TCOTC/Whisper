@@ -32,8 +32,8 @@ pnpm run build
   - `theme.ts`    - 主入口文件
 - `style/`     - SCSS 样式文件
   - `appearance/` - 主题的基本样式和配色
-  - `module/`     - 各模块的样式
+  - `modules/`    - 各模块的样式
   - `text/`       - 文本相关样式
+  - `theme.scss`  - 主入口文件
 - `theme.js`   - 最终生成的主题脚本
-- `theme.scss` - 主样式入口文件
 - `theme.css`  - 最终生成的样式表
