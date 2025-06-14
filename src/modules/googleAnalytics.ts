@@ -18,6 +18,7 @@ export class GoogleAnalytics {
     private scriptId = 'whisper-theme-analytics';
     private gaId = 'G-ZY75BR723S';
     private themeVersion = 'unknown-version';
+    private dateISO = '';
     private async fetchThemeVersion() {
         // 从 theme.json 获取主题版本号
         try {
@@ -41,13 +42,13 @@ export class GoogleAnalytics {
         }
 
         // 检查今天是否已发送过数据，避免重复发送
-        const today = new Date().toISOString().split('T')[0]; // 获取今天的日期，格式为 YYYY-MM-DD
+        this.dateISO = new Date().toISOString().split('T')[0]; // 获取今天的日期，格式为 YYYY-MM-DD
         const localConfig = new LocalConfig();
-        const config = await localConfig.get(GA_DATE_ISO_KEY);
-        if (config && config === today) {
+        const configDateISO = await localConfig.get(GA_DATE_ISO_KEY);
+        if (configDateISO && configDateISO === this.dateISO) {
             return;
         }
-        await localConfig.set(GA_DATE_ISO_KEY, today);
+        await localConfig.set(GA_DATE_ISO_KEY, this.dateISO);
 
         // 检查是否已添加脚本，避免重复插入
         if (document.getElementById(this.scriptId)) return;
@@ -93,6 +94,7 @@ export class GoogleAnalytics {
             screen_height: window.innerHeight,
             pixel_ratio: window.devicePixelRatio,
             language: navigator.language,
+            date_iso: this.dateISO,
         };
 
         try {
