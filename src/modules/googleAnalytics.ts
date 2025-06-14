@@ -1,7 +1,5 @@
-// 添加 Google Analytics 脚本并初始化
-
 import { LocalConfig } from './localConfig';
-import { themeLogger } from './logger';
+import { logging } from './logger';
 import { getFile } from './utils';
 
 const GA_DATE_ISO_KEY = 'theme.googleAnalytics.dateISO';
@@ -17,19 +15,21 @@ declare global {
 export class GoogleAnalytics {
     private scriptId = 'whisper-theme-analytics';
     private gaId = 'G-ZY75BR723S';
-    private themeVersion = 'unknown-version';
+    private themeVersion = window.siyuan?.config?.appearance?.themeVer;
     private dateISO = '';
     private async fetchThemeVersion() {
-        // 从 theme.json 获取主题版本号
+        // 备用方案：从 theme.json 获取主题版本号
         try {
             const content = await getFile('/conf/appearance/themes/Whisper/theme.json');
             if (typeof content === 'string') {
                 const data = JSON.parse(content);
                 this.themeVersion = data.version;
+                return;
             }
         } catch {
-            themeLogger.error('Failed to get theme version');
+            logging.error('Failed to get theme version');
         }
+        this.themeVersion = 'unknown-version';
     }
 
     /**
@@ -42,18 +42,27 @@ export class GoogleAnalytics {
         }
 
         // 检查今天是否已发送过数据，避免重复发送
-        this.dateISO = new Date().toISOString().split('T')[0]; // 获取今天的日期，格式为 YYYY-MM-DD
         const localConfig = new LocalConfig();
         const configDateISO = await localConfig.get(GA_DATE_ISO_KEY);
+        this.dateISO = new Date().toISOString().split('T')[0]; // 获取今天的日期，格式为 YYYY-MM-DD
         if (configDateISO && configDateISO === this.dateISO) {
             return;
         }
         await localConfig.set(GA_DATE_ISO_KEY, this.dateISO);
+        
+        if (!this.themeVersion) {
+            await this.fetchThemeVersion();
+        }
 
+        await this.loadGoogleAnalytics();
+    }
+
+    /**
+     * 加载 Google Analytics 脚本并初始化配置
+     */
+    private async loadGoogleAnalytics() {
         // 检查是否已添加脚本，避免重复插入
         if (document.getElementById(this.scriptId)) return;
-        
-        await this.fetchThemeVersion();
 
         // 创建 <script> 标签
         const script = document.createElement('script');
@@ -139,7 +148,7 @@ export class GoogleAnalytics {
                 }
             }
         } catch (e) {
-            themeLogger.error('Error collecting SiYuan data for analytics:', e);
+            logging.error('Error collecting SiYuan data for analytics:', e);
         }
 
         // 发送事件
@@ -170,7 +179,7 @@ export class GoogleAnalytics {
     // }
 
     /**
-     * 跟踪功能使用
+     * 跟踪功能使用（预留用来统计配色方案使用情况）
      * @param featureName 功能名称
      * @param params 附加参数
      */

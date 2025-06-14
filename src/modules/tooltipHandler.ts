@@ -1,49 +1,50 @@
 import { ThemeModule } from '../types';
 import { isLocalPath } from './utils';
-import { themeLogger } from './logger';
+import { logging } from './logger';
 
+/**
+ * 悬浮提示处理器：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
+ */
 export class TooltipHandler implements ThemeModule {
     private tooltipElement: HTMLElement | null = null;
+    private async getTooltipElement(): Promise<void> {
+        if (!this.tooltipElement) {
+            this.tooltipElement = document.getElementById('tooltip');
+        }
+    }
 
     /**
      * 初始化悬浮提示处理器
      */
-    public init(): void {
-        this.setupTooltipObserver();
+    public async init(): Promise<void> {
+        await this.getTooltipElement();
+        if (!this.tooltipElement) {
+            logging.error('tooltip element does not exist.');
+        }
+        
+        document.addEventListener('mouseover', this.updateTooltipData);
     }
 
     /**
      * 销毁悬浮提示处理器
      */
-    public destroy(): void {
+    public async destroy(): Promise<void> {
         document.removeEventListener('mouseover', this.updateTooltipData);
         
-        if (this.tooltipElement) {
-            this.tooltipElement.removeAttribute('data-whisper-tooltip');
-            this.tooltipElement = null;
-        }
+        await this.getTooltipElement();
+        this.tooltipElement?.removeAttribute('data-whisper-tooltip');
+        this.tooltipElement = null;
     }
 
     /**
-     * 设置悬浮提示观察器
+     * 更新悬浮提示属性
      */
-    private setupTooltipObserver(): void {
-        this.tooltipElement = document.getElementById('tooltip');
-        
-        if (this.tooltipElement) {
-            // 参考原生的 initBlockPopover 函数
-            document.addEventListener('mouseover', this.updateTooltipData);
-        } else {
-            themeLogger.error('tooltip element does not exist.');
-        }
-    }
-
-    /**
-     * 更新悬浮提示数据属性
-     */
-    private updateTooltipData = (event: MouseEvent): void => {
+    private updateTooltipData = async (event: MouseEvent): Promise<void> => {
         if (!event.target || (event.target as Node).nodeType === 9) return;
-        if (!this.tooltipElement) return;
+        if (!this.tooltipElement) {
+            await this.getTooltipElement();
+            return;
+        }
         
         const e = (event.target as Node).nodeType === 3 
             ? (event.target as Text).parentElement as HTMLElement 
@@ -79,7 +80,7 @@ export class TooltipHandler implements ThemeModule {
             return;
         }
 
-        // 数据库单元格、"添加"按钮、视图
+        // 数据库单元格、“添加”按钮、视图
         if (e.closest('.av__cell') ||
             e.closest('[data-type="av-add"]') || e.closest('[data-type="av-add-more"]') || e.closest('[data-type="av-header-add"]') ||
             e.closest('[data-page]')) {
@@ -100,16 +101,16 @@ export class TooltipHandler implements ThemeModule {
     };
 
     /**
-     * 设置悬浮提示数据属性
+     * 设置悬浮提示属性
      */
-    private setTooltipData(data: string, display: boolean = false): void {
+    private setTooltipData(data: string, displayFlex: boolean = false): void {
         if (!this.tooltipElement) return;
         
         if (this.tooltipElement.dataset?.whisperTooltip !== data) {
             this.tooltipElement.dataset.whisperTooltip = data;
         }
         
-        if (display) {
+        if (displayFlex) {
             // 设置 tooltip 元素的 display 属性
             // display:flex 用于普通链接和页签提示淡出。样式会被原生的 messageElement.removeAttribute("style"); 方法移除，不需要管理
             const tooltipStyle = this.tooltipElement.getAttribute('style') || '';
@@ -120,7 +121,7 @@ export class TooltipHandler implements ThemeModule {
     }
 
     /**
-     * 移除悬浮提示数据属性
+     * 移除悬浮提示属性
      */
     private removeTooltipData(data?: string): void {
         if (!this.tooltipElement) return;

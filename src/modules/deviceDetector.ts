@@ -18,7 +18,7 @@ export class DeviceDetector implements ThemeModule {
     }
 
     /**
-     * 添加设备类型标识到 body 元素
+     * 添加设备类型标识到 body 元素，用于 CSS 选择器
      */
     private addDeviceTypeAttribute(): void {
         if (isMobile()) {

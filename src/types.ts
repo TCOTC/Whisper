@@ -2,6 +2,12 @@
 declare global {
     interface Window {
         siyuan?: {
+            whisper?: {
+                debug?: {
+                    showMessage?: boolean;
+                }
+            };
+            zIndex?: number;
             version?: string;
             mobile?: boolean;
             isPublish?: boolean;
@@ -23,6 +29,7 @@ declare global {
                     cAssetsSize?: number;
                 };
                 appearance?: {
+                    themeVer?: string;
                     mode?: number;
                     themeLight?: string;
                     themeDark?: string;
@@ -72,6 +79,18 @@ interface TargetConfig {
     found: boolean;
     timedOut: boolean;
     element: HTMLElement | null;
+    exclude?: {
+        /**
+         * 排除配置，如果存在符合该选择器的元素，则忽略该目标
+         */
+        selector: string;
+        /**
+         * 可选的额外检查函数，如果返回 true，则忽略该目标
+         * @param el 元素
+         * @returns 是否忽略该目标
+         */
+        check?: (el: HTMLElement) => boolean;
+    };
 }
 
 // 检查配置

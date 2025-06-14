@@ -1,17 +1,12 @@
 import { ThemeModule } from '../types';
-import { ThemeSwitchAnimation } from './themeSwitchAnimation';
-import { themeLogger } from './logger';
+import { themeSwitchAnimation } from './themeSwitchAnimation';
+import { logging } from './logger';
 
 export class MenuHandler implements ThemeModule {
     private commonMenuObserver: MutationObserver | null = null;
     private commonMenu: HTMLElement | null = null;
     private whisperCommonMenu: HTMLElement | null = null;
     private commonMenuType: string | null = null;
-    private themeSwitchAnimation: ThemeSwitchAnimation;
-
-    constructor() {
-        this.themeSwitchAnimation = new ThemeSwitchAnimation();
-    }
 
     /**
      * 初始化菜单处理器
@@ -46,12 +41,15 @@ export class MenuHandler implements ThemeModule {
     private setupMenuObserver(): void {
         this.commonMenu = document.getElementById('commonMenu');
         if (!this.commonMenu) {
-            themeLogger.error('commonMenu element does not exist.');
+            logging.error('commonMenu element does not exist.');
             return;
         }
         
-        this.commonMenu.insertAdjacentHTML('beforebegin', '<div id="whisperCommonMenu"></div>');
-        this.whisperCommonMenu = document.getElementById('whisperCommonMenu');
+        // 在 #commonMenu 元素前插入 <div id="whisperCommonMenu"></div> 元素，用于 CSS 选择器
+        const whisperCommonMenu = document.createElement('div');
+        whisperCommonMenu.id = 'whisperCommonMenu';
+        this.commonMenu.insertAdjacentElement('beforebegin', whisperCommonMenu);
+        this.whisperCommonMenu = whisperCommonMenu;
         
         this.commonMenuObserver = new MutationObserver((mutations) => {
             // 使用一个标志位来确保只处理一次
@@ -70,14 +68,16 @@ export class MenuHandler implements ThemeModule {
                 }
 
                 if (this.commonMenu?.getAttribute('data-name') === 'barmode') {
+                    // 外观模式菜单
                     this.commonMenuType = 'barmode';
                     this.commonMenu.addEventListener('click', this.handleMenuClick, true);
-                } else if ( // TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑
+                } else if ( // TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑，然后提升主题最低版本号
                     this.commonMenu?.querySelector('[data-id="close"]') &&
                     this.commonMenu?.querySelector('[data-id="split"]') &&
                     this.commonMenu?.querySelector('[data-id="copy"]') &&
                     this.commonMenu?.querySelector('[data-id="tabToWindow"]')
                 ) {
+                    // 页签菜单
                     if (this.whisperCommonMenu) {
                         this.whisperCommonMenu.dataset.name = 'tab-header';
                     }
@@ -98,16 +98,18 @@ export class MenuHandler implements ThemeModule {
     private handleMenuClick = (e: MouseEvent): void => {
         switch (this.commonMenuType) {
             case 'barmode':
-                this.themeSwitchAnimation.execute(e);
+                themeSwitchAnimation(e);
                 break;
         }
     };
 
     /**
-     * 处理页签关闭菜单
+     * 处理页签菜单关闭选项
      */
     private handleTabClose(): void {
         if (!this.commonMenu) return;
+
+        // TODO功能 如果在平板上执行，需要阻止第一层的关闭选项的点击事件，否则没法点开子菜单（判断平板的函数从原生思源的代码里拿）
         
         const closeMenu = this.commonMenu.querySelector('[data-id="close"]');
         if (!closeMenu) return;

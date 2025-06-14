@@ -22,3 +22,9 @@
 如果您有想法或问题，欢迎通过 [GitHub Issues](https://github.com/TCOTC/Whisper/issues) 与我联系，我会持续优化主题的细节。
 
 希望这款主题能够成为您写作的好帮手，让每一次笔记和创作都变得更加愉悦！
+
+---
+
+开发者备注：
+
+在 JS 片段中添加 `setTimeout(() => {window.siyuan.whisper.debug.showMessage = true;}, 2500);` 以启用调试消息

@@ -1,5 +1,5 @@
 import { ThemeModule } from '../types';
-import { themeLogger } from './logger';
+import { logging } from './logger';
 
 export class MobileAIConfig implements ThemeModule {
     private observer: MutationObserver | null = null;
@@ -29,7 +29,7 @@ export class MobileAIConfig implements ThemeModule {
     private setupMobileAIConfig(): void {
         const mobileMenu = document.getElementById('menu');
         if (!mobileMenu) {
-            themeLogger.error('mobileMenu element does not exist.');
+            logging.error('mobileMenu element does not exist.');
             return;
         }
 
@@ -38,7 +38,7 @@ export class MobileAIConfig implements ThemeModule {
             const mobileRiffCardMenu = document.getElementById('menuRiffCard');
             if (mobileRiffCardMenu) {
                 // 找到 menuRiffCard 元素后，停止监听
-                observer.disconnect();
+                observer?.disconnect();
 
                 const mobileAiMenu = document.getElementById('menuAI');
                 if (!mobileAiMenu) {
@@ -56,14 +56,13 @@ export class MobileAIConfig implements ThemeModule {
 
         // 设置超时时间，一分钟后停止监听并报错
         setTimeout(() => {
-            if (this.observer) {
-                const mobileRiffCardMenu = document.getElementById('menuRiffCard');
-                if (!mobileRiffCardMenu) {
-                    this.observer.disconnect();
-                    this.observer = null;
-                    themeLogger.error('menuRiffCard element does not exist.');
-                }
+            this.observer?.disconnect();
+            this.observer = null;
+
+            const mobileRiffCardMenu = document.getElementById('menuRiffCard');
+            if (!mobileRiffCardMenu) {
+                logging.error('menuRiffCard element does not exist.');
             }
         }, 60000); // 1 分钟超时
     }
-} 
+}

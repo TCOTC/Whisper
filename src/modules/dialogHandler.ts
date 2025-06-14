@@ -6,17 +6,16 @@ export class DialogHandler implements ThemeModule {
     private searchTipElements: HTMLElement[] = [];
 
     /**
-     * 初始化对话框处理器
+     * 初始化对话框(Dialog)处理器
      */
     public init(): void {
         // 启用主题时可能已经打开了窗口，预先处理
         this.addResizeMoveToSearchDialog();
-        
         this.setupBodyObserver();
     }
 
     /**
-     * 销毁对话框处理器
+     * 销毁对话框(Dialog)处理器
      */
     public destroy(): void {
         if (this.bodyObserver) {
@@ -41,16 +40,17 @@ export class DialogHandler implements ThemeModule {
     private setupBodyObserver(): void {
         // 监听 body 元素的直接子元素变化
         this.bodyObserver = new MutationObserver((mutationsList) => {
-            mutationsList.forEach((mutation) => {
-                mutation.addedNodes.forEach((node) => {
-                    if (node.nodeType === Node.ELEMENT_NODE) {
-                        setTimeout(() => {
-                            // 弹出模态窗口
-                            if ((node as HTMLElement).classList.contains('b3-dialog--open')) {
-                                this.handleDialogOpen(node as HTMLElement);
-                            }
-                        });
-                    }
+            mutationsList.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType !== Node.ELEMENT_NODE) return;
+                    
+                    // 使用 setTimeout 将代码执行推迟到下一个事件循环，确保子元素已经完全渲染
+                    setTimeout(() => {
+                        const element = node as HTMLElement;
+                        if (element.classList.contains('b3-dialog--open')) {
+                            this.handleDialogOpen(element);
+                        }
+                    });
                 });
             });
         });
@@ -60,7 +60,7 @@ export class DialogHandler implements ThemeModule {
     }
 
     /**
-     * 处理对话框打开
+     * 处理对话框(Dialog)打开
      */
     private handleDialogOpen(node: HTMLElement): void {
         const dialogKey = node.dataset.key;
@@ -72,37 +72,37 @@ export class DialogHandler implements ThemeModule {
             // `搜索资源文件内容` 窗口的子元素在打开之前是不存在的，所以需要监听到子元素添加之后再添加类名
             // 查找 #searchAssets 元素
             const searchAssetsElement = document.getElementById('searchAssets');
+            if (!searchAssetsElement) return;
 
-            if (searchAssetsElement) {
-                // 如果 #searchAssets 元素存在，检查是否有子元素
-                if (searchAssetsElement.children.length === 0) {
-                    // 如果没有子元素，监听子元素的添加
-                    this.searchAssetsObserver = new MutationObserver((mutationsList) => {
-                        mutationsList.forEach((mutation) => {
-                            mutation.addedNodes.forEach((node) => {
-                                if (node.nodeType === Node.ELEMENT_NODE && (node as HTMLElement).classList.contains('search__tip')) {
-                                    this.addResizeMoveToSearchDialog(searchAssetsElement);
-                                    if (this.searchAssetsObserver) {
-                                        this.searchAssetsObserver.disconnect();
-                                        this.searchAssetsObserver = null;
-                                    }
-                                }
-                            });
-                        });
-                    });
-
-                    // 开始监听 #searchAssets 元素的子节点变化
-                    this.searchAssetsObserver.observe(searchAssetsElement, { childList: true });
-                } else {
-                    // 如果有子元素，直接处理现有的子元素
-                    this.addResizeMoveToSearchDialog(searchAssetsElement);
-                }
+            // 如果有子元素，直接处理现有的子元素
+            if (searchAssetsElement.children.length > 0) {
+                this.addResizeMoveToSearchDialog(searchAssetsElement);
+                return;
             }
+
+            // 如果没有子元素，监听子元素的添加
+            this.searchAssetsObserver = new MutationObserver((mutationsList) => {
+                mutationsList.forEach(mutation => {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType !== Node.ELEMENT_NODE) return;
+                        if (!(node as HTMLElement).classList.contains('search__tip')) return;
+
+                        if (this.searchAssetsObserver) {
+                            this.searchAssetsObserver.disconnect();
+                            this.searchAssetsObserver = null;
+                        }
+                        this.addResizeMoveToSearchDialog(searchAssetsElement);
+                    });
+                });
+            });
+
+            // 开始监听 #searchAssets 元素的子节点变化
+            this.searchAssetsObserver.observe(searchAssetsElement, { childList: true });
         }
     }
 
     /**
-     * 为搜索对话框添加 resize__move 类
+     * 为搜索对话框(Dialog)添加 resize__move 类
      */
     private addResizeMoveToSearchDialog(node: HTMLElement | Document = document): void {
         node.querySelectorAll('.search__tip').forEach(e => {

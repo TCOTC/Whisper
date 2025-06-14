@@ -1,11 +1,14 @@
 import { ThemeModule, TargetConfig } from '../types';
-import { themeLogger } from './logger';
+import { logging } from './logger';
+import { getCurrentTheme } from './utils';
 
+/**
+ * 元素状态观察器：监听元素状态，通过给 html 添加属性来代替使用 :has 选择器
+ */
 export class ElementStatusObserver implements ThemeModule {
     private retryIntervalId: number | null = null;
     private elementObserver: MutationObserver | null = null;
     private targets: TargetConfig[] = [];
-    private addedAttributes: Set<string> = new Set(); // 跟踪添加的属性
 
     /**
      * 初始化元素状态观察器
@@ -31,31 +34,39 @@ export class ElementStatusObserver implements ThemeModule {
         
         setTimeout(() => {
             // 3 秒后检查当前主题是否为 Whisper，如果不是则移除主题添加的属性
-            // 留 3 秒是为了确保主题在明亮和暗黑模式之间切换之后，依赖这些属性的样式不变
-            const mode = document.documentElement.getAttribute('data-theme-mode');
-            const lightTheme = document.documentElement.getAttribute('data-light-theme');
-            const darkTheme = document.documentElement.getAttribute('data-dark-theme');
-            
-            if ((mode === 'light' && lightTheme !== 'Whisper') || (mode === 'dark' && darkTheme !== 'Whisper')) {
-                // 移除所有已添加的属性
-                this.addedAttributes.forEach(attr => {
-                    document.documentElement.removeAttribute(attr);
+            // 留 3 秒是为了让主题在明亮和暗黑模式之间切换之后的一段时间内，依赖这些属性的样式不变
+            if (getCurrentTheme() !== 'Whisper') {
+                // 移除所有已添加的属性（从 found 为 true 的 targets 中获取）
+                this.targets.forEach(target => {
+                    if (target.found) {
+                        target.checks.forEach(check => {
+                            const attributeName = `data-${check.datasetProp.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+                            document.documentElement.removeAttribute(attributeName);
+                        });
+                    }
                 });
-                this.addedAttributes.clear();
             }
         }, 3000);
     }
 
     /**
      * 创建基础目标配置
+     * @param selector 目标元素选择器
+     * @param checks 检查配置数组
+     * @param exclude 排除配置，如果存在符合该选择器的元素，则忽略该目标
      */
-    private createBaseTarget(selector: string, checks: TargetConfig['checks']): TargetConfig {
+    private createBaseTarget(
+        selector: string, 
+        checks: TargetConfig['checks'], 
+        exclude?: TargetConfig['exclude']
+    ): TargetConfig {
         return {
             selector,
             checks,
             found: false,
             timedOut: false,
-            element: null
+            element: null,
+            exclude
         };
     }
 
@@ -79,7 +90,9 @@ export class ElementStatusObserver implements ThemeModule {
                     check: el => el.classList.contains('fn__none'),
                     stateMap: { true: 'hide', false: 'show' }
                 }
-            ]),
+            ], {
+                selector: 'body.body--window'
+            }),
             this.createBaseTarget('#dockRight', [
                 {
                     datasetProp: 'whisperDockRight',
@@ -87,7 +100,9 @@ export class ElementStatusObserver implements ThemeModule {
                     check: el => el.classList.contains('fn__none'),
                     stateMap: { true: 'hide', false: 'show' }
                 }
-            ]),
+            ], {
+                selector: 'body.body--window'
+            }),
             this.createBaseTarget('#dockBottom', [
                 {
                     datasetProp: 'whisperDockBottom',
@@ -95,12 +110,18 @@ export class ElementStatusObserver implements ThemeModule {
                     check: el => el.classList.contains('fn__none'),
                     stateMap: { true: 'hide', false: 'show' }
                 }
-            ]),
+            ], {
+                selector: 'body.body--window'
+            }),
             this.createBaseTarget('.layout__dockl', [
                 {
                     datasetProp: 'whisperLayoutDockl',
                     attributeFilter: 'style',
                     check: el => el.style.width === '0px',
+                    // TODO跟进 新版如果合并了 PR https://github.com/siyuan-note/siyuan/pull/15011 ，就改成：
+                    // attributeFilter: 'class',
+                    // check: el => el.classList.contains('fn__none'),
+                    // 后面的 .layout__dockr 也一样
                     stateMap: { true: 'hide', false: 'show' }
                 },
                 {
@@ -109,7 +130,9 @@ export class ElementStatusObserver implements ThemeModule {
                     check: el => el.classList.contains('layout--float'),
                     stateMap: { true: 'float', false: 'pin' }
                 }
-            ]),
+            ], {
+                selector: 'body.body--window'
+            }),
             this.createBaseTarget('.layout__dockr', [
                 {
                     datasetProp: 'whisperLayoutDockr',
@@ -123,7 +146,9 @@ export class ElementStatusObserver implements ThemeModule {
                     check: el => el.classList.contains('layout--float'),
                     stateMap: { true: 'float', false: 'pin' }
                 }
-            ])
+            ], {
+                selector: 'body.body--window'
+            })
         ];
     }
 
@@ -131,9 +156,6 @@ export class ElementStatusObserver implements ThemeModule {
      * 开始观察元素状态
      */
     private startObserving(): void {
-        // 如果所有目标节点都已存在对应 dataset 属性则直接返回
-        if (this.targets.every(target => target.found)) return;
-
         // 创建一个 MutationObserver 实例来观察所有目标节点的变化
         this.elementObserver = new MutationObserver(mutationsList => {
             for (const mutation of mutationsList) {
@@ -147,8 +169,6 @@ export class ElementStatusObserver implements ThemeModule {
                     if (check.attributeFilter === mutation.attributeName) {
                         const checkResult = check.check(targetNode);
                         document.documentElement.dataset[check.datasetProp] = check.stateMap[String(checkResult)];
-                        const attributeName = `data-${check.datasetProp.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
-                        this.addedAttributes.add(attributeName); // 记录添加的属性名
                     }
                 });
             }
@@ -168,6 +188,22 @@ export class ElementStatusObserver implements ThemeModule {
                 // 如果已经找到或已超时，跳过
                 if (target.found || target.timedOut) return;
 
+                // 先检查是否应该排除该目标
+                let shouldExclude = false;
+                if (target.exclude) {
+                    const excludeElement = document.querySelector(target.exclude.selector);
+                    if (excludeElement) {
+                        shouldExclude = target.exclude.check 
+                            ? target.exclude.check(excludeElement as HTMLElement)
+                            : true;
+                    }
+                }
+                if (shouldExclude) {
+                    // 如果应该排除，标记为已超时并跳过
+                    target.timedOut = true;
+                    return;
+                }
+
                 // 查找目标节点
                 const element = document.querySelector(target.selector) as HTMLElement | null;
                 if (element) {
@@ -178,7 +214,7 @@ export class ElementStatusObserver implements ThemeModule {
                 } else if (retryCount >= maxRetries) {
                     // 达到最大重试次数仍未找到
                     target.timedOut = true;
-                    themeLogger.error(`failed to find target node: ${target.selector}`);
+                    logging.error(`failed to find target node: ${target.selector}`);
                 } else {
                     // 继续重试
                     hasRemainingTargets = true;
@@ -196,8 +232,6 @@ export class ElementStatusObserver implements ThemeModule {
 
         // 启动重试机制
         this.retryIntervalId = window.setInterval(findTargetNodes, retryInterval);
-        // 立即执行一次查找
-        findTargetNodes();
     }
 
     /**
@@ -209,9 +243,7 @@ export class ElementStatusObserver implements ThemeModule {
         // 初始设置所有 dataset 状态
         target.checks.forEach(check => {
             const checkResult = check.check(target.element!);
-            const attributeName = `data-${check.datasetProp.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
             document.documentElement.dataset[check.datasetProp] = check.stateMap[String(checkResult)];
-            this.addedAttributes.add(attributeName); // 记录添加的属性名
         });
 
         // 开始观察该节点的所有相关属性变化

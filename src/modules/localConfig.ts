@@ -1,5 +1,5 @@
-import { themeLogger } from './logger';
-import { getFile, putFile } from './utils';
+import { logging } from './logger';
+import { getFile, isPublish, putFile } from './utils';
 
 /**
  * 配置值类型，支持嵌套结构
@@ -39,7 +39,7 @@ class FileOperationQueue {
         
         // 返回操作结果，但不将可能的错误传播到队列中
         return newPromise.catch(error => {
-            themeLogger.error(`Operation error for ${filePath}:`, error);
+            logging.error(`Operation error for ${filePath}:`, error);
             throw error; // 重新抛出错误给调用者
         });
     }
@@ -65,6 +65,8 @@ export class LocalConfig {
      * 初始化配置
      */
     async init() {
+        if (isPublish()) return;
+
         const config = await this.readConfig();
         if (!config.version) {
             config.version = 1;
@@ -101,7 +103,7 @@ export class LocalConfig {
                 
                 return JSON.parse(content) as ConfigObject;
             } catch (e) {
-                themeLogger.error(`Failed to read configuration: ${e instanceof Error ? e.message : String(e)}`);
+                logging.error(`Failed to read configuration: ${e instanceof Error ? e.message : String(e)}`);
                 return {};
             }
         });
@@ -128,11 +130,11 @@ export class LocalConfig {
                 if (result.code === 0) {
                     return true;
                 } else {
-                    themeLogger.error(`Failed to save configuration: ${result.msg}`);
+                    logging.error(`Failed to save configuration: ${result.msg}`);
                     return false;
                 }
             } catch (e) {
-                themeLogger.error(`Save configuration exception: ${e instanceof Error ? e.message : String(e)}`);
+                logging.error(`Save configuration exception: ${e instanceof Error ? e.message : String(e)}`);
                 return false;
             }
         });
@@ -224,44 +226,44 @@ export class LocalConfig {
         current[pathSegments[lastIndex]] = value;
     }
 
-    /**
-     * 根据路径删除配置对象中的值
-     * @param obj 配置对象
-     * @param pathSegments 路径段数组
-     * @returns 是否成功删除
-     */
-    private removeValueByPath(obj: ConfigObject, pathSegments: string[]): boolean {
-        if (pathSegments.length === 0) {
-            return false;
-        }
+    // /**
+    //  * 根据路径删除配置对象中的值
+    //  * @param obj 配置对象
+    //  * @param pathSegments 路径段数组
+    //  * @returns 是否成功删除
+    //  */
+    // private removeValueByPath(obj: ConfigObject, pathSegments: string[]): boolean {
+    //     if (pathSegments.length === 0) {
+    //         return false;
+    //     }
         
-        let current: Record<string, unknown> = obj;
-        const lastIndex = pathSegments.length - 1;
+    //     let current: Record<string, unknown> = obj;
+    //     const lastIndex = pathSegments.length - 1;
         
-        // 遍历路径，确保中间节点都存在
-        for (let i = 0; i < lastIndex; i++) {
-            const segment = pathSegments[i];
+    //     // 遍历路径，确保中间节点都存在
+    //     for (let i = 0; i < lastIndex; i++) {
+    //         const segment = pathSegments[i];
             
-            // 如果路径中的某个节点不存在，则无法删除
-            if (current[segment] === undefined || current[segment] === null || typeof current[segment] !== 'object') {
-                return false;
-            }
+    //         // 如果路径中的某个节点不存在，则无法删除
+    //         if (current[segment] === undefined || current[segment] === null || typeof current[segment] !== 'object') {
+    //             return false;
+    //         }
             
-            current = current[segment] as Record<string, unknown>;
-        }
+    //         current = current[segment] as Record<string, unknown>;
+    //     }
         
-        // 删除最终值
-        const lastSegment = pathSegments[lastIndex];
-        if (current[lastSegment] !== undefined) {
-            delete current[lastSegment];
-            return true;
-        }
+    //     // 删除最终值
+    //     const lastSegment = pathSegments[lastIndex];
+    //     if (current[lastSegment] !== undefined) {
+    //         delete current[lastSegment];
+    //         return true;
+    //     }
         
-        return false;
-    }
+    //     return false;
+    // }
 
     /**
-     * 获取配置项的值，支持嵌套路径
+     * 获取配置项的值，调用时必须使用 await
      * @param path 配置项的路径，可以是简单键名或嵌套路径，如 'time.["2025-06-13"]' 或 'user.preferences.theme'
      * @param defaultValue 默认值，当配置项不存在时返回
      * @returns 配置项的值或默认值
@@ -280,7 +282,7 @@ export class LocalConfig {
     }
 
     /**
-     * 设置配置项的值，支持嵌套路径，调用时必须使用 await
+     * 设置配置项的值，调用时必须使用 await，不允许在任何 destroy() 方法内调用
      * @param path 配置项的路径，可以是简单键名或嵌套路径，如 'time.["2025-06-13"]' 或 'user.preferences.theme'
      * @param value 要设置的值
      * @returns 是否成功设置并保存
@@ -301,7 +303,7 @@ export class LocalConfig {
     }
 
     /**
-     * 批量更新配置，支持嵌套路径，调用时必须使用 await
+     * 批量更新配置
      * @param updates 要更新的配置项键值对，键可以是嵌套路径
      * @returns 是否成功设置并保存
      */
