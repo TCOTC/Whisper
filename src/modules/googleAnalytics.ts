@@ -44,8 +44,6 @@ export class GoogleAnalytics {
         const today = new Date().toISOString().split('T')[0]; // 获取今天的日期，格式为 YYYY-MM-DD
         const localConfig = new LocalConfig();
         const config = await localConfig.get(GA_DATE_ISO_KEY);
-        console.log('config:',config);
-        console.log('today:',new Date().toISOString());
         if (config && config === today) {
             return;
         }
@@ -66,8 +64,9 @@ export class GoogleAnalytics {
         if (!window.dataLayer) return;
 
         // 初始化 GA 配置
-        function gtag(...args: unknown[]) {
-            window.dataLayer!.push(args);
+        /* eslint-disable prefer-rest-params, @typescript-eslint/no-unused-vars */
+        function gtag(..._args: unknown[]) {
+            window.dataLayer!.push(arguments);
         }
         window.whisper_theme_gtag = gtag;
 
