@@ -16,16 +16,16 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.28.0",
-    "@types/node": "^20.10.0",
+    "@types/node": "^24.0.1",
     "eslint": "^9.28.0",
     "eslint-plugin-oxlint": "^1.1.0",
     "globals": "^16.2.0",
-    "oxlint": "^1.0.0",
+    "oxlint": "^1.1.0",
     "sass": "^1.89.2",
     "siyuan": "1.1.1",
-    "terser": "^5.29.2",
-    "typescript": "^5.3.3",
+    "terser": "^5.42.0",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.0",
-    "vite": "npm:rolldown-vite@latest"
+    "vite": "npm:rolldown-vite@^6.3.19"
   }
 }
