@@ -1,3 +1,4 @@
+// oxlint-disable no-unused-vars
 // 重构为 TypeScript 前的 JS 代码，用于查看 Git 历史
 
 (function() {

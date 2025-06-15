@@ -109,4 +109,4 @@ interface ThemeModule {
 }
 
 // 导出这些接口以便在需要时显式导入
-export { TargetConfig, CheckConfig, ThemeModule, SiYuanPlugin };
+export type { TargetConfig, CheckConfig, ThemeModule, SiYuanPlugin };
