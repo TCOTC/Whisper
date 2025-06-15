@@ -3,6 +3,7 @@ import { logging } from './logger';
 import { getFile } from './utils';
 
 const GA_DATE_ISO_KEY = 'theme.googleAnalytics.dateISO';
+const CHECK_INTERVAL = 3600000; // 检查间隔：1小时（1000 * 60 * 60）
 
 // 扩展 Window 接口以包含 Google Analytics 相关属性
 declare global {
@@ -17,6 +18,8 @@ export class GoogleAnalytics {
     private gaId = 'G-ZY75BR723S';
     private themeVersion = window.siyuan?.config?.appearance?.themeVer;
     private dateISO = '';
+    private checkIntervalId: number | null = null;
+    
     private async fetchThemeVersion() {
         // 备用方案：从 theme.json 获取主题版本号
         try {
@@ -41,61 +44,103 @@ export class GoogleAnalytics {
             return;
         }
 
-        // 检查今天是否已发送过数据，避免重复发送
-        const localConfig = new LocalConfig();
-        const configDateISO = await localConfig.get(GA_DATE_ISO_KEY);
-        this.dateISO = new Date().toISOString().split('T')[0]; // 获取今天的日期，格式为 YYYY-MM-DD
-        if (configDateISO && configDateISO === this.dateISO) {
-            return;
-        }
-        await localConfig.set(GA_DATE_ISO_KEY, this.dateISO);
+        await this.checkDate();
         
-        if (!this.themeVersion) {
-            await this.fetchThemeVersion();
-        }
-
-        await this.loadGoogleAnalytics();
+        // 设置定时检查，确保即使页面长时间不关闭也能每天发送一次数据
+        this.checkIntervalId = window.setInterval(() => {
+            this.checkDate().catch(err => {
+                logging.error('Failed to check and send analytics data:', err);
+            });
+        }, CHECK_INTERVAL);
     }
 
     /**
-     * 加载 Google Analytics 脚本并初始化配置
+     * 销毁 Google Analytics
      */
-    private async loadGoogleAnalytics() {
-        // 检查是否已添加脚本，避免重复插入
-        if (document.getElementById(this.scriptId)) return;
-
-        // 创建 <script> 标签
-        const script = document.createElement('script');
-        script.id = this.scriptId;
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + this.gaId;
-        document.head.appendChild(script);
-
-        if (!window.dataLayer) return;
-
-        // 初始化 GA 配置
-        /* eslint-disable prefer-rest-params, @typescript-eslint/no-unused-vars */
-        function gtag(..._args: unknown[]) {
-            window.dataLayer!.push(arguments);
+    destroy() {
+        // 清除定时器
+        if (this.checkIntervalId !== null) {
+            window.clearInterval(this.checkIntervalId);
+            this.checkIntervalId = null;
         }
-        window.whisper_theme_gtag = gtag;
 
-        gtag('js', new Date());
-        gtag('config', this.gaId, {
-            'send_page_view': false,
-            'user_id': window.siyuan?.user?.userId || 'anonymous',
-            'user_name': window.siyuan?.user?.userName || 'anonymous'
-        });
+        // 移除 Google Analytics 脚本
+        const script = document.getElementById(this.scriptId);
+        if (script) {
+            script.remove();
+        }
+
+        if (window.whisper_theme_gtag) {
+            window.whisper_theme_gtag = undefined;
+        }
+    }
+
+    /**
+     * 检查日期
+     */
+    private async checkDate() {
+        // 获取今天的日期，格式为 YYYY-MM-DD
+        const currentDateISO = new Date().toISOString().split('T')[0];
+        
+        // 获取最后发送日期
+        const localConfig = new LocalConfig();
+        const lastSentDateISO = await localConfig.get(GA_DATE_ISO_KEY);
+        
+        // 如果今天已经发送过数据，则不再发送
+        if (lastSentDateISO && lastSentDateISO === currentDateISO) {
+            return;
+        }
+        
+        // 更新本地存储的日期
+        this.dateISO = currentDateISO;
+        await localConfig.set(GA_DATE_ISO_KEY, this.dateISO);
+        
+        // 加载 Google Analytics
+        this.initGA();
+    }
+
+    /**
+     * 加载 Google Analytics
+     */
+    private initGA() {
+        // 检查是否已添加脚本，避免重复插入
+        if (!document.getElementById(this.scriptId)) {
+            // 创建 <script> 标签
+            const script = document.createElement('script');
+            script.id = this.scriptId;
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=' + this.gaId;
+            document.head.appendChild(script);
+        }
+
+        // 初始化 GA 配置（如果尚未初始化）
+        if (!window.whisper_theme_gtag) {
+            /* eslint-disable prefer-rest-params, @typescript-eslint/no-unused-vars */
+            function gtag(..._args: unknown[]) {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push(arguments);
+            }
+            window.whisper_theme_gtag = gtag;
+
+            gtag('js', new Date());
+            gtag('config', this.gaId, {
+                'send_page_view': false,
+                'user_id': window.siyuan?.user?.userId || 'anonymous',
+                'user_name': window.siyuan?.user?.userName || 'anonymous'
+            });
+        }
 
         // 收集并发送基本信息
-        this.sendBasicInfo();
+        this.sendInfo();
     }
 
     /**
      * 收集并发送基本信息
      */
-    private sendBasicInfo() {
-        if (!window.whisper_theme_gtag) return;
+    private async sendInfo() {
+        if (!this.themeVersion) {
+            await this.fetchThemeVersion();
+        }
 
         const params: Record<string, unknown> = {
             theme_version: this.themeVersion,
@@ -152,7 +197,9 @@ export class GoogleAnalytics {
         }
 
         // 发送事件
-        window.whisper_theme_gtag('event', 'theme_init', params);
+        if (window.whisper_theme_gtag) {
+            window.whisper_theme_gtag('event', 'theme_init', params);
+        }
     }
 
     /**
@@ -185,21 +232,6 @@ export class GoogleAnalytics {
      */
     trackFeatureUse(featureName: string, params: Record<string, unknown> = {}) {
         this.trackEvent('feature_use', { feature_name: featureName, ...params });
-    }
-
-    /**
-     * 销毁 Google Analytics
-     */
-    destroy() {
-        // 移除 Google Analytics 脚本
-        const script = document.getElementById(this.scriptId);
-        if (script) {
-            script.remove();
-        }
-
-        if (window.whisper_theme_gtag) {
-            window.whisper_theme_gtag = undefined;
-        }
     }
 }
 
