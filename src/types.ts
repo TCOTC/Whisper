@@ -13,6 +13,7 @@ declare global {
             isPublish?: boolean;
             config?: {
                 system?: {
+                    kernelVersion?: string;
                     container?: string;
                     os?: string;
                     osPlatform?: string;

@@ -157,14 +157,10 @@ export class GoogleAnalytics {
             if (siyuan) {
                 // 系统信息
                 if (siyuan.config?.system) {
+                    params.app_version = siyuan.config.system.kernelVersion;
                     params.app_container = siyuan.config.system.container;
                     params.app_os = siyuan.config.system.os;
                     params.app_platform = siyuan.config.system.osPlatform;
-                }
-
-                // 应用版本
-                if (siyuan.version) {
-                    params.app_version = siyuan.version;
                 }
 
                 // 用户信息（不包含隐私数据）
