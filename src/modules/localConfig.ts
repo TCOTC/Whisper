@@ -1,5 +1,6 @@
 import { logging } from './logger';
-import { getFile, isPublish, putFile } from './utils';
+import { isPublish } from './utils';
+import { getFile, putFile } from './api';
 
 /**
  * 配置值类型，支持嵌套结构
@@ -83,30 +84,46 @@ export class LocalConfig {
      */
     private async init(): Promise<void> {
         try {
-            // 尝试读取配置，如果失败则重置为默认配置
-            const config = await this.readConfig();
+            // 定义重试选项，在初始化阶段启用重试
+            const retryOptions = {
+                retryOnConnectivityError: true,
+                retryInterval: 5000,
+                maxRetries: 100
+            };
+            
+            // 尝试读取配置
+            const config = await this.readConfig(retryOptions);
             if (Object.keys(config).length === 0) {
-                await this.resetConfig();
+                await this.resetConfig(retryOptions);
             } else if (config.version !== CONFIG_VERSION) {
                 // 如果 version 不为 CONFIG_VERSION 或不存在，则设置为 CONFIG_VERSION
                 config.version = CONFIG_VERSION;
-                await this.writeConfig(config);
+                await this.writeConfig(config, retryOptions);
             }
         } catch {
             // 如果读取失败，重置为默认配置
-            await this.resetConfig();
+            await this.resetConfig({
+                retryOnConnectivityError: true,
+                retryInterval: 5000,
+                maxRetries: 10
+            });
         }
     }
 
     /**
      * 读取配置文件内容
+     * @param retryOptions 重试选项
      * @returns 配置对象，如果读取失败则返回空对象
      */
-    private async readConfig(): Promise<ConfigObject> {
+    private async readConfig(retryOptions?: {
+        retryOnConnectivityError?: boolean;
+        retryInterval?: number;
+        maxRetries?: number;
+    }): Promise<ConfigObject> {
         // 将读取操作添加到队列
         return FileOperationQueue.enqueue(this.configPath, async () => {
             try {
-                const content = await getFile(this.configPath);
+                const content = await getFile(this.configPath, retryOptions || {});
                 
                 // 如果文件不存在或出错，返回空对象
                 if (typeof content !== 'string' || content.trim() === '') {
@@ -125,9 +142,17 @@ export class LocalConfig {
     /**
      * 写入配置到文件
      * @param config 要写入的配置对象
+     * @param retryOptions 重试选项
      * @returns 保存操作的结果
      */
-    private async writeConfig(config: ConfigObject): Promise<boolean> {
+    private async writeConfig(
+        config: ConfigObject,
+        retryOptions?: {
+            retryOnConnectivityError?: boolean;
+            retryInterval?: number;
+            maxRetries?: number;
+        }
+    ): Promise<boolean> {
         // 在发布服务下不进行写入
         if (isPublish()) {
             logging.error('Writing configuration is not supported in publish service');
@@ -141,7 +166,8 @@ export class LocalConfig {
                     {
                         isDir: false,
                         modTime: Math.floor(Date.now() / 1000),
-                        file: new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' })
+                        file: new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' }),
+                        ...retryOptions
                     }
                 );
                 
@@ -162,14 +188,23 @@ export class LocalConfig {
      * 获取配置项的值，调用时必须使用 await
      * @param path 配置项的路径，使用点表示法访问嵌套属性，如 "user.preferences.theme"
      * @param defaultValue 默认值，当配置项不存在时返回
+     * @param retryOptions 重试选项
      * @returns 配置项的值或默认值
      */
-    async get<T>(path: string, defaultValue?: T): Promise<T | undefined> {
+    async get<T>(
+        path: string, 
+        defaultValue?: T,
+        retryOptions?: {
+            retryOnConnectivityError?: boolean;
+            retryInterval?: number;
+            maxRetries?: number;
+        }
+    ): Promise<T | undefined> {
         try {
             // 确保初始化完成
             await this.initPromise;
             
-            const config = await this.readConfig();
+            const config = await this.readConfig(retryOptions);
             
             // 使用点表示法访问嵌套属性
             const value = path.split('.').reduce((obj: unknown, key: string) => {
@@ -187,14 +222,23 @@ export class LocalConfig {
      * 设置配置项的值，调用时必须使用 await
      * @param path 配置项的路径，使用点表示法访问嵌套属性，如 "user.preferences.theme"
      * @param value 要设置的值
+     * @param retryOptions 重试选项
      * @returns 是否成功设置并保存
      */
-    async set<T extends ConfigValue>(path: string, value: T): Promise<boolean> {
+    async set<T extends ConfigValue>(
+        path: string, 
+        value: T,
+        retryOptions?: {
+            retryOnConnectivityError?: boolean;
+            retryInterval?: number;
+            maxRetries?: number;
+        }
+    ): Promise<boolean> {
         try {
             // 确保初始化完成
             await this.initPromise;
             
-            const config = await this.readConfig();
+            const config = await this.readConfig(retryOptions);
             const keys = path.split('.');
             
             // 处理嵌套路径
@@ -211,7 +255,7 @@ export class LocalConfig {
             const lastKey = keys[keys.length - 1];
             current[lastKey] = value;
             
-            return await this.writeConfig(config);
+            return await this.writeConfig(config, retryOptions);
         } catch (e) {
             logging.error(`Error setting config value at path '${path}': ${e instanceof Error ? e.message : String(e)}`);
             return false;
@@ -221,14 +265,22 @@ export class LocalConfig {
     /**
      * 批量更新配置
      * @param updates 要更新的配置项键值对，键可以是点表示法的嵌套路径
+     * @param retryOptions 重试选项
      * @returns 是否成功设置并保存
      */
-    async batchUpdate(updates: Record<string, ConfigValue>): Promise<boolean> {
+    async batchUpdate(
+        updates: Record<string, ConfigValue>,
+        retryOptions?: {
+            retryOnConnectivityError?: boolean;
+            retryInterval?: number;
+            maxRetries?: number;
+        }
+    ): Promise<boolean> {
         try {
             // 确保初始化完成
             await this.initPromise;
             
-            const config = await this.readConfig();
+            const config = await this.readConfig(retryOptions);
             
             // 逐个应用更新
             for (const [path, value] of Object.entries(updates)) {
@@ -247,7 +299,7 @@ export class LocalConfig {
                 current[lastKey] = value;
             }
             
-            return await this.writeConfig(config);
+            return await this.writeConfig(config, retryOptions);
         } catch (e) {
             logging.error(`Error during batch update: ${e instanceof Error ? e.message : String(e)}`);
             return false;
@@ -256,34 +308,56 @@ export class LocalConfig {
 
     /**
      * 重置所有配置为默认值
+     * @param retryOptions 重试选项
      * @returns 是否成功重置并保存
      */
-    async resetConfig(): Promise<boolean> {
+    async resetConfig(
+        retryOptions?: {
+            retryOnConnectivityError?: boolean;
+            retryInterval?: number;
+            maxRetries?: number;
+        }
+    ): Promise<boolean> {
         logging.info('Reset configuration to default values');
-        return await this.writeConfig({...this.defaultConfig});
+        return await this.writeConfig({...this.defaultConfig}, retryOptions);
     }
 
     /**
      * 获取所有配置
+     * @param retryOptions 重试选项
      * @returns 所有配置项
      */
-    async getAll(): Promise<ConfigObject> {
+    async getAll(
+        retryOptions?: {
+            retryOnConnectivityError?: boolean;
+            retryInterval?: number;
+            maxRetries?: number;
+        }
+    ): Promise<ConfigObject> {
         // 确保初始化完成
         await this.initPromise;
-        return await this.readConfig();
+        return await this.readConfig(retryOptions);
     }
 
     /**
      * 删除配置项，支持点表示法的嵌套路径
      * @param path 要删除的配置项的路径，使用点表示法访问嵌套属性
+     * @param retryOptions 重试选项
      * @returns 是否成功删除并保存
      */
-    async remove(path: string): Promise<boolean> {
+    async remove(
+        path: string,
+        retryOptions?: {
+            retryOnConnectivityError?: boolean;
+            retryInterval?: number;
+            maxRetries?: number;
+        }
+    ): Promise<boolean> {
         try {
             // 确保初始化完成
             await this.initPromise;
             
-            const config = await this.readConfig();
+            const config = await this.readConfig(retryOptions);
             const keys = path.split('.');
             
             let current = config;
@@ -305,7 +379,7 @@ export class LocalConfig {
             const lastSegment = keys[lastIndex];
             if (current[lastSegment] !== undefined) {
                 delete current[lastSegment];
-                return await this.writeConfig(config);
+                return await this.writeConfig(config, retryOptions);
             }
             
             return true; // 要删除的键不存在，视为删除成功

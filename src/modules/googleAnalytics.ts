@@ -1,6 +1,6 @@
 import { LocalConfig } from './localConfig';
 import { logging } from './logger';
-import { getFile } from './utils';
+import { getFile } from './api';
 
 const GA_DATE_ISO_KEY = 'theme.googleAnalytics.dateISO';
 const CHECK_INTERVAL = 3600000; // 检查间隔：1小时（1000 * 60 * 60）
@@ -84,7 +84,11 @@ export class GoogleAnalytics {
         
         // 获取最后发送日期
         const localConfig = new LocalConfig();
-        const lastSentDateISO = await localConfig.get(GA_DATE_ISO_KEY);
+        const lastSentDateISO = await localConfig.get(GA_DATE_ISO_KEY, undefined, {
+            retryOnConnectivityError: true,
+            retryInterval: 20000, // 20秒
+            maxRetries: 60 // 60次
+        });
         
         // 如果今天已经发送过数据，则不再发送
         if (lastSentDateISO && lastSentDateISO === currentDateISO) {
