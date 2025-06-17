@@ -74,6 +74,13 @@ export const getThemeMode = (): string | false => {
 };
 
 /**
+ * 获取系统主题模式
+ */
+export const getOSThemeMode = (): string | false => {
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+};
+
+/**
  * 获取明亮主题
  */
 export const getThemeLight = (): string | false => {

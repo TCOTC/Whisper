@@ -1,4 +1,4 @@
-.block__icon, .toolbar__item, .protyle-icons, .protyle-icon, .dock__item--pin {
+.block__icon, .toolbar__item, .protyle-icons, .protyle-icon, .dock__item--pin, .b3-select {
 	transition: unset !important; // 按钮感觉不跟手，不要过渡样式
 }
 
@@ -51,7 +51,7 @@ label:hover .b3-switch:checked:not(:disabled)::before, .b3-switch:checked:hover:
 	}
 }
 // 页签菜单
-// TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑
+// TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑，类似外观模式的 data-name="barmode"
 #whisperCommonMenu[data-name="tab-header"] + #commonMenu > .b3-menu__items {
 	display: flex;
 	flex-direction: column;

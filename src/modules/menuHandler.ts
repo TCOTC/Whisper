@@ -1,12 +1,11 @@
 import { ThemeModule } from '../types';
-import { themeSwitchAnimation } from './themeSwitchAnimation';
+import { themeSwitch } from './themeSwitch';
 import { logging } from './logger';
 
 export class MenuHandler implements ThemeModule {
     private commonMenuObserver: MutationObserver | null = null;
     private commonMenu: HTMLElement | null = null;
     private whisperCommonMenu: HTMLElement | null = null;
-    private commonMenuType: string | null = null;
 
     /**
      * 初始化菜单处理器
@@ -69,7 +68,6 @@ export class MenuHandler implements ThemeModule {
 
                 if (this.commonMenu?.getAttribute('data-name') === 'barmode') {
                     // 外观模式菜单
-                    this.commonMenuType = 'barmode';
                     this.commonMenu.addEventListener('click', this.handleMenuClick, true);
                 } else if ( // TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑，然后提升主题最低版本号
                     this.commonMenu?.querySelector('[data-id="close"]') &&
@@ -95,10 +93,12 @@ export class MenuHandler implements ThemeModule {
     /**
      * 处理菜单点击事件
      */
-    private handleMenuClick = (e: MouseEvent): void => {
-        switch (this.commonMenuType) {
+    private handleMenuClick = (event: MouseEvent): void => {
+        const target = event.target as Element;
+        const commonMenuType = target.closest('#commonMenu').getAttribute('data-name');
+        switch (commonMenuType) {
             case 'barmode':
-                themeSwitchAnimation(e);
+                themeSwitch('commonMenu', event);
                 break;
         }
     };
