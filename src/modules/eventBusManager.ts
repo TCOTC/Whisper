@@ -100,12 +100,35 @@ export class EventBusManager implements ThemeModule {
      * 移除主题对象
      */
     private removeMyTheme(themeName: string = this.themeName): void {
+        // 具体参考思源代码 app\src\plugin\uninstall.ts
         if (window.siyuan?.ws?.app?.plugins) {
             const index = (window.siyuan.ws.app.plugins as unknown[]).findIndex(
                 item => (item as BasicPlugin).name === themeName
             );
             if (index > -1) {
                 (window.siyuan.ws.app.plugins as unknown[]).splice(index, 1); // 移除插件
+            }
+        }
+        // 清理 DOM 中的注释节点
+        this.cleanupCommentNode(themeName);
+    }
+
+    /**
+     * 清理 DOM 中的注释节点
+     */
+    private cleanupCommentNode(themeName: string): void {
+        const commentNodes = document.evaluate(
+            `//comment()[.='${themeName}']`,
+            document,
+            null,
+            XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE,
+            null
+        );
+        
+        for (let i = 0; i < commentNodes.snapshotLength; i++) {
+            const node = commentNodes.snapshotItem(i);
+            if (node && node.parentNode) {
+                node.parentNode.removeChild(node);
             }
         }
     }
