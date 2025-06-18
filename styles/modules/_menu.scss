@@ -7,12 +7,19 @@
 	transition: none; // 禁用工具栏平移效果
 }
 
-// 超链接菜单（链接&锚文本&标题）
-button[data-id="linkAndAnchorAndTitle"] textarea {
-	// 链接和锚文本输入框默认两行高（不显示滚动条就需要 50px）
-	&:nth-of-type(1),
-	&:nth-of-type(2) {
-		height: 50px;
+// 超链接菜单，链接和锚文本输入框默认两行高（不显示滚动条就需要 50px）
+button {
+	&[data-id="linkAndAnchorAndTitle"] textarea {
+		&:nth-of-type(1),
+		&:nth-of-type(2) {
+			height: 50px;
+		}
+	}
+	&[data-id="link"],
+	&[data-id="linkAndTitle"] {
+		textarea {
+			height: 50px;
+		}
 	}
 }
 
@@ -302,6 +309,7 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 				.b3-card__desc {
 					display: -webkit-box;
 					-webkit-line-clamp: 2;
+					line-clamp: 2; // Firefox, Safari
 				}
 			}
 		}
