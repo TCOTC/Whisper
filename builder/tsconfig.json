@@ -14,7 +14,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "typeRoots": ["../src/types"]
+    "typeRoots": ["../src"]
   },
   "include": ["../src/**/*.ts"]
 } 
