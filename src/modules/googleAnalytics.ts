@@ -2,8 +2,9 @@ import { LocalConfig } from './localConfig';
 import { logging } from './logger';
 import { getFile } from './api';
 
-const GA_DATE_ISO_KEY = 'theme.googleAnalytics.dateISO';
-const CHECK_INTERVAL = 3600000; // 检查间隔：1小时（1000 * 60 * 60）
+const GA_TIMESTAMP_KEY = 'theme.googleAnalytics.lastSentTimestamp';
+const CHECK_INTERVAL = 60000; // 原始检查间隔：30分钟（1000 * 60 * 30）
+const SEND_INTERVAL = 1800000; // 发送间隔：30分钟
 
 // 扩展 Window 接口以包含 Google Analytics 相关属性
 declare global {
@@ -17,6 +18,7 @@ export class GoogleAnalytics {
     private scriptId = 'whisper-theme-analytics';
     private gaId = 'G-ZY75BR723S';
     private themeVersion = window.siyuan?.config?.appearance?.themeVer;
+    private lastSentTimestamp = 0;
     private dateISO = '';
     private checkIntervalId: number | null = null;
     
@@ -44,11 +46,11 @@ export class GoogleAnalytics {
             return;
         }
 
-        await this.checkDate();
+        await this.checkAndSend();
         
-        // 设置定时检查，确保即使页面长时间不关闭也能每天发送一次数据
+        // 设置定时检查，每 30 分钟检查一次是否需要发送数据
         this.checkIntervalId = window.setInterval(() => {
-            this.checkDate().catch(err => {
+            this.checkAndSend().catch(err => {
                 logging.error('Failed to check and send analytics data:', err);
             });
         }, CHECK_INTERVAL);
@@ -76,28 +78,30 @@ export class GoogleAnalytics {
     }
 
     /**
-     * 检查日期
+     * 检查时间并发送数据
      */
-    private async checkDate() {
-        // 获取今天的日期，格式为 YYYY-MM-DD
-        const currentDateISO = new Date().toISOString().split('T')[0];
+    private async checkAndSend() {
+        const currentTimestamp = Date.now();
         
-        // 获取最后发送日期
+        // 获取今天的日期，格式为 YYYY-MM-DD
+        this.dateISO = new Date().toISOString().split('T')[0];
+        
+        // 获取最后发送时间戳
         const localConfig = new LocalConfig();
-        const lastSentDateISO = await localConfig.get(GA_DATE_ISO_KEY, undefined, {
+        const lastSentTimestamp = await localConfig.get<number>(GA_TIMESTAMP_KEY, 0, {
             retryOnConnectivityError: true,
             retryInterval: 20000, // 20秒
             maxRetries: 60 // 60次
         });
         
-        // 如果今天已经发送过数据，则不再发送
-        if (lastSentDateISO && lastSentDateISO === currentDateISO) {
+        // 如果距离上次发送时间不足 30 分钟，则不再发送
+        if (lastSentTimestamp !== undefined && currentTimestamp - lastSentTimestamp < SEND_INTERVAL) {
             return;
         }
         
-        // 更新本地存储的日期
-        this.dateISO = currentDateISO;
-        await localConfig.set(GA_DATE_ISO_KEY, this.dateISO);
+        // 更新本地存储的时间戳
+        this.lastSentTimestamp = currentTimestamp;
+        await localConfig.set(GA_TIMESTAMP_KEY, this.lastSentTimestamp);
         
         // 加载 Google Analytics
         this.initGA();
@@ -134,6 +138,8 @@ export class GoogleAnalytics {
             });
         }
 
+        console.log('Sending Google Analytics data');
+
         // 收集并发送基本信息
         this.sendInfo();
     }
@@ -153,6 +159,7 @@ export class GoogleAnalytics {
             pixel_ratio: window.devicePixelRatio,
             language: navigator.language,
             date_iso: this.dateISO,
+            timestamp: this.lastSentTimestamp,
         };
 
         try {

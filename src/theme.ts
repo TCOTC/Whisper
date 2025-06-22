@@ -70,6 +70,7 @@ class ModuleManager {
     /**
      * 调试用代码
      * 在 JS 片段中添加 `setTimeout(() => {window.siyuan.whisper.debug.showMessage = true;}, 2500);` 以启用调试消息
+     * TODO功能 主题菜单增加一个配置项，用于控制是否启用调试消息
      */
     function debug(): void {
         if (isMobile()) message('isMobile');
@@ -99,7 +100,7 @@ class ModuleManager {
 
     if (!isPublish()) {
         // 非发布模式
-        moduleManager.register(new GoogleAnalytics());       // Google 分析：发送用户信息
+        moduleManager.register(new GoogleAnalytics());       // Google 分析：发送用户信息 // TODO SiYuan v3.2.0 废弃 Google Analytics
     }
 
     if (!isMobile()) {
