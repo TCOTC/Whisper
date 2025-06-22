@@ -1,6 +1,0 @@
-{
-  "ignorePatterns": ["tools/**", "theme.js"],
-  "rules": {
-    "no-template-curly-in-string": "error"
-  }
-}
