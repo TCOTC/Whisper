@@ -1,3 +1,6 @@
+// 导入样式文件以能够在开发时自动编译
+import '../styles/theme.scss';
+
 import { DeviceDetector } from './modules/deviceDetector';
 import { BlockFocusHandler } from './modules/blockFocusHandler';
 import { ElementStatusObserver } from './modules/elementStatusObserver';
