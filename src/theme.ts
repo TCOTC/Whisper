@@ -70,7 +70,7 @@ class ModuleManager {
     /**
      * 调试用代码
      * 在 JS 片段中添加 `setTimeout(() => {window.siyuan.whisper.debug.showMessage = true;}, 2500);` 以启用调试消息
-     * TODO功能 主题菜单增加一个配置项，用于控制是否启用调试消息
+     * // TODO功能 主题菜单增加一个配置项，用于控制是否启用调试消息，不使用 window.siyuan.whisper.debug
      */
     function debug(): void {
         if (isMobile()) message('isMobile');
@@ -100,7 +100,8 @@ class ModuleManager {
 
     if (!isPublish()) {
         // 非发布模式
-        moduleManager.register(new GoogleAnalytics());       // Google 分析：发送用户信息 // TODO SiYuan v3.2.0 废弃 Google Analytics
+        moduleManager.register(new GoogleAnalytics());       // Google 分析：发送用户信息
+        // TODO功能 SiYuan v3.2.0 废弃 Google Analytics，届时需要在主题配置菜单中添加选项、在主题 README 中披露信息收集（主题首次安装的一天内不会发送数据）
     }
 
     if (!isMobile()) {
@@ -109,7 +110,6 @@ class ModuleManager {
         moduleManager.register(new ElementStatusObserver()); // 元素状态观察：监听元素状态，通过给 html 添加属性来代替使用 :has 选择器
         moduleManager.register(new DialogHandler());         // 对话框处理：为搜索对话框(Dialog)添加 resize__move 类
         moduleManager.register(new MenuHandler());           // 菜单处理：外观模式菜单、页签菜单
-        // TODO测试 MenuHandler 里的 handleTabClose 无法在平板上执行，有可能是平板属于 mobile，需要调试看看
     } else {
         // 移动端
         moduleManager.register(new MobileAIConfig());        // 移动端 AI 按钮

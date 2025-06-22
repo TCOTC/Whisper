@@ -6,17 +6,23 @@ export const isPublish = (): boolean => {
 };
 
 /**
- * 判断是否为移动设备
+ * 判断是否为移动设备（手机）
  */
 export const isMobile = (): boolean => {
     // TODO跟进 https://github.com/siyuan-note/siyuan/issues/13952 如果支持了切换界面，需要在切换界面之后重新执行被跳过的程序
     return !!window.siyuan?.mobile;
 };
 
+/**
+ * 判断是否为 iPad
+ */
 export const isIPad = () => {
     return navigator.userAgent.indexOf('iPad') > -1;
 };
 
+/**
+ * 判断是否为触屏设备（安卓平板只能通过这个）
+ */
 export const isTouchDevice = () => {
     return ('ontouchstart' in window) && navigator.maxTouchPoints > 1;
 };

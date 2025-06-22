@@ -1,6 +1,7 @@
 import { ThemeModule } from '../types';
 import { themeSwitch } from './themeSwitch';
 import { logging } from './logger';
+import { isTouchDevice } from './utils';
 
 export class MenuHandler implements ThemeModule {
     private commonMenuObserver: MutationObserver | null = null;
@@ -25,6 +26,7 @@ export class MenuHandler implements ThemeModule {
         
         if (this.commonMenu) {
             this.commonMenu.removeEventListener('click', this.handleMenuClick, true);
+            this.commonMenu.removeEventListener('click', this.handleCloseClick, true);
             this.commonMenu = null;
         }
         
@@ -60,6 +62,7 @@ export class MenuHandler implements ThemeModule {
                 // 先卸载监听再添加，避免重复添加
                 if (this.commonMenu) {
                     this.commonMenu.removeEventListener('click', this.handleMenuClick, true);
+                    this.commonMenu.removeEventListener('click', this.handleCloseClick, true);
                 }
                 
                 if (this.whisperCommonMenu) {
@@ -72,8 +75,8 @@ export class MenuHandler implements ThemeModule {
                 } else if ( // TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑，然后提升主题最低版本号
                     this.commonMenu?.querySelector('[data-id="close"]') &&
                     this.commonMenu?.querySelector('[data-id="split"]') &&
-                    this.commonMenu?.querySelector('[data-id="copy"]') &&
-                    this.commonMenu?.querySelector('[data-id="tabToWindow"]')
+                    this.commonMenu?.querySelector('[data-id="copy"]')
+                    // && this.commonMenu?.querySelector('[data-id="tabToWindow"]') // 平板上没有“移动到新窗口”选项
                 ) {
                     // 页签菜单
                     if (this.whisperCommonMenu) {
@@ -95,11 +98,13 @@ export class MenuHandler implements ThemeModule {
      */
     private handleMenuClick = (event: MouseEvent): void => {
         const target = event.target as Element;
-        const commonMenuType = target.closest('#commonMenu').getAttribute('data-name');
+        const commonMenuType = target.closest('#commonMenu')?.getAttribute('data-name') || '';
         switch (commonMenuType) {
             case 'barmode':
                 themeSwitch('commonMenu', event);
                 break;
+            default:
+                return;
         }
     };
 
@@ -108,11 +113,14 @@ export class MenuHandler implements ThemeModule {
      */
     private handleTabClose(): void {
         if (!this.commonMenu) return;
-
-        // TODO功能 如果在平板上执行，需要阻止第一层的关闭选项的点击事件，否则没法点开子菜单（判断平板的函数从原生思源的代码里拿）
         
         const closeMenu = this.commonMenu.querySelector('[data-id="close"]');
         if (!closeMenu) return;
+
+        // 如果在平板（触屏设备）上执行，需要阻止第一层的关闭选项的点击事件，否则没法点开子菜单
+        if (isTouchDevice()) {
+            this.commonMenu.addEventListener('click', this.handleCloseClick, true);
+        }
 
         const clonedCloseMenu = closeMenu.cloneNode(true) as HTMLElement;
         clonedCloseMenu.querySelector('.b3-menu__icon')?.remove(); // 克隆选项移除图标
@@ -138,4 +146,11 @@ export class MenuHandler implements ThemeModule {
             splitMenu.setAttribute('xlink:href', '#iconSplitLR');
         }
     }
+    
+    private handleCloseClick = (event: Event) => {
+        if (event.target instanceof HTMLElement && !event.target.closest('.b3-menu__submenu')) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    };
 } 
