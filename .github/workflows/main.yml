@@ -13,7 +13,19 @@ jobs:
       with:
         type: 'zip'
         filename: 'package.zip'
-        exclusions: '.* **/node_modules/** **/dist/** **/src/** **/builder/** **/tools/** **/styles/** **/icons/** *.yaml package.json *.map LICENSE'
+        exclusions: |
+          .*
+          **/node_modules/**
+          **/dist/**
+          **/src/**
+          **/builder/**
+          **/tools/**
+          **/styles/**
+          **/icons/**
+          *.yaml
+          package.json
+          *.map
+          LICENSE
 
     - name: Upload Release
       uses: ncipollo/release-action@v1
