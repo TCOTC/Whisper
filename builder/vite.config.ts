@@ -53,6 +53,11 @@ function cleanDist() {
 }
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      $themeIcons: resolve('../icons')
+    }
+  },
   build: {
     lib: {
       entry: resolve(__dirname, '../src/theme.ts'),

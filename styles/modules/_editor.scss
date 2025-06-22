@@ -688,10 +688,10 @@ body > .protyle-wysiwyg [data-node-id] {
 }
 // svg 里的 fill 填的是 --b3-theme-on-surface-light，两个模式的颜色不同
 html[data-theme-mode="light"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
-	background-image: url('./icons/task-lists/play_arrow_5F6368_light.svg');
+	background-image: url('$themeIcons/task-lists/play_arrow_5F6368_light.svg');
 }
 html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
-	background-image: url('./icons/task-lists/play_arrow_5F6368_dark.svg');
+	background-image: url('$themeIcons/task-lists/play_arrow_5F6368_dark.svg');
 }
 .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::after {
 	background-color: unset; // 有序列表、任务列表折叠的时候不需要阴影
@@ -732,32 +732,32 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 
 	&.h1:not([title]) > [spellcheck] {
 		padding-left: calc(1.75em / 1.75 * .4);
-		background-image: url('./icons/headings/h1.svg');
+		background-image: url('$themeIcons/headings/h1.svg');
 		background-position: calc(1.75px / 1.75 * 0) calc(1.75em / 1.75 * .3 + .04em);
 	}
 	&.h2 > [spellcheck] {
 		padding-left: calc(1.75em / 1.55 * .4);
-		background-image: url('./icons/headings/h2.svg');
+		background-image: url('$themeIcons/headings/h2.svg');
 		background-position: calc(1.75px / 1.55 * .5) calc(1.75em / 1.55 * .3 - .02em);
 	}
 	&.h3 > [spellcheck] {
 		padding-left: calc(1.75em / 1.38 * .4);
-		background-image: url('./icons/headings/h3.svg');
+		background-image: url('$themeIcons/headings/h3.svg');
 		background-position: calc(1.75px / 1.38 * .8) calc(1.75em / 1.38 * .3 - .06em);
 	}
 	&.h4 > [spellcheck] {
 		padding-left: calc(1.75em / 1.25 * .4);
-		background-image: url('./icons/headings/h4.svg');
+		background-image: url('$themeIcons/headings/h4.svg');
 		background-position: calc(1.75px / 1.25 * 1) calc(1.75em / 1.25 * .3 - .08em);
 	}
 	&.h5 > [spellcheck] {
 		padding-left: calc(1.75em / 1.13 * .4);
-		background-image: url('./icons/headings/h5.svg');
+		background-image: url('$themeIcons/headings/h5.svg');
 		background-position: calc(1.75px / 1.13 * 1.2) calc(1.75em / 1.13 * .3 - .14em);
 	}
 	&.h6 > [spellcheck] {
 		padding-left: calc(1.75em / 1 * .4);
-		background-image: url('./icons/headings/h6.svg');
+		background-image: url('$themeIcons/headings/h6.svg');
 		background-position: calc(1.75px / 1 * 1.5) calc(1.75em / 1 * .3 - .2em);
 	}
 
