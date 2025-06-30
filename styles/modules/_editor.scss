@@ -971,7 +971,7 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	}
 }
 
-// Notion Database 布局
+// 表格视图 - 布局参考 Notion Database
 .av__container {
 	width: 100%;
 
@@ -1111,6 +1111,59 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 			.av__firstcol,
 			.av__cell {
 				background-color: var(--b3-theme-background-light);
+			}
+		}
+	}
+}
+
+// 画廊视图 - 布局参考 Notion Database
+.av__gallery {
+	// 卡片
+	&-item {
+		.av__gallery-cover {
+			background-color: var(--b3-theme-surface-light);
+			transition: unset;
+			border-bottom: unset;
+		}
+		.av__gallery-fields {
+			background-color: unset;
+			transition: unset;
+		}
+
+		&:hover {
+			.av__gallery-cover {
+				background-color: var(--b3-theme-surface-light);
+			}
+			.av__gallery-fields {
+				background-color: unset;
+			}
+		}
+	}
+
+	// “加载更多”按钮
+	&-load {
+		margin-top: 9px;
+
+		.b3-button[data-type="av-load-more"] {
+			width: 100%;
+			margin: 5px 0 0 0;
+	
+			svg {
+				left: .5em;
+			}
+	
+			span {
+				left: 2em;
+			}
+	
+			svg[data-type=set-page-size] {
+				margin-left: auto;
+				padding: 2px 6px;
+				right: 5px;
+	
+				&:hover {
+					background-color: var(--b3-list-hover);
+				}
 			}
 		}
 	}
