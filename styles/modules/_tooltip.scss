@@ -67,17 +67,7 @@
     animation-delay: 800ms;        // 延迟显示动画
     animation-fill-mode: forwards; // 动画结束后保持最后一帧（不透明）
     opacity: 0;
-}
-
-// 需要立即显示的伪元素提示
-.b3-tooltips {
-    &.block__icon--warning, // “从数据库中移除”按钮
-    &:has(> .b3-slider) {   // 横向拖拽滚动条
-        &:hover::after {
-            animation: unset;
-            opacity: 1;
-        }
-    }
+    transition: unset;
 }
 
 
@@ -98,8 +88,17 @@
 }
 
 
-// ————————————————————特别类型的悬浮提示————————————————————
-// 无需延迟显示
+// ————————————————————特别的提示————————————————————
+// 缩短显示延迟
+.b3-tooltips {
+    &.block__icon--warning, // “从数据库中移除”按钮
+    &:has(> .b3-slider),    // 横向拖拽滚动条
+    &[data-type="av-gallery-edit"] { // 画廊卡片编辑按钮
+        &:hover::after {
+            animation-delay: 150ms; // 没有动画感觉很生硬，故保留动画
+        }
+    }
+}
 .tooltip--memo {
     animation-delay: 150ms; // 没有动画感觉很生硬，故保留动画
 }
