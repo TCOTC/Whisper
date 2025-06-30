@@ -69,23 +69,17 @@
 
 	// 行级标签。导出预览是纯文本所以没有行级标签样式
 	span[data-type~=tag] {
-		position: relative;
-		font-size: .75em;
-		bottom: .1em;
 		border-bottom: unset;
-		border-radius: var(--b3-border-radius);
-		padding: .1em .2em;
-		margin: 0 1px;
-		background-color: var(--custom-card-success-background_65); // 背景色透明才能显示出光标
+		transition: unset;
 
 		&:hover {
 			background-color: var(--b3-card-success-background);
+			border-radius: var(--b3-border-radius-s);
 		}
 
 		&::before {
-			content: "#";
-			color: var(--b3-theme-primary);
-			padding-right: 0.1em;
+			content: "#\200D"; // 使用零宽连字（zero-width joiner，ZWJ）避免在井号后换行，但只在导出时有效，因为 protyle 中的行级标签前有零宽空格导致换行
+			color: var(--b3-protyle-inline-tag-color);
 		}
 	}
 
@@ -451,9 +445,9 @@ html[data-whisper-status="show"]:not([data-whisper-layout-dockr-float="float"]) 
 				font-size: 90%;
 
 				&::before {
-					content: "#";
-					color: var(--b3-theme-primary);
+					content: "#\200D";
 					width: 11px;
+					padding-left: 0.25em;
 					opacity: 1;
 					transition: width var(--custom-transition), opacity var(--custom-transition);
 				}
