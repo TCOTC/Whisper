@@ -1,3 +1,15 @@
+// 导出预览
+.b3-typography {
+    // TODO功能 确认一下是否需要这个样式
+    // code {
+    //     background-color: var(--b3-protyle-code-background);
+    //     color: var(--b3-theme-on-background);
+    // }
+
+    // 导出预览的字号可变、默认比编辑器字号小 2px
+    font-size: calc(var(--b3-font-size-editor) - 2px);
+}
+
 // 导出 PDF 或图片时显示内容块备注
 body > #preview, .export-img {
     // 显示内容块备注（导出图片时这个伪元素不显示，所以导出图片不支持显示内容块备注）
