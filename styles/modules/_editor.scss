@@ -529,16 +529,6 @@ body > .protyle-wysiwyg [data-node-id] {
 	}
 }
 
-// 代码块
-.b3-typography .code-block, .protyle-wysiwyg .code-block, .item__readme .hljs {
-	background: var(--b3-protyle-code-background) !important;
-	border-radius: var(--b3-border-radius);
-}
-.protyle-wysiwyg:not(.protyle-wysiwyg--hiderange) .hljs ::selection {
-	background-color: var(--b3-theme-primary-lighter); // 覆盖代码块主题
-	color: inherit;
-}
-
 // 引述块和其中的行级元素，都变灰色
 .b3-typography blockquote, .b3-typography .bq, .protyle-wysiwyg blockquote, .protyle-wysiwyg .bq {
 	color: var(--b3-theme-on-surface);
@@ -834,6 +824,16 @@ body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 // author by JeffreyChen https://ld246.com/article/1728146248791
 // NOTE 用:not(#preview)排除导出PDF，用.protyle-wysiwyg排除导出预览，.protyle-wysiwyg[data-readonly="true"]是只读模式
 // NOTE 导出预览的代码块没有 .protyle-action
+
+.b3-typography .code-block, .protyle-wysiwyg .code-block, .item__readme .hljs {
+	background: var(--b3-protyle-code-background);
+	border-radius: var(--b3-border-radius);
+}
+.protyle-wysiwyg:not(.protyle-wysiwyg--hiderange) .hljs ::selection {
+	background-color: var(--b3-theme-primary-lighter); // 覆盖代码块主题
+	color: inherit;
+}
+
 div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	.protyle-action {
 		background-color: var(--b3-parent-background);
@@ -848,7 +848,17 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 			background-color: var(--b3-protyle-code-background);
 			pointer-events: none;
 		}
+
+		.protyle-action__language {
+			color: var(--b3-theme-on-background);
+		}
 	}
+
+	// 代码块本身有背景色的情况
+	&[style*="--b3-parent-background"] .protyle-action::after {
+		background-color: var(--b3-parent-background);
+	}
+
 	.hljs {
 		padding: 0 1em 24px; // .protyle-icon 的高度是 24px，要让上下边距对称的话底部也要留 24px
 	}
@@ -856,7 +866,11 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 
 // 始终显示设置的代码块语言
 .protyle-wysiwyg .code-block:not(pre):not(:hover) .protyle-action__language {
-	opacity: .86;
+	opacity: .5;
+}
+// 让代码块语言和按钮高于伪元素显示
+.protyle-wysiwyg .code-block:not(pre) :is(.protyle-action__language, .protyle-icon) {
+	z-index: 1;
 }
 // 只有 hover 代码块时才显示代码块语言占位符
 .protyle-wysiwyg[data-readonly=false] .code-block:not(pre):not(:hover) .protyle-action .protyle-action__language:empty::after {
