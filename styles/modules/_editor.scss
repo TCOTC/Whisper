@@ -94,6 +94,7 @@
 		display: inline;
 	}
 
+	// 行级代码 Part 1
 	code:not(.hljs), span[data-type~=code] {
 		padding: .2em .4em;
 		margin: 0 1px;
@@ -102,7 +103,6 @@
 		word-break: break-word;
 		background-size: 20px 20px;
 		white-space: pre-wrap;
-		background-color: var(--b3-protyle-code-background)
 	}
 
 	// 键盘样式
@@ -197,8 +197,11 @@
 			display: none; // 隐藏空标题
 		}
 	}
+}
 
-	// 半高背景色
+// 不在导出预览中使用的样式
+.protyle-wysiwyg [data-node-id] {
+	// 半高背景色（导出预览不支持复制该样式）
 	span[style*="background-color: var(--b3-font-background1)"] {
 		background-color: transparent !important;
 		background: linear-gradient(to bottom, var(--b3-font-background1) 0%, var(--b3-font-background1) 100%) center bottom / 100% .6em no-repeat;
@@ -264,6 +267,11 @@
 	span[style*="background-color: var(--b3-font-background13)"] {
 		background-color: transparent !important;
 		background: linear-gradient(to bottom, var(--b3-font-background13) 0%, var(--b3-font-background13) 100%) center bottom / 100% no-repeat;
+	}
+	
+	// 行级代码 Part 2
+	code:not(.hljs), span[data-type~=code] {
+		background-color: var(--b3-protyle-code-background) !important;
 	}
 }
 
