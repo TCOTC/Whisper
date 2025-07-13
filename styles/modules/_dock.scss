@@ -75,26 +75,45 @@ html[data-whisper-status="show"] .layout__dockr.layout--float {
 }
 
 // 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔
-// 右侧没有 .layout__resize--lr 的编辑器就是最靠右的编辑器
-html[data-whisper-layout-dockr-float="float"] .layout__center .fn__flex:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .layout-tab-container > .fn__flex-1 {
-	// 编辑器
-	&.protyle {
-		.protyle-content {
+// 右侧没有 .layout__resize--lr（纵向的拖拽条）的页签就是最靠右的页签（可以是多个页签）
+// 新窗口没有侧栏，使用 body:not(.body--window) 排除
+html[data-whisper-layout-dockr-float="float"] body:not(.body--window) .layout__center {
+	.fn__flex:not(:has(+ .layout__resize--lr)) .layout-tab-container > .fn__flex-1 {
+		// 编辑器
+		&.protyle {
+			.protyle-content {
+				margin-right: 15px;
+			}
+
+			.protyle-scroll {
+				right: 25px;
+			}
+		}
+
+		// PDF 阅读器
+		#viewerContainer {
 			margin-right: 15px;
 		}
+	}
+	
+	// 多次分屏之后 .fn__flex 有可能形成多层嵌套，需要重置
+	.fn__flex:has(+ .layout__resize--lr) .layout-tab-container > .fn__flex-1 {
+		// 编辑器
+		&.protyle {
+			.protyle-content {
+				margin-right: unset !important;
+			}
 
-		.protyle-scroll {
-			right: 25px;
+			.protyle-scroll {
+				right: 12px !important;
+			}
+		}
+
+		// PDF 阅读器
+		#viewerContainer {
+			margin-right: unset !important;
 		}
 	}
-
-	// PDF 阅读器
-	#viewerContainer {
-		margin-right: 15px;
-	}
-}
-.body--window .protyle-content {
-	margin-right: unset !important; // 新窗口没有侧栏面板
 }
 
 // 右侧栏

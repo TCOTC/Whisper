@@ -313,22 +313,43 @@
 	border-width: unset;
 }
 
-// 右下角的编辑器，滚动条的底部需要留出底栏的高度，否则会被底栏挡住
-html[data-whisper-status="show"] .layout__center .fn__flex:not(:has(+ .layout__resize--lr)):not(:has(+ .layout__resize)) > div[data-type="wnd"] > .layout-tab-container > .fn__flex-1 {
-	&.protyle .protyle-content, // 编辑器
-	#viewerContainer {          // PDF 阅读器
-		&::-webkit-scrollbar-track {
-			margin-bottom: var(--custom-status-height);
+// 避免底栏遮挡
+// .layout__resize--lr 是纵向的拖拽条，.layout__resize 是横向的拖拽条
+// 右侧没有 .layout__resize--lr（纵向的拖拽条）、下方没有 .layout__resize（横向的拖拽条）的页签就是最靠右下方的页签（可以是多个页签）
+html[data-whisper-status="show"] .layout__center {
+	.fn__flex:not(:has(+ .layout__resize--lr)):not(:has(+ .layout__resize)) .layout-tab-container > .fn__flex-1 {
+		// 右下角的编辑器，滚动条的底部需要留出底栏的高度，否则会被底栏挡住
+		&.protyle .protyle-content, // 编辑器
+		#viewerContainer {          // PDF 阅读器
+			&::-webkit-scrollbar-track {
+				margin-bottom: var(--custom-status-height);
+			}
+		}
+
+		// 底栏会挡住右下角的 反链页签/大纲页签/闪卡按钮
+		&.sy__backlink .backlinkList + .block__icons, // 反链页签
+		&.sy__outline > .fn__flex-1, // 大纲页签
+		.card__main .card__action {  // 闪卡按钮
+			padding-bottom: var(--custom-status-height);
 		}
 	}
-}
-// 底栏会挡住右下角的 反链/大纲页签/闪卡按钮
-// 新窗口不存在 data-whisper-layout-dockr-float 属性，所以用 :not() 判断
-html[data-whisper-status="show"]:not([data-whisper-layout-dockr-float="float"]) .layout__center .fn__flex:not(:has(+ .layout__resize--lr)):not(:has(+ .layout__resize)) > div[data-type="wnd"] > .layout-tab-container > .fn__flex-1 {
-	&.sy__backlink .backlinkList + .block__icons,
-	&.sy__outline > .fn__flex-1,
-	.card__main .card__action {
-		padding-bottom: var(--custom-status-height) !important;
+
+	// 多次分屏之后 .fn__flex 有可能形成多层嵌套，需要重置
+	:is(.fn__flex:has(+ .layout__resize--lr), .fn__flex:has(+ .layout__resize)) .layout-tab-container > .fn__flex-1 {
+		&.protyle .protyle-content, // 编辑器
+		#viewerContainer {          // PDF 阅读器
+			&::-webkit-scrollbar-track {
+				margin-bottom: unset !important;
+			}
+		}
+
+		&.sy__backlink .backlinkList + .block__icons, // 反链页签
+		&.sy__outline > .fn__flex-1 { // 大纲页签
+			padding-bottom: unset !important;
+		}
+		.card__main .card__action {   // 闪卡按钮
+			padding-bottom: 8px !important;
+		}
 	}
 }
 
