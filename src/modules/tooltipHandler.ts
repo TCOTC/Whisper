@@ -80,8 +80,9 @@ export class TooltipHandler implements ThemeModule {
             return;
         }
 
-        // 数据库单元格、“添加”按钮、视图
+        // 数据库单元格、选项描述、“添加”按钮、视图
         if (e.closest('.av__cell') ||
+            e.closest('[data-type="addColOptionOrCell"]') ||
             e.closest('[data-type="av-add"]') || e.closest('[data-type="av-add-more"]') || e.closest('[data-type="av-header-add"]') ||
             e.closest('[data-page]')) {
             this.setTooltipData('av');
