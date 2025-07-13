@@ -134,6 +134,11 @@ button, input, select, textarea {
 	}
 }
 
+// 菜单选项分隔线
+body:not([data-whisper-device="mobile"]) .b3-menu__separator {
+	width: 95%;
+	justify-self: center;
+}
 
 //————————————————————块菜单、右键菜单————————————————————
 
