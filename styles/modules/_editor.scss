@@ -966,6 +966,10 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 		&>span:first-child {
 			display: none;
 		}
+		// TODO废弃 v3.2.0 之后横杠的类名也是 b3-menu__avemoji，之后提升主题最低版本号的时候可以把上面这行删掉
+		.b3-menu__avemoji {
+			display: none;
+		}
 
 		.av__celltext {
 			&:not([data-type="block-ref"]):hover {
