@@ -88,6 +88,11 @@ html[data-whisper-dock-right="hide"]:is([data-whisper-layout-dockr="hide"], [dat
     padding-left: 16px;
     padding-right: 16px;
 }
+// 顶栏右侧要留三个按钮的宽度
+// 新窗口的话是四个 42px 宽度的按钮，所以是 168px，不过刚好就是原生的宽度所以不用改动
+body.body--win32 .fullscreen > :is(.protyle-breadcrumb, .block__icons) {
+    padding-right: 126px;
+}
 
 // ————————————————————浮窗————————————————————
 
