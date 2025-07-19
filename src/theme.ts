@@ -123,4 +123,5 @@ class ModuleManager {
         await moduleManager.destroyAll();
         logging.log('unloaded');
     };
+    // TODO功能 卸载主题时删除配置文件
 })(); 
