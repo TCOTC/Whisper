@@ -3,22 +3,70 @@ import { resolve } from 'path';
 import * as fs from 'fs';
 import * as sass from 'sass';
 
-// 编译 SCSS 并生成 Source Map
+// 通过检查命令行参数来区分开发模式（--watch）和生产构建模式
+const isDev = process.argv.includes('--watch');
+
+// 编译 SCSS 并生成 Source Map，同时处理图标内联
 function compileSass() {
   return {
     name: 'compile-sass',
     async writeBundle() {
+      // 读取所有图标文件
+      const iconFiles = new Map<string, string>();
+      
+      // 递归读取图标目录
+      function readIconDir(dirPath: string, prefix: string = '') {
+        const files = fs.readdirSync(dirPath);
+        for (const file of files) {
+          const fullPath = resolve(dirPath, file);
+          const stat = fs.statSync(fullPath);
+          if (stat.isDirectory()) {
+            readIconDir(fullPath, `${prefix}${file}/`);
+          } else if (file.endsWith('.svg')) {
+            const iconPath = `${prefix}${file}`;
+            const iconContent = fs.readFileSync(fullPath, 'utf8');
+            iconFiles.set(iconPath, iconContent);
+          }
+        }
+      }
+      
+      // 读取 icons 目录
+      const iconsDir = resolve(__dirname, '../icons');
+      if (fs.existsSync(iconsDir)) {
+        readIconDir(iconsDir);
+      }
+      
+      // 编译 SCSS
       const result = sass.compile('../styles/theme.scss', {
         style: 'compressed',
         sourceMap: true,
       });
       
-      fs.writeFileSync('../dist/theme-compile-sass.css', result.css + '/*# sourceMappingURL=theme.css.map */');
-      console.log('✓ theme.css\t generated');
+      // 处理图标内联
+      let processedCss = result.css;
+      
+      if (isDev) {
+        // 开发环境下把 $themeIcons 别名替换为 ./icons/ 路径，不影响 theme.css.map
+        const iconAliasRegex = /\$themeIcons/g;
+        processedCss = processedCss.replace(iconAliasRegex, './icons');
+      } else {
+        // 生产环境下内联图标
+        const iconAliasRegex = /\$themeIcons\/([^"'\s)]+)/g;
+        processedCss = processedCss.replace(iconAliasRegex, (match, iconPath) => {
+          const iconContent = iconFiles.get(iconPath);
+          if (iconContent) {
+            // 将 SVG 内容编码为 data URL
+            const encodedSvg = encodeURIComponent(iconContent);
+            return `data:image/svg+xml,${encodedSvg}`;
+          }
+          return match; // 如果找不到图标，保持原样
+        });
+      }
+      
+      fs.writeFileSync('../dist/theme.css', processedCss);
       
       if (result.sourceMap) {
-        fs.writeFileSync('../theme.css.map', JSON.stringify(result.sourceMap));
-        console.log('✓ theme.css.map\t generated');
+        fs.writeFileSync('../dist/theme.css.map', JSON.stringify(result.sourceMap));
       }
     }
   };
@@ -40,10 +88,16 @@ function copyThemeFiles() {
       }
 
       // 复制 theme.css
-      // Vite 生成的 CSS 会内联图标，但 compileSass() 生成的 theme.css 不会，所以用 Vite 的 theme.css 与 compileSass() 的 theme.css.map 配合使用
       if (fs.existsSync('../dist/theme.css')) {
-        fs.copyFileSync('../dist/theme.css', '../theme.css');
+        const cssContent = fs.readFileSync('../dist/theme.css', 'utf8');
+        // 只在开发模式下添加 sourceMap 注释
+        const finalContent = isDev ? cssContent + '/*# sourceMappingURL=theme.css.map */' : cssContent;
+        fs.writeFileSync('../theme.css', finalContent);
         console.log('✓ theme.css\t generated');
+      }
+      if (fs.existsSync('../dist/theme.css.map')) {
+        fs.copyFileSync('../dist/theme.css.map', '../theme.css.map');
+        console.log('✓ theme.css.map\t generated');
       }
     }
   };
@@ -91,7 +145,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         entryFileNames: 'theme.js',
-        assetFileNames: 'theme.css',
+        assetFileNames: 'theme-vite.css',
         inlineDynamicImports: true
       }
     },

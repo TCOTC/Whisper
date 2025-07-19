@@ -1,4 +1,4 @@
-// 导入样式文件以能够在开发时自动编译
+// 导入样式文件以能够在开发时自动编译，但 Vite 不支持为 SCSS 文件生成 Source Map。这里导入是为了让 Vite 在开发时自动编译样式文件
 import '../styles/theme.scss';
 
 import { DeviceDetector } from './modules/deviceDetector';
