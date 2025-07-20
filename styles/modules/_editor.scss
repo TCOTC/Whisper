@@ -852,6 +852,11 @@ body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 	background: var(--b3-protyle-code-background);
 	border-radius: var(--b3-border-radius);
 }
+// 集市包 README 的代码块需要背景色，否则会被 README 特效样式影响
+.item__readme pre {
+	background: var(--b3-theme-surface);
+	border-radius: var(--b3-border-radius);
+}
 .protyle-wysiwyg:not(.protyle-wysiwyg--hiderange) .hljs ::selection {
 	background-color: var(--b3-theme-primary-lighter); // 覆盖代码块主题
 	color: inherit;
