@@ -79,8 +79,17 @@ function copyThemeFiles() {
     writeBundle() {
       // 复制 theme.js
       if (fs.existsSync('../dist/theme.js')) {
-        fs.copyFileSync('../dist/theme.js', '../theme.js');
-        console.log('✓ theme.js\t generated');
+        if (isDev) {
+          // 开发环境下保留 sourceMap 注释
+          fs.copyFileSync('../dist/theme.js', '../theme.js');
+          console.log('✓ theme.js\t generated (with source map)');
+        } else {
+          // 生产环境下移除 sourceMap 注释
+          const jsContent = fs.readFileSync('../dist/theme.js', 'utf8');
+          const finalContent = jsContent.replace(/\n\/\/# sourceMappingURL=.*$/m, '');
+          fs.writeFileSync('../theme.js', finalContent);
+          console.log('✓ theme.js\t generated');
+        }
       }
       if (fs.existsSync('../dist/theme.js.map')) {
         fs.copyFileSync('../dist/theme.js.map', '../theme.js.map');
@@ -94,7 +103,7 @@ function copyThemeFiles() {
           // 只在开发模式下添加 sourceMap 注释
           const finalContent = cssContent + '/*# sourceMappingURL=theme.css.map */';
           fs.writeFileSync('../theme.css', finalContent);
-          console.log('✓ theme.css\t generated');
+          console.log('✓ theme.css\t generated (with source map)');
         }
       } else {
         if (fs.existsSync('../dist/theme-vite.css')) {
