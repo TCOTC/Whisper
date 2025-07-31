@@ -744,55 +744,56 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 	}
 
 	&.h1:not([title]) > [spellcheck] {
-		padding-left: calc(1.75em / 1.75 * .4);
+		padding-left: calc(1.75em / 1.75 * .43);
 		background-image: url('$themeIcons/headings/h1.svg');
 		background-position: calc(1.75px / 1.75 * 0) calc(1.75em / 1.75 * .3 + .04em);
 	}
 	&.h2 > [spellcheck] {
-		padding-left: calc(1.75em / 1.55 * .4);
+		padding-left: calc(1.75em / 1.55 * .43);
 		background-image: url('$themeIcons/headings/h2.svg');
 		background-position: calc(1.75px / 1.55 * .5) calc(1.75em / 1.55 * .3 - .02em);
 	}
 	&.h3 > [spellcheck] {
-		padding-left: calc(1.75em / 1.38 * .4);
+		padding-left: calc(1.75em / 1.38 * .43);
 		background-image: url('$themeIcons/headings/h3.svg');
 		background-position: calc(1.75px / 1.38 * .8) calc(1.75em / 1.38 * .3 - .06em);
 	}
 	&.h4 > [spellcheck] {
-		padding-left: calc(1.75em / 1.25 * .4);
+		padding-left: calc(1.75em / 1.25 * .43);
 		background-image: url('$themeIcons/headings/h4.svg');
 		background-position: calc(1.75px / 1.25 * 1) calc(1.75em / 1.25 * .3 - .08em);
 	}
 	&.h5 > [spellcheck] {
-		padding-left: calc(1.75em / 1.13 * .4);
+		padding-left: calc(1.75em / 1.13 * .43);
 		background-image: url('$themeIcons/headings/h5.svg');
 		background-position: calc(1.75px / 1.13 * 1.2) calc(1.75em / 1.13 * .3 - .14em);
 	}
 	&.h6 > [spellcheck] {
-		padding-left: calc(1.75em / 1 * .4);
+		padding-left: calc(1.75em / 1 * .43);
 		background-image: url('$themeIcons/headings/h6.svg');
 		background-position: calc(1.75px / 1 * 1.5) calc(1.75em / 1 * .3 - .2em);
 	}
 
 	// 列表内的首个块是标题块
 	&.li>div:nth-child(2) {
+		// 因为 min-height: 1em; 所以位置不够，要调整 background-position-y
 		&.h1:not([title]) > [spellcheck] {
-			background-position: 0 0;
+			background-position-y: 0;
 		}
 		&.h2 > [spellcheck] {
-			background-position: 0 calc(var(--b3-font-size-editor)*.05);
+			background-position-y: .05em;
 		}
 		&.h3 > [spellcheck] {
-			background-position: 0 calc(var(--b3-font-size-editor)*.1);
+			background-position-y: .1em;
 		}
 		&.h4 > [spellcheck] {
-			background-position: 0 calc(var(--b3-font-size-editor)*.15);
+			background-position-y: .15em;
 		}
 		&.h5 > [spellcheck] {
-			background-position: 0 calc(var(--b3-font-size-editor)*.25);
+			background-position-y: .25em;
 		}
 		&.h6 > [spellcheck] {
-			background-position: 0 calc(var(--b3-font-size-editor)*.35);
+			background-position-y: .35em;
 		}
 	}
 
@@ -810,7 +811,7 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 	// 子块
 	&~ div:not(.code-block) {
-		line-height: 1.625;
+		line-height: 1.625em;
 
 		&> [spellcheck] {
 			min-height: 1.625em;
@@ -824,13 +825,30 @@ body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 
 	// 首个子块
 	&+ [data-node-id] {
-		&:not(.code-block) {
-			line-height: calc(var(--b3-font-size-editor) * 1.625);
+		&.h1 {
+			// line-height: calc(1.625em / 1.75);
+			// 一级标题加一点行间距 https://github.com/siyuan-note/siyuan/issues/14062#issuecomment-2661340834
+			line-height: 1em;
 		}
 
-		// 一级标题加一点行间距 https://github.com/siyuan-note/siyuan/issues/14062#issuecomment-2661340834
-		&.h1 {
-			line-height: 1em;
+		&.h2 {
+			line-height: calc(1.625em / 1.55);
+		}
+
+		&.h3 {
+			line-height: calc(1.625em / 1.38);
+		}
+
+		&.h4 {
+			line-height: calc(1.625em / 1.25);
+		}
+
+		&.h5 {
+			line-height: calc(1.625em / 1.13);
+		}
+
+		&.h6 {
+			line-height: 1.625em;
 		}
 	}
 }
