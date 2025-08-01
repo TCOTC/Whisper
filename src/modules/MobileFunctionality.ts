@@ -1,18 +1,18 @@
 import { ThemeModule } from '../types';
 import { logging } from './logger';
 
-export class MobileAIConfig implements ThemeModule {
+export class MobileFunctionality implements ThemeModule {
     private observer: MutationObserver | null = null;
 
     /**
-     * 初始化移动端 AI 按钮
+     * 初始化移动端 AI 按钮和分隔线
      */
     public init(): void {
-        this.setupMobileAIConfig();
+        this.addMobileAIConfig();
     }
 
     /**
-     * 销毁移动端 AI 按钮
+     * 销毁移动端 AI 按钮和分隔线
      */
     public destroy(): void {
         if (this.observer) {
@@ -21,12 +21,17 @@ export class MobileAIConfig implements ThemeModule {
         }
 
         document.getElementById('menuAI')?.remove();
+
+        const mobileSeparators = document.querySelectorAll('.b3-menu__separator[data-whisper-separator]');
+        mobileSeparators.forEach(separator => {
+            separator.remove();
+        });
     }
 
     /**
-     * 设置移动端 AI 按钮
+     * 添加移动端 AI 按钮
      */
-    private setupMobileAIConfig(): void {
+    private addMobileAIConfig(): void {
         const mobileMenu = document.getElementById('menu');
         if (!mobileMenu) {
             logging.error('mobileMenu element does not exist.');
@@ -34,7 +39,7 @@ export class MobileAIConfig implements ThemeModule {
         }
 
         // 监听 mobileMenu 元素，直到 menuRiffCard 元素存在
-        this.observer = new MutationObserver((mutationsList, observer) => {
+        this.observer = new MutationObserver((_mutationsList, observer) => {
             const mobileRiffCardMenu = document.getElementById('menuRiffCard');
             if (mobileRiffCardMenu) {
                 // 找到 menuRiffCard 元素后，停止监听
@@ -48,6 +53,10 @@ export class MobileAIConfig implements ThemeModule {
                     // 插入 AI 选项
                     mobileRiffCardMenu.insertAdjacentHTML('afterend', aiHTML);
                 }
+                
+                setTimeout(() => {
+                    this.addSeparator();
+                }, 1000);
             }
         });
 
@@ -64,5 +73,16 @@ export class MobileAIConfig implements ThemeModule {
                 logging.error('menuRiffCard element does not exist.');
             }
         }, 60000); // 1 分钟超时
+    }
+
+    /**
+     * 添加分隔线（插入到“关于”后面，用于分隔内置选项和插件选项）
+     */
+    private addSeparator(): void {
+        const mobileAboutMenu = document.getElementById('menuAbout');
+        if (!mobileAboutMenu) {
+            return;
+        }
+        mobileAboutMenu.insertAdjacentHTML('afterend', '<div class="b3-menu__separator" data-whisper-separator></div>');
     }
 }

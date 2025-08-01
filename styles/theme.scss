@@ -9,6 +9,7 @@
 @use "modules/tab-bar" as *;      // 页签
 @use "modules/search" as *;       // 搜索
 @use "modules/preview" as *;      // 导出
+@use "modules/mobile" as *;       // 移动端特有样式
 @use "modules/global.scss" as *;  // 全局样式和 CSS 变量
 
 // ————————————————————— 配色 ————————————————————————

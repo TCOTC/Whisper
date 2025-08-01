@@ -7,7 +7,7 @@ import { ElementStatusObserver } from './modules/elementStatusObserver';
 import { TooltipHandler } from './modules/tooltipHandler';
 import { MenuHandler } from './modules/menuHandler';
 import { DialogHandler } from './modules/dialogHandler';
-import { MobileAIConfig } from './modules/mobileAIConfig';
+import { MobileFunctionality } from './modules/MobileFunctionality';
 import { EventBusManager } from './modules/eventBusManager';
 import { GoogleAnalytics } from './modules/googleAnalytics';
 import { logging } from './modules/logger';
@@ -112,7 +112,7 @@ class ModuleManager {
         moduleManager.register(new MenuHandler());           // 菜单处理：外观模式菜单、页签菜单
     } else {
         // 移动端
-        moduleManager.register(new MobileAIConfig());        // 移动端 AI 按钮
+        moduleManager.register(new MobileFunctionality());   // 移动端 AI 按钮和分隔线
     }
     
     // 初始化所有模块
