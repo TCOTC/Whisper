@@ -866,10 +866,6 @@ body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 // NOTE 用:not(#preview)排除导出PDF，用.protyle-wysiwyg排除导出预览，.protyle-wysiwyg[data-readonly="true"]是只读模式
 // NOTE 导出预览的代码块没有 .protyle-action
 
-.b3-typography .code-block, .protyle-wysiwyg .code-block, .item__readme .hljs {
-	background: var(--b3-protyle-code-background);
-	border-radius: var(--b3-border-radius);
-}
 // 集市包 README 的代码块需要背景色，否则会被 README 特效样式影响
 .item__readme pre {
 	background: var(--b3-theme-surface);

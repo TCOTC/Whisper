@@ -355,11 +355,40 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 		}
 	}
 }
+
 // 给 TCOTC 的插件和主题的 README 加点特效
+html[data-theme-mode="light"] {
+	// 明亮模式配色
+	--custom-bazaar-TCOTC-bg-color: rgba(228, 147, 208, .5);
+	--custom-bazaar-TCOTC-gradient-1: rgba(235, 105, 78, .5);
+	--custom-bazaar-TCOTC-gradient-1-transparent: rgba(235, 105, 78, 0);
+	--custom-bazaar-TCOTC-gradient-2: rgba(243, 11, 164, .5);
+	--custom-bazaar-TCOTC-gradient-2-transparent: rgba(243, 11, 164, 0);
+	--custom-bazaar-TCOTC-gradient-3: rgba(254, 234, 131, .5);
+	--custom-bazaar-TCOTC-gradient-3-transparent: rgba(254, 234, 131, 0);
+	--custom-bazaar-TCOTC-gradient-4: rgba(170, 142, 245, .5);
+	--custom-bazaar-TCOTC-gradient-4-transparent: rgba(170, 142, 245, 0);
+	--custom-bazaar-TCOTC-gradient-5: rgba(248, 192, 147, .5);
+	--custom-bazaar-TCOTC-gradient-5-transparent: rgba(248, 192, 147, 0);
+}
+html[data-theme-mode="dark"] {
+	// 暗黑模式配色
+	--custom-bazaar-TCOTC-bg-color: rgba(120, 80, 100, .3);
+	--custom-bazaar-TCOTC-gradient-1: rgba(150, 80, 60, .3);
+	--custom-bazaar-TCOTC-gradient-1-transparent: rgba(150, 80, 60, 0);
+	--custom-bazaar-TCOTC-gradient-2: rgba(120, 60, 100, .3);
+	--custom-bazaar-TCOTC-gradient-2-transparent: rgba(120, 60, 100, 0);
+	--custom-bazaar-TCOTC-gradient-3: rgba(180, 160, 80, .3);
+	--custom-bazaar-TCOTC-gradient-3-transparent: rgba(180, 160, 80, 0);
+	--custom-bazaar-TCOTC-gradient-4: rgba(100, 80, 150, .3);
+	--custom-bazaar-TCOTC-gradient-4-transparent: rgba(100, 80, 150, 0);
+	--custom-bazaar-TCOTC-gradient-5: rgba(150, 120, 80, .3);
+	--custom-bazaar-TCOTC-gradient-5-transparent: rgba(150, 120, 80, 0);
+}
 // 原始样式来源于 https://www.bilibili.com/video/BV1b44y1e7Wx/ https://codepen.io/stevenlei/pen/ZEJxXGL
 #configBazaarReadme.config-bazaar__readme--show:has(> .item__side[data-obj*="TCOTC"]) {
 	background: var(--b3-theme-surface);
-
+	
 	&::before {
 		content: '';
 		display: block;
@@ -369,25 +398,25 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 		top: 0;
 		left: 0;
 		border-radius: var(--b3-border-radius-b);
-		background-color: rgba(228, 147, 208, .5);
+		background-color: var(--custom-bazaar-TCOTC-bg-color);
 		background-image:
-				radial-gradient(closest-side, rgba(235, 105, 78, .5), rgba(235, 105, 78, 0)),
-				radial-gradient(closest-side, rgba(243, 11, 164, .5), rgba(243, 11, 164, 0)),
-				radial-gradient(closest-side, rgba(254, 234, 131, .5), rgba(254, 234, 131, 0)),
-				radial-gradient(closest-side, rgba(170, 142, 245, .5), rgba(170, 142, 245, 0)),
-				radial-gradient(closest-side, rgba(248, 192, 147, .5), rgba(248, 192, 147, 0));
+			radial-gradient(closest-side, var(--custom-bazaar-TCOTC-gradient-1), var(--custom-bazaar-TCOTC-gradient-1-transparent)),
+			radial-gradient(closest-side, var(--custom-bazaar-TCOTC-gradient-2), var(--custom-bazaar-TCOTC-gradient-2-transparent)),
+			radial-gradient(closest-side, var(--custom-bazaar-TCOTC-gradient-3), var(--custom-bazaar-TCOTC-gradient-3-transparent)),
+			radial-gradient(closest-side, var(--custom-bazaar-TCOTC-gradient-4), var(--custom-bazaar-TCOTC-gradient-4-transparent)),
+			radial-gradient(closest-side, var(--custom-bazaar-TCOTC-gradient-5), var(--custom-bazaar-TCOTC-gradient-5-transparent));
 		background-size:
-				130vmax 130vmax,
-				80vmax 80vmax,
-				90vmax 90vmax,
-				110vmax 110vmax,
-				90vmax 90vmax;
+			130vmax 130vmax,
+			80vmax 80vmax,
+			90vmax 90vmax,
+			110vmax 110vmax,
+			90vmax 90vmax;
 		background-position:
-				-80vmax -80vmax,
-				60vmax -30vmax,
-				10vmax 10vmax,
-				-30vmax -10vmax,
-				50vmax 50vmax;
+			-80vmax -80vmax,
+			60vmax -30vmax,
+			10vmax 10vmax,
+			-30vmax -10vmax,
+			50vmax 50vmax;
 		background-repeat: no-repeat;
 		animation: 10s movement linear infinite;
 	}
@@ -417,59 +446,59 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 @keyframes movement {
 	0%, 100% {
 		background-size:
-				130vmax 130vmax,
-				80vmax 80vmax,
-				90vmax 90vmax,
-				110vmax 110vmax,
-				90vmax 90vmax;
+			130vmax 130vmax,
+			80vmax 80vmax,
+			90vmax 90vmax,
+			110vmax 110vmax,
+			90vmax 90vmax;
 		background-position:
-				-80vmax -80vmax,
-				60vmax -30vmax,
-				10vmax 10vmax,
-				-30vmax -10vmax,
-				50vmax 50vmax;
+			-80vmax -80vmax,
+			60vmax -30vmax,
+			10vmax 10vmax,
+			-30vmax -10vmax,
+			50vmax 50vmax;
 	}
 	25% {
 		background-size:
-				100vmax 100vmax,
-				90vmax 90vmax,
-				100vmax 100vmax,
-				90vmax 90vmax,
-				60vmax 60vmax;
+			100vmax 100vmax,
+			90vmax 90vmax,
+			100vmax 100vmax,
+			90vmax 90vmax,
+			60vmax 60vmax;
 		background-position:
-				-60vmax -90vmax,
-				50vmax -40vmax,
-				0 -20vmax,
-				-40vmax -20vmax,
-				40vmax 60vmax;
+			-60vmax -90vmax,
+			50vmax -40vmax,
+			0 -20vmax,
+			-40vmax -20vmax,
+			40vmax 60vmax;
 	}
 	50% {
 		background-size:
-				80vmax 80vmax,
-				110vmax 110vmax,
-				80vmax 80vmax,
-				60vmax 60vmax,
-				80vmax 80vmax;
+			80vmax 80vmax,
+			110vmax 110vmax,
+			80vmax 80vmax,
+			60vmax 60vmax,
+			80vmax 80vmax;
 		background-position:
-				-50vmax -70vmax,
-				40vmax -30vmax,
-				10vmax 0,
-				20vmax 10vmax,
-				30vmax 70vmax;
+			-50vmax -70vmax,
+			40vmax -30vmax,
+			10vmax 0,
+			20vmax 10vmax,
+			30vmax 70vmax;
 	}
 	75% {
 		background-size:
-				90vmax 90vmax,
-				90vmax 90vmax,
-				100vmax 100vmax,
-				90vmax 90vmax,
-				70vmax 70vmax;
+			90vmax 90vmax,
+			90vmax 90vmax,
+			100vmax 100vmax,
+			90vmax 90vmax,
+			70vmax 70vmax;
 		background-position:
-				-50vmax -40vmax,
-				50vmax -30vmax,
-				20vmax 0,
-				-10vmax 10vmax,
-				40vmax 60vmax;
+			-50vmax -40vmax,
+			50vmax -30vmax,
+			20vmax 0,
+			-10vmax 10vmax,
+			40vmax 60vmax;
 	}
 }
 
