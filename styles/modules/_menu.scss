@@ -251,12 +251,13 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 		.config-bazaar__content {
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+			margin-top: 16px;
 			margin-right: 6px;
 
 			.b3-card {
 				display: grid;
 				grid-template-columns: 90px 1fr;
-				margin: 16px 0 0 16px;
+				margin: 0 0 16px 16px;
 				transition: unset;
 
 				&:hover {
