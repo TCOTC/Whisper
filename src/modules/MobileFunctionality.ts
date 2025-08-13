@@ -5,14 +5,14 @@ export class MobileFunctionality implements ThemeModule {
     private observer: MutationObserver | null = null;
 
     /**
-     * 初始化移动端 AI 按钮和分隔线
+     * 初始化移动端 AI 按钮
      */
     public init(): void {
         this.addMobileAIConfig();
     }
 
     /**
-     * 销毁移动端 AI 按钮和分隔线
+     * 销毁移动端 AI 按钮
      */
     public destroy(): void {
         if (this.observer) {
@@ -53,10 +53,6 @@ export class MobileFunctionality implements ThemeModule {
                     // 插入 AI 选项
                     mobileRiffCardMenu.insertAdjacentHTML('afterend', aiHTML);
                 }
-                
-                setTimeout(() => {
-                    this.addSeparator();
-                }, 1000);
             }
         });
 
@@ -73,16 +69,5 @@ export class MobileFunctionality implements ThemeModule {
                 logging.error('menuRiffCard element does not exist.');
             }
         }, 60000); // 1 分钟超时
-    }
-
-    /**
-     * 添加分隔线（插入到“关于”后面，用于分隔内置选项和插件选项）
-     */
-    private addSeparator(): void {
-        const mobileAboutMenu = document.getElementById('menuAbout');
-        if (!mobileAboutMenu) {
-            return;
-        }
-        mobileAboutMenu.insertAdjacentHTML('afterend', '<div class="b3-menu__separator" data-whisper-separator></div>');
     }
 }

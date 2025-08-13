@@ -4,3 +4,8 @@
 .b3-menu__separator[data-whisper-separator] + .b3-menu__separator {
   display: none;
 }
+
+// 在“关于”后面添加分隔线，用于分隔内置选项和插件选项
+#menu .b3-menu__item[id="menuAbout"] {
+  margin-bottom: 16px;
+}
