@@ -865,7 +865,10 @@ body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 // author by JeffreyChen https://ld246.com/article/1728146248791
 // NOTE 用:not(#preview)排除导出PDF，用.protyle-wysiwyg排除导出预览，.protyle-wysiwyg[data-readonly="true"]是只读模式
 // NOTE 导出预览的代码块没有 .protyle-action
-
+.b3-typography .code-block, .protyle-wysiwyg .code-block {
+	background: var(--b3-protyle-code-background);
+	border-radius: var(--b3-border-radius);
+}
 // 集市包 README 的代码块需要背景色，否则会被 README 特效样式影响
 .item__readme pre {
 	background: var(--b3-theme-surface);
@@ -953,9 +956,10 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 }
 
 // 单选、多选、资源字段选项，筛选菜单选项等
-.av__cell .b3-chip,     // 条目
-.b3-menu .b3-chip,      // 选项菜单、设置菜单
-.custom-attr .b3-chip { // 属性面板
+.av__group-title .b3-chip, // 分组标题
+.av__cell .b3-chip,        // 条目
+.b3-menu .b3-chip,         // 选项菜单、设置菜单
+.custom-attr .b3-chip {    // 属性面板
 	color: var(--b3-theme-on-background) !important;
 	outline: 1px solid var(--custom-theme-on-surface-light_30);
 	outline-offset: -1px;
