@@ -565,9 +565,14 @@ body > .protyle-wysiwyg [data-node-id] {
 }
 
 // 分隔线
-.protyle-wysiwyg [data-node-id].hr>div::after {
-	height: .2em;
-	top: calc(15px - .2em); // 与块标对齐
+.protyle-wysiwyg [data-node-id].hr > div {
+	height: unset; // 兼容 https://github.com/siyuan-note/siyuan/pull/15701 前的旧版本样式
+	min-height: 1.625em;
+
+	&::after {
+		height: calc(3em / 16);
+		top: calc(1.625em / 2 - (3em / 16) / 2); // 居中，与块标对齐
+	}
 }
 .b3-typography hr {
 	border-bottom-width: .2em;
