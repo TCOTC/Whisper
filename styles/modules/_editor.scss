@@ -727,7 +727,32 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 
 // 给折叠的非列表项块添加背景
 .protyle-wysiwyg [data-node-id][fold="1"]:not(.li) {
-	background-image: repeating-linear-gradient(-45deg,var(--b3-theme-background-light),var(--b3-theme-background-light) 5px, var(--b3-list-hover) 0, var(--b3-list-hover) 10px);
+	background-image: repeating-linear-gradient(
+		-45deg,
+		var(--b3-theme-background-light),
+		var(--b3-theme-background-light) 5px,
+		var(--b3-list-hover) 0,
+		var(--b3-list-hover) 10px
+	);
+
+	// 折叠的代码块
+	&.code-block:not(pre) {
+		.protyle-action {
+			background-image: inherit; // 继承父级的背景图
+			background-position: 8px 0;
+
+			&::after {
+				background-color: var(--b3-list-hover) !important;
+			}
+		}
+
+		.hljs {
+			background-image: inherit;
+			background-position: 11px 0;
+			background-color: var(--b3-theme-background-light);
+		}
+	}
+
 }
 // TODO功能 给各种类型的块分别弄个合适的折叠样式
 
