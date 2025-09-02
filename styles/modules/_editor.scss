@@ -1043,6 +1043,13 @@ div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
 	}
 }
 
+// 分组标题
+.av__group-name {
+  &, & .b3-chip {
+    font-weight: 600;
+  }
+}
+
 // 表格视图 - 布局参考 Notion Database
 .av__container {
 	width: 100%;
