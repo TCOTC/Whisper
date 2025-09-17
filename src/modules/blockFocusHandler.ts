@@ -32,7 +32,7 @@ export class BlockFocusHandler implements ThemeModule {
     /**
      * 处理块焦点，给焦点所在块添加属性 data-whisper-block-focus，用于 CSS 选择器
      */
-    private focusBlock = (event: MouseEvent | KeyboardEvent | DragEvent | TouchEvent): void => {
+    private focusBlock = async (event: MouseEvent | KeyboardEvent | DragEvent | TouchEvent): Promise<void> => {
         // 获取活动编辑器
         let editor: HTMLElement | null = null;
         if (document.activeElement instanceof HTMLElement) {
@@ -71,6 +71,8 @@ export class BlockFocusHandler implements ThemeModule {
             }
         }
         if (!block) {
+            // 点击文档末尾时，需要等待 10 毫秒才能获取到新建的空块
+            await new Promise(resolve => setTimeout(resolve, 10));
             // 处理键盘操作：获取光标所在块
             const selection = window.getSelection();
             if (!selection || !selection.anchorNode) return;
