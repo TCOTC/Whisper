@@ -57,7 +57,7 @@ export class DialogHandler implements ThemeModule {
                     // 使用 setTimeout 将代码执行推迟到下一个事件循环，确保子元素已经完全渲染
                     setTimeout(() => {
                         const element = node as HTMLElement;
-                        if (element.classList.contains('b3-dialog--open')) {
+                        if (element.hasAttribute('data-key')) {
                             this.handleDialogOpen(element);
                         }
                     });

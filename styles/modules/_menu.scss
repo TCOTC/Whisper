@@ -112,9 +112,7 @@ button, input, select, textarea {
 
 // 设置窗口
 .b3-dialog--open[data-key="dialog-setting"] .config__tab-title.resize__move {
-	cursor: grab; // 表示可拖拽窗口
-
-	&+.b3-form__icon +.config__tab-hr {
+	&+ .b3-form__icon + .config__tab-hr {
 		display: none; // 隐藏分隔线
 	}
 }

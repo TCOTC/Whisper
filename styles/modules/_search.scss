@@ -8,10 +8,6 @@
     & > .block__icons {
         order: 2;
         min-height: 28px;
-
-        .resize__move {
-            cursor: grab; // 表示可拖拽窗口
-        }
     }
 
     .b3-form__icon.search__header { // 搜索
@@ -295,6 +291,5 @@
 
 // 搜索窗口底部的快捷键提示栏
 .search__tip {
-    cursor: grab;
     user-select: none;
 }
