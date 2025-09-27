@@ -44,7 +44,7 @@ label:hover .b3-switch:checked:not(:disabled)::before, .b3-switch:checked:hover:
 	min-width: 100px;
 
 	// 隐藏不常用的块标选项
-	&:is([data-id="jumpToParentNext"], [data-id="jumpToParentPrev"], [data-id="jumpToParent"], [data-id="enterBack"]) {
+	&:is([data-id="jumpTo"], [data-id="jumpToParentNext"], [data-id="jumpToParentPrev"], [data-id="jumpToParent"], [data-id="enterBack"]) {
 		display: none;
 	}
 	&[data-id="docInfo"] .b3-menu__label,&[data-id="updateAndCreatedAt"] .b3-menu__label {
