@@ -13,10 +13,10 @@
 
 ### 致謝
 
-本主題的靈感來源於 [Savor](https://github.com/royc01/notion-theme)、[Asri](https://github.com/mustakshif/Asri) 和 [pink-room](https://github.com/StarDustSheep/pink-room) 主題的設計理念，向它們的創作者致以誠摯的感謝。
+本主題部分參考了 [Savor](https://github.com/royc01/notion-theme)、[Asri](https://github.com/mustakshif/Asri) 和 [pink-room](https://github.com/StarDustSheep/pink-room) 專案，向它們的創作者致以誠摯的感謝。
 
 ### 展望
 
-如果您有想法或問題，歡迎通過 [GitHub Issues](https://github.com/TCOTC/Whisper/issues) 與我聯繫。我們計劃持續優化主題的細節。
+如果您有想法或問題，歡迎通過 [GitHub Issues](https://github.com/TCOTC/Whisper/issues) 與我聯繫。我計劃持續優化主題的細節。
 
 希望這款主題能夠成為您寫作的好幫手，讓每一次筆記和創作都變得更加愉悅！

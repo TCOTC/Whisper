@@ -13,10 +13,10 @@ This is a personally styled SiYuan Note theme, designed to provide SiYuan users 
 
 ### Acknowledgements
 
-This theme draws inspiration from the design concepts of [Savor](https://github.com/royc01/notion-theme), [Asri](https://github.com/mustakshif/Asri) and [pink-room](https://github.com/StarDustSheep/pink-room) themes. We extend our heartfelt thanks to their creators.
+This theme partially references [Savor](https://github.com/royc01/notion-theme), [Asri](https://github.com/mustakshif/Asri) and [pink-room](https://github.com/StarDustSheep/pink-room) projects. We extend our heartfelt thanks to their creators.
 
 ### Future Plans
 
-If you have ideas or questions, feel free to reach out via [GitHub Issues](https://github.com/TCOTC/Whisper/issues). We plan to continuously refine the details of the theme.
+If you have ideas or questions, feel free to reach out via [GitHub Issues](https://github.com/TCOTC/Whisper/issues). I plan to continuously refine the details of the theme.
 
-We hope this theme becomes your trusted companion in writing, making every note-taking and creation more enjoyable!
+I hope this theme becomes your trusted companion in writing, making every note-taking and creation more enjoyable!
