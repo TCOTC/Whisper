@@ -25,7 +25,7 @@ export const showMessage = (message: string, timeout = 6000, type = 'info', mess
     }
     const id = messageId || genUUID();
     const existElement = messagesElement.querySelector(`.b3-snackbar[data-id="${id}"]`);
-    const messageVersion = message + (type === 'error' ? ' v' + (window.siyuan?.version ?? '') : '');
+    const messageVersion = message + (type === 'error' ? ' v' + (window.siyuan.config?.system?.kernelVersion ?? '') : '');
     if (existElement) {
         const timeoutId = existElement.getAttribute('data-timeoutid');
         if (timeoutId) {
@@ -56,7 +56,7 @@ export const showMessage = (message: string, timeout = 6000, type = 'info', mess
     }
     if (messagesElement.parentElement) {
         messagesElement.parentElement.classList.add('b3-snackbars--show');
-        messagesElement.parentElement.style.zIndex = ((window.siyuan?.zIndex ?? 0) + 1).toString();
+        messagesElement.parentElement.style.zIndex = ((window.siyuan.zIndex ?? 0) + 1).toString();
     }
     messagesElement.insertAdjacentHTML('afterbegin', messageHTML + '</div>');
     setTimeout(() => {

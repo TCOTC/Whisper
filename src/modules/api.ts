@@ -185,7 +185,7 @@ export const putFile = async (
                 };
             }
 
-            if (window.siyuan?.isPublish) {
+            if (window.siyuan.isPublish) {
                 return {
                     code: 403,
                     msg: 'You are not allowed to write files in published workspace',
@@ -210,6 +210,72 @@ export const putFile = async (
             const response = await fetch('/api/file/putFile', {
                 method: 'POST',
                 body: formData
+            });
+            
+            return await response.json();
+        } catch (error) {
+            return {
+                code: 500,
+                msg: `Request exception:${error instanceof Error ? error.message : String(error)}`,
+                data: null
+            };
+        }
+    }
+};
+
+/**
+ * 删除文件
+ * @param path 工作空间路径下的文件路径
+ * @param options 选项
+ * @param options.retryOnConnectivityError 是否在连通性错误时进行重试，默认为 false
+ * @param options.retryInterval 重试间隔时间（毫秒），默认 30000 毫秒（30秒）
+ * @param options.maxRetries 最大重试次数，默认 50 次
+ * @returns 删除操作结果
+ */
+export const removeFile = async (
+    path: string,
+    options: {
+        retryOnConnectivityError?: boolean;
+        retryInterval?: number;
+        maxRetries?: number;
+    } = {}
+): Promise<{ code: number; msg: string; data: null }> => {
+    const { retryOnConnectivityError = false, retryInterval = 30000, maxRetries = 50 } = options;
+    let retries = 0;
+    
+    while (true) {
+        try {
+            // 进行连通性检查
+            const isConnected = await checkConnectivityWithCache();
+            if (!isConnected) {
+                // 如果启用了重试且未达到最大重试次数，则等待后重试
+                if (retryOnConnectivityError && retries < maxRetries) {
+                    retries++;
+                    await new Promise(resolve => setTimeout(resolve, retryInterval));
+                    continue;
+                }
+                
+                return {
+                    code: 503,
+                    msg: 'Server connectivity check failed',
+                    data: null
+                };
+            }
+
+            if (window.siyuan.isPublish) {
+                return {
+                    code: 403,
+                    msg: 'You are not allowed to delete files in published workspace',
+                    data: null
+                };
+            }
+
+            const response = await fetch('/api/file/removeFile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ path })
             });
             
             return await response.json();

@@ -47,7 +47,7 @@ export class MobileFunctionality implements ThemeModule {
 
                 const mobileAiMenu = document.getElementById('menuAI');
                 if (!mobileAiMenu) {
-                    const aiHTML = `<div class="b3-menu__item${window.siyuan?.config?.readonly ? ' fn__none' : ''}" id="menuAI">
+                    const aiHTML = `<div class="b3-menu__item${window.siyuan.config?.readonly ? ' fn__none' : ''}" id="menuAI">
                         <svg class="b3-menu__icon"><use xlink:href="#iconSparkles"></use></svg><span class="b3-menu__label">AI</span>
                     </div>`;
                     // 插入 AI 选项

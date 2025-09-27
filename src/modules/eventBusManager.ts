@@ -4,10 +4,7 @@ import { ThemeModule } from '../types';
 // 参考：绑定思源事件总线（eventBus） https://ld246.com/article/1746977623250
 
 // 定义基本的插件接口，只包含我们需要的属性
-interface BasicPlugin {
-    name: string;
-    [key: string]: unknown;
-}
+type BasicPlugin = { name: string } & Record<string, any>;
 
 export class EventBusManager implements ThemeModule {
     private themeName: string = 'whisper-theme';
@@ -44,7 +41,7 @@ export class EventBusManager implements ThemeModule {
      * 获取主题对象
      */
     private getThisTheme(themeName: string = this.themeName): Theme {
-        const thisTheme = window.siyuan?.ws?.app?.plugins?.find(
+        const thisTheme = window.siyuan.ws?.app?.plugins?.find(
             item => (item as BasicPlugin).name === themeName
         ) as unknown as Theme;
         
@@ -57,7 +54,7 @@ export class EventBusManager implements ThemeModule {
         // 创建一个基本对象并转换为 Theme 类型
         const newTheme = {
             name: themeName,
-            app: window.siyuan?.ws?.app?.appId || '',
+            app: window.siyuan.ws?.app?.appId || '',
             displayName: themeName,
             i18n: null,
             eventBus: {
@@ -90,7 +87,7 @@ export class EventBusManager implements ThemeModule {
         } as unknown as Theme;
         
         // 由于类型兼容性问题，这里使用 as unknown 进行双重类型转换
-        if (window.siyuan?.ws?.app?.plugins) {
+        if (window.siyuan.ws?.app?.plugins) {
             (window.siyuan.ws.app.plugins as unknown[]).push(newTheme);
         }
         return newTheme;
@@ -101,7 +98,7 @@ export class EventBusManager implements ThemeModule {
      */
     private removeMyTheme(themeName: string = this.themeName): void {
         // 具体参考思源代码 app\src\plugin\uninstall.ts
-        if (window.siyuan?.ws?.app?.plugins) {
+        if (window.siyuan.ws?.app?.plugins) {
             const index = (window.siyuan.ws.app.plugins as unknown[]).findIndex(
                 item => (item as BasicPlugin).name === themeName
             );

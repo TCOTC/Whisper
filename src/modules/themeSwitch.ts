@@ -16,7 +16,7 @@ export function themeSwitch(type: string, event: MouseEvent): void {
             //  要提升主题最低版本号
             //  case 中重复的逻辑移动到 switch 语句外
 
-            const siyuanLanguages = window.siyuan?.languages;
+            const siyuanLanguages = window.siyuan.languages;
             if (!siyuanLanguages) {
                 logging.error('window.siyuan.languages is not available');
                 return;
@@ -41,7 +41,7 @@ export function themeSwitch(type: string, event: MouseEvent): void {
             }
 
             // 当前模式
-            const currentMode = window.siyuan?.config?.appearance?.mode === 0 ? themeLight : themeDark;
+            const currentMode = window.siyuan.config?.appearance?.mode === 0 ? themeLight : themeDark;
             // 如果切换后的模式不变，则跳过
             if (targetMode === currentMode) return;
 
@@ -61,7 +61,7 @@ export function themeSwitch(type: string, event: MouseEvent): void {
             
             // 0: Light, 1: Dark, 2: OS
             const newModeValue = modeSelectValue === 2 ? (getOSThemeMode() === 'light' ? 0 : 1) : modeSelectValue;
-            const currentModeValue = window.siyuan?.config?.appearance?.mode;
+            const currentModeValue = window.siyuan.config?.appearance?.mode;
 
             // 如果外观模式没有变化，则跳过
             if (newModeValue === currentModeValue) return;

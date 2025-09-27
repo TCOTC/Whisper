@@ -14,10 +14,13 @@ declare global {
     }
 }
 
+/**
+ * Google Analytics 模块：发送统计信息
+ */
 export class GoogleAnalytics {
     private scriptId = 'whisper-theme-analytics';
     private gaId = 'G-ZY75BR723S';
-    private themeVersion = window.siyuan?.config?.appearance?.themeVer;
+    private themeVersion = window.siyuan.config?.appearance?.themeVer;
     private lastSentTimestamp = 0;
     private dateISO = '';
     private checkIntervalId: number | null = null;
@@ -41,13 +44,17 @@ export class GoogleAnalytics {
      * 初始化 Google Analytics
      */
     async init() {
+        // 等待 5 秒，确保配置加载完成
+        await new Promise(resolve => setTimeout(resolve, 5000));
         // 检查用户是否禁用了 Google Analytics
-        if (window.siyuan?.config?.system?.disableGoogleAnalytics) {
+        if (
+            window.siyuan.config?.system?.disableGoogleAnalytics || // 思源 v3.2.0 之前的 Google Analytics 选项，如果禁用了的话这个工作空间就会一直禁用下去
+            window.siyuan.whisper.theme.googleAnalytics.disableGoogleAnalytics // TODO功能 支持配置，安装主题之后的默认配置 = window.siyuan.config?.system?.disableGoogleAnalytics ?? true
+        ) {
             return;
         }
-
+        // 主题初始化时先发送一次数据
         await this.checkAndSend();
-        
         // 设置定时检查，每 30 分钟检查一次是否需要发送数据
         this.checkIntervalId = window.setInterval(() => {
             this.checkAndSend().catch(err => {
@@ -88,6 +95,7 @@ export class GoogleAnalytics {
         
         // 获取最后发送时间戳
         const localConfig = new LocalConfig();
+        await localConfig.init();
         const lastSentTimestamp = await localConfig.get<number>(GA_TIMESTAMP_KEY, 0, {
             retryOnConnectivityError: true,
             retryInterval: 20000, // 20秒
@@ -124,6 +132,7 @@ export class GoogleAnalytics {
         // 初始化 GA 配置（如果尚未初始化）
         if (!window.whisper_theme_gtag) {
             /* eslint-disable prefer-rest-params, @typescript-eslint/no-unused-vars */
+            // @ts-ignore
             function gtag(..._args: unknown[]) {
                 window.dataLayer = window.dataLayer || [];
                 window.dataLayer.push(arguments);
@@ -132,13 +141,12 @@ export class GoogleAnalytics {
 
             gtag('js', new Date());
             gtag('config', this.gaId, {
-                'send_page_view': false,
-                'user_id': window.siyuan?.user?.userId || 'anonymous',
-                'user_name': window.siyuan?.user?.userName || 'anonymous'
+                'send_page_view': false,               // 阻止 GA4 自动发送 page_view event
+                'user_id': window.siyuan.user?.userId, // 已登录用户的 User-ID：用于将统计信息与实际的单个用户关联以避免重复统计 https://developers.google.com/analytics/devguides/collection/ga4/user-id?client_type=gtag
             });
         }
 
-        console.log('Sending Google Analytics data');
+        logging.log('Sending Google Analytics data. https://github.com/TCOTC/Whisper/issues/11'); // TODO: 修改输出日志为“Whisper 主题正在发送 Google Analytics 数据（在外观模式菜单中可以禁用）”
 
         // 收集并发送基本信息
         this.sendInfo();
@@ -153,50 +161,52 @@ export class GoogleAnalytics {
         }
 
         const params: Record<string, unknown> = {
-            theme_version: this.themeVersion,
-            screen_width: window.innerWidth,
-            screen_height: window.innerHeight,
-            pixel_ratio: window.devicePixelRatio,
+            theme_version: this.themeVersion,  // 主题版本：用于统计一个时间段内的主题版本使用情况
+            date_iso: this.dateISO,            // ISO日期：用于统计单日活跃用户数
+            timestamp: this.lastSentTimestamp, // 最后发送时间戳
             language: navigator.language,
-            date_iso: this.dateISO,
-            timestamp: this.lastSentTimestamp,
         };
 
         try {
             // 添加思源笔记相关信息（如果可用）
             const siyuan = window.siyuan;
             if (siyuan) {
-                // 系统信息
-                if (siyuan.config?.system) {
-                    params.app_version = siyuan.config.system.kernelVersion;
-                    params.app_container = siyuan.config.system.container;
-                    params.app_os = siyuan.config.system.os;
-                    params.app_platform = siyuan.config.system.osPlatform;
+                if (siyuan.config?.lang) {
+                    params.app_language = siyuan.config.lang; // 界面语言：用于统计主题在不同语言中的使用情况
                 }
 
-                // 用户信息（不包含隐私数据）
-                if (siyuan.user) {
-                    params.is_logged_in = true;
-                    params.subscription_status = siyuan.user.userSiYuanSubscriptionStatus;
-                    params.subscription_plan = siyuan.user.userSiYuanSubscriptionPlan;
-                    params.subscription_type = siyuan.user.userSiYuanSubscriptionType;
-                    params.one_time_pay_status = siyuan.user.userSiYuanOneTimePayStatus;
-                } else {
-                    params.is_logged_in = false;
+                // 系统信息
+                if (siyuan.config?.system) {
+                    params.app_version = siyuan.config.system.kernelVersion; // 思源笔记版本：用于统计主题在不同思源笔记版本上的使用情况
+                    params.app_container = siyuan.config.system.container;   // 运行环境：　　用于统计主题在 桌面端、移动端、Docker 上的使用情况
+                    params.app_os = siyuan.config.system.os;                 // 操作系统类型：用于统计主题在 Windows、MacOS、Linux、Android、iOS 上的使用情况
+                    params.app_platform = siyuan.config.system.osPlatform;   // 操作系统名称：用于统计主题在操作系统不同版本上的使用情况，包含操作系统版本号、WebView 版本号
                 }
+
+                // 订阅信息
+                // if (siyuan.user) {
+                //     params.is_logged_in = true;
+                //     params.subscription_status = siyuan.user.userSiYuanSubscriptionStatus;
+                //     params.subscription_plan = siyuan.user.userSiYuanSubscriptionPlan;
+                //     params.subscription_type = siyuan.user.userSiYuanSubscriptionType;
+                //     params.one_time_pay_status = siyuan.user.userSiYuanOneTimePayStatus;
+                // } else {
+                //     params.is_logged_in = false;
+                // }
 
                 // 同步信息
                 if (siyuan.config?.sync) {
-                    params.sync_enabled = siyuan.config.sync.enabled;
-                    params.sync_provider = siyuan.config.sync.provider;
+                    params.sync_enabled = siyuan.config.sync.enabled; // 同步状态：用于统计主题所在设备是否开启了同步，为之后考虑是否实现主题配置同步提供参考
+                    // params.sync_provider = siyuan.config.sync.provider; // 同步方式：用于统计主题在不同同步方式上的使用情况，为之后考虑是否实现主题配置同步提供参考
                 }
 
-                // 统计信息
+                // 使用量信息：用于统计主题的受众范围
                 if (siyuan.config?.stat) {
-                    params.tree_count = siyuan.config.stat.cTreeCount;
-                    params.block_count = siyuan.config.stat.cBlockCount;
-                    params.data_size = siyuan.config.stat.cDataSize;
-                    params.assets_size = siyuan.config.stat.cAssetsSize;
+                    params.user_create_time = siyuan.user?.userCreateTime?.slice(0, 6); // 账号创建时间（截取年月）
+                    params.tree_count = siyuan.config.stat.cTreeCount;                  // 文档数量
+                    params.block_count = siyuan.config.stat.cBlockCount;                // 内容块数量
+                    // params.data_size = siyuan.config.stat.cDataSize;
+                    // params.assets_size = siyuan.config.stat.cAssetsSize;
                 }
             }
         } catch (e) {
@@ -224,14 +234,6 @@ export class GoogleAnalytics {
         window.whisper_theme_gtag('event', eventName, params);
     }
 
-    // /**
-    //  * 跟踪页面访问
-    //  * @param pageName 页面名称
-    //  */
-    // trackPageView(pageName: string) {
-    //     this.trackEvent('page_view', { page_name: pageName });
-    // }
-
     /**
      * 跟踪功能使用（预留用来统计配色方案使用情况）
      * @param featureName 功能名称
@@ -242,7 +244,7 @@ export class GoogleAnalytics {
     }
 }
 
-// 思源原生功能作为参考
+// 思源 v3.2.0 以前的原生功能作为参考：
 // export const addGA = () => {
 //     if (!window.siyuan.config.system.disableGoogleAnalytics) {
 //         addScript("https://www.googletagmanager.com/gtag/js?id=G-L7WEXVQCR9", "gaScript");

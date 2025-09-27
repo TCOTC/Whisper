@@ -2,7 +2,7 @@
  * 判断是否为发布服务
  */
 export const isPublish = (): boolean => {
-    return !!window.siyuan?.isPublish;
+    return !!window.siyuan.isPublish;
 };
 
 /**
@@ -10,7 +10,7 @@ export const isPublish = (): boolean => {
  */
 export const isMobile = (): boolean => {
     // TODO跟进 https://github.com/siyuan-note/siyuan/issues/13952 如果支持了切换界面，需要在切换界面之后重新执行被跳过的程序
-    return !!window.siyuan?.mobile;
+    return !!window.siyuan.mobile;
 };
 
 /**
@@ -71,7 +71,7 @@ export const isLocalPath = (link: string) => {
  * 获取主题模式
  */
 export const getThemeMode = (): string | false => {
-    const mode = window.siyuan?.config?.appearance?.mode;
+    const mode = window.siyuan.config?.appearance?.mode;
     if (mode) {
         return mode === 0 ? 'light' : 'dark';
     } else {
@@ -90,7 +90,7 @@ export const getOSThemeMode = (): string | false => {
  * 获取明亮主题
  */
 export const getThemeLight = (): string | false => {
-    const themeLight = window.siyuan?.config?.appearance?.themeLight;
+    const themeLight = window.siyuan.config?.appearance?.themeLight;
     if (themeLight) {
         return themeLight;
     } else {
@@ -102,7 +102,7 @@ export const getThemeLight = (): string | false => {
  * 获取暗黑主题
  */
 export const getThemeDark = (): string | false => {
-    const themeDark = window.siyuan?.config?.appearance?.themeDark;
+    const themeDark = window.siyuan.config?.appearance?.themeDark;
     if (themeDark) {
         return themeDark;
     } else {

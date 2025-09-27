@@ -13,6 +13,7 @@ import { GoogleAnalytics } from './modules/googleAnalytics';
 import { logging } from './modules/logger';
 import { isIPad, isMobile, isPublish, isTouchDevice } from './modules/utils';
 import { showMessage } from './modules/message';
+import { LocalConfig } from './modules/localConfig';
 
 /**
  * 模块接口，定义所有模块必须实现的方法
@@ -56,7 +57,10 @@ class ModuleManager {
             const instance = this.modules[i];
             if (typeof instance.destroy === 'function') {
                 // 异步销毁
-                await Promise.resolve(instance.destroy());
+                const result = instance.destroy();
+                if (result instanceof Promise) {
+                    await result;
+                }
             }
         }
         this.modules = [];
@@ -64,9 +68,21 @@ class ModuleManager {
 }
 
 /**
+ * 初始化全局对象
+ */
+function initGlobalVariables(): void {
+    window.siyuan.whisper ??= {} as any;
+    window.siyuan.whisper.debug ??= {} as any;
+    window.siyuan.whisper.theme ??= {} as any;
+    window.siyuan.whisper.theme.googleAnalytics ??= {} as any;
+    window.siyuan.whisper.loaded = true;
+}
+
+/**
  * Whisper 主题初始化函数
  */
 (() => {
+    initGlobalVariables();
     /**
      * 调试用代码
      * 在 JS 片段中添加 `setTimeout(() => {window.siyuan.whisper.debug.showMessage = true;}, 2500);` 以启用调试消息
@@ -80,28 +96,25 @@ class ModuleManager {
     function message(text: string): void {
         showMessage(text, 10000, 'info');
     }
-    window.siyuan = window.siyuan || {};
-    window.siyuan.whisper = window.siyuan.whisper || {};
-    window.siyuan.whisper.debug = window.siyuan.whisper.debug || {};
     setTimeout(() => {
-        if (window.siyuan?.whisper?.debug?.showMessage) debug();
+        if (window.siyuan.whisper.debug?.showMessage) debug();
     }, 5000);
     
-    logging.log('loaded');
+    logging.log('Loaded');
 
     // 创建模块管理器
     const moduleManager = new ModuleManager();
     
     // 注册所有模块
-    // TODO功能 主题配置菜单（发布模式下只读取配置，不写入，也不添加配置菜单）（移动设备和非移动设备的配置菜单要做在不同的地方）
+    // moduleManager.register(new ThemeConfigHandler());     // TODO功能 主题配置菜单（发布模式下只读取配置，不写入，也不添加配置菜单）（移动设备和非移动设备的配置菜单要做在不同的地方），要先加载完配置再初始化其他模块
     moduleManager.register(new DeviceDetector());            // 设备检测：添加设备类型标识
     moduleManager.register(new BlockFocusHandler());         // 块焦点处理：给焦点所在块添加属性 data-whisper-block-focus
     moduleManager.register(new EventBusManager());           // 事件总线管理：聚焦折叠的列表项时自动展开
 
     if (!isPublish()) {
         // 非发布模式
-        moduleManager.register(new GoogleAnalytics());       // Google 分析：发送用户信息
-        // TODO功能 SiYuan v3.2.0 废弃 Google Analytics，届时需要在主题配置菜单中添加选项、在主题 README 中披露信息收集（主题首次安装的一天内不会发送数据）
+        moduleManager.register(new GoogleAnalytics());       // Google 分析：发送统计信息
+        // TODO功能 在主题配置菜单中添加选项、在主题 README 中披露信息收集（主题首次安装的一天内不会发送数据）
     }
 
     if (!isMobile()) {
@@ -112,16 +125,62 @@ class ModuleManager {
         moduleManager.register(new MenuHandler());           // 菜单处理：外观模式菜单、页签菜单
     } else {
         // 移动端
-        moduleManager.register(new MobileFunctionality());   // 移动端 AI 按钮和分隔线
+        moduleManager.register(new MobileFunctionality());   // 移动端 AI 按钮
     }
     
     // 初始化所有模块
     moduleManager.initAll();
 
     // 关闭或卸载主题
-    (window as Window & { destroyTheme?: () => Promise<void> }).destroyTheme = async () => {
+    window.destroyTheme = async () => {
         await moduleManager.destroyAll();
-        logging.log('unloaded');
+        window.siyuan.whisper.loaded = false;
+        logging.log('Unloaded');
+
+        if (!isPublish()) {
+            void removeConfigFile(); // 卸载主题时删除配置文件，异步执行，不能 await
+            // TODO功能 如果之后支持同步主题配置，还需要删除放在 data 目录下的配置文件
+        }
     };
-    // TODO功能 卸载主题时删除配置文件
-})(); 
+})();
+
+async function removeConfigFile(): Promise<void> {
+    // 卸载主题需要先切换到其他主题，所以需要等一分钟再判断
+    await new Promise(resolve => setTimeout(resolve, 60000));
+    if (window.siyuan.whisper.loaded) return;
+
+    // 遍历 window.siyuan.config.appearance.lightThemes[N].name 和 window.siyuan.config.appearance.darkThemes[N].name，如果没有 Whisper 则删除配置文件
+    const lightThemes = window.siyuan.config?.appearance?.lightThemes;
+    const darkThemes = window.siyuan.config?.appearance?.darkThemes;
+    if (!lightThemes || !darkThemes) return;
+    let needRemove = true;
+    lightThemes.forEach((theme: any) => {
+        if (theme.name === 'Whisper') {
+            needRemove = false;
+        }
+    });
+    darkThemes.forEach((theme: any) => {
+        if (theme.name === 'Whisper') {
+            needRemove = false;
+        }
+    });
+    if (needRemove) {
+        // 删除配置文件
+        try {
+            const localConfig = new LocalConfig();
+            const success = await localConfig.deleteConfigFile({
+                retryOnConnectivityError: true,
+                retryInterval: 3000,
+                maxRetries: 5
+            });
+            
+            if (success) {
+                logging.log('Uninstall. Theme config file removed successfully');
+            } else {
+                logging.error('Uninstall. Failed to remove theme config file');
+            }
+        } catch (error) {
+            logging.error(`Uninstall. Error removing theme config file: ${error instanceof Error ? error.message : String(error)}`);
+        }
+    }
+}

@@ -1,6 +1,6 @@
 import { logging } from './logger';
 import { isPublish } from './utils';
-import { getFile, putFile } from './api';
+import { getFile, putFile, removeFile } from './api';
 
 /**
  * 配置值类型，支持嵌套结构
@@ -50,11 +50,11 @@ const CONFIG_VERSION = 1;
 
 /**
  * 本地配置，不参与同步
+ * 每次创建实例时，都需要执行一次 await localConfig.init(); 确保初始化完成
  */
 export class LocalConfig {
     private configPath: string = '/conf/whisper-theme-config.json'; // 配置文件路径，相对于工作空间根目录
     private defaultConfig: ConfigObject = { version: CONFIG_VERSION }; // 默认配置
-    private initPromise: Promise<void>; // 初始化完成的 Promise
 
     /**
      * 构造函数
@@ -63,8 +63,6 @@ export class LocalConfig {
      */
     constructor(configPath?: string, defaultConfig?: ConfigObject) {
         if (isPublish()) {
-            // 在发布模式下创建一个已解决的 Promise
-            this.initPromise = Promise.resolve();
             return;
         }
         
@@ -74,15 +72,12 @@ export class LocalConfig {
         if (defaultConfig) {
             this.defaultConfig = defaultConfig;
         }
-
-        // 保存初始化 Promise 以便其他方法等待它完成
-        this.initPromise = this.init();
     }
 
     /**
      * 初始化配置
      */
-    private async init(): Promise<void> {
+    public async init(): Promise<void> {
         try {
             // 定义重试选项，在初始化阶段启用重试
             const retryOptions = {
@@ -201,9 +196,6 @@ export class LocalConfig {
         }
     ): Promise<T | undefined> {
         try {
-            // 确保初始化完成
-            await this.initPromise;
-            
             const config = await this.readConfig(retryOptions);
             
             // 使用点表示法访问嵌套属性
@@ -235,9 +227,6 @@ export class LocalConfig {
         }
     ): Promise<boolean> {
         try {
-            // 确保初始化完成
-            await this.initPromise;
-            
             const config = await this.readConfig(retryOptions);
             const keys = path.split('.');
             
@@ -277,9 +266,6 @@ export class LocalConfig {
         }
     ): Promise<boolean> {
         try {
-            // 确保初始化完成
-            await this.initPromise;
-            
             const config = await this.readConfig(retryOptions);
             
             // 逐个应用更新
@@ -334,8 +320,6 @@ export class LocalConfig {
             maxRetries?: number;
         }
     ): Promise<ConfigObject> {
-        // 确保初始化完成
-        await this.initPromise;
         return await this.readConfig(retryOptions);
     }
 
@@ -354,9 +338,6 @@ export class LocalConfig {
         }
     ): Promise<boolean> {
         try {
-            // 确保初始化完成
-            await this.initPromise;
-            
             const config = await this.readConfig(retryOptions);
             const keys = path.split('.');
             
@@ -387,5 +368,42 @@ export class LocalConfig {
             logging.error(`Error removing config value at path '${path}': ${e instanceof Error ? e.message : String(e)}`);
             return false;
         }
+    }
+
+    /**
+     * 删除配置文件（不需要先执行 init）
+     * @param retryOptions 重试选项
+     * @returns 是否成功删除配置文件
+     */
+    async deleteConfigFile(
+        retryOptions?: {
+            retryOnConnectivityError?: boolean;
+            retryInterval?: number;
+            maxRetries?: number;
+        }
+    ): Promise<boolean> {
+        // 在发布服务下不进行删除
+        if (isPublish()) {
+            logging.error('Deleting configuration file is not supported in publish service');
+            return false;
+        }
+
+        // 将删除操作添加到队列
+        return FileOperationQueue.enqueue(this.configPath, async () => {
+            try {
+                const result = await removeFile(this.configPath, retryOptions || {});
+                
+                if (result.code === 0) {
+                    logging.info(`Configuration file deleted successfully: ${this.configPath}`);
+                    return true;
+                } else {
+                    logging.error(`Failed to delete configuration file: ${result.msg}`);
+                    return false;
+                }
+            } catch (e) {
+                logging.error(`Delete configuration file exception: ${e instanceof Error ? e.message : String(e)}`);
+                return false;
+            }
+        });
     }
 }

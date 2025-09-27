@@ -103,6 +103,7 @@ export class DialogHandler implements ThemeModule {
         this.settingDialogObserver = new MutationObserver((mutationsList) => {
             for (const mutation of mutationsList) {
                 // 检查新添加的节点
+                // @ts-ignore
                 for (const addedNode of mutation.addedNodes) {
                     if (addedNode.nodeType !== Node.ELEMENT_NODE) continue;
                     

@@ -1,60 +1,27 @@
+import { ISiyuan } from 'siyuan';
+
 // 全局类型扩展
 declare global {
     interface Window {
-        siyuan?: {
-            whisper?: {
-                debug?: {
+        siyuan: ISiyuan & {
+            whisper: {
+                loaded?: boolean;
+                debug: {
                     showMessage?: boolean;
-                }
+                };
+                theme: {
+                    googleAnalytics: {
+                        disableGoogleAnalytics?: boolean;
+                    };
+                };
             };
-            zIndex?: number;
-            version?: string;
-            mobile?: boolean;
-            isPublish?: boolean;
             config?: {
                 system?: {
-                    kernelVersion?: string;
-                    container?: string;
-                    os?: string;
-                    osPlatform?: string;
                     disableGoogleAnalytics?: boolean;
-                };
-                sync?: {
-                    enabled?: boolean;
-                    provider?: string;
-                };
-                stat?: {
-                    cTreeCount?: number;
-                    cBlockCount?: number;
-                    cDataSize?: number;
-                    cAssetsSize?: number;
-                };
-                appearance?: {
-                    themeVer?: string;
-                    mode?: number;
-                    themeLight?: string;
-                    themeDark?: string;
-                };
-                readonly?: boolean;
-            };
-            languages?: {
-                themeLight?: string;
-                themeDark?: string;
-                themeOS?: string;
-            };
-            ws?: {
-                app?: {
-                    plugins?: SiYuanPlugin[];
-                    appId?: string;
                 };
             };
             user?: {
-                userId?: string;
-                userName?: string;
-                userSiYuanSubscriptionStatus?: string;
-                userSiYuanSubscriptionPlan?: string;
-                userSiYuanSubscriptionType?: string;
-                userSiYuanOneTimePayStatus?: string;
+                userCreateTime?: string;
             };
         };
         destroyTheme?: () => void;

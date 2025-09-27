@@ -26,7 +26,7 @@ export class EventBusManager implements ThemeModule {
      * 获取主题对象
      */
     private getThisTheme(themeName: string = this.themeName): Theme {
-        let thisTheme = window.siyuan?.ws?.app?.plugins?.find(item => (item as any).name === themeName) as any;
+        let thisTheme = window.siyuan.ws?.app?.plugins?.find(item => (item as any).name === themeName) as any;
         if (thisTheme) return thisTheme;
 
         class EventBus implements EventBus {
@@ -76,7 +76,7 @@ export class EventBusManager implements ThemeModule {
             // setting: any = {};
 
             constructor(options: { app?: string; i18n?: any; displayName?: string; name: string }) {
-                this.app = options.app || window.siyuan?.ws?.app?.appId || '';
+                this.app = options.app || window.siyuan.ws?.app?.appId || '';
                 this.i18n = options.i18n || null;
                 this.displayName = options.displayName || options.name;
                 this.name = options.name;
@@ -110,7 +110,7 @@ export class EventBusManager implements ThemeModule {
         }
 
         thisTheme = new Theme({ name: themeName }) as any;
-        if (window.siyuan?.ws?.app?.plugins) {
+        if (window.siyuan.ws?.app?.plugins) {
             window.siyuan.ws.app.plugins.push(thisTheme);
         }
         return thisTheme;
@@ -120,7 +120,7 @@ export class EventBusManager implements ThemeModule {
      * 移除主题对象
      */
     private removeMyTheme(themeName: string = this.themeName): void {
-        if (window.siyuan?.ws?.app?.plugins) {
+        if (window.siyuan.ws?.app?.plugins) {
             const index = window.siyuan.ws.app.plugins.findIndex(item => (item as any).name === themeName);
             if (index > -1) {
                 window.siyuan.ws.app.plugins.splice(index, 1); // 移除插件
