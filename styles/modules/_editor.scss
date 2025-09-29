@@ -71,15 +71,21 @@
 	span[data-type~=tag] {
 		border-bottom: unset;
 		transition: unset;
+		color: var(--b3-protyle-inline-tag-color); // 在大纲中也显示默认颜色
 
 		&:hover {
 			background-color: var(--b3-card-success-background);
 			border-radius: var(--b3-border-radius-s);
+
+			// 在大纲中不显示标签的 hover 样式
+			@at-root [data-treetype="outline"]#{&} {
+				background-color: unset;
+				border-radius: unset;
+			}
 		}
 
 		&::before {
 			content: "#\200D"; // 使用零宽连字（zero-width joiner，ZWJ）避免在井号后换行，但只在导出时有效，因为 protyle 中的行级标签前有零宽空格导致换行
-			color: var(--b3-protyle-inline-tag-color);
 		}
 	}
 
