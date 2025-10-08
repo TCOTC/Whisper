@@ -445,9 +445,12 @@ html[data-whisper-status="show"] .layout__center {
 			border-radius: var(--b3-border-radius);
 			font-size: 60px;
 
-			&:hover {
-				background-color: var(--b3-list-hover);
-				opacity: 1;
+			@at-root .protyle-background--enable#{&} {
+				// 非只读模式下才需要这个 hover 样式
+				&:hover {
+					background-color: var(--b3-list-hover);
+					opacity: 1;
+				}
 			}
 
 			&:not(.fn__none) {
@@ -485,16 +488,19 @@ html[data-whisper-status="show"] .layout__center {
 					transition: width var(--custom-transition), opacity var(--custom-transition);
 				}
 
-				&:hover {
-					&::before {
-						opacity: 0;
-						width: 0;
-					}
-
-					.b3-chip__close {
-						transition: width var(--custom-transition);
-						width: 14px;
-						opacity: 0.68;
+				@at-root .protyle-background--enable#{&} {
+					// 非只读模式下才需要这个 hover 样式
+					&:hover {
+						&::before {
+							opacity: 0;
+							width: 0;
+						}
+	
+						.b3-chip__close {
+							transition: width var(--custom-transition);
+							width: 14px;
+							opacity: 0.68;
+						}
 					}
 				}
 			}
