@@ -535,14 +535,17 @@ html[data-whisper-status="show"] .layout__center {
 			}
 		}
 
-		// 操作按钮
-		&>.protyle-background__action {
-			display: flex;
+		@at-root .protyle-background--enable#{&} {
+			// 非只读模式下才显示按钮
+			// 操作按钮
+			&>.protyle-background__action {
+				display: flex;
 
-			.b3-button {
-				height: 23px;
-				margin: 3px;
-				padding: 4px;
+				.b3-button {
+					height: 23px;
+					margin: 3px;
+					padding: 4px;
+				}
 			}
 		}
 	}
