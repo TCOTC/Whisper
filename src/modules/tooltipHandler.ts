@@ -95,6 +95,12 @@ export class TooltipHandler implements ThemeModule {
             return;
         }
 
+        // 块备注（角标）https://github.com/siyuan-note/siyuan/pull/16025
+        if (e.closest('.protyle-attr--memo')) {
+            this.setTooltipData('block_memo');
+            return;
+        }
+
         // 如果正在显示的 tooltip 不属于特定元素，就将属性置空
         if (this.tooltipElement && !this.tooltipElement.classList.contains('fn__none')) {
             this.tooltipElement.dataset.whisperTooltip = '';
