@@ -27,11 +27,23 @@ export const isTouchDevice = () => {
     return ('ontouchstart' in window) && navigator.maxTouchPoints > 1;
 };
 
-// TODO功能 看看能不能直接从 windows.siyuan 获取设备类型，如果可行的话就更换下面的方法
+/**
+ * window.siyuan.config.system.os
+ * The operating system name determined at compile time (obtained using the command `go tool dist list`)
+ * - `android`: Android
+ * - `darwin`: macOS
+ * - `ios`: iOS
+ * - `linux`: Linux
+ * - `windows`: Windows
+ */
+
 /**
  * 判断是否为 Windows 系统
  */
 export const isWindows = (): boolean => {
+    // if (window.siyuan.config?.system?.os) {
+    //     return window.siyuan.config.system.os === 'windows';
+    // }
     return navigator.platform.toUpperCase().indexOf('WIN') > -1;
 };
 
@@ -39,6 +51,9 @@ export const isWindows = (): boolean => {
  * 判断是否为 Mac 系统
  */
 export const isMac = (): boolean => {
+    // if (window.siyuan.config?.system?.os) {
+    //     return window.siyuan.config.system.os === 'darwin';
+    // }
     return navigator.platform.toUpperCase().indexOf('MAC') > -1;
 };
 

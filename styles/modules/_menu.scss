@@ -4,7 +4,7 @@
 
 // 工具栏
 .protyle-toolbar {
-	transition: none; // 禁用工具栏平移效果 // TODO废弃 v3.5.5 之后就不需要覆盖这个样式了，以后提升版本号达到 3.5.5 再移除 https://github.com/siyuan-note/siyuan/commit/a1f275e3c329e8bb93863d353741c1d106faaf55
+	transition: none; // 禁用工具栏平移效果 // TODO废弃 v3.3.5 之后就不需要覆盖这个样式了，以后提升版本号达到 3.3.5 再移除 https://github.com/siyuan-note/siyuan/commit/a1f275e3c329e8bb93863d353741c1d106faaf55
 }
 
 // 超链接菜单，链接和锚文本输入框默认两行高（不显示滚动条就需要 50px）
@@ -152,7 +152,7 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 
 
 // ————————————————————外观菜单————————————————————
-// TODO功能 需要给标题元素 PR 不同的属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器) https://github.com/siyuan-note/siyuan/pull/15605
+// TODO功能 需要给标题元素 PR 不同的属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器) https://github.com/siyuan-note/siyuan/pull/16162
 // 隐藏 最近使用
 .protyle-font > div.fn__flex:first-child,
 .protyle-font > div.fn__flex:first-child + .fn__hr--small,

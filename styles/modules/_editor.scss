@@ -1,5 +1,5 @@
 // ————————————————————编辑区————————————————————
-// TODO功能 调整样式的时候分屏看 所见即所得 和 导出预览 模式，有的情况下需要不同的样式
+// 备注：调整样式的时候分屏看 所见即所得 和 导出预览 模式，有的情况下需要不同的样式
 
 // ————————————————————行级元素————————————————————
 // 在编辑器里和属性面板里，行级元素的上层都有 [data-node-id]
@@ -769,7 +769,6 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 	}
 
 }
-// TODO功能 给各种类型的块分别弄个合适的折叠样式
 
 
 // ————————————————————标题块————————————————————
@@ -1024,17 +1023,15 @@ div:not(#preview):not(.export-img) > .protyle-wysiwyg .code-block:not(pre) { // 
 // https://github.com/siyuan-note/siyuan/issues/13692
 .av__cell:not(.av__cell--header)[data-dtype="relation"] {
 	.av__cell--relation {
-		margin-left: 0.5em;
-
-		&:first-child {
-			margin-left: 0;
-		}
+		margin-right: .5em;
+		// &:first-child {
+		    // TODO废弃 从 v3.3.0 开始不再需要使用这个样式 https://github.com/siyuan-note/siyuan/issues/15658
+		// 	margin-left: 0;
+		// }
 
 		// 关联条目前的图标: 横杠/文档图标
-		&>span:first-child {
-			display: none;
-		}
-		// TODO废弃 v3.2.0 之后横杠的类名也是 b3-menu__avemoji，之后提升主题最低版本号的时候可以把上面这行删掉
+		// v3.2.0 之后横杠的类名也是 b3-menu__avemoji，到 v3.3.3 又去掉了横杠的类名 https://github.com/siyuan-note/siyuan/issues/15859
+		&>span:first-child,
 		.b3-menu__avemoji {
 			display: none;
 		}

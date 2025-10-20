@@ -146,7 +146,7 @@ export class GoogleAnalytics {
             });
         }
 
-        logging.log('Sending Google Analytics data. https://github.com/TCOTC/Whisper/issues/11'); // TODO 修改输出日志为“Whisper 主题正在发送 Google Analytics 数据（在外观模式菜单中可以禁用）”
+        logging.log('Sending Google Analytics data. https://github.com/TCOTC/Whisper/issues/11'); // TODO功能 修改输出日志为“Whisper 主题正在发送 Google Analytics 数据（在外观模式菜单中可以禁用）”
 
         // 收集并发送基本信息
         this.sendInfo();
