@@ -271,7 +271,7 @@
 	
 	// 行级代码 Part 2
 	code:not(.hljs), span[data-type~=code] {
-		background-color: var(--b3-protyle-code-background) !important;
+		background-color: var(--b3-protyle-code-background); // 行级代码背景色为 --b3-card 系列时被错误覆盖，不能用 !important
 	}
 }
 
