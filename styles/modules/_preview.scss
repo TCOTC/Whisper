@@ -1,19 +1,16 @@
 // 导出预览
 .b3-typography {
-    // TODO功能 确认一下是否需要这个样式
-    // code {
-    //     background-color: var(--b3-protyle-code-background);
-    //     color: var(--b3-theme-on-background);
-    // }
-
     // 导出预览的字号可变、默认比编辑器字号小 2px
     font-size: calc(var(--b3-font-size-editor) - 2px);
 }
 
 // 导出 PDF 或图片时显示内容块备注
-body > #preview, .export-img {
+:is(body > #preview, .export-img) .protyle-attr {
+    pointer-events: none; // 鼠标悬浮在内容块备注上时不需要显示 tooltip
+
     // 显示内容块备注（导出图片时这个伪元素不显示，所以导出图片不支持显示内容块备注）
-    .protyle-attr--memo.b3-tooltips {
+    // v3.3.5 以后块备注默认是通过 tooltip 显示的，没有 .b3-tooltips 类名 https://github.com/siyuan-note/siyuan/pull/16025
+    &>div.protyle-attr--memo {
         max-width: 25vw;
         display: flex;
         align-items: center;
@@ -21,7 +18,7 @@ body > #preview, .export-img {
 
         svg {
             overflow: initial;
-            margin-right: 2px;
+            margin-right: 2px; // 导出图片时有个优先级比较高的选择器需要覆盖：.protyle-attr>div:not(.protyle-attr--refcount).protyle-attr--memo svg
         }
 
         &::before {
