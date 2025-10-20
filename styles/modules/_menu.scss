@@ -4,7 +4,7 @@
 
 // 工具栏
 .protyle-toolbar {
-	transition: none; // 禁用工具栏平移效果 // TODO跟进: v3.5.5 之后就不需要覆盖这个样式了，以后提升版本号达到 3.5.5 再移除 https://github.com/siyuan-note/siyuan/commit/a1f275e3c329e8bb93863d353741c1d106faaf55
+	transition: none; // 禁用工具栏平移效果 // TODO废弃 v3.5.5 之后就不需要覆盖这个样式了，以后提升版本号达到 3.5.5 再移除 https://github.com/siyuan-note/siyuan/commit/a1f275e3c329e8bb93863d353741c1d106faaf55
 }
 
 // 超链接菜单，链接和锚文本输入框默认两行高（不显示滚动条就需要 50px）
@@ -58,7 +58,7 @@ label:hover .b3-switch:checked:not(:disabled)::before, .b3-switch:checked:hover:
 	}
 }
 // 页签菜单
-// TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑，类似外观模式的 data-name="barmode"
+// TODO废弃 以下选择器是兼容 v3.3.6 以前的版本，版本号提升到 v3.3.6 时即可修改为 #commonMenu[data-name="tab"] > .b3-menu__items  ，并且需要同步修改 menuHandler.ts 的对应逻辑
 #whisperCommonMenu[data-name="tab-header"] + #commonMenu > .b3-menu__items {
 	display: flex;
 	flex-direction: column;

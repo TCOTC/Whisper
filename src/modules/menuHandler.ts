@@ -52,43 +52,39 @@ export class MenuHandler implements ThemeModule {
         this.commonMenu.insertAdjacentElement('beforebegin', whisperCommonMenu);
         this.whisperCommonMenu = whisperCommonMenu;
         
-        this.commonMenuObserver = new MutationObserver((mutations) => {
-            // 使用一个标志位来确保只处理一次
-            let processed = false;
+        this.commonMenuObserver = new MutationObserver(() => {
+            this.whisperCommonMenu?.removeAttribute('data-name');
 
-            mutations.forEach(() => {
-                if (processed) return; // 如果已经处理过，直接返回
-
+            if (this.commonMenu) {
                 // 先卸载监听再添加，避免重复添加
-                if (this.commonMenu) {
-                    this.commonMenu.removeEventListener('click', this.handleMenuClick, true);
-                    this.commonMenu.removeEventListener('click', this.handleCloseClick, true);
-                }
-                
-                if (this.whisperCommonMenu) {
-                    this.whisperCommonMenu.dataset.name = '';
-                }
+                this.commonMenu.removeEventListener('click', this.handleMenuClick, true);
+                this.commonMenu.removeEventListener('click', this.handleCloseClick, true);
 
-                if (this.commonMenu?.getAttribute('data-name') === 'barmode') {
+                const menuName = this.commonMenu.getAttribute('data-name');
+                if (menuName === 'barmode') {
                     // 外观模式菜单
                     this.commonMenu.addEventListener('click', this.handleMenuClick, true);
-                } else if ( // TODO功能 需要给原生 PR 一个菜单的 data-name="tab-header" 属性来简化判断逻辑，然后提升主题最低版本号
-                    this.commonMenu?.querySelector('[data-id="close"]') &&
-                    this.commonMenu?.querySelector('[data-id="split"]') &&
-                    this.commonMenu?.querySelector('[data-id="copy"]')
+                } else if (menuName === 'tab' || // v3.3.6 给页签菜单增加 data-name="tab" 属性 https://github.com/siyuan-note/siyuan/pull/16141
+                    // TODO废弃 以下6行代码是兼容 v3.3.6 以前的版本，版本号提升到 v3.3.6 时即可移除。并且修改之后需要验证是否在平板上正常工作
+                    (
+                        this.commonMenu.querySelector('[data-id="close"]') &&
+                        this.commonMenu.querySelector('[data-id="split"]') &&
+                        this.commonMenu.querySelector('[data-id="copy"]')
+                    )
                     // && this.commonMenu?.querySelector('[data-id="tabToWindow"]') // 平板上没有“移动到新窗口”选项
                 ) {
                     // 页签菜单
+                    // TODO废弃 以下3行代码是兼容 v3.3.6 以前的版本，版本号提升到 v3.3.6 时即可移除，并且需要同步修改对应的使用 [data-name="tab-header"] 的 CSS
                     if (this.whisperCommonMenu) {
                         this.whisperCommonMenu.dataset.name = 'tab-header';
                     }
                     this.handleTabClose();
                 }
+            }
 
-                processed = true; // 标记为已处理
-            });
         });
 
+        // TODO跟进 试试通过 Add plugin event bus to #commonMenu 来实现更准确的监听 https://github.com/TCOTC/Whisper/issues/16 https://github.com/siyuan-note/siyuan/issues/16171
         // 监听菜单的属性变化
         this.commonMenuObserver.observe(this.commonMenu, { attributes: true });
     }

@@ -55,6 +55,8 @@ export class TooltipHandler implements ThemeModule {
         // 文档树
         // TODO跟进 文档信息显示在左下角的问题还是没解决，估计是思源本体的问题：鼠标划过笔记本之后 tooltip 不隐藏 https://github.com/siyuan-note/siyuan/issues/14823
         //  到时候把这部分代码注释掉测试看看还会不会有问题
+
+        // TODO跟进 试试通过 Add plugin event bus to tooltip 来实现更准确的监听 https://github.com/TCOTC/Whisper/issues/15 https://github.com/siyuan-note/siyuan/issues/16151
         const doc = e.closest('[data-type="navigation-file"]');
         if (doc) {
             this.removeTooltipData();
