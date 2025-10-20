@@ -908,10 +908,10 @@ body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 
 // 代码块滚动时语言和按钮固定在编辑器顶部 CSS片段
 // author by JeffreyChen https://ld246.com/article/1728146248791
-// NOTE 用:not(#preview)排除导出PDF，用.protyle-wysiwyg排除导出预览，.protyle-wysiwyg[data-readonly="true"]是只读模式
+// NOTE 用:not(#preview)排除导出PDF，用:not(.export-img)排除导出图片，用.protyle-wysiwyg排除导出预览，.protyle-wysiwyg[data-readonly="true"]是只读模式
 // NOTE 导出预览的代码块没有 .protyle-action
 .b3-typography .code-block, .protyle-wysiwyg .code-block {
-	background: var(--b3-protyle-code-background);
+	background: var(--b3-protyle-code-background); // 代码块背景色强制统一，覆盖代码块主题；代码块文本颜色遵循代码块主题
 	border-radius: var(--b3-border-radius);
 }
 // 集市包 README 的代码块需要背景色，否则会被 README 特效样式影响
@@ -920,11 +920,11 @@ body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 	border-radius: var(--b3-border-radius);
 }
 .protyle-wysiwyg:not(.protyle-wysiwyg--hiderange) .hljs ::selection {
-	background-color: var(--b3-theme-primary-lighter); // 覆盖代码块主题
+	background-color: var(--b3-theme-primary-lighter); // 选中文本的高亮颜色覆盖代码块主题
 	color: inherit;
 }
 
-div:not(#preview) > .protyle-wysiwyg .code-block:not(pre) {
+div:not(#preview):not(.export-img) > .protyle-wysiwyg .code-block:not(pre) { // 排除导出 PDF 和导出图片
 	.protyle-action {
 		background-color: var(--b3-parent-background);
 		position: sticky;
