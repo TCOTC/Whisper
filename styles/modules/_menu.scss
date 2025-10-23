@@ -152,8 +152,7 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 
 
 // ————————————————————外观菜单————————————————————
-// TODO功能 需要给标题元素 PR 不同的属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器) https://github.com/siyuan-note/siyuan/pull/16162
-// 隐藏 最近使用
+// 隐藏 最近使用的外观
 .protyle-font > div.fn__flex:first-child,
 .protyle-font > div.fn__flex:first-child + .fn__hr--small,
 .protyle-font > div.fn__flex:first-child + .fn__hr--small + .fn__flex-wrap,
@@ -176,50 +175,60 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 .protyle-font {
 	max-width: 238px;
 	scrollbar-gutter: auto;
+
+	// TODO跟进 最低版本号提升到 v3.3.6 及之后，移除前面三段代码，改为下面的使用标题元素不同的 data-id 属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器) https://github.com/siyuan-note/siyuan/pull/16162
+	// // 隐藏 最近使用的外观、字体效果、字号
+	// > :is(
+	// 		[data-id="lastUsed"], [data-id="lastUsed"] + .fn__hr--small, [data-id="lastUsedWrap"], [data-id="lastUsedWrap"] + .fn__hr,
+	// 		[data-id="fontStyle"], [data-id="fontStyle"] + .fn__hr--small, [data-id="fontStyleWrap"], [data-id="fontStyleWrap"] + .fn__hr,
+	// 		[data-id="fontSize"], [data-id="fontSizeWrap"], [data-id="fontSizeWrap"] + .fn__hr--b
+	// 	) {
+	// 	display: none;
+	// }
 }
 // 颜色选项
 .color__square {
-	&[data-type="color"],&[data-type="style1"] {
+	&:is([data-type="color"], [data-type="style1"]) {
 		font-size: 18px;
 		font-weight: bold; // 字体加粗更清晰
 	}
-	&[style*="--b3-font-color1"],&[style*="--b3-font-background1"] {
+	&:is([style*="--b3-font-color1"], [style*="--b3-font-background1"]) {
 		order: 1;
 	}
-	&[style*="--b3-font-color2"],&[style*="--b3-font-background2"] {
+	&:is([style*="--b3-font-color2"], [style*="--b3-font-background2"]) {
 		order: 2;
 	}
-	&[style*="--b3-font-color3"],&[style*="--b3-font-background3"] {
+	&:is([style*="--b3-font-color3"], [style*="--b3-font-background3"]) {
 		order: 3;
 	}
-	&[style*="--b3-font-color4"],&[style*="--b3-font-background4"] {
+	&:is([style*="--b3-font-color4"], [style*="--b3-font-background4"]) {
 		order: 4;
 	}
-	&[style*="--b3-font-color5"],&[style*="--b3-font-background5"] {
+	&:is([style*="--b3-font-color5"], [style*="--b3-font-background5"]) {
 		order: 5;
 	}
-	&[style*="--b3-font-color6"],&[style*="--b3-font-background6"] {
+	&:is([style*="--b3-font-color6"], [style*="--b3-font-background6"]) {
 		order: 6;
 	}
-	&[style*="--b3-font-color7"],&[style*="--b3-font-background7"] {
+	&:is([style*="--b3-font-color7"], [style*="--b3-font-background7"]) {
 		order: 8;
 	}
-	&[style*="--b3-font-color8"],&[style*="--b3-font-background8"] {
+	&:is([style*="--b3-font-color8"], [style*="--b3-font-background8"]) {
 		order: 9;
 	}
-	&[style*="--b3-font-color9"],&[style*="--b3-font-background9"] {
+	&:is([style*="--b3-font-color9"], [style*="--b3-font-background9"]) {
 		order: 10;
 	}
-	&[style*="--b3-font-color10"],&[style*="--b3-font-background10"] {
+	&:is([style*="--b3-font-color10"], [style*="--b3-font-background10"]) {
 		order: 11;
 	}
-	&[style*="--b3-font-color11"],&[style*="--b3-font-background11"] {
+	&:is([style*="--b3-font-color11"], [style*="--b3-font-background11"]) {
 		order: 12;
 	}
-	&[style*="--b3-font-color12"],&[style*="--b3-font-background12"] {
+	&:is([style*="--b3-font-color12"], [style*="--b3-font-background12"]) {
 		order: 13;
 	}
-	&[style*="--b3-font-color13"],&[style*="--b3-font-background13"] {
+	&:is([style*="--b3-font-color13"], [style*="--b3-font-background13"]) {
 		order: 7; // 把 13 号颜色排到默认色正下方；在数据库选项颜色弹窗里是第一行最右边
 
 		&[data-type="color"]{
@@ -228,17 +237,16 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 			-webkit-text-fill-color: transparent;
 		}
 	}
-	&[style*="--b3-font-color14"],&[style*="--b3-font-background14"] {
-		order: 14; // 数据库选项颜色
+	&:is([style*="--b3-font-color14"], [style*="--b3-font-background14"]) {
+		order: 14; // 数据库选项专有颜色
 	}
 }
 // 数据库选项颜色菜单
 .b3-menu[data-name="av-col-option"] .color__square {
 	color: transparent !important;
 
-	&[style*="--b3-font-color13"],&[style*="--b3-font-background13"] {
-		background-color: var(--custom-database-background13) !important;
-	}
+	// 数据库选项背景色
+	--b3-font-background13: var(--custom-database-background13);
 }
 
 // ————————————————————集市————————————————————

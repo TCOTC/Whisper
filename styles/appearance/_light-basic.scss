@@ -7,8 +7,8 @@ html[data-theme-mode="light"] {
 
   --custom-transition: .2s cubic-bezier(0, 0, .2, 1) 0ms;
 
-  --b3-font-background14: rgb(183, 183, 183);           // 数据库选项专用
-  --custom-database-background13: rgb(232, 233, 235);   // 在数据库选项里显示为灰色
+  --custom-database-background13: rgb(232, 233, 235);   // 在数据库选项里显示为浅灰色
+  --custom-database-background14: rgb(183, 183, 183);   // 在数据库选项里显示为深灰色
   --custom-color-blue-light: rgba(0, 202, 255, .85);
   --custom-list-hover-dark: rgba(50, 50, 50, .15);
   --custom-list-hover-darker: rgba(50, 50, 50, .25);
@@ -123,6 +123,7 @@ html[data-theme-mode="light"] {
   --b3-font-background11: rgb(186, 206, 253);  // 蓝
   --b3-font-background12: rgb(205, 178, 250);  // 紫
   --b3-font-background13: var(--b3-theme-on-background);
+  --b3-font-background14: var(--custom-database-background14); // 数据库选项专用
 
   // 动画效果（与默认主题一致）
   --b3-transition: all .2s cubic-bezier(0, 0, .2, 1) 0ms;

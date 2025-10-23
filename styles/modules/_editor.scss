@@ -1008,10 +1008,8 @@ div:not(#preview):not(.export-img) > .protyle-wysiwyg .code-block:not(pre) { // 
 	outline: 1px solid var(--custom-theme-on-surface-light_30);
 	outline-offset: -1px;
 
-	// 数据库选项
-	&[style*="background-color:var(--b3-font-background13)"] {
-		background-color: var(--custom-database-background13) !important;
-	}
+	// 数据库选项背景色
+	--b3-font-background13: var(--custom-database-background13);
 }
 
 // 资源字段的标题宽度
