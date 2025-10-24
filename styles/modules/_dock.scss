@@ -1,4 +1,5 @@
 // ————————————————————侧栏面板布局————————————————————
+// NOTE: .file-tree 也存在于大纲/反链页签中，要检查样式是否对其子元素有不必要的影响
 
 .file-tree {
 	&>.block__icons {
@@ -13,7 +14,7 @@
 			margin-left: 3px; // 尽可能利用空间
 			margin-right: 3px;
 
-			.b3-list-item {
+			&>.b3-list-item {
 				margin-left: 0;
 				margin-right: 0;
 
@@ -313,8 +314,8 @@ html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 // 反链、提及面板固定文档名称 CSS片段
 // author by JeffreyChen https://ld246.com/article/1737207365006
 // TODO跟进 需要跟进 https://github.com/siyuan-note/siyuan/issues/13679 修改
-.backlinkMList .b3-list-item,
-.backlinkList .b3-list-item {
+:is(.backlinkMList, .backlinkList) .b3-list-item[data-treetype="backlink"] {
+	// [data-treetype="backlink"] 匹配反链/提及中的文档名称元素
 	position: sticky;
 	top: 0;
 	padding: 0;
