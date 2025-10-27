@@ -559,7 +559,8 @@ html[data-whisper-status="show"] .layout__center {
 // ————————————————————内容块————————————————————
 
 // 内容块拖影 https://github.com/siyuan-note/siyuan/pull/13821
-body > .protyle-wysiwyg [data-node-id] {
+// 用 :not(#preview) 来排除导出的 HTML
+body > .protyle-wysiwyg:not(#preview) [data-node-id] {
 	background-color: transparent !important;
 
 	&:is(.protyle-wysiwyg--select, .protyle-wysiwyg--hl)::after {
