@@ -352,3 +352,9 @@ html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 		margin-right: 4px;
 	}
 }
+
+// ————————————————————大纲面板————————————————————
+
+.sy__outline > .b3-list-item {
+	margin-right: 13px; // 标题计数对齐，适配 https://github.com/siyuan-note/siyuan/pull/16360
+}
