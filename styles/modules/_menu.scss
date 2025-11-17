@@ -327,6 +327,10 @@ button:is([data-id="widthInput"], [data-id="heightInput"]):not(.b3-menu--fullscr
 				}
 			}
 		}
+
+		& > .fn__flex-1:not(.b3-card) {
+			display: none; // 额外的占位元素会导致布局问题，故隐藏 https://github.com/siyuan-note/siyuan/commit/ecdebf85f796be62ea1286d994c262b9c2093e22
+		}
 	}
 }
 
