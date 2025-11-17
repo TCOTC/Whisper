@@ -246,6 +246,7 @@
 }
 
 // 卡片视图 - 布局参考 Notion Database
+// 一部分样式与看板视图共用
 .av__gallery {
 	// 卡片
 	&-item {
@@ -266,6 +267,10 @@
 			.av__gallery-fields {
 				background-color: unset;
 			}
+      // TODO废弃 提升版本号到 3.4.0 之后就不再需要上面两个样式了，hover 样式改为使用伪元素了
+      &:not(.av__gallery-item--select)::before {
+        background-color: var(--b3-theme-background);
+      }
 		}
 	}
 
