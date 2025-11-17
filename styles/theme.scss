@@ -4,6 +4,7 @@
 @use "modules/dock" as *;         // 侧栏和面板
 @use "modules/status" as *;       // 底栏
 @use "modules/editor" as *;       // 编辑器
+@use "modules/database" as *;     // 数据库
 @use "modules/menu" as *;         // 菜单、浮窗、弹窗
 @use "modules/tooltip" as *;      // 悬浮提示
 @use "modules/tab-bar" as *;      // 页签

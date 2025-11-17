@@ -1,0 +1,290 @@
+// ————————————————————数据库————————————————————
+
+// 标题
+.av__title {
+	padding-left: 4px;
+}
+
+// 筛选
+.av__panel .b3-menu__item .b3-chip.b3-chip--primary[data-type="setFilter"] {
+	background-color: var(--b3-list-hover);
+}
+.block__icon--active:hover {
+	background-color: var(--b3-theme-primary-lightest) !important;
+}
+
+.av__title + .av__counter { // X 已选中
+	background-color: var(--mix-theme_primary_background);
+	color: var(--b3-theme-on-background);
+}
+
+.av__container .av__row:hover .av__firstcol svg {
+	opacity: 1; // hover 条目时显示条目的复选框
+}
+
+// 主键单元格
+.av__cell[data-dtype="block"] [data-type="block-more"] {
+	display: none;
+}
+.av__cell[data-dtype="block"]:hover [data-type="block-more"] {
+	display: block;
+}
+
+// 单选、多选、资源字段选项，筛选菜单选项等
+.av__group-title .b3-chip, // 分组标题
+.av__cell .b3-chip,        // 条目
+.b3-menu .b3-chip,         // 选项菜单、设置菜单
+.custom-attr .b3-chip {    // 属性面板
+	color: var(--b3-theme-on-background) !important;
+	outline: 1px solid var(--custom-theme-on-surface-light_30);
+	outline-offset: -1px;
+
+	// 数据库选项背景色
+	--b3-font-background13: var(--custom-database-background13);
+}
+
+// 资源字段的标题宽度
+.av__celltext--url.b3-chip {
+	max-width: 15em;
+}
+
+// 关联字段单元格
+// https://github.com/siyuan-note/siyuan/issues/13692
+.av__cell:not(.av__cell--header)[data-dtype="relation"] {
+	.av__cell--relation {
+		margin-right: .5em;
+		// &:first-child {
+		    // TODO废弃 从 v3.3.0 开始不再需要使用这个样式 https://github.com/siyuan-note/siyuan/issues/15658
+		// 	margin-left: 0;
+		// }
+
+		// 关联条目前的图标: 横杠/文档图标
+		// v3.2.0 之后横杠的类名也是 b3-menu__avemoji，到 v3.3.3 又去掉了横杠的类名 https://github.com/siyuan-note/siyuan/issues/15859
+		&>span:first-child,
+		.b3-menu__avemoji {
+			display: none;
+		}
+
+		.av__celltext {
+			&:not([data-type="block-ref"]):hover {
+				// box-shadow: var(--custom-inline-box-shadow) var(--b3-theme-primary-lighter);
+				border-bottom: 0.15em solid var(--b3-theme-primary-lighter);
+			}
+
+			&::after {
+				content: ",";
+			}
+		}
+
+		&:last-of-type {
+			.av__celltext::after {
+				content: "";
+			}
+		}
+	}
+}
+
+// 分组标题
+.av__group-name {
+  &, & .b3-chip {
+    font-weight: 600;
+  }
+}
+
+// 表格视图 - 布局参考 Notion Database
+.av__container {
+	width: 100%;
+
+	.av__body {
+		min-width: 100%;
+
+		.av__row--header {
+			.block__icons {
+				padding: unset;
+				flex-direction: row; // "添加字段"和"更多"按钮调换顺序
+				flex-grow: 1;
+				align-items: stretch; // 使子元素在垂直方向上填满父容器
+
+				.block__icon {
+					border-radius: unset;
+					padding: 0 10px;
+
+					&:nth-child(1) {
+						order: 2; // "更多"按钮放在右边铺满
+						flex-grow: 1;
+					}
+
+					&:nth-child(3) {
+						order: 1; // "添加字段"按钮放在左边
+					}
+				}
+
+				>.fn__space {
+					display: none;
+				}
+			}
+		}
+
+		.av__row--util {
+			.av__colsticky {
+				width: 100%;
+				flex-direction: column; // "添加条目"和"加载更多"按钮分成两行显示
+
+				>.b3-button {
+					border-radius: unset;
+					margin: unset;
+					padding: unset;
+					height: 2.7em;
+					justify-content: flex-start;
+					border-bottom: 1px solid var(--b3-theme-surface-lighter);
+
+					span {
+						position: sticky;
+						left: 2em;
+					}
+
+					svg {
+						position: sticky;
+						left: 0.5em;
+
+						&[data-type="set-page-size"] {
+							margin-left: auto;
+							padding: 2px 6px;
+							right: 5px;
+
+							&:hover {
+								background-color: var(--b3-list-hover);
+							}
+						}
+					}
+				}
+
+				> .b3-button:first-of-type {
+					order: 2; // "添加条目"按钮放在下方
+				}
+
+				> .b3-button:last-of-type {
+					order: 1; // "加载更多"按钮放在上方
+				}
+
+				>.fn__space {
+					display: none;
+				}
+			}
+		}
+
+		.av__row--footer {
+			border-top: unset;
+		}
+	}
+}
+
+// 选择和 hover 条目时的高亮
+// 用伪元素会影响子元素的颜色，所以修改背景色
+.av__container .av__row:not(.av__row--header) {
+
+	.av__cell--select,
+	.av__cell--active {
+		background-color: var(--b3-theme-surface); // 不能用透明的颜色，会出现不一致
+	}
+
+	&.av__row--select,
+	&.av__row--hl {
+		background-color: var(--b3-theme-surface); // 侧栏面板的颜色
+
+		.av__cell {
+			background-color: unset; // 重置原生的背景色
+		}
+
+		.av__colsticky { // 固定字段
+			.av__firstcol, // 勾选框
+			.av__cell {
+				background-color: var(--b3-theme-surface);
+			}
+		}
+	}
+}
+.av__container .av__row:not(.av__row--header):hover {
+	background-color: var(--b3-list-hover); // 条目末尾
+
+	.av__cell--select,
+	.av__cell--active {
+		background-color: var(--b3-theme-background-light); // 不能用透明的颜色，会出现不一致
+	}
+
+	.av__colsticky {
+		.av__firstcol,
+		.av__cell {
+			background-color: var(--b3-list-hover);
+		}
+
+		.av__cell--active {
+			background-color: var(--b3-theme-background-light);
+		}
+	}
+
+	&.av__row--select,
+	&.av__row--hl {
+		background-color: var(--b3-theme-background-light); // 条目末尾
+
+		.av__colsticky {
+			.av__firstcol,
+			.av__cell {
+				background-color: var(--b3-theme-background-light);
+			}
+		}
+	}
+}
+
+// 画廊视图 - 布局参考 Notion Database
+.av__gallery {
+	// 卡片
+	&-item {
+		.av__gallery-cover {
+			background-color: var(--b3-theme-surface-light);
+			transition: unset;
+			border-bottom: unset;
+		}
+		.av__gallery-fields {
+			background-color: unset;
+			transition: unset;
+		}
+
+		&:hover {
+			.av__gallery-cover {
+				background-color: var(--b3-theme-surface-light);
+			}
+			.av__gallery-fields {
+				background-color: unset;
+			}
+		}
+	}
+
+	// “加载更多”按钮
+	&-load {
+		margin-top: 9px;
+
+		.b3-button[data-type="av-load-more"] {
+			width: 100%;
+			margin: 5px 0 0 0;
+	
+			svg {
+				left: .5em;
+			}
+	
+			span {
+				left: 2em;
+			}
+	
+			svg[data-type=set-page-size] {
+				margin-left: auto;
+				padding: 2px 6px;
+				right: 5px;
+	
+				&:hover {
+					background-color: var(--b3-list-hover);
+				}
+			}
+		}
+	}
+}
