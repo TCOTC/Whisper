@@ -236,7 +236,16 @@
 	}
 }
 
-// 画廊视图 - 布局参考 Notion Database
+// 看板视图
+.av__kanban {
+  padding: 10px 2px;
+
+  &:not(.av__kanban--bg) .av__kanban-group {
+    padding: 0 2px; // 不按选项颜色填充列背景的情况下缩小边距
+  }
+}
+
+// 卡片视图 - 布局参考 Notion Database
 .av__gallery {
 	// 卡片
 	&-item {
