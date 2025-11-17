@@ -40,8 +40,7 @@
 .layout__dockr .file-tree {
 	margin-left: 3px; // 这里有可能会导致侧栏面板宽度异常，暂时用下面的 min-width 解决
 }
-// TODO跟进 https://github.com/siyuan-note/siyuan/issues/13516 https://github.com/siyuan-note/siyuan/issues/14856 https://github.com/siyuan-note/siyuan/pull/15011
-//  问题修复以后就不再需要下面这段样式了
+// TODO废弃 提升版本号到 3.3.6 之后就不再需要下面这段样式了 https://github.com/siyuan-note/siyuan/issues/13516 https://github.com/siyuan-note/siyuan/issues/14856 https://github.com/siyuan-note/siyuan/pull/15011
 .layout__dockl:not(.layout--float):not([style*="width: 0px;"]):has(> .fn__flex-1:not(.fn__none)),
 .layout__dockr:not(.layout--float):not([style*="width: 0px;"]):has(> .fn__flex-1:not(.fn__none)) {
 	min-width: 232px;

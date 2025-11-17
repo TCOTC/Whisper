@@ -183,7 +183,7 @@ button:is([data-id="widthInput"], [data-id="heightInput"]):not(.b3-menu--fullscr
 	max-width: 238px;
 	scrollbar-gutter: auto;
 
-	// TODO跟进 最低版本号提升到 v3.3.6 及之后，移除前面三段代码，改为下面的使用标题元素不同的 data-id 属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器) https://github.com/siyuan-note/siyuan/pull/16162
+	// TODO废弃 最低版本号提升到 v3.3.6 及之后，移除前面三段代码，改为下面的使用标题元素不同的 data-id 属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器) https://github.com/siyuan-note/siyuan/pull/16162
 	// // 隐藏 最近使用的外观、字体效果、字号
 	// > :is(
 	// 		[data-id="lastUsed"], [data-id="lastUsed"] + .fn__hr--small, [data-id="lastUsedWrap"], [data-id="lastUsedWrap"] + .fn__hr,

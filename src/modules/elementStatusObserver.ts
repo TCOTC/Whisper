@@ -118,10 +118,6 @@ export class ElementStatusObserver implements ThemeModule {
                     datasetProp: 'whisperLayoutDockl',
                     attributeFilter: 'style',
                     check: el => el.style.width === '0px',
-                    // TODO跟进 新版如果合并了 PR https://github.com/siyuan-note/siyuan/pull/15011 ，就改成：
-                    // attributeFilter: 'class',
-                    // check: el => el.classList.contains('fn__none'),
-                    // 后面的 .layout__dockr 也一样
                     stateMap: { true: 'hide', false: 'show' }
                 },
                 {
