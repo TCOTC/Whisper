@@ -1,7 +1,7 @@
 // 导入样式文件以能够在开发时自动编译，但 Vite 不支持为 SCSS 文件生成 Source Map。这里导入是为了让 Vite 在开发时自动编译样式文件
 import '../styles/theme.scss';
 
-import { DeviceDetector } from './modules/deviceDetector';
+// import { DeviceDetector } from './modules/deviceDetector';
 import { BlockFocusHandler } from './modules/blockFocusHandler';
 import { ElementStatusObserver } from './modules/elementStatusObserver';
 import { TooltipHandler } from './modules/tooltipHandler';
@@ -107,7 +107,7 @@ function initGlobalVariables(): void {
     
     // 注册所有模块
     // moduleManager.register(new ThemeConfigHandler());     // TODO功能 主题配置菜单（发布模式下只读取配置，不写入，也不添加配置菜单）（移动设备和非移动设备的配置菜单要做在不同的地方），要先加载完配置再初始化其他模块
-    moduleManager.register(new DeviceDetector());            // 设备检测：添加设备类型标识
+    // moduleManager.register(new DeviceDetector());         // 设备检测：添加设备类型标识（目前 CSS 中已经不需要使用，暂时注释）
     moduleManager.register(new BlockFocusHandler());         // 块焦点处理：给焦点所在块添加属性 data-whisper-block-focus
     moduleManager.register(new EventBusManager());           // 事件总线管理：聚焦折叠的列表项时自动展开
 

@@ -1,5 +1,6 @@
 // ———————————————————— 底栏 ————————————————————
-body:not([data-whisper-device="mobile"]) {
+// 排除移动端
+body:not(:has(> #sidebar)) {
 	#status {
 		position: fixed;
 		right: 0;
@@ -73,27 +74,3 @@ body:not([data-whisper-device="mobile"]) {
 		}
 	}
 }
-
-// 下面这些不知道有啥用
-// #status #barDock::before {
-// right: unset !important;
-// left: 0;
-// transform: rotateY(180deg);
-// }
-// #status #barDock::after {
-// left: unset!important;
-// right: 100%;
-// }
-// .status > .fn__flex-1 {
-// position: relative !important;
-// width: 0 !important;
-// right: 0;
-// flex: 0;
-// }
-// #status .toolbar__item span {
-// margin: 3px;
-// font-size: 12px;
-// }
-// .body--win32 > .fn__flex-1 {
-// overflow:visible;
-// }
