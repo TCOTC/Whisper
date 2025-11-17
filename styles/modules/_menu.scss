@@ -41,6 +41,7 @@ label:hover .b3-switch:checked:not(:disabled)::before, .b3-switch:checked:hover:
 // 选项菜单
 .b3-menu__item {
 	line-height: 27px;
+	align-items: center;
 	min-width: 100px;
 
 	// 隐藏不常用的块标选项
@@ -57,6 +58,10 @@ label:hover .b3-switch:checked:not(:disabled)::before, .b3-switch:checked:hover:
 		min-width: 25px;
 	}
 }
+.av__panel .b3-menu__label {
+	min-height: 27px; // 跟前面的选项 line-height 一样，避免选项内容不垂直居中
+}
+
 // 页签菜单
 // TODO废弃 以下选择器是兼容 v3.3.6 以前的版本，版本号提升到 v3.3.6 时即可修改为 #commonMenu[data-name="tab"] > .b3-menu__items  ，并且需要同步修改 menuHandler.ts 的对应逻辑
 #whisperCommonMenu[data-name="tab-header"] + #commonMenu > .b3-menu__items {
