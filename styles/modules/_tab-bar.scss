@@ -193,7 +193,7 @@
 }
 
 // 窗口左上角留一点空位用于拖拽窗口
-body #toolbar {
+#toolbar:not(.toolbar--browser) {
 	padding-left: 0; // 预留 5px
 
 	#barWorkspace {
@@ -206,8 +206,12 @@ body #toolbar {
 		app-region: drag;
 	}
 }
-body:not(.body--win32) #toolbar::before {
+body:not(.body--win32) #toolbar:not(.toolbar--browser)::before {
 	margin-right: calc(var(--b3-toolbar-left-mac) - 7px); // 给 Mac 左上角的窗口控制按钮留空位
+}
+// 浏览器打开时的顶栏样式
+.toolbar--browser {
+	padding-left: env(titlebar-area-x, 5px);
 }
 
 // 新窗口
