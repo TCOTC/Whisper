@@ -1,6 +1,5 @@
 // ———————————————————— 底栏 ————————————————————
-// 排除移动端
-body:not(:has(> #sidebar)) {
+body:not([data-whisper-device="mobile"]) {
 	#status {
 		position: fixed;
 		right: 0;

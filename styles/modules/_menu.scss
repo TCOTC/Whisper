@@ -138,8 +138,7 @@ button, input, select, textarea {
 }
 
 // 菜单选项分隔线
-// 排除移动端
-.b3-menu__separator:not(.b3-menu--fullscreen *) {
+body:not([data-whisper-device="mobile"]) .b3-menu__separator {
 	width: 95%;
 	justify-self: center;
 }
@@ -152,8 +151,7 @@ button, input, select, textarea {
 }
 
 // 宽度、高度菜单的输入框 https://github.com/siyuan-note/siyuan/issues/14163
-// 排除移动端
-button:is([data-id="widthInput"], [data-id="heightInput"]):not(.b3-menu--fullscreen *) input {
+body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data-id="heightInput"]) input {
 	width: 150px;
 }
 
