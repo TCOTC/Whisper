@@ -164,6 +164,7 @@ html[data-theme-mode="light"] {
   --b3-graph-olist-point: #b3005f;
   // --b3-graph-listitem-point: #f65b00;
   // --b3-graph-bq-point: #8d48e3;
+  --b3-graph-callout-point: var(--b3-theme-success);
   // --b3-graph-super-point: #dd79ff;
   // --b3-graph-doc-point: #202124;
   // --b3-graph-tag-point: #dbf32f;
@@ -220,6 +221,13 @@ html[data-theme-mode="light"] {
   --b3-pdf-background6: rgb(105, 176, 242);
   --b3-pdf-background7: rgb(200, 133, 218);
   --b3-pdf-dark: rgb(33, 34, 36);
+
+  // callout
+  --b3-callout-note: var(--b3-theme-primary);
+  --b3-callout-tip: var(--b3-theme-success);
+  --b3-callout-caution: var(--b3-theme-error);
+  --b3-callout-important: #8957e5; // 与默认主题实际效果一致，原来是 var(--b3-protyle-inline-blockref-color);
+  --b3-callout-warning: var(--b3-highlight-current-background);
 
   // 表格（与默认主题一致）
   --b3-table-even-background: rgba(0, 0, 0, .02);
