@@ -143,8 +143,11 @@
 		}
 
 		&:hover {
-			border-bottom: unset; // 简约，不必要下划线
 			text-shadow: var(--custom-link-shadow); // 代替 opacity 变化
+		}
+
+		&:not([data-type~=u]):hover {
+			border-bottom: unset; // 简约，不必要下划线
 		}
 	}
 
