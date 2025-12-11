@@ -969,3 +969,68 @@ div:not(#preview):not(.export-img) > .protyle-wysiwyg .code-block:not(pre) { // 
 .protyle-wysiwyg[data-readonly=false] .code-block:not(pre):not(:hover) .protyle-action .protyle-action__language:empty::after {
 	opacity: 0;
 }
+
+// ————————————————————提示块————————————————————
+
+:is(.b3-typography, .protyle-wysiwyg) .callout {
+	padding: 0;
+	color: var(--b3-theme-on-background);
+	background-color: transparent;
+	border: 1px solid var(--b3-callout-note);
+
+	.callout-info {
+		margin: 0;
+		padding: 0;
+		border-radius: var(--b3-border-radius) var(--b3-border-radius) 0 0;
+		background-color: rgba(from var(--b3-callout-note) r g b / .2);
+
+		.callout-icon {
+			margin: calc((1.625em - 1.2em) / 2);
+		}
+	
+		.callout-title {
+			margin-left: 0;
+			transition: unset;
+			color: var(--b3-theme-on-background);
+		}
+	}
+
+	&[data-subtype=TIP] {
+		border: 1px solid var(--b3-callout-tip);
+
+		.callout-info {
+			background-color: rgba(from var(--b3-callout-tip) r g b / .2);
+		}
+	}
+	&[data-subtype=IMPORTANT] {
+		border: 1px solid var(--b3-callout-important);
+
+		.callout-info {
+			background-color: rgba(from var(--b3-callout-important) r g b / .2);
+		}
+	}
+	&[data-subtype=WARNING] {
+		border: 1px solid var(--b3-callout-warning);
+
+		.callout-info {
+			background-color: rgba(from var(--b3-callout-warning) r g b / .2);
+		}
+	}
+	&[data-subtype=CAUTION] {
+		border: 1px solid var(--b3-callout-caution);
+
+		.callout-info {
+			background-color: rgba(from var(--b3-callout-caution) r g b / .2);
+		}
+	}
+
+	&::before {
+		display: none;
+	}
+
+	.callout-content {
+		padding: 4px 4px 4px max(.25em, 4px);
+		color: var(--b3-theme-on-background);
+		background-color: transparent;
+	}
+}

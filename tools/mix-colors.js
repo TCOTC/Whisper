@@ -4,6 +4,7 @@
 // https://developer.mozilla.org/zh-CN/docs/Web/CSS/color_value/rgb#%E8%AF%AD%E6%B3%95
 
 // https://github.com/niklasvh/html2canvas 不支持使用 rgb(from var(--color) r g b / alpha) 语法的颜色
+// 但 v3.1.25 换成 html-to-image 之后支持了 https://github.com/siyuan-note/siyuan/issues/14161
 
 // 用于混合两种颜色
 
