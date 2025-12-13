@@ -14,7 +14,7 @@
 }
 
 .av__title + .av__counter { // X 已选中
-	background-color: var(--mix-theme_primary_background);
+	background-color: var(--b3-tooltips-background);
 	color: var(--b3-theme-on-background);
 }
 
@@ -36,11 +36,11 @@
 .b3-menu .b3-chip,         // 选项菜单、设置菜单
 .custom-attr .b3-chip {    // 属性面板
 	color: var(--b3-theme-on-background) !important;
-	outline: 1px solid var(--custom-theme-on-surface-light_30);
+	outline: 1px solid var(--wh-theme-on-surface-light_30);
 	outline-offset: -1px;
 
 	// 数据库选项背景色
-	--b3-font-background13: var(--custom-database-background13);
+	--b3-font-background13: var(--wh-database-background13);
 }
 
 // 资源字段的标题宽度

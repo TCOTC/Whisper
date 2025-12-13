@@ -1,0 +1,317 @@
+// 通用主题变量生成器
+// 尽量避免不同配色方案的 CSS 重复
+
+@use "sass:map";
+@use "sass:meta";
+@use "sass:color";
+@use "sass:string";
+@use "sass:math";
+
+@mixin generate-theme-variables($colors) {
+  // 设置全局变量，供 c() 函数使用
+  $theme-colors: $colors !global;
+  // 自定义、混合
+  --wh-inline-box-shadow: 0 .1em 0 0;
+  --wh-theme-on-shadow: 0px 0px 2px #{with-alpha(c(b3-theme-on-background), c(wh-theme-on-shadow-color-alpha))};
+  --wh-link-shadow: 0px 0px 2px #{with-alpha(c(b3-protyle-inline-link-color), c(wh-protyle-inline-link-color-alpha))};
+  --wh-img-shadow: 0 0 2px #{c(wh-img-shadow-color)};
+
+  --wh-transition: .2s cubic-bezier(0, 0, .2, 1) 0ms;
+
+  --wh-database-background13: #{c(wh-database-background13)}; // 数据库选项
+  --wh-database-background14: #{c(wh-database-background14)}; // 数据库选项
+  --wh-color-blue-light: rgba(0, 202, 255, .85);
+  --wh-list-hover-dark: #{c(wh-list-hover-dark)};
+  --wh-list-hover-darker: #{c(wh-list-hover-darker)};
+  --wh-protyle-kbd-background: #{with-alpha(c(b3-theme-surface), 65%)}; // 键盘元素背景色
+  --wh-protyle-kbd-border-color: rgb(176, 176, 176, .6);              // 键盘元素外框颜色
+  --wh-protyle-kbd-border-color_30: #{with-alpha(rgb(176, 176, 176), 30%)};
+  --wh-toggle-hover: #{c(wh-toggle-hover)};                   // 展开按钮、页签叉号的 hover 颜色
+  --mix-theme_primary_background: #{c(mix-theme_primary_background)}; // --b3-theme-primary-lightest & --b3-theme-background // TODO 改为自动计算混合颜色
+  --mix-theme-background_scroll-color: #{c(mix-theme-background_scroll-color)}; // --b3-theme-background & --b3-scroll-color // TODO 改为自动计算混合颜色
+
+  // 主色
+  --b3-theme-primary: #{c(b3-theme-primary)};                   // 主题色：各种按钮
+  --b3-theme-primary-light: #{c(b3-theme-primary-light)};
+  --b3-theme-primary-lighter: #{c(b3-theme-primary-lighter)};   // 选中文本的颜色
+  --b3-theme-primary-lightest: #{c(b3-theme-primary-lightest)}; // 选中块后的高亮
+  --b3-theme-secondary: #{c(b3-theme-secondary)};
+
+  --b3-theme-background: #{to-hex(c(b3-theme-background))};     // 编辑器：必须是十六进制，否则移动端状态栏会变成黑色
+  --b3-theme-background-light: #{c(b3-theme-background-light)}; // 侧栏按钮：--b3-theme-surface 与 --b3-list-hover 混合 // TODO 改为自动计算混合颜色
+  --b3-theme-surface: #{c(b3-theme-surface)};                   // 侧栏面板
+  --wh-theme-surface_65: #{with-alpha(c(b3-theme-surface), 65%)};
+  --b3-theme-surface-light: #{c(b3-theme-surface-light)};
+  --b3-theme-surface-lighter: #{c(b3-theme-surface-lighter)};
+  --b3-theme-error: #{c(b3-theme-error)};
+  --b3-theme-success: #{c(b3-theme-success)};
+
+  // 文字颜色
+  --b3-theme-on-primary: #{c(b3-theme-on-primary)};
+  --b3-theme-on-secondary: #{c(b3-theme-on-secondary)};
+  --b3-theme-on-background: #{c(b3-theme-on-background)}; // 文本默认颜色
+  --wh-theme-on-background_20: #{with-alpha(c(b3-theme-on-background), 20%)}; // 仅明亮配色使用
+  --wh-theme-on-background_50: #{with-alpha(c(b3-theme-on-background), 50%)}; // 仅暗黑配色使用
+  --wh-theme-on-background_85: #{with-alpha(c(b3-theme-on-background), 85%)};
+  --b3-theme-on-surface: #{c(b3-theme-on-surface)};
+  --b3-theme-on-surface-light: #{c(b3-theme-on-surface-light)};
+  --wh-theme-on-surface-light_30: #{with-alpha(c(b3-theme-on-surface-light), 30%)};
+  --b3-theme-on-error: #{c(b3-theme-on-error)};
+
+  // 字体（与默认主题一致）
+
+  // 顶部工具栏
+  --b3-toolbar-background: var(--b3-theme-surface);
+  --b3-toolbar-blur-background: var(--b3-toolbar-background); // 窗口非聚焦状态时顶部工具栏的颜色：不需要变色，改成保持原色
+  --b3-toolbar-color: var(--b3-theme-on-surface);
+  --b3-toolbar-hover: var(--b3-theme-background-light);
+  --b3-toolbar-left-mac: 74px; // MacOS 左上角窗口控制按钮的宽度
+
+  // 线条
+  --b3-border-color: #{c(b3-border-color)};
+  --b3-border-radius: 6px;
+  --b3-border-radius-s: 3px;
+  --b3-border-radius-b: 12px;
+
+  // 滚动条
+  --b3-scroll-color: #{c(b3-scroll-color)};
+  --wh-scroll-color_15: #{with-alpha(c(b3-scroll-color), 15%)};
+  --wh-scroll-color_50: #{with-alpha(c(b3-scroll-color), 50%)};
+
+  // 列表
+  --wh-list-hover_100: #{with-alpha(c(b3-list-hover), 100%)};
+  --b3-list-hover: #{c(b3-list-hover)};           // 鼠标悬浮在选项上
+  --b3-list-icon-hover: #{c(b3-list-icon-hover)}; // 文档树的文档图标
+
+  // 菜单（与默认主题var一致）
+  --b3-menu-background: var(--b3-theme-surface);
+
+  // 提示
+  --b3-tooltips-background: var(--mix-theme_primary_background); // TODO 合并变量，只保留 --b3-tooltips-background
+  --b3-tooltips-color: var(--b3-theme-background-light);
+  --b3-tooltips-second-color: #7d7c7a;
+  --b3-tooltips-shadow: #{c(b3-tooltips-shadow)};
+
+  // 为空提示（占位符文本）
+  --b3-empty-color: #{c(b3-empty-color)};
+
+  // 遮罩
+  --b3-mask-background: #{c(b3-mask-background)};
+
+  // 卡片背景
+  --b3-card-error-color: #{c(b3-card-error-color)};
+  --b3-card-error-background: #{c(b3-card-error-background)};
+  --b3-card-warning-color: #{c(b3-card-warning-color)};
+  --b3-card-warning-background: #{c(b3-card-warning-background)};
+  --b3-card-info-color: #{c(b3-card-info-color)};
+  --b3-card-info-background: #{c(b3-card-info-background)};
+  --b3-card-success-color: #{c(b3-card-success-color)};
+  --b3-card-success-background: #{c(b3-card-success-background)};
+  --wh-card-success-background_65: #{with-alpha(c(b3-card-success-background), 65%)};
+
+  // 自定义文字
+  --b3-font-color1: #{c(b3-font-color1)};
+  --b3-font-color2: #{c(b3-font-color2)};
+  --b3-font-color3: #{c(b3-font-color3)};
+  --b3-font-color4: #{c(b3-font-color4)};
+  --b3-font-color5: #{c(b3-font-color5)};
+  --b3-font-color6: #{c(b3-font-color6)};
+  --b3-font-color7: #{c(b3-font-color7)};
+  --b3-font-color8: #{c(b3-font-color8)};
+  --b3-font-color9: #{c(b3-font-color9)};
+  --b3-font-color10: #{c(b3-font-color10)};
+  --b3-font-color11: #{c(b3-font-color11)};
+  --b3-font-color12: #{c(b3-font-color12)};
+  --b3-font-color13: var(--b3-theme-background);
+  --b3-font-background1: #{c(b3-font-background1)};
+  --b3-font-background2: #{c(b3-font-background2)};
+  --b3-font-background3: #{c(b3-font-background3)};
+  --b3-font-background4: #{c(b3-font-background4)};
+  --b3-font-background5: #{c(b3-font-background5)};
+  --b3-font-background6: #{c(b3-font-background6)};
+  --b3-font-background7: #{c(b3-font-background7)};
+  --b3-font-background8: #{c(b3-font-background8)};
+  --b3-font-background9: #{c(b3-font-background9)};
+  --b3-font-background10: #{c(b3-font-background10)};
+  --b3-font-background11: #{c(b3-font-background11)};
+  --b3-font-background12: #{c(b3-font-background12)};
+  --b3-font-background13: var(--b3-theme-on-background);
+  --b3-font-background14: var(--wh-database-background14); // 数据库选项专用
+
+  // 动画效果（与默认主题值一致）
+  --b3-transition: all .2s cubic-bezier(0, 0, .2, 1) 0ms;
+  --b3-width-transition: width .2s cubic-bezier(0, 0, .2, 1) 0ms;
+  --b3-color-transition: color .2s cubic-bezier(0, 0, .2, 1) 0ms;
+  --b3-background-transition: background 20ms ease-in 0s;
+
+  // 高亮（与默认主题值一致）
+  --b3-highlight-color: #222;
+  --b3-highlight-background: #ffff00;
+  --b3-highlight-current-background: #ff9632;
+
+  // 下拉菜单
+  --b3-select-background: #{c(b3-select-background)};
+
+  // switch（与默认主题一致）
+  --b3-switch-background: #{c(b3-switch-background)};
+  --b3-switch-border: var(--b3-theme-on-surface-light);
+  --b3-switch-hover: #{c(b3-switch-hover)};
+  --b3-switch-checked: #fff;
+  --b3-switch-checked-background: var(--b3-theme-primary);
+  --b3-switch-checked-hover: #{c(b3-switch-checked-hover)};
+  --b3-switch-checked-hover2: #{c(b3-switch-checked-hover2)};
+
+  // 阴影（与默认主题一致）
+  --b3-point-shadow: #{c(b3-point-shadow)};
+  --b3-dialog-shadow: #{c(b3-dialog-shadow)};
+  --b3-button-shadow: 0 5px 5px -3px rgb(0 0 0 / .2), 0 8px 10px 1px rgb(0 0 0 / .14), 0 3px 14px 2px rgb(0 0 0 / .12);
+
+  // 图表颜色
+  --b3-graph-p-point: #076f7e;
+  // --b3-graph-heading-point: #8250df;
+  // --b3-graph-math-point: #80FFA5;
+  // --b3-graph-code-point: #00DDFF;
+  // --b3-graph-table-point: #37A2FF;
+  // --b3-graph-list-point: #FF0087;
+  --b3-graph-todo-point: #FFBF00;
+  --b3-graph-olist-point: #b3005f;
+  // --b3-graph-listitem-point: #f65b00;
+  // --b3-graph-bq-point: #8d48e3;
+  --b3-graph-callout-point: var(--b3-theme-success);
+  // --b3-graph-super-point: #dd79ff;
+  // --b3-graph-doc-point: #202124;
+  // --b3-graph-tag-point: #dbf32f;
+  --b3-graph-asset-point: #05c091;
+  --b3-graph-line: #5f6368;
+  // --b3-graph-ref-line: #d23f31;
+  --b3-graph-tag-line: #5f6b06;
+  --b3-graph-tag-tag-line: #dbf32f;
+  --b3-graph-asset-line: #037457;
+  --b3-graph-hl-point: #f3a92f;
+  --b3-graph-hl-line: #4285f4;
+
+  // 从 Asri 拿的关系图配色
+  --b3-graph-heading-point: #ef6b9a;
+  --b3-graph-math-point: #24a5ff;
+  --b3-graph-code-point: #6a9bff;
+  --b3-graph-table-point: #0abc71;
+  --b3-graph-list-point: #82b025;
+  --b3-graph-listitem-point: #00b89f;
+  --b3-graph-bq-point: #de8700;
+  --b3-graph-super-point: #a2a700;
+  --b3-graph-doc-point: var(--b3-theme-on-background);
+  --b3-graph-tag-point: #ef7747;
+  --b3-graph-ref-line: var(--b3-theme-primary-light);
+
+  // 代码片段背景（与默认主题一致）
+  --b3-protyle-code-background: #{c(b3-protyle-code-background)}; // 代码块背景
+
+  // 所见即所得行内元素颜色
+  --b3-protyle-inline-strong-color: inherit;
+  --b3-protyle-inline-em-color: inherit;
+  --b3-protyle-inline-u-color: inherit;
+  --b3-protyle-inline-s-color: #{c(b3-protyle-inline-s-color)}; // 原来是 inherit
+  --wh-protyle-inline-s-color_50: #{with-alpha(c(b3-protyle-inline-s-color), 50%)};
+  --b3-protyle-inline-link-color: rgb(66, 133, 244);
+  --b3-protyle-inline-link-s-color: #{c(b3-protyle-inline-link-s-color)};
+  --b3-protyle-inline-mark-background: #{c(b3-protyle-inline-mark-background)};
+  --b3-protyle-inline-mark-color: inherit; // 原来是明亮 #202124 / 暗黑 var(--b3-theme-on-background)
+  --b3-protyle-inline-tag-color: var(--b3-card-success-color); // 原来是 #5f636
+  --b3-protyle-inline-blockref-color: inherit; // 原来是 #8957e5
+  --b3-protyle-inline-fileref-color: #{c(b3-protyle-inline-fileref-color)};
+  --b3-protyle-inline-fileref-s-color: #{c(b3-protyle-inline-fileref-s-color)};
+
+  // PDF
+  --b3-pdf-selection: #{c(b3-pdf-selection)};
+  --sidebar-width: 200px;
+  --b3-pdf-offset: 0;
+  --b3-pdf-background1: #{c(b3-pdf-background1)};
+  --b3-pdf-background2: #{c(b3-pdf-background2)};
+  --b3-pdf-background3: #{c(b3-pdf-background3)};
+  --b3-pdf-background4: #{c(b3-pdf-background4)};
+  --b3-pdf-background5: #{c(b3-pdf-background5)};
+  --b3-pdf-background6: #{c(b3-pdf-background6)};
+  --b3-pdf-background7: #{c(b3-pdf-background7)};
+  --b3-pdf-dark: rgb(33, 34, 36);
+
+  // callout（与默认主题var和值一致）
+  --b3-callout-note: var(--b3-theme-primary);
+  --b3-callout-tip: var(--b3-theme-success);
+  --b3-callout-caution: var(--b3-theme-error);
+  --b3-callout-important: #8957e5; // 与默认主题实际效果一致，原来是 var(--b3-protyle-inline-blockref-color);
+  --b3-callout-warning: var(--b3-highlight-current-background);
+
+  // 表格
+  --b3-table-even-background: #{c(b3-table-even-background)};
+
+  // 数据库
+  --b3-av-gallery-shadow: #{c(b3-av-gallery-shadow)};
+
+  // 嵌入块（与默认主题值一致）
+  --b3-embed-background: transparent;
+
+  // 引述块（与默认主题值一致）
+  --b3-bq-background: transparent;
+
+  // 父块颜色（与默认主题var一致）
+  --b3-parent-background: var(--b3-theme-background);
+}
+
+// 将数字转换为两位十六进制字符串
+// 例如：249 -> "f9", 15 -> "0f", 255 -> "ff"
+@function to-hex-digit($num) {
+  $hex-chars: "0123456789abcdef";         // 十六进制字符集，索引从 1 开始
+  $first: math.floor(math.div($num, 16)); // 第一个十六进制位（0-15）
+  $second: $num % 16;                     // 第二个十六进制位（0-15）
+  // 从 $hex-chars 中提取对应的字符：$first + 1 是因为 Sass 字符串索引从 1 开始
+  @return string.slice($hex-chars, $first + 1, $first + 1) + string.slice($hex-chars, $second + 1, $second + 1);
+}
+
+// 将颜色转换为十六进制字符串，如果值不是颜色类型则返回原值
+@function to-hex($color) {
+  @if meta.type-of($color) == 'color' {
+    $r: color.channel($color, "red", $space: rgb);
+    $g: color.channel($color, "green", $space: rgb);
+    $b: color.channel($color, "blue", $space: rgb);
+    $a: null;
+    @if color.alpha($color) < 1 {
+      // Sass alpha 是 0-1，要映射到 0-255
+      $a: math.round(color.alpha($color) * 255);
+      @return string.unquote("#" + to-hex-digit($r) + to-hex-digit($g) + to-hex-digit($b) + to-hex-digit($a));
+    } @else {
+      @return string.unquote("#" + to-hex-digit($r) + to-hex-digit($g) + to-hex-digit($b));
+    }
+  } @else {
+    @return $color;
+  }
+}
+
+// 转换颜色的透明度，参数是颜色和 alpha 值（0-1 之间的小数）
+// 当 alpha 为 1 时，返回不带 alpha 通道的颜色（rgb 格式）
+@function with-alpha($color, $alpha) {
+  @if meta.type-of($color) == 'color' {
+    @if $alpha == 1 or $alpha == 100% {
+      // 提取 RGB 值，返回不带 alpha 通道的 rgb 颜色
+      $r: color.channel($color, "red", $space: rgb);
+      $g: color.channel($color, "green", $space: rgb);
+      $b: color.channel($color, "blue", $space: rgb);
+      @return rgb($r, $g, $b);
+    } @else {
+      @return color.change($color, $alpha: $alpha);
+    }
+  } @else {
+    @return $color;
+  }
+}
+
+// 全局变量，用于存储当前主题的颜色 map
+$theme-colors: null !default;
+
+// 从颜色 map 中获取值（简化 map.get 的写法），如无则返回 unset
+@function c($key) {
+  $value: map.get($theme-colors, $key);
+  @if $value == null {
+    @return unset;
+  }
+  @return $value;
+}

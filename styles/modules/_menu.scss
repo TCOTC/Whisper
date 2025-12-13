@@ -251,7 +251,7 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 	color: transparent !important;
 
 	// 数据库选项背景色
-	--b3-font-background13: var(--custom-database-background13);
+	--b3-font-background13: var(--wh-database-background13);
 }
 
 // ————————————————————集市————————————————————
@@ -352,7 +352,7 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 	&>.b3-typography:nth-child(2) > blockquote:first-child {
 		border-radius: var(--b3-border-radius-b);
 		padding: 12px 20px;
-		color: var(--custom-theme-on-background_85);
+		color: var(--wh-theme-on-background_85);
 		font-weight: bold;
 		font-size: 120%;
 		outline: 2px solid var(--b3-theme-on-surface-light);
@@ -364,10 +364,10 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 	}
 
 	.b3-typography blockquote {
-		color: var(--custom-theme-on-background_85);
+		color: var(--wh-theme-on-background_85);
 
 		&::before {
-			background-color: var(--custom-theme-on-background_85);
+			background-color: var(--wh-theme-on-background_85);
 		}
 	}
 }
@@ -375,31 +375,31 @@ body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data
 // 给 TCOTC 的插件和主题的 README 加点特效
 html[data-theme-mode="light"] {
 	// 明亮模式配色
-	--custom-bazaar-TCOTC-bg-color: rgba(228, 147, 208, .5);
-	--custom-bazaar-TCOTC-gradient-1: rgba(235, 105, 78, .5);
-	--custom-bazaar-TCOTC-gradient-1-transparent: rgba(235, 105, 78, 0);
-	--custom-bazaar-TCOTC-gradient-2: rgba(243, 11, 164, .5);
-	--custom-bazaar-TCOTC-gradient-2-transparent: rgba(243, 11, 164, 0);
-	--custom-bazaar-TCOTC-gradient-3: rgba(254, 234, 131, .5);
-	--custom-bazaar-TCOTC-gradient-3-transparent: rgba(254, 234, 131, 0);
-	--custom-bazaar-TCOTC-gradient-4: rgba(170, 142, 245, .5);
-	--custom-bazaar-TCOTC-gradient-4-transparent: rgba(170, 142, 245, 0);
-	--custom-bazaar-TCOTC-gradient-5: rgba(248, 192, 147, .5);
-	--custom-bazaar-TCOTC-gradient-5-transparent: rgba(248, 192, 147, 0);
+	--wh-bazaar-bg-color: rgba(228, 147, 208, .5);
+	--wh-bazaar-gradient-1: rgba(235, 105, 78, .5);
+	--wh-bazaar-gradient-1-transparent: rgba(235, 105, 78, 0);
+	--wh-bazaar-gradient-2: rgba(243, 11, 164, .5);
+	--wh-bazaar-gradient-2-transparent: rgba(243, 11, 164, 0);
+	--wh-bazaar-gradient-3: rgba(254, 234, 131, .5);
+	--wh-bazaar-gradient-3-transparent: rgba(254, 234, 131, 0);
+	--wh-bazaar-gradient-4: rgba(170, 142, 245, .5);
+	--wh-bazaar-gradient-4-transparent: rgba(170, 142, 245, 0);
+	--wh-bazaar-gradient-5: rgba(248, 192, 147, .5);
+	--wh-bazaar-gradient-5-transparent: rgba(248, 192, 147, 0);
 }
 html[data-theme-mode="dark"] {
 	// 暗黑模式配色
-	--custom-bazaar-TCOTC-bg-color: rgba(120, 80, 100, .3);
-	--custom-bazaar-TCOTC-gradient-1: rgba(150, 80, 60, .3);
-	--custom-bazaar-TCOTC-gradient-1-transparent: rgba(150, 80, 60, 0);
-	--custom-bazaar-TCOTC-gradient-2: rgba(120, 60, 100, .3);
-	--custom-bazaar-TCOTC-gradient-2-transparent: rgba(120, 60, 100, 0);
-	--custom-bazaar-TCOTC-gradient-3: rgba(180, 160, 80, .3);
-	--custom-bazaar-TCOTC-gradient-3-transparent: rgba(180, 160, 80, 0);
-	--custom-bazaar-TCOTC-gradient-4: rgba(100, 80, 150, .3);
-	--custom-bazaar-TCOTC-gradient-4-transparent: rgba(100, 80, 150, 0);
-	--custom-bazaar-TCOTC-gradient-5: rgba(150, 120, 80, .3);
-	--custom-bazaar-TCOTC-gradient-5-transparent: rgba(150, 120, 80, 0);
+	--wh-bazaar-bg-color: rgba(120, 80, 100, .3);
+	--wh-bazaar-gradient-1: rgba(150, 80, 60, .3);
+	--wh-bazaar-gradient-1-transparent: rgba(150, 80, 60, 0);
+	--wh-bazaar-gradient-2: rgba(120, 60, 100, .3);
+	--wh-bazaar-gradient-2-transparent: rgba(120, 60, 100, 0);
+	--wh-bazaar-gradient-3: rgba(180, 160, 80, .3);
+	--wh-bazaar-gradient-3-transparent: rgba(180, 160, 80, 0);
+	--wh-bazaar-gradient-4: rgba(100, 80, 150, .3);
+	--wh-bazaar-gradient-4-transparent: rgba(100, 80, 150, 0);
+	--wh-bazaar-gradient-5: rgba(150, 120, 80, .3);
+	--wh-bazaar-gradient-5-transparent: rgba(150, 120, 80, 0);
 }
 // 原始样式来源于 https://www.bilibili.com/video/BV1b44y1e7Wx/ https://codepen.io/stevenlei/pen/ZEJxXGL
 #configBazaarReadme.config-bazaar__readme--show:has(> .item__side[data-obj*="TCOTC"]) {
@@ -414,13 +414,13 @@ html[data-theme-mode="dark"] {
 		top: 0;
 		left: 0;
 		border-radius: var(--b3-border-radius-b);
-		background-color: var(--custom-bazaar-TCOTC-bg-color);
+		background-color: var(--wh-bazaar-bg-color);
 		background-image:
-			radial-gradient(closest-side, var(--custom-bazaar-TCOTC-gradient-1), var(--custom-bazaar-TCOTC-gradient-1-transparent)),
-			radial-gradient(closest-side, var(--custom-bazaar-TCOTC-gradient-2), var(--custom-bazaar-TCOTC-gradient-2-transparent)),
-			radial-gradient(closest-side, var(--custom-bazaar-TCOTC-gradient-3), var(--custom-bazaar-TCOTC-gradient-3-transparent)),
-			radial-gradient(closest-side, var(--custom-bazaar-TCOTC-gradient-4), var(--custom-bazaar-TCOTC-gradient-4-transparent)),
-			radial-gradient(closest-side, var(--custom-bazaar-TCOTC-gradient-5), var(--custom-bazaar-TCOTC-gradient-5-transparent));
+			radial-gradient(closest-side, var(--wh-bazaar-gradient-1), var(--wh-bazaar-gradient-1-transparent)),
+			radial-gradient(closest-side, var(--wh-bazaar-gradient-2), var(--wh-bazaar-gradient-2-transparent)),
+			radial-gradient(closest-side, var(--wh-bazaar-gradient-3), var(--wh-bazaar-gradient-3-transparent)),
+			radial-gradient(closest-side, var(--wh-bazaar-gradient-4), var(--wh-bazaar-gradient-4-transparent)),
+			radial-gradient(closest-side, var(--wh-bazaar-gradient-5), var(--wh-bazaar-gradient-5-transparent));
 		background-size:
 			130vmax 130vmax,
 			80vmax 80vmax,

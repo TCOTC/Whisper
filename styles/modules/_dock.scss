@@ -26,7 +26,7 @@
 
 					&.b3-list-item__toggle--hl:hover {
 						background-color: unset;
-						color: var(--custom-toggle-hover);
+						color: var(--wh-toggle-hover);
 					}
 				}
 			}
@@ -55,7 +55,7 @@ html[data-whisper-status="show"] .layout__dockr.layout--float {
 		position: absolute;
 		right: calc(28px - 42px); // 侧栏的宽度 // 露出"显示/隐藏停靠栏"按钮
 		bottom: 0;
-		height: var(--custom-status-height);
+		height: var(--wh-status-height);
 		width: calc(42px - 28px); // 侧栏的宽度 // 露出"显示/隐藏停靠栏"按钮
 		background-color: var(--b3-theme-surface);
 	}
@@ -121,7 +121,7 @@ html[data-whisper-layout-dockr-float="float"] body:not(.body--window) .layout__c
 html[data-whisper-status="show"][data-whisper-dock-bottom="hide"] {
 	#dockRight,
 	.layout__dockr .layout__dockresize {
-		padding-bottom: var(--custom-status-height);
+		padding-bottom: var(--wh-status-height);
 	}
 }
 
@@ -155,14 +155,14 @@ html[data-whisper-status="show"][data-whisper-dock-bottom="hide"] {
 	}
 }
 html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="translate"]) {
-	bottom: var(--custom-status-height) !important; // 隐藏底部侧栏之后
+	bottom: var(--wh-status-height) !important; // 隐藏底部侧栏之后
 	overflow: visible;
 
 	&::after {
 		content: "";
 		position: absolute;
-		bottom: calc(-1 * var(--custom-status-height));
-		height: var(--custom-status-height);
+		bottom: calc(-1 * var(--wh-status-height));
+		height: var(--wh-status-height);
 		width: calc(100% - 28px); // 露出"显示/隐藏停靠栏"按钮
 		background-color: var(--b3-theme-surface);
 	}

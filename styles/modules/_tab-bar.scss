@@ -86,7 +86,7 @@
 				}
 
 				&:hover svg {
-					color: var(--custom-toggle-hover);
+					color: var(--wh-toggle-hover);
 				}
 			}
 		}
@@ -110,28 +110,28 @@
 				background-color: var(--b3-card-error-background);
 
 				&:hover {
-					background-color: color-mix(in srgb, var(--b3-card-error-background) 90%, var(--custom-list-hover_100)) !important;
+					background-color: color-mix(in srgb, var(--b3-card-error-background) 90%, var(--wh-list-hover_100)) !important;
 				}
 			}
 			&:nth-child(4n-2) {
 				background-color: var(--b3-card-warning-background);
 
 				&:hover {
-					background-color: color-mix(in srgb, var(--b3-card-warning-background) 90%, var(--custom-list-hover_100)) !important;
+					background-color: color-mix(in srgb, var(--b3-card-warning-background) 90%, var(--wh-list-hover_100)) !important;
 				}
 			}
 			&:nth-child(4n-1) {
 				background-color: var(--b3-card-info-background);
 
 				&:hover {
-					background-color: color-mix(in srgb, var(--b3-card-info-background) 90%, var(--custom-list-hover_100)) !important;
+					background-color: color-mix(in srgb, var(--b3-card-info-background) 90%, var(--wh-list-hover_100)) !important;
 				}
 			}
 			&:nth-child(4n) {
 				background-color: var(--b3-card-success-background);
 
 				&:hover {
-					background-color: color-mix(in srgb, var(--b3-card-success-background) 90%, var(--custom-list-hover_100)) !important;
+					background-color: color-mix(in srgb, var(--b3-card-success-background) 90%, var(--wh-list-hover_100)) !important;
 				}
 			}
 			// 钉住且聚焦的页签

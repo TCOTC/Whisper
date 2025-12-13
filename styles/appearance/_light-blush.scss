@@ -1,0 +1,19 @@
+// 明亮配色：胭脂（默认配色）
+
+@use "sass:map";
+@use "light-base" as light-base;
+@use "base" as base;
+
+html[data-theme-mode="light"] {
+  // 定义需要覆盖的颜色 map（只包含与基础配色不同的值）
+  $light-blush-overrides: (
+    // 在此处添加需要覆盖的颜色值
+    // 例如：b3-theme-primary: rgb(126, 121, 0),
+  );
+
+  // 合并基础 map 和覆盖 map，覆盖 map 中的值会替换基础 map 中的相同键值
+  $light-blush-appearance: map.merge(light-base.$light-base-appearance, $light-blush-overrides);
+
+  // 使用 mixin 生成主题变量
+  @include base.generate-theme-variables($light-blush-appearance);
+}

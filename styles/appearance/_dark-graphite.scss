@@ -1,0 +1,19 @@
+// 暗黑配色：石墨（默认配色）
+
+@use "sass:map";
+@use "dark-base" as dark-base;
+@use "base" as base;
+
+html[data-theme-mode="dark"] {
+  // 定义需要覆盖的颜色 map（只包含与基础配色不同的值）
+  $dark-graphite-overrides: (
+    // 在此处添加需要覆盖的颜色值
+    // 例如：b3-theme-primary: rgb(152, 146, 0),
+  );
+
+  // 合并基础 map 和覆盖 map，覆盖 map 中的值会替换基础 map 中的相同键值
+  $dark-graphite-appearance: map.merge(dark-base.$dark-base-appearance, $dark-graphite-overrides);
+
+  // 使用 mixin 生成主题变量
+  @include base.generate-theme-variables($dark-graphite-appearance);
+}

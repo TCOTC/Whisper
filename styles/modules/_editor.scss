@@ -11,7 +11,7 @@
 	mark,
 	span[data-type~=mark] {
 		background-color: transparent; // 覆盖标记样式本身的背景色，并且不会影响带背景色的文本
-		box-shadow: 0 -0.7em 0 0 inset var(--b3-protyle-inline-mark-background), var(--custom-inline-box-shadow) var(--b3-protyle-inline-mark-background); // 添加透明度，避免完全覆盖文本背景色
+		box-shadow: 0 -0.7em 0 0 inset var(--b3-protyle-inline-mark-background), var(--wh-inline-box-shadow) var(--b3-protyle-inline-mark-background); // 添加透明度，避免完全覆盖文本背景色
 
 		&.mark--hl {
 			background-color: var(--b3-theme-primary-lighter);
@@ -59,7 +59,7 @@
 	}
 	// 已完成的任务列表项
 	.protyle-task--done > [data-node-id] > [spellcheck] > span[data-type~=s] {
-		color: var(--custom-protyle-inline-s-color_50);
+		color: var(--wh-protyle-inline-s-color_50);
 	}
 
 	strong,
@@ -111,9 +111,9 @@
 		margin: 0 1px;
 		color: var(--b3-theme-on-background);
 		vertical-align: unset;
-		background-color: var(--custom-protyle-kbd-background);
-		border: solid 1px var(--custom-protyle-kbd-border-color);
-		box-shadow: inset 0 -1px 0 var(--custom-protyle-kbd-border-color);
+		background-color: var(--wh-protyle-kbd-background);
+		border: solid 1px var(--wh-protyle-kbd-border-color);
+		box-shadow: inset 0 -1px 0 var(--wh-protyle-kbd-border-color);
 
 		font-variant-numeric: tabular-nums;
 		font-variant-ligatures: no-common-ligatures;
@@ -143,7 +143,7 @@
 		}
 
 		&:hover {
-			text-shadow: var(--custom-link-shadow); // 代替 opacity 变化
+			text-shadow: var(--wh-link-shadow); // 代替 opacity 变化
 		}
 
 		&:not([data-type~=u]):hover {
@@ -160,11 +160,11 @@
 	span[data-type~=block-ref]:not(.av__celltext),
 	.av__celltext--ref {
 		opacity: 1;
-		border-bottom: 0.15em solid var(--custom-color-blue-light); // 直接覆盖下划线样式、box-shadow 跟标记样式冲突
+		border-bottom: 0.15em solid var(--wh-color-blue-light); // 直接覆盖下划线样式、box-shadow 跟标记样式冲突
 		transition: unset;
 
 		&:hover {
-			text-shadow: var(--custom-theme-on-shadow); // 代替 opacity 变化
+			text-shadow: var(--wh-theme-on-shadow); // 代替 opacity 变化
 		}
 	}
 	span[data-type~=block-ref]:not(.av__celltext)[data-type~=s] {
@@ -173,7 +173,7 @@
 	// 块引用静态锚文本用虚线下划线
 	span[data-type~=block-ref][data-subtype="s"]:not(.av__celltext),
 	.av__celltext--ref[data-subtype="s"] { // TODO跟进 数据库的锚文本类型是写死的，需要修复 https://github.com/siyuan-note/siyuan/issues/13889
-		border-bottom: 0.15em dashed var(--custom-color-blue-light);
+		border-bottom: 0.15em dashed var(--wh-color-blue-light);
 	}
 
 	// PDF 标注
@@ -186,14 +186,14 @@
 		}
 
 		&:hover {
-			text-shadow: var(--custom-theme-on-shadow); // 代替 opacity 变化
+			text-shadow: var(--wh-theme-on-shadow); // 代替 opacity 变化
 		}
 	}
 
 	.img {
 		img {
 			border-radius: var(--b3-border-radius); // 图片圆角
-			box-shadow: var(--custom-img-shadow);
+			box-shadow: var(--wh-img-shadow);
 		}
 
 		.protyle-action__title:has(> span:empty) {
@@ -286,7 +286,7 @@
 	color: var(--b3-scroll-color);
 
 	&:hover {
-		color: var(--custom-scroll-color_50);
+		color: var(--wh-scroll-color_50);
 	}
 }
 .protyle-scroll__bar .b3-slider {
@@ -318,7 +318,7 @@
 	border: 2px solid transparent;
 }
 ::-webkit-scrollbar-thumb:hover {
-	background-color: var(--custom-scroll-color_15);
+	background-color: var(--wh-scroll-color_15);
 	border-width: unset;
 }
 
@@ -331,7 +331,7 @@ html[data-whisper-status="show"] .layout__center {
 		&.protyle .protyle-content, // 编辑器
 		#viewerContainer {          // PDF 阅读器
 			&::-webkit-scrollbar-track {
-				margin-bottom: var(--custom-status-height);
+				margin-bottom: var(--wh-status-height);
 			}
 		}
 
@@ -339,7 +339,7 @@ html[data-whisper-status="show"] .layout__center {
 		&.sy__backlink .backlinkList + .block__icons, // 反链页签
 		&.sy__outline > .fn__flex-1, // 大纲页签
 		.card__main .card__action {  // 闪卡按钮
-			padding-bottom: var(--custom-status-height);
+			padding-bottom: var(--wh-status-height);
 		}
 	}
 
@@ -482,13 +482,13 @@ html[data-whisper-status="show"] .layout__center {
 					width: 11px;
 					padding-left: 0.25em;
 					opacity: 1;
-					transition: width var(--custom-transition), opacity var(--custom-transition);
+					transition: width var(--wh-transition), opacity var(--wh-transition);
 				}
 
 				.b3-chip__close {
 					width: 3px;
 					opacity: 0;
-					transition: width var(--custom-transition), opacity var(--custom-transition);
+					transition: width var(--wh-transition), opacity var(--wh-transition);
 				}
 
 				@at-root .protyle-background--enable#{&} {
@@ -500,7 +500,7 @@ html[data-whisper-status="show"] .layout__center {
 						}
 	
 						.b3-chip__close {
-							transition: width var(--custom-transition);
+							transition: width var(--wh-transition);
 							width: 14px;
 							opacity: 0.68;
 						}
@@ -578,8 +578,8 @@ body > .protyle-wysiwyg:not(#preview) [data-node-id] {
 
 	span[data-type~=kbd] {
 		color: var(--b3-theme-on-surface);
-		border: solid 1px var(--custom-protyle-kbd-border-color_30);
-		box-shadow: inset 0 -1px 0 var(--custom-protyle-kbd-border-color_30);
+		border: solid 1px var(--wh-protyle-kbd-border-color_30);
+		box-shadow: inset 0 -1px 0 var(--wh-protyle-kbd-border-color_30);
 	}
 }
 
@@ -702,11 +702,11 @@ body > .protyle-wysiwyg:not(#preview) [data-node-id] {
 	background-color: var(--b3-theme-primary-lighter);
 }
 .protyle-wysiwyg [data-node-id].li[fold="1"] > .protyle-action::after {
-	background-color: var(--custom-list-hover-dark);
+	background-color: var(--wh-list-hover-dark);
 }
 // 无序列表
 .protyle .protyle-wysiwyg .li[data-subtype="u"] > .protyle-action:hover::after {
-	background-color: var(--custom-list-hover-darker);
+	background-color: var(--wh-list-hover-darker);
 }
 // 有序列表、任务列表
 // 图标必须是这一个 Size 为 32 的，位置才能刚好对上 https://fonts.google.com/icons?icon.set=Material+Icons&icon.style=Rounded&icon.size=32&icon.color=%235f6368&icon.query=Play&selected=Material+Icons+Round:play_arrow:&icon.platform=web

@@ -14,10 +14,13 @@
 @use "modules/global.scss" as *;  // 全局样式和 CSS 变量
 
 // ————————————————————— 配色 ————————————————————————
-// NOTE 偶尔需要跟最新版的默认主题文件对比一下，跟进变量的变更
+// NOTE 偶尔需要跟进最新版默认主题的变更
 
-@use "appearance/light-basic" as *; // 明亮主题
+// 明亮主题
+@use "appearance/light-blush" as *;   // 胭脂（默认配色）
 
-@use "appearance/dark-basic" as *;  // 暗黑主题
+// 暗黑主题
+@use "appearance/dark-graphite" as *; // 石墨（默认配色）
 
-@use "text/text.scss" as *;         // 文本外观
+// 文本外观
+// @use "text/text.scss" as *;
