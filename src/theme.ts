@@ -11,7 +11,7 @@ import { MobileFunctionality } from './modules/MobileFunctionality';
 import { EventBusManager } from './modules/eventBusManager';
 import { GoogleAnalytics } from './modules/googleAnalytics';
 import { logging } from './modules/logger';
-import { isIPad, isMobile, isPublish, isTouchDevice } from './modules/utils';
+import { isIPad, isMobile, isReadOnly, isTouchDevice } from './modules/utils';
 import { showMessage } from './modules/message';
 import { LocalConfig } from './modules/localConfig';
 
@@ -111,7 +111,7 @@ function initGlobalVariables(): void {
     moduleManager.register(new BlockFocusHandler());         // 块焦点处理：给焦点所在块添加属性 data-whisper-block-focus
     moduleManager.register(new EventBusManager());           // 事件总线管理：聚焦折叠的列表项时自动展开
 
-    if (!isPublish()) {
+    if (!isReadOnly()) {
         // 非发布模式
         moduleManager.register(new GoogleAnalytics());       // Google 分析：发送统计信息
         // TODO功能 在主题配置菜单中添加选项、在主题 README 中披露信息收集（主题首次安装的一天内不会发送数据）
@@ -137,7 +137,7 @@ function initGlobalVariables(): void {
         window.siyuan.whisper.loaded = false;
         logging.log('Unloaded');
 
-        if (!isPublish()) {
+        if (!isReadOnly()) {
             void removeConfigFile(); // 卸载主题时删除配置文件，异步执行，不能 await
             // TODO功能 如果之后支持同步主题配置，还需要删除放在 data 目录下的配置文件
         }

@@ -1,5 +1,5 @@
 import { logging } from './logger';
-import { isPublish } from './utils';
+import { isReadOnly } from './utils';
 import { getFile, putFile, removeFile } from './api';
 
 /**
@@ -62,7 +62,7 @@ export class LocalConfig {
      * @param defaultConfig 默认配置对象，可选
      */
     constructor(configPath?: string, defaultConfig?: ConfigObject) {
-        if (isPublish()) {
+        if (isReadOnly()) {
             return;
         }
         
@@ -149,7 +149,7 @@ export class LocalConfig {
         }
     ): Promise<boolean> {
         // 在发布服务下不进行写入
-        if (isPublish()) {
+        if (isReadOnly()) {
             logging.error('Writing configuration is not supported in publish service');
             return false;
         }
@@ -383,7 +383,7 @@ export class LocalConfig {
         }
     ): Promise<boolean> {
         // 在发布服务下不进行删除
-        if (isPublish()) {
+        if (isReadOnly()) {
             logging.error('Deleting configuration file is not supported in publish service');
             return false;
         }

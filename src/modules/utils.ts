@@ -1,9 +1,9 @@
 /**
- * 判断是否为发布服务
+ * 判断是否为内核只读模式
  */
-export const isPublish = (): boolean => {
-    return !!window.siyuan.isPublish;
-};
+export function isReadOnly(): boolean {
+    return !!window.siyuan.config?.readonly || !!window.siyuan.isPublish;
+}
 
 /**
  * 判断是否为移动设备（手机）

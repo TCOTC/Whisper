@@ -1,3 +1,5 @@
+import { isReadOnly } from "./utils";
+
 /**
  * 获取当前系统时间
  * @returns 系统时间响应
@@ -185,7 +187,7 @@ export const putFile = async (
                 };
             }
 
-            if (window.siyuan.isPublish) {
+            if (isReadOnly()) {
                 return {
                     code: 403,
                     msg: 'You are not allowed to write files in published workspace',
@@ -262,7 +264,7 @@ export const removeFile = async (
                 };
             }
 
-            if (window.siyuan.isPublish) {
+            if (isReadOnly()) {
                 return {
                     code: 403,
                     msg: 'You are not allowed to delete files in published workspace',
