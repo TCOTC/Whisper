@@ -745,6 +745,7 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 }
 
 // 给折叠的非列表项块添加背景
+// 这个选择器用于覆盖原生样式
 .protyle-wysiwyg [data-node-id][fold="1"]:not(.li) {
 	background-image: repeating-linear-gradient(
 		-45deg,
@@ -772,6 +773,14 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 		}
 	}
 
+	// 折叠的提示块
+	&.callout[data-node-id][fold="1"] {
+		height: unset;
+	
+		.callout-content {
+			display: none;
+		}
+	}
 }
 
 
