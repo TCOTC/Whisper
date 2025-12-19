@@ -1,0 +1,13 @@
+// 图片预览 viewerjs 组件的样式
+
+.viewer-container {
+  // 原生配色
+  @media (prefers-color-scheme: light) {
+    --b3-tooltips-background: #312f35;
+    --b3-tooltips-color: #dfe0e1;
+  }
+  @media (prefers-color-scheme: dark) {
+    --b3-tooltips-background: #030303;
+    --b3-tooltips-color: #bababa;
+  }
+}

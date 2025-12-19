@@ -88,7 +88,7 @@
 
   // 提示
   --b3-tooltips-background: var(--mix-theme_primary_background); // TODO 合并变量，只保留 --b3-tooltips-background
-  --b3-tooltips-color: var(--b3-theme-background-light);
+  --b3-tooltips-color: var(--b3-theme-on-background);
   --b3-tooltips-second-color: #7d7c7a;
   --b3-tooltips-shadow: #{c(b3-tooltips-shadow)};
 

@@ -6,4 +6,12 @@
 
 :root {
   --wh-status-height: 24px; // 底栏高度
+
+  // 强制设置颜色模式，用于媒体查询
+  &[data-theme-mode="light"] {
+    color-scheme: light !important;
+  }
+  &[data-theme-mode="dark"] {
+    color-scheme: dark !important;
+  }
 }
