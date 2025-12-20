@@ -82,12 +82,11 @@ export class TooltipHandler implements ThemeModule {
             return;
         }
 
-        // 数据库单元格、选项描述、“添加”按钮、视图、属性面板
-        if (e.closest('.av__cell') ||
-            e.closest('[data-type="addColOptionOrCell"]') ||
-            e.closest('[data-type="av-add"]') || e.closest('[data-type="av-add-more"]') || e.closest('[data-type="av-header-add"]') ||
-            e.closest('[data-page]') ||
-            e.closest('[data-av-id]')) {
+        // 数据库
+        if (
+            e.closest('[data-av-id]') || // 数据库块、属性面板数据库选项卡
+            e.closest('.av__panel')      // 数据库菜单：选项描述、资源字段条目
+        ) {
             this.setTooltipData('av');
             return;
         }
