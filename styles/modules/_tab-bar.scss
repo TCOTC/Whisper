@@ -276,7 +276,7 @@ body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
 .b3-dialog--open[data-key="dialog-setting"] .config__tab-container {
 	// AI
 	&[data-name="AI"] {
-		// 隐藏唯一的 Tab
+		// 隐藏唯一的 Tab，不用 display: none 是因为要保留元素的 16px 高度作为页面上边距
 		.layout-tab-bar {
 			padding: 0;
 			opacity: 0;
@@ -310,7 +310,7 @@ body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
 	}
 }
 // 手机设置。隐藏唯一的 AI Tab
-.layout-tab-bar:has(>.item[data-type="openai"]) {
+#modelMain .layout-tab-bar:has(>.item[data-type="openai"]) {
 	display: none;
 }
 
