@@ -870,6 +870,10 @@ body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 	&~ div:not(.code-block) {
 		line-height: 1.625em;
 
+		&:is(.h1, .h2, .h3, .h4, .h5, .h6) {
+			line-height: 1.625em; // 覆盖原生样式
+		}
+
 		&> [spellcheck] {
 			min-height: 1.625em;
 		}
