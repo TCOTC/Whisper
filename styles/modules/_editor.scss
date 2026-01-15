@@ -118,7 +118,7 @@
 		font-variant-numeric: tabular-nums;
 		font-variant-ligatures: no-common-ligatures;
 		font-size: .9em;
-		font-family: var(--b3-font-family-protyle), serif;
+		font-family: var(--b3-font-family-kbd), var(--b3-font-family), serif;
 	}
 
 	u {
@@ -791,7 +791,7 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 	display: none;
 }
 
-// 标题块前的图标。图标样式参考了粉色小屋主题 https://github.com/StarDustSheep/pink-room
+// 标题块前的图标。图标设计参考了粉色小屋主题 https://github.com/StarDustSheep/pink-room
 // 当前图标用 figma 设计 https://www.figma.com/design/ZVi3rMLjzsDfnhBvZYI1S1/ ，导出为 svg、去掉 width 和 height、添加 preserveAspectRatio="none"
 .protyle-wysiwyg [data-node-id] {
 	// 导出 PDF 的文档标题不应用样式，用 :not([title]) 排除
@@ -871,7 +871,7 @@ body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 		line-height: 1.625em;
 
 		&:is(.h1, .h2, .h3, .h4, .h5, .h6) {
-			line-height: 1.625em; // 覆盖原生样式
+			line-height: 1.625em; // 提高选择器优先级，覆盖原生样式 https://github.com/siyuan-note/siyuan/pull/15375
 		}
 
 		&> [spellcheck] {
