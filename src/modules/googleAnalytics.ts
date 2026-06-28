@@ -1,10 +1,15 @@
-import { LocalConfig } from './localConfig';
+import {
+    CONFIG_KEY_ANALYTICS_ENABLE,
+    CONFIG_KEY_INSTALL_TIMESTAMP,
+    CONFIG_KEY_ANALYTICS_LAST_SENT_TIMESTAMP,
+    ThemeConfig,
+} from './themeConfig';
 import { logging } from './logger';
 import { getFile } from './api';
 
-const GA_TIMESTAMP_KEY = 'theme.googleAnalytics.lastSentTimestamp';
-const CHECK_INTERVAL = 60000; // 原始检查间隔：30分钟（1000 * 60 * 30）
-const SEND_INTERVAL = 1800000; // 发送间隔：30分钟
+const CHECK_INTERVAL = 1000 * 60;                   // 定时检查间隔：1 分钟
+const SEND_INTERVAL = 1000 * 60 * 30;               // 发送间隔：30 分钟
+const FIRST_INSTALL_GRACE_MS = 24 * 60 * 60 * 1000; // 首次安装保护期：1 天
 
 // 扩展 Window 接口以包含 Google Analytics 相关属性
 declare global {
@@ -24,7 +29,15 @@ export class GoogleAnalytics {
     private lastSentTimestamp = 0;
     private dateISO = '';
     private checkIntervalId: number | null = null;
-    
+    private readonly themeConfig = ThemeConfig.getInstance();
+    private readonly onAnalyticsEnableChange = (enabled: boolean): void => {
+        if (enabled) {
+            void this.start();
+        } else {
+            this.stop();
+        }
+    };
+
     private async fetchThemeVersion() {
         // 备用方案：从 theme.json 获取主题版本号
         try {
@@ -43,19 +56,31 @@ export class GoogleAnalytics {
     /**
      * 初始化 Google Analytics
      */
-    async init() {
-        // 等待 5 秒，确保配置加载完成
-        await new Promise(resolve => setTimeout(resolve, 5000));
-        // 检查用户是否禁用了 Google Analytics
-        if (
-            window.siyuan.config?.system?.disableGoogleAnalytics || // 思源 v3.2.0 之前的 Google Analytics 选项，如果禁用了的话这个工作空间就会一直禁用下去
-            window.siyuan.whisper.theme.googleAnalytics.disableGoogleAnalytics // TODO功能 支持配置，安装主题之后的默认配置 = window.siyuan.config?.system?.disableGoogleAnalytics ?? true
-        ) {
+    init(): void {
+        this.themeConfig.onConfigChanged(CONFIG_KEY_ANALYTICS_ENABLE, this.onAnalyticsEnableChange);
+
+        // 检查用户是否启用了 Google Analytics
+        if (this.themeConfig.get(CONFIG_KEY_ANALYTICS_ENABLE)) {
+            void this.start();
+        }
+    }
+
+    /**
+     * 销毁 Google Analytics
+     */
+    destroy() {
+        this.themeConfig.offConfigChanged(CONFIG_KEY_ANALYTICS_ENABLE, this.onAnalyticsEnableChange);
+        this.stop();
+    }
+
+    private async start(): Promise<void> {
+        if (this.checkIntervalId !== null) {
             return;
         }
+
         // 主题初始化时先发送一次数据
         await this.checkAndSend();
-        // 设置定时检查，每 30 分钟检查一次是否需要发送数据
+        // 设置定时检查，每 1 分钟检查一次是否满足发送条件
         this.checkIntervalId = window.setInterval(() => {
             this.checkAndSend().catch(err => {
                 logging.error('Failed to check and send analytics data:', err);
@@ -63,10 +88,7 @@ export class GoogleAnalytics {
         }, CHECK_INTERVAL);
     }
 
-    /**
-     * 销毁 Google Analytics
-     */
-    destroy() {
+    private stop(): void {
         // 清除定时器
         if (this.checkIntervalId !== null) {
             window.clearInterval(this.checkIntervalId);
@@ -84,33 +106,43 @@ export class GoogleAnalytics {
         }
     }
 
+    private isWithinFirstInstallGrace(): boolean {
+        const installTimestamp = this.themeConfig.get(CONFIG_KEY_INSTALL_TIMESTAMP);
+        if (!installTimestamp) {
+            return false;
+        }
+        return Date.now() - installTimestamp < FIRST_INSTALL_GRACE_MS;
+    }
+
     /**
      * 检查时间并发送数据
      */
     private async checkAndSend() {
-        const currentTimestamp = Date.now();
-        
-        // 获取今天的日期，格式为 YYYY-MM-DD
-        this.dateISO = new Date().toISOString().split('T')[0];
-        
-        // 获取最后发送时间戳
-        const localConfig = new LocalConfig();
-        await localConfig.init();
-        const lastSentTimestamp = await localConfig.get<number>(GA_TIMESTAMP_KEY, 0, {
-            retryOnConnectivityError: true,
-            retryInterval: 20000, // 20秒
-            maxRetries: 60 // 60次
-        });
-        
-        // 如果距离上次发送时间不足 30 分钟，则不再发送
-        if (lastSentTimestamp !== undefined && currentTimestamp - lastSentTimestamp < SEND_INTERVAL) {
+        if (!this.themeConfig.get(CONFIG_KEY_ANALYTICS_ENABLE)) {
             return;
         }
-        
+
+        if (this.isWithinFirstInstallGrace()) {
+            return; // 首次安装一天内不发送数据
+        }
+
+        const currentTimestamp = Date.now();
+
+        // 获取今天的日期，格式为 YYYY-MM-DD
+        this.dateISO = new Date().toISOString().split('T')[0];
+
+        // 获取最后发送时间戳
+        const lastSentTimestamp = this.themeConfig.get(CONFIG_KEY_ANALYTICS_LAST_SENT_TIMESTAMP);
+
+        // 如果距离上次发送时间不足 30 分钟，则不再发送
+        if (currentTimestamp - lastSentTimestamp < SEND_INTERVAL) {
+            return;
+        }
+
         // 更新本地存储的时间戳
         this.lastSentTimestamp = currentTimestamp;
-        await localConfig.set(GA_TIMESTAMP_KEY, this.lastSentTimestamp);
-        
+        this.themeConfig.set(CONFIG_KEY_ANALYTICS_LAST_SENT_TIMESTAMP, this.lastSentTimestamp);
+
         // 加载 Google Analytics
         this.initGA();
     }
@@ -146,7 +178,7 @@ export class GoogleAnalytics {
             });
         }
 
-        logging.log('Sending Google Analytics data. https://github.com/TCOTC/Whisper/issues/11'); // TODO功能 修改输出日志为“Whisper 主题正在发送 Google Analytics 数据（在外观模式菜单中可以禁用）”
+        logging.log('Whisper theme is sending Google Analytics data (can be disabled in the theme settings menu)'); // https://github.com/TCOTC/Whisper/issues/11
 
         // 收集并发送基本信息
         this.sendInfo();

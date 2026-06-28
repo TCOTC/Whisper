@@ -3,23 +3,10 @@ import { ISiyuan } from 'siyuan';
 // 全局类型扩展
 declare global {
     interface Window {
+        whisper: {
+            enabled?: boolean; // 主题是否处于启用状态
+        };
         siyuan: ISiyuan & {
-            whisper: {
-                loaded?: boolean;
-                debug: {
-                    showMessage?: boolean;
-                };
-                theme: {
-                    googleAnalytics: {
-                        disableGoogleAnalytics?: boolean;
-                    };
-                };
-            };
-            config?: {
-                system?: {
-                    disableGoogleAnalytics?: boolean;
-                };
-            };
             user?: {
                 userCreateTime?: string;
             };
@@ -69,10 +56,10 @@ interface CheckConfig {
     stateMap: { [key: string]: string };
 }
 
-// 事件处理器接口
+// 主题模块接口
 interface ThemeModule {
-    init: () => void;
-    destroy: () => void;
+    init?: () => void | Promise<void>;
+    destroy?: () => void | Promise<void>;
 }
 
 // 导出这些接口以便在需要时显式导入

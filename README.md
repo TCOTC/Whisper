@@ -29,4 +29,6 @@ This theme uses Google Analytics to collect anonymous usage statistics, includin
 - Usage environment (operating system, SiYuan Note version, etc.)
 - Usage statistics
 
-This information helps improve the theme quality. All data is collected anonymously and does not include any personal information. Currently, this feature cannot be disabled, but a toggle is planned for v2.
+This information helps improve the theme quality. All data is collected anonymously and does not include any personal information.
+
+No data is collected during the first day after installing the theme. You can disable anonymous analytics in the theme settings menu.

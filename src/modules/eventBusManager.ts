@@ -111,7 +111,7 @@ export class EventBusManager implements ThemeModule {
     }
 
     /**
-     * 清理 DOM 中的注释节点
+     * 清理 DOM 中的注释节点 // TODO 创建节点的时候保存，销毁的时候直接 ?.remove() 清理
      */
     private cleanupCommentNode(themeName: string): void {
         const commentNodes = document.evaluate(

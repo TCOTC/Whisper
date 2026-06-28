@@ -7,7 +7,7 @@ import { logging } from './logger';
  */
 export class TooltipHandler implements ThemeModule {
     private tooltipElement: HTMLElement | null = null;
-    private async getTooltipElement(): Promise<void> {
+    private getTooltipElement(): void {
         if (!this.tooltipElement) {
             this.tooltipElement = document.getElementById('tooltip');
         }
@@ -16,22 +16,22 @@ export class TooltipHandler implements ThemeModule {
     /**
      * 初始化悬浮提示处理器
      */
-    public async init(): Promise<void> {
-        await this.getTooltipElement();
+    public init(): void {
+        this.getTooltipElement();
         if (!this.tooltipElement) {
             logging.error('tooltip element does not exist.');
         }
-        
+
         document.addEventListener('mouseover', this.updateTooltipData);
     }
 
     /**
      * 销毁悬浮提示处理器
      */
-    public async destroy(): Promise<void> {
+    public destroy(): void {
         document.removeEventListener('mouseover', this.updateTooltipData);
-        
-        await this.getTooltipElement();
+
+        this.getTooltipElement();
         this.tooltipElement?.removeAttribute('data-whisper-tooltip');
         this.tooltipElement = null;
     }
@@ -39,10 +39,10 @@ export class TooltipHandler implements ThemeModule {
     /**
      * 更新悬浮提示属性
      */
-    private updateTooltipData = async (event: MouseEvent): Promise<void> => {
+    private updateTooltipData = (event: MouseEvent): void => {
         if (!event.target || (event.target as Node).nodeType === 9) return;
         if (!this.tooltipElement) {
-            await this.getTooltipElement();
+            this.getTooltipElement();
             return;
         }
         
