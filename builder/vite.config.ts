@@ -13,7 +13,7 @@ function compileSass() {
     async writeBundle() {
       // 读取所有图标文件
       const iconFiles = new Map<string, string>();
-      
+
       // 递归读取图标目录
       function readIconDir(dirPath: string, prefix: string = '') {
         const files = fs.readdirSync(dirPath);
@@ -29,22 +29,22 @@ function compileSass() {
           }
         }
       }
-      
+
       // 读取 icons 目录
       const iconsDir = resolve(__dirname, '../icons');
       if (fs.existsSync(iconsDir)) {
         readIconDir(iconsDir);
       }
-      
+
       // 编译 SCSS
       const result = sass.compile('../styles/theme.scss', {
         style: 'compressed',
         sourceMap: true,
       });
-      
+
       // 处理图标内联
       let processedCss = result.css;
-      
+
       if (isDev) {
         // 开发环境下把 $themeIcons 别名替换为 ./icons/ 路径，不影响 theme.css.map
         const iconAliasRegex = /\$themeIcons/g;
@@ -62,9 +62,21 @@ function compileSass() {
           return match; // 如果找不到图标，保持原样
         });
       }
-      
+
+      if (isDev) {
+        // 开发模式直接写入主题根目录，且作为 writeBundle 最后一步，便于思源 fsnotify 识别 theme.css
+        if (result.sourceMap) {
+          fs.writeFileSync('../theme.css.map', JSON.stringify(result.sourceMap));
+          console.log('✓ theme.css.map\t generated');
+        }
+        const finalContent = processedCss + '/*# sourceMappingURL=theme.css.map */';
+        fs.writeFileSync('../theme.css', finalContent);
+        console.log('✓ theme.css\t generated (with source map)');
+        return;
+      }
+
       fs.writeFileSync('../dist/theme.css', processedCss);
-      
+
       if (result.sourceMap) {
         fs.writeFileSync('../dist/theme.css.map', JSON.stringify(result.sourceMap));
       }
@@ -96,20 +108,14 @@ function copyThemeFiles() {
         console.log('✓ theme.js.map\t generated');
       }
 
-      // 复制 theme.css
       if (isDev) {
-        if (fs.existsSync('../dist/theme.css')) {
-          const cssContent = fs.readFileSync('../dist/theme.css', 'utf8');
-          // 只在开发模式下添加 sourceMap 注释
-          const finalContent = cssContent + '/*# sourceMappingURL=theme.css.map */';
-          fs.writeFileSync('../theme.css', finalContent);
-          console.log('✓ theme.css\t generated (with source map)');
-        }
-      } else {
-        if (fs.existsSync('../dist/theme-vite.css')) {
-          fs.copyFileSync('../dist/theme-vite.css', '../theme.css');
-          console.log('✓ theme.css\t generated');
-        }
+        return;
+      }
+
+      // 复制 theme.css
+      if (fs.existsSync('../dist/theme-vite.css')) {
+        fs.copyFileSync('../dist/theme-vite.css', '../theme.css');
+        console.log('✓ theme.css\t generated');
       }
       if (fs.existsSync('../dist/theme.css.map')) {
         fs.copyFileSync('../dist/theme.css.map', '../theme.css.map');
@@ -157,7 +163,8 @@ export default defineConfig({
       }
     },
     outDir: '../dist',
-    emptyOutDir: true,
+    // 开发 watch 时保留 dist，避免反复清空触发目录级 fsnotify 事件
+    emptyOutDir: !isDev,
     rollupOptions: {
       output: {
         entryFileNames: 'theme.js',
@@ -167,9 +174,7 @@ export default defineConfig({
     },
     sourcemap: true
   },
-  plugins: [
-    compileSass(),
-    copyThemeFiles(),
-    cleanDist()
-  ]
+  plugins: isDev
+    ? [copyThemeFiles(), compileSass()]
+    : [compileSass(), copyThemeFiles(), cleanDist()]
 });
