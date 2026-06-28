@@ -1,9 +1,4 @@
-import {
-    CONFIG_KEY_ANALYTICS_ENABLE,
-    CONFIG_KEY_INSTALL_TIMESTAMP,
-    CONFIG_KEY_ANALYTICS_LAST_SENT_TIMESTAMP,
-    ThemeConfig,
-} from './themeConfig';
+import { ThemeConfig } from './themeConfig';
 import { logging } from './logger';
 import { getFile } from './api';
 
@@ -57,10 +52,10 @@ export class GoogleAnalytics {
      * 初始化 Google Analytics
      */
     init(): void {
-        this.themeConfig.onConfigChanged(CONFIG_KEY_ANALYTICS_ENABLE, this.onAnalyticsEnableChange);
+        this.themeConfig.onConfigChanged('analytics_enable', this.onAnalyticsEnableChange);
 
         // 检查用户是否启用了 Google Analytics
-        if (this.themeConfig.get(CONFIG_KEY_ANALYTICS_ENABLE)) {
+        if (this.themeConfig.get('analytics_enable')) {
             void this.start();
         }
     }
@@ -69,7 +64,7 @@ export class GoogleAnalytics {
      * 销毁 Google Analytics
      */
     destroy() {
-        this.themeConfig.offConfigChanged(CONFIG_KEY_ANALYTICS_ENABLE, this.onAnalyticsEnableChange);
+        this.themeConfig.offConfigChanged('analytics_enable', this.onAnalyticsEnableChange);
         this.stop();
     }
 
@@ -107,7 +102,7 @@ export class GoogleAnalytics {
     }
 
     private isWithinFirstInstallGrace(): boolean {
-        const installTimestamp = this.themeConfig.get(CONFIG_KEY_INSTALL_TIMESTAMP);
+        const installTimestamp = this.themeConfig.get('install_timestamp');
         if (!installTimestamp) {
             return false;
         }
@@ -118,7 +113,7 @@ export class GoogleAnalytics {
      * 检查时间并发送数据
      */
     private async checkAndSend() {
-        if (!this.themeConfig.get(CONFIG_KEY_ANALYTICS_ENABLE)) {
+        if (!this.themeConfig.get('analytics_enable')) {
             return;
         }
 
@@ -132,7 +127,7 @@ export class GoogleAnalytics {
         this.dateISO = new Date().toISOString().split('T')[0];
 
         // 获取最后发送时间戳
-        const lastSentTimestamp = this.themeConfig.get(CONFIG_KEY_ANALYTICS_LAST_SENT_TIMESTAMP);
+        const lastSentTimestamp = this.themeConfig.get('analytics_last_sent_timestamp');
 
         // 如果距离上次发送时间不足 30 分钟，则不再发送
         if (currentTimestamp - lastSentTimestamp < SEND_INTERVAL) {
@@ -141,7 +136,7 @@ export class GoogleAnalytics {
 
         // 更新本地存储的时间戳
         this.lastSentTimestamp = currentTimestamp;
-        this.themeConfig.set(CONFIG_KEY_ANALYTICS_LAST_SENT_TIMESTAMP, this.lastSentTimestamp);
+        this.themeConfig.set('analytics_last_sent_timestamp', this.lastSentTimestamp);
 
         // 加载 Google Analytics
         this.initGA();

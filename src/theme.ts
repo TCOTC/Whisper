@@ -75,29 +75,33 @@ class ModuleManager {
 
     logging.log('Loaded');
 
+    const themeConfig = ThemeConfig.getInstance();
+    const mobile = isMobile();
+    const readOnly = isReadOnly();
+    
     // 创建模块管理器
     const moduleManager = new ModuleManager();
 
     // 注册所有模块（ThemeConfig 须排首位，init 时加载配置）
-    moduleManager.register(ThemeConfig.getInstance());
+    moduleManager.register(themeConfig);
     moduleManager.register(new DebugHandler());              // 调试信息：按配置显示设备类型等消息
     moduleManager.register(new DeviceDetector());            // 设备检测：添加设备类型标识，用于 CSS 选择器（避免使用 :has() 选择器导致性能问题）
     moduleManager.register(new BlockFocusHandler());         // 块焦点处理：给焦点所在块添加属性 data-whisper-block-focus
     moduleManager.register(new EventBusManager());           // 事件总线管理：聚焦折叠的列表项时自动展开
 
-    if (!isReadOnly()) {
+    if (!readOnly) {
         // 非发布模式
-        if (isMobile()) {
+        if (mobile) {
             // 移动端
-            moduleManager.register(new MobileFunctionality());                        // 移动端 AI 按钮
-            moduleManager.register(new MobileConfigMenu(ThemeConfig.getInstance()));  // 移动端配置菜单
+            moduleManager.register(new MobileFunctionality());          // 移动端 AI 按钮
+            moduleManager.register(new MobileConfigMenu(themeConfig));  // 移动端配置菜单
         } else {
-            moduleManager.register(new DesktopConfigMenu(ThemeConfig.getInstance())); // 桌面端配置菜单
+            moduleManager.register(new DesktopConfigMenu(themeConfig)); // 桌面端配置菜单
         }
-        moduleManager.register(new GoogleAnalytics());                                // Google 分析：发送统计信息
+        moduleManager.register(new GoogleAnalytics());                  // Google 分析：发送统计信息
     }
 
-    if (!isMobile()) {
+    if (!mobile) {
         // 非移动端
         moduleManager.register(new TooltipHandler());        // 悬浮提示处理：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
         moduleManager.register(new ElementStatusObserver()); // 元素状态观察：监听元素状态，通过给 html 添加属性来代替使用 :has 选择器
@@ -108,25 +112,29 @@ class ModuleManager {
     // 初始化所有模块
     await moduleManager.initAll();
 
+    // 删除旧版配置文件
+    if (!readOnly) {
+        void themeConfig.removeLegacyConfigFile();
+    }
+
     // 关闭或卸载主题
     window.destroyTheme = async () => {
         await moduleManager.destroyAll();
         window.whisper.enabled = false; // 标记主题已关闭，待判断是否卸载
         logging.log('Unloaded');
 
-        if (!isReadOnly()) {
-            void removeConfigFile(); // 卸载主题时删除配置文件，异步执行，不能 await
-            // TODO功能 如果之后支持同步主题配置，还需要删除放在 data 目录下的配置文件
+        if (!readOnly) {
+            void removeConfigStorage(themeConfig); // 卸载主题时删除配置，异步执行，不能 await
         }
     };
 })();
 
-async function removeConfigFile(): Promise<void> {
+async function removeConfigStorage(themeConfig: ThemeConfig): Promise<void> {
     // 卸载主题需要先切换到其他主题，所以需要等一分钟再判断
     await new Promise(resolve => setTimeout(resolve, 60000));
     if (window.whisper.enabled) return;
 
-    // 遍历 window.siyuan.config.appearance.lightThemes[N].name 和 window.siyuan.config.appearance.darkThemes[N].name，如果没有 Whisper 则删除配置文件
+    // 遍历 window.siyuan.config.appearance.lightThemes[N].name 和 window.siyuan.config.appearance.darkThemes[N].name，如果没有 Whisper 则删除配置
     const lightThemes = window.siyuan.config?.appearance?.lightThemes;
     const darkThemes = window.siyuan.config?.appearance?.darkThemes;
     // 正常情况下至少包含默认主题，不会为空
@@ -143,17 +151,11 @@ async function removeConfigFile(): Promise<void> {
         }
     });
     if (needRemove) {
-        // 删除配置文件
-        try {
-            const success = await ThemeConfig.getInstance().deleteConfigFile();
-            
-            if (success) {
-                logging.log('Uninstall. Theme config file removed successfully');
-            } else {
-                logging.error('Uninstall. Failed to remove theme config file');
-            }
-        } catch (error) {
-            logging.error(`Uninstall. Error removing theme config file: ${error instanceof Error ? error.message : String(error)}`);
+        const success = await themeConfig.deleteConfig();
+        if (success) {
+            logging.log('Uninstall. Theme config removed successfully');
+        } else {
+            logging.error('Uninstall. Failed to remove theme config');
         }
     }
 }

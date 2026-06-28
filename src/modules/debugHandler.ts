@@ -1,5 +1,5 @@
 import { ThemeModule } from '../types';
-import { CONFIG_KEY_DEBUG_SHOW_MESSAGE, ThemeConfig } from './themeConfig';
+import { ThemeConfig } from './themeConfig';
 import { showMessage } from './message';
 import { isIPad, isMobile, isTouchDevice } from './utils';
 
@@ -20,15 +20,15 @@ export class DebugHandler implements ThemeModule {
     };
 
     init(): void {
-        this.themeConfig.onConfigChanged(CONFIG_KEY_DEBUG_SHOW_MESSAGE, this.onDebugShowMessageChange);
+        this.themeConfig.onConfigChanged('debug_show_message', this.onDebugShowMessageChange);
 
-        if (this.themeConfig.get(CONFIG_KEY_DEBUG_SHOW_MESSAGE)) {
+        if (this.themeConfig.get('debug_show_message')) {
             this.scheduleDebugInfo(DEBUG_DELAY_MS);
         }
     }
 
     destroy(): void {
-        this.themeConfig.offConfigChanged(CONFIG_KEY_DEBUG_SHOW_MESSAGE, this.onDebugShowMessageChange);
+        this.themeConfig.offConfigChanged('debug_show_message', this.onDebugShowMessageChange);
         this.cancelScheduledDebugInfo();
     }
 
@@ -48,7 +48,7 @@ export class DebugHandler implements ThemeModule {
     }
 
     private showDebugInfo(): void {
-        if (!this.themeConfig.get(CONFIG_KEY_DEBUG_SHOW_MESSAGE)) {
+        if (!this.themeConfig.get('debug_show_message')) {
             return;
         }
 

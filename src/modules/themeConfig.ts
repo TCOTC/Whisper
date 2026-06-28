@@ -1,5 +1,5 @@
 import { ThemeModule } from '../types';
-import { getFile, putFile, removeFile } from './api';
+import { getFile, getLocalStorageVal, removeFile, removeLocalStorageVal, setLocalStorageVal } from './api';
 import { logging } from './logger';
 import { isReadOnly } from './utils';
 
@@ -11,156 +11,97 @@ export interface ConfigObject {
     [key: string]: ConfigValue;
 }
 
-/** 配置文件版本 */
-const CONFIG_VERSION = 2;
+/** LocalStorage 键名 */
+export const CONFIG_STORAGE_KEY = 'whisper-theme-config-v2';
 
-/** 是否启用 Google Analytics 数据收集 */
-export const CONFIG_KEY_ANALYTICS_ENABLE = 'analytics_enable';
-/** Google Analytics 上次发送数据的时间戳（毫秒） */
-export const CONFIG_KEY_ANALYTICS_LAST_SENT_TIMESTAMP = 'analytics_last_sent_timestamp';
-/** 主题首次安装时间戳（毫秒），用于首次安装一天内不发送 GA 数据 */
-export const CONFIG_KEY_INSTALL_TIMESTAMP = 'install_timestamp';
-/** 是否在启动后显示设备类型等调试消息 */
-export const CONFIG_KEY_DEBUG_SHOW_MESSAGE = 'debug_show_message';
+type ConfigFieldDef =
+    | { type: 'boolean'; default: boolean; menu?: { icon: string } }
+    | { type: 'number'; default: number | (() => number) };
 
-/** 默认配置（schema 类型由此推导） */
-const DEFAULT_CONFIG = {
-    version: CONFIG_VERSION,
-    [CONFIG_KEY_ANALYTICS_ENABLE]: true,
-    [CONFIG_KEY_ANALYTICS_LAST_SENT_TIMESTAMP]: 0,
-    [CONFIG_KEY_INSTALL_TIMESTAMP]: 0,
-    [CONFIG_KEY_DEBUG_SHOW_MESSAGE]: false,
-} as const;
+/** 主题配置声明（单一数据源：键名、类型、默认值、菜单元数据） */
+export const THEME_CONFIG_SCHEMA = {
+    /** 是否启用 Google Analytics 数据收集 */
+    analytics_enable: {
+        type: 'boolean',
+        default: true,
+        menu: { icon: 'iconCloud' },
+    },
+    /** Google Analytics 上次发送数据的时间戳（毫秒） */
+    analytics_last_sent_timestamp: {
+        type: 'number',
+        default: 0,
+    },
+    /** 主题首次安装时间戳（毫秒），用于首次安装一天内不发送 GA 数据 */
+    install_timestamp: {
+        type: 'number',
+        default: () => Date.now(),
+    },
+    /** 是否在启动后显示设备类型等调试消息 */
+    debug_show_message: {
+        type: 'boolean',
+        default: false,
+        menu: { icon: 'iconInfo' },
+    },
+} as const satisfies Record<string, ConfigFieldDef>;
 
-/** 将 as const 的字面量类型放宽为 boolean / number，便于 set 写入任意合法值 */
+export type ThemeConfigKey = keyof typeof THEME_CONFIG_SCHEMA;
+
 export type ThemeConfigSchema = {
-    [K in keyof typeof DEFAULT_CONFIG]: (typeof DEFAULT_CONFIG)[K] extends boolean
-        ? boolean
-        : number;
+    [K in ThemeConfigKey]: (typeof THEME_CONFIG_SCHEMA)[K]['type'] extends 'boolean' ? boolean : number;
 };
 
-export type ThemeConfigKey = keyof typeof DEFAULT_CONFIG;
-
-/** 值为 boolean 的配置键 */
-export type BooleanConfigKey = {
-    [K in ThemeConfigKey]: ThemeConfigSchema[K] extends boolean ? K : never;
+/** 带 menu 的 boolean 配置键 */
+export type MenuConfigKey = {
+    [K in ThemeConfigKey]: (typeof THEME_CONFIG_SCHEMA)[K] extends { type: 'boolean'; menu: { icon: string } }
+        ? K
+        : never;
 }[ThemeConfigKey];
 
-/** 布尔配置项菜单图标（未指定时使用 iconSettings） */
-const BOOLEAN_CONFIG_ICONS: Partial<Record<BooleanConfigKey, string>> = {
-    [CONFIG_KEY_ANALYTICS_ENABLE]: 'iconCloud',
-    [CONFIG_KEY_DEBUG_SHOW_MESSAGE]: 'iconInfo',
-};
+/** 可在菜单中切换的配置项（由 schema 推导） */
+export const THEME_CONFIG_MENU_ITEMS = (Object.keys(THEME_CONFIG_SCHEMA) as ThemeConfigKey[])
+    .filter((key): key is MenuConfigKey => {
+        const field = THEME_CONFIG_SCHEMA[key];
+        return field.type === 'boolean' && 'menu' in field;
+    })
+    .map((key) => ({ key, icon: THEME_CONFIG_SCHEMA[key].menu.icon }));
 
-/** 可在菜单中切换的布尔配置键 */
-export const BOOLEAN_CONFIG_KEYS = (Object.keys(DEFAULT_CONFIG) as ThemeConfigKey[]).filter(
-    (key): key is BooleanConfigKey => typeof DEFAULT_CONFIG[key] === 'boolean',
-);
-
-export function getBooleanConfigMenuIcon(key: BooleanConfigKey): string {
-    return BOOLEAN_CONFIG_ICONS[key] ?? 'iconSettings';
-}
-
-export function getBooleanKeyFromSwitch(target: EventTarget | null): BooleanConfigKey | null {
-    if (!(target instanceof HTMLInputElement) || !target.classList.contains('b3-switch')) {
-        return null;
-    }
-    return isBooleanConfigKey(target.id) ? target.id : null;
-}
-
-export function createSwitchChangeHandler(config: ThemeConfig): (event: Event) => void {
-    return (event: Event) => {
-        const key = getBooleanKeyFromSwitch(event.target);
-        if (!key) {
-            return;
-        }
-        config.set(key, (event.target as HTMLInputElement).checked);
-        event.stopPropagation();
-    };
-}
-
-function isBooleanConfigKey(key: string): key is BooleanConfigKey {
-    return (BOOLEAN_CONFIG_KEYS as readonly string[]).includes(key);
-}
-
-function getDefaultValue<K extends ThemeConfigKey>(key: K): ThemeConfigSchema[K] {
-    return DEFAULT_CONFIG[key] as ThemeConfigSchema[K];
-}
+/** 默认配置（由 schema 在模块加载时生成；install_timestamp 在此时记录） */
+const DEFAULT_CONFIG = Object.fromEntries(
+    (Object.keys(THEME_CONFIG_SCHEMA) as ThemeConfigKey[]).map((key) => {
+        const { default: defaultValue } = THEME_CONFIG_SCHEMA[key];
+        return [key, typeof defaultValue === 'function' ? defaultValue() : defaultValue];
+    }),
+) as ConfigObject;
 
 /**
- * 合并默认配置，仅填充缺失的键
+ * 合并默认配置：填充缺失键、纠正非法值、丢弃未知键
  */
-function mergeDefaults(target: ConfigObject, defaults: ConfigObject): ConfigObject {
-    const result: ConfigObject = { ...target };
+function mergeDefaults(target: ConfigObject, defaults: ConfigObject): {
+    config: ConfigObject;
+    needsWriteBack: boolean;
+} {
+    const result: ConfigObject = {};
+
     for (const key in defaults) {
-        if (result[key] === undefined) {
-            result[key] = defaults[key];
-        }
-    }
-    return result;
-}
+        const defaultValue = defaults[key];
+        const rawValue = target[key];
 
-/**
- * 创建响应式配置对象，属性修改时自动触发保存与变更通知
- */
-function createReactiveConfig(
-    target: ConfigObject,
-    onSave: () => void,
-    onChange: (key: string, value: ConfigValue) => void,
-): ConfigObject {
-    const processedTarget: ConfigObject = { ...target };
-
-    return new Proxy(processedTarget, {
-        set(obj: ConfigObject, prop: string | symbol, value: ConfigValue): boolean {
-            const propKey = prop as string;
-            obj[propKey] = value;
-            onChange(propKey, value);
-            onSave();
-            return true;
-        },
-
-        deleteProperty(obj: ConfigObject, prop: string | symbol): boolean {
-            const propKey = prop as string;
-            delete obj[propKey];
-            onChange(propKey, undefined as unknown as ConfigValue);
-            onSave();
-            return true;
-        },
-    });
-}
-
-/**
- * 将 v1 嵌套配置升级为 v2 单层结构
- */
-function upgradeConfigV1ToV2(config: ConfigObject): ConfigObject {
-    const upgraded: ConfigObject = {
-        version: CONFIG_VERSION,
-    };
-
-    const theme = config.theme;
-    if (theme && typeof theme === 'object') {
-        const themeSection = theme as Record<string, unknown>;
-        const googleAnalytics = themeSection.googleAnalytics;
-        if (googleAnalytics && typeof googleAnalytics === 'object') {
-            const gaSection = googleAnalytics as Record<string, unknown>;
-            if (typeof gaSection.disableGoogleAnalytics === 'boolean') {
-                upgraded[CONFIG_KEY_ANALYTICS_ENABLE] = !gaSection.disableGoogleAnalytics;
-            }
-            if (typeof gaSection.lastSentTimestamp === 'number') {
-                upgraded[CONFIG_KEY_ANALYTICS_LAST_SENT_TIMESTAMP] = gaSection.lastSentTimestamp;
-            }
+        if (rawValue !== undefined && typeof rawValue === typeof defaultValue) {
+            result[key] = rawValue;
+            continue;
         }
 
-        const debug = themeSection.debug;
-        if (debug && typeof debug === 'object') {
-            const debugSection = debug as Record<string, unknown>;
-            if (typeof debugSection.showMessage === 'boolean') {
-                upgraded[CONFIG_KEY_DEBUG_SHOW_MESSAGE] = debugSection.showMessage;
-            }
+        if (rawValue !== undefined) {
+            logging.warn(`Invalid config value for "${key}", using default`);
         }
+        result[key] = defaultValue;
     }
 
-    return mergeDefaults(upgraded, { ...DEFAULT_CONFIG });
+    const needsWriteBack =
+        Object.keys(target).some((key) => !(key in defaults)) ||
+        Object.keys(defaults).some((key) => target[key] !== result[key]);
+
+    return { config: result, needsWriteBack };
 }
 
 /**
@@ -169,11 +110,8 @@ function upgradeConfigV1ToV2(config: ConfigObject): ConfigObject {
 export class ThemeConfig implements ThemeModule {
     private static instance: ThemeConfig | null = null;
 
-    private readonly configPath = '/conf/whisper-theme-config.json';
     private _config: ConfigObject = {};
     private initialized = false;
-    private writeTimer: ReturnType<typeof setTimeout> | null = null;
-    private writePending = false;
 
     private configChangeListeners = new Map<string, Set<(value: ConfigValue) => void>>();
 
@@ -187,10 +125,41 @@ export class ThemeConfig implements ThemeModule {
     private constructor() {}
 
     async init(): Promise<void> {
-        try {
-            await this.loadFromFile();
-        } catch (e) {
-            logging.error(`Theme config init failed: ${e instanceof Error ? e.message : String(e)}`);
+        if (this.initialized) {
+            return;
+        }
+
+        const result = await getLocalStorageVal(CONFIG_STORAGE_KEY);
+        let config: ConfigObject;
+        let needsWriteBack: boolean;
+
+        // 存储值为合法普通对象：合并默认值（补缺失键、纠正非法值）
+        if (
+            result.code === 0
+            && typeof result.data === 'object'
+            && result.data !== null
+            && !Array.isArray(result.data)
+        ) {
+            ({ config, needsWriteBack } = mergeDefaults(result.data as ConfigObject, DEFAULT_CONFIG));
+        } else {
+            // 键不存在、API 失败或数据格式不对：回退默认配置并写回
+            if (result.code !== 0) {
+                logging.error(`Failed to load config: ${result.msg}`);
+            } else if (result.data != null) {
+                logging.error('Failed to load config: stored value is not a config object');
+            }
+            config = { ...DEFAULT_CONFIG };
+            needsWriteBack = true;
+        }
+
+        this._config = config;
+        this.initialized = true;
+
+        if (needsWriteBack && !isReadOnly()) {
+            const saveResult = await setLocalStorageVal(CONFIG_STORAGE_KEY, { ...this._config });
+            if (saveResult.code !== 0) {
+                logging.error('Failed to write back normalized config');
+            }
         }
     }
 
@@ -200,16 +169,11 @@ export class ThemeConfig implements ThemeModule {
 
     /** 读取配置项，缺失时回退到默认配置 */
     get<K extends ThemeConfigKey>(key: K): ThemeConfigSchema[K] {
-        const defaultValue = getDefaultValue(key);
-        if (!this.initialized) {
-            return defaultValue as ThemeConfigSchema[K];
-        }
-
         const value = this._config[key as string];
         if (value !== undefined) {
             return value as ThemeConfigSchema[K];
         }
-        return defaultValue as ThemeConfigSchema[K];
+        return DEFAULT_CONFIG[key] as ThemeConfigSchema[K];
     }
 
     /** 写入配置项（非只读模式下自动保存） */
@@ -219,6 +183,16 @@ export class ThemeConfig implements ThemeModule {
             return;
         }
         this._config[key as string] = value as ConfigValue;
+        this.configChangeListeners.get(key as string)?.forEach(listener => {
+            listener(value as ConfigValue);
+        });
+        if (!isReadOnly()) {
+            void setLocalStorageVal(CONFIG_STORAGE_KEY, { ...this._config }).then((result) => {
+                if (result.code !== 0) {
+                    logging.error(`Failed to save config: ${result.msg}`);
+                }
+            });
+        }
     }
 
     onConfigChanged<K extends ThemeConfigKey>(
@@ -238,125 +212,35 @@ export class ThemeConfig implements ThemeModule {
         this.configChangeListeners.get(key)?.delete(listener as (value: ConfigValue) => void);
     }
 
-    async deleteConfigFile(): Promise<boolean> {
-        if (isReadOnly()) {
-            logging.error('Deleting configuration file is not supported in publish service');
-            return false;
-        }
-
-        try {
-            const result = await removeFile(this.configPath);
-            if (result.code === 0) {
-                this.assignConfig(JSON.parse(JSON.stringify(DEFAULT_CONFIG)) as ConfigObject);
-                this.initialized = false;
-                logging.info(`Configuration file deleted successfully: ${this.configPath}`);
-                return true;
-            }
-
-            logging.error(`Failed to delete configuration file: ${result.msg}`);
-            return false;
-        } catch (e) {
-            logging.error(`Delete configuration file exception: ${e instanceof Error ? e.message : String(e)}`);
-            return false;
-        }
-    }
-
-    private async loadFromFile(): Promise<void> {
-        if (this.initialized) {
-            return;
-        }
-
-        try {
-            const content = await getFile(this.configPath, {
-                retryOnConnectivityError: true,
-                retryInterval: 5000,
-                maxRetries: 100,
-            });
-
-            let parsedConfig: ConfigObject;
-            let shouldSave = false;
-
-            if (typeof content === 'string' && content.trim() !== '') {
-                const rawConfig = JSON.parse(content) as ConfigObject;
-
-                if (rawConfig.version === 1) {
-                    parsedConfig = upgradeConfigV1ToV2(rawConfig);
-                    shouldSave = true;
-                } else {
-                    parsedConfig = mergeDefaults(rawConfig, { ...DEFAULT_CONFIG });
-                    parsedConfig.version = CONFIG_VERSION;
-                    shouldSave = rawConfig.version !== CONFIG_VERSION;
-                }
-            } else {
-                parsedConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG)) as ConfigObject;
-                parsedConfig[CONFIG_KEY_INSTALL_TIMESTAMP] = Date.now();
-                shouldSave = true;
-            }
-
-            this.assignConfig(parsedConfig);
-            this.initialized = true;
-
-            if (!isReadOnly() && shouldSave) {
-                await this.saveToFile();
-            }
-        } catch (e) {
-            logging.error(`Failed to load config: ${e instanceof Error ? e.message : String(e)}`);
-            const fallbackConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG)) as ConfigObject;
-            fallbackConfig[CONFIG_KEY_INSTALL_TIMESTAMP] = Date.now();
-            this.assignConfig(fallbackConfig);
-            this.initialized = true;
-            await this.saveToFile();
-        }
-    }
-
-    private assignConfig(data: ConfigObject): void {
-        this._config = isReadOnly()
-            ? data
-            : createReactiveConfig(data, () => {
-                void this.saveToFile();
-            }, (key, value) => {
-                this.emitConfigChanged(key, value);
-            });
-    }
-
-    private async saveToFile(): Promise<boolean> {
-        if (isReadOnly()) {
-            return false;
-        }
-
-        if (this.writeTimer) {
-            clearTimeout(this.writeTimer);
-        }
-
-        if (this.writePending) {
+    /** 卸载主题时删除 LocalStorage 中的配置 */
+    async deleteConfig(): Promise<boolean> {
+        const result = await removeLocalStorageVal(CONFIG_STORAGE_KEY);
+        if (result.code === 0) {
+            this._config = { ...DEFAULT_CONFIG };
+            logging.info(`Configuration removed successfully: ${CONFIG_STORAGE_KEY}`);
             return true;
         }
 
-        return new Promise((resolve) => {
-            this.writePending = true;
-            this.writeTimer = setTimeout(async () => {
-                try {
-                    const configToSave = JSON.parse(JSON.stringify(this._config)) as ConfigObject;
-                    const result = await putFile(this.configPath, {
-                        isDir: false,
-                        modTime: Math.floor(Date.now() / 1000),
-                        file: new Blob([JSON.stringify(configToSave, null, 2)], { type: 'application/json' }),
-                    });
-
-                    this.writePending = false;
-                    resolve(result.code === 0);
-                } catch (e) {
-                    logging.error(`Failed to save config: ${e instanceof Error ? e.message : String(e)}`);
-                    this.writePending = false;
-                    resolve(false);
-                }
-            }, 300);
-        });
+        logging.error(`Failed to remove configuration: ${result.msg}`);
+        return false;
     }
 
-    private emitConfigChanged(key: string, value: ConfigValue): void {
-        this.configChangeListeners.get(key)?.forEach(listener => {
-            listener(value);
-        });
+    /** 删除旧版配置文件（若存在） */
+    async removeLegacyConfigFile(): Promise<void> {
+        // 旧版配置文件路径
+        const legacyConfigPath = '/conf/whisper-theme-config.json';
+
+        const content = await getFile(legacyConfigPath);
+        if (typeof content !== 'string') {
+            return;
+        }
+
+        // 需要先获取再删除是因为直接调用 removeFile 接口会触发内核 IncSync
+        const result = await removeFile(legacyConfigPath);
+        if (result.code === 0) {
+            logging.info(`Legacy configuration file removed: ${legacyConfigPath}`);
+        } else {
+            logging.error(`Failed to remove legacy configuration file: ${result.msg}`);
+        }
     }
 }

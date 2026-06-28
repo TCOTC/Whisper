@@ -1,5 +1,5 @@
 import { ThemeModule } from '../types';
-import { BOOLEAN_CONFIG_KEYS, BooleanConfigKey, ThemeConfig, createSwitchChangeHandler } from './themeConfig';
+import { THEME_CONFIG_MENU_ITEMS, MenuConfigKey, ThemeConfig } from './themeConfig';
 import { t } from './i18n';
 import { logging } from './logger';
 
@@ -7,21 +7,21 @@ const MENU_ENTRY_ID = 'menuWhisperTheme';
 const CONFIG_MODEL_ATTR = 'data-whisper-config-model';
 
 /** 移动端配置面板开关行，参考 config/render/fragments.ts genSwitchRow */
-function buildPanelHtml(getChecked: (key: BooleanConfigKey) => boolean): string {
-    const rows = BOOLEAN_CONFIG_KEYS.map((key) => {
+function buildPanelHtml(config: ThemeConfig): string {
+    const rows = THEME_CONFIG_MENU_ITEMS.map(({ key }) => {
         return `<label class="fn__flex b3-label config-item" data-whisper-config-item="${key}">
             <div class="fn__flex-1">
                 <div class="config-name">${t(key)}</div>
             </div>
             <span class="fn__space"></span>
-            <input class="b3-switch fn__flex-center" id="${key}" type="checkbox"${getChecked(key) ? ' checked' : ''}>
+            <input class="b3-switch fn__flex-center" id="${key}" type="checkbox"${config.get(key) ? ' checked' : ''}>
         </label>`;
     }).join('');
 
     return `<div class="config config--mobile">${rows}</div>`;
 }
 
-function openConfigPanel(getChecked: (key: BooleanConfigKey) => boolean): HTMLElement | null {
+function openConfigPanel(config: ThemeConfig): HTMLElement | null {
     const modelElement = document.getElementById('model');
     if (!modelElement) {
         logging.error('model element does not exist.');
@@ -46,7 +46,7 @@ function openConfigPanel(getChecked: (key: BooleanConfigKey) => boolean): HTMLEl
         return null;
     }
 
-    modelMainElement.innerHTML = buildPanelHtml(getChecked);
+    modelMainElement.innerHTML = buildPanelHtml(config);
     return modelMainElement;
 }
 
@@ -65,7 +65,6 @@ export class MobileConfigMenu implements ThemeModule {
     private observer: MutationObserver | null = null;
     private mobileMenu: HTMLElement | null = null;
     private panel: HTMLElement | null = null;
-    private onSwitchChange: ((event: Event) => void) | null = null;
     private onEntryClick: ((event: MouseEvent) => void) | null = null;
 
     constructor(private readonly config: ThemeConfig) {}
@@ -77,7 +76,6 @@ export class MobileConfigMenu implements ThemeModule {
             return;
         }
 
-        this.onSwitchChange = createSwitchChangeHandler(this.config);
         this.onEntryClick = (event: MouseEvent) => {
             let target = event.target as HTMLElement | null;
             while (target && this.mobileMenu && !target.isEqualNode(this.mobileMenu)) {
@@ -127,28 +125,38 @@ export class MobileConfigMenu implements ThemeModule {
 
         this.mobileMenu = null;
         this.onEntryClick = null;
-        this.onSwitchChange = null;
     }
 
-    private getChecked = (key: BooleanConfigKey): boolean => {
-        return this.config.get(key);
+    private handleSwitchChange = (event: Event): void => {
+        const input = event.target;
+        if (!(input instanceof HTMLInputElement) || !input.classList.contains('b3-switch')) {
+            return;
+        }
+
+        const key = input.closest('[data-whisper-config-item]')?.getAttribute('data-whisper-config-item');
+        if (!key) {
+            return;
+        }
+
+        this.config.set(key as MenuConfigKey, input.checked);
+        event.stopPropagation();
     };
 
     private openPanel(): void {
         this.closePanel();
 
-        const panel = openConfigPanel(this.getChecked);
-        if (!panel || !this.onSwitchChange) {
+        const panel = openConfigPanel(this.config);
+        if (!panel) {
             return;
         }
 
         this.panel = panel;
-        panel.addEventListener('change', this.onSwitchChange, true);
+        panel.addEventListener('change', this.handleSwitchChange, true);
     }
 
     private closePanel(): void {
-        if (this.panel && this.onSwitchChange) {
-            this.panel.removeEventListener('change', this.onSwitchChange, true);
+        if (this.panel) {
+            this.panel.removeEventListener('change', this.handleSwitchChange, true);
         }
         this.panel = null;
         closeConfigPanel();

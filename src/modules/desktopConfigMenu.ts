@@ -1,11 +1,5 @@
 import { ThemeModule } from '../types';
-import {
-    BOOLEAN_CONFIG_KEYS,
-    BooleanConfigKey,
-    ThemeConfig,
-    createSwitchChangeHandler,
-    getBooleanConfigMenuIcon,
-} from './themeConfig';
+import { THEME_CONFIG_MENU_ITEMS, MenuConfigKey, ThemeConfig } from './themeConfig';
 import { getCommonMenu, subscribeCommonMenu } from './commonMenuObserver';
 import { t } from './i18n';
 import { logging } from './logger';
@@ -14,13 +8,13 @@ function buildMenuSwitchInput(id: string, checked: boolean): string {
     return `<input class="b3-switch b3-switch--menu" id="${id}" type="checkbox"${checked ? ' checked' : ''}>`;
 }
 
-function buildDesktopMenuHtml(getChecked: (key: BooleanConfigKey) => boolean): string {
-    const items = BOOLEAN_CONFIG_KEYS.map((key) => {
+function buildDesktopMenuHtml(config: ThemeConfig): string {
+    const items = THEME_CONFIG_MENU_ITEMS.map(({ key, icon }) => {
         return `<label class="b3-menu__item" data-whisper-config-item="${key}">
-            <svg class="b3-menu__icon"><use xlink:href="#${getBooleanConfigMenuIcon(key)}"></use></svg>
+            <svg class="b3-menu__icon"><use xlink:href="#${icon}"></use></svg>
             <span class="fn__flex-center">${t(key)}</span>
             <span class="fn__space fn__flex-1"></span>
-            ${buildMenuSwitchInput(key, getChecked(key))}
+            ${buildMenuSwitchInput(key, config.get(key))}
         </label>`;
     }).join('');
 
@@ -36,7 +30,6 @@ function removeInjectedMenuElements(): void {
 export class DesktopConfigMenu implements ThemeModule {
     private unsubscribe: (() => void) | null = null;
     private commonMenu: HTMLElement | null = null;
-    private onSwitchChange: ((event: Event) => void) | null = null;
 
     constructor(private readonly config: ThemeConfig) {}
 
@@ -46,7 +39,6 @@ export class DesktopConfigMenu implements ThemeModule {
             return;
         }
 
-        this.onSwitchChange = createSwitchChangeHandler(this.config);
         this.unsubscribe = subscribeCommonMenu(this.handleCommonMenuChange);
     }
 
@@ -54,22 +46,32 @@ export class DesktopConfigMenu implements ThemeModule {
         this.unsubscribe?.();
         this.unsubscribe = null;
 
-        if (this.commonMenu && this.onSwitchChange) {
-            this.commonMenu.removeEventListener('change', this.onSwitchChange, true);
+        if (this.commonMenu) {
+            this.commonMenu.removeEventListener('change', this.handleSwitchChange, true);
         }
 
         removeInjectedMenuElements();
         this.commonMenu = null;
-        this.onSwitchChange = null;
     }
 
-    private getChecked = (key: BooleanConfigKey): boolean => {
-        return this.config.get(key);
+    private handleSwitchChange = (event: Event): void => {
+        const input = event.target;
+        if (!(input instanceof HTMLInputElement) || !input.classList.contains('b3-switch')) {
+            return;
+        }
+
+        const key = input.closest('[data-whisper-config-item]')?.getAttribute('data-whisper-config-item');
+        if (!key) {
+            return;
+        }
+
+        this.config.set(key as MenuConfigKey, input.checked);
+        event.stopPropagation();
     };
 
     private handleCommonMenuChange = (menu: HTMLElement, menuName: string | null): void => {
-        if (this.commonMenu && this.onSwitchChange) {
-            this.commonMenu.removeEventListener('change', this.onSwitchChange, true);
+        if (this.commonMenu) {
+            this.commonMenu.removeEventListener('change', this.handleSwitchChange, true);
         }
 
         this.commonMenu = menu;
@@ -79,7 +81,7 @@ export class DesktopConfigMenu implements ThemeModule {
         }
 
         this.mountMenu();
-        menu.addEventListener('change', this.onSwitchChange!, true);
+        menu.addEventListener('change', this.handleSwitchChange, true);
     };
 
     private mountMenu(): void {
@@ -92,6 +94,6 @@ export class DesktopConfigMenu implements ThemeModule {
             return;
         }
 
-        menuItems.insertAdjacentHTML('beforeend', buildDesktopMenuHtml(this.getChecked));
+        menuItems.insertAdjacentHTML('beforeend', buildDesktopMenuHtml(this.config));
     }
 }
