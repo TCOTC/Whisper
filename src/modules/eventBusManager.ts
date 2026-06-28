@@ -9,6 +9,7 @@ type BasicPlugin = { name: string } & Record<string, any>;
 export class EventBusManager implements ThemeModule {
     private themeName: string = 'whisper-theme';
     private eventHandlers: Map<TEventBus, (event: CustomEvent) => void> = new Map();
+    private eventTarget: Comment | null = null;
 
     /**
      * 初始化事件总线管理器
@@ -48,8 +49,8 @@ export class EventBusManager implements ThemeModule {
         if (thisTheme) return thisTheme;
 
         // 创建一个基本的主题对象
-        const eventTarget = document.createComment(themeName);
-        document.appendChild(eventTarget);
+        this.eventTarget = document.createComment(themeName);
+        document.appendChild(this.eventTarget);
         
         // 创建一个基本对象并转换为 Theme 类型
         const newTheme = {
@@ -59,16 +60,16 @@ export class EventBusManager implements ThemeModule {
             i18n: null,
             eventBus: {
                 on: (type: string, listener: (event: CustomEvent) => void): void => {
-                    eventTarget.addEventListener(type, listener as EventListener);
+                    this.eventTarget?.addEventListener(type, listener as EventListener);
                 },
                 once: (type: string, listener: (event: CustomEvent) => void): void => {
-                    eventTarget.addEventListener(type, listener as EventListener, { once: true });
+                    this.eventTarget?.addEventListener(type, listener as EventListener, { once: true });
                 },
                 off: (type: string, listener: (event: CustomEvent) => void): void => {
-                    eventTarget.removeEventListener(type, listener as EventListener);
+                    this.eventTarget?.removeEventListener(type, listener as EventListener);
                 },
                 emit: (type: string, detail: unknown): boolean => {
-                    return eventTarget.dispatchEvent(new CustomEvent(type, { detail, cancelable: true }));
+                    return this.eventTarget?.dispatchEvent(new CustomEvent(type, { detail, cancelable: true })) ?? false;
                 }
             },
             protyleSlash: [],
@@ -107,27 +108,8 @@ export class EventBusManager implements ThemeModule {
             }
         }
         // 清理 DOM 中的注释节点
-        this.cleanupCommentNode(themeName);
-    }
-
-    /**
-     * 清理 DOM 中的注释节点 // TODO 创建节点的时候保存，销毁的时候直接 ?.remove() 清理
-     */
-    private cleanupCommentNode(themeName: string): void {
-        const commentNodes = document.evaluate(
-            `//comment()[.='${themeName}']`,
-            document,
-            null,
-            XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE,
-            null
-        );
-        
-        for (let i = 0; i < commentNodes.snapshotLength; i++) {
-            const node = commentNodes.snapshotItem(i);
-            if (node && node.parentNode) {
-                node.parentNode.removeChild(node);
-            }
-        }
+        this.eventTarget?.remove();
+        this.eventTarget = null;
     }
 
     /**
