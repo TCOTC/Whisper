@@ -1,6 +1,6 @@
 import { ThemeModule, TargetConfig } from '../types';
 import { logging } from './logger';
-import { getCurrentTheme } from './utils';
+import { getCurrentTheme } from './themeSwitch';
 
 /**
  * 元素状态观察器：监听元素状态，通过给 html 添加属性来代替使用 :has 选择器
@@ -103,16 +103,17 @@ export class ElementStatusObserver implements ThemeModule {
             ], {
                 selector: 'body.body--window'
             }),
-            this.createBaseTarget('#dockBottom', [
-                {
-                    datasetProp: 'whisperDockBottom',
-                    attributeFilter: 'class',
-                    check: el => el.classList.contains('fn__none'),
-                    stateMap: { true: 'hide', false: 'show' }
-                }
-            ], {
-                selector: 'body.body--window'
-            }),
+            // TODO #dockBottom 元素已经不存在，需要确认对应的 data-whisper-dock-bottom 属性的样式的用途
+            // this.createBaseTarget('#dockBottom', [
+            //     {
+            //         datasetProp: 'whisperDockBottom',
+            //         attributeFilter: 'class',
+            //         check: el => el.classList.contains('fn__none'),
+            //         stateMap: { true: 'hide', false: 'show' }
+            //     }
+            // ], {
+            //     selector: 'body.body--window'
+            // }),
             this.createBaseTarget('.layout__dockl', [
                 {
                     datasetProp: 'whisperLayoutDockl',

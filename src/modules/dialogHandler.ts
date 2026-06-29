@@ -1,5 +1,8 @@
 import { ThemeModule } from '../types';
-import { themeSwitch } from './themeSwitch';
+import { themeSwitchFromDialog } from './themeSwitch';
+
+/** 设置面板中外观模式下拉框的 id */
+const APPEARANCE_THEME_MODE_SELECT_ID = 'appearance.__themeMode';
 
 export class DialogHandler implements ThemeModule {
     private bodyObserver: MutationObserver | null = null;
@@ -88,36 +91,37 @@ export class DialogHandler implements ThemeModule {
         }
     }
 
+    private findThemeModeSelect(root: ParentNode): HTMLSelectElement | null {
+        return root.querySelector(`[id="${APPEARANCE_THEME_MODE_SELECT_ID}"]`) as HTMLSelectElement | null;
+    }
+
     /**
      * 设置主题切换监听器
      */
     private setupThemeChangeListener(settingDialogElement: HTMLElement): void {
-        // 检查 #mode 元素是否已经存在
-        const existingModeSelect = settingDialogElement.querySelector('#mode') as HTMLSelectElement;
+        const existingModeSelect = this.findThemeModeSelect(settingDialogElement);
         if (existingModeSelect) {
             this.attachModeChangeListener(existingModeSelect);
             return;
         }
 
-        // 如果 #mode 元素不存在，使用 MutationObserver 监听动态内容加载
+        // 如果元素不存在，使用 MutationObserver 监听动态内容加载
         this.settingDialogObserver = new MutationObserver((mutationsList) => {
             for (const mutation of mutationsList) {
                 // 检查新添加的节点
-                // @ts-ignore
                 for (const addedNode of mutation.addedNodes) {
                     if (addedNode.nodeType !== Node.ELEMENT_NODE) continue;
-                    
+
                     const element = addedNode as HTMLElement;
-                    
-                    // 检查添加的元素本身是否是 #mode
-                    if (element.id === 'mode') {
+                    // 检查添加的元素本身
+                    if (element.id === APPEARANCE_THEME_MODE_SELECT_ID) {
                         this.settingDialogObserver?.disconnect();
                         this.attachModeChangeListener(element as HTMLSelectElement);
                         return;
                     }
-                    
-                    // 检查添加的元素的子元素中是否包含 #mode
-                    const modeSelect = element.querySelector('#mode') as HTMLSelectElement;
+
+                    // 检查添加的元素的子元素中是否包含
+                    const modeSelect = this.findThemeModeSelect(element);
                     if (modeSelect) {
                         this.settingDialogObserver?.disconnect();
                         this.attachModeChangeListener(modeSelect);
@@ -128,7 +132,7 @@ export class DialogHandler implements ThemeModule {
         });
 
         // 开始监听对话框内容的变化
-        this.settingDialogObserver.observe(settingDialogElement, {childList: true, subtree: true});
+        this.settingDialogObserver.observe(settingDialogElement, { childList: true, subtree: true });
     }
 
     /**
@@ -144,30 +148,15 @@ export class DialogHandler implements ThemeModule {
     /**
      * 处理模式选择器的变化事件
      */
-    private handleModeChange = (event: Event) => {
-        const target = event.target as HTMLSelectElement;
-        if (target && target.id === 'mode') {
-            // 获取元素的位置信息
-            const rect = target.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2 + 30; // 偏移到下拉菜单中
-            
-            // 将事件转换为 MouseEvent 以兼容 themeSwitch 函数的参数要求
-            const mouseEvent = new MouseEvent('click', {
-                clientX: centerX,
-                clientY: centerY,
-                bubbles: true,
-                cancelable: true
-            });
-            
-            // 将原始事件的目标设置到 mouseEvent 上
-            Object.defineProperty(mouseEvent, 'target', {
-                value: target,
-                enumerable: true
-            });
-
-            themeSwitch('dialog', mouseEvent);
+    private handleModeChange = () => {
+        if (!this.modeSelect) {
+            return;
         }
+        const rect = this.modeSelect.getBoundingClientRect();
+        themeSwitchFromDialog(this.modeSelect, {
+            clientX: rect.left + rect.width / 2,
+            clientY: rect.top + rect.height / 2 + 30, // 偏移到下拉菜单中
+        });
     };
 
     /**

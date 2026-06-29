@@ -1,3 +1,4 @@
+.block__icons .fn__space, // 文件树的按钮间距 https://github.com/siyuan-note/siyuan/commit/a1d9c1239a1128f65de1defc1dc73bf6924c0759
 .block__icon, .toolbar__item, .protyle-icons, .protyle-icon, .dock__item--pin, .b3-select {
 	transition: unset !important; // 按钮感觉不跟手，不要过渡样式
 }
@@ -63,8 +64,7 @@ label:hover .b3-switch:checked:not(:disabled)::before, .b3-switch:checked:hover:
 }
 
 // 页签菜单
-// TODO废弃 以下选择器是兼容 v3.3.6 以前的版本，版本号提升到 v3.3.6 时即可修改为 #commonMenu[data-name="tab"] > .b3-menu__items  ，并且需要同步修改 menuHandler.ts 的对应逻辑
-#whisperCommonMenu[data-name="tab-header"] + #commonMenu > .b3-menu__items {
+#commonMenu[data-name="tab"] > .b3-menu__items {
 	display: flex;
 	flex-direction: column;
 

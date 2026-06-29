@@ -1,13 +1,12 @@
 import { ThemeModule } from '../types';
 import { getCommonMenu, subscribeCommonMenu } from './commonMenuObserver';
-import { themeSwitch } from './themeSwitch';
+import { themeSwitchFromMenu } from './themeSwitch';
 import { logging } from './logger';
 import { isTouchDevice } from './utils';
 
 export class MenuHandler implements ThemeModule {
     private unsubscribe: (() => void) | null = null;
     private commonMenu: HTMLElement | null = null;
-    private whisperCommonMenu: HTMLElement | null = null;
 
     public init(): void {
         const menu = getCommonMenu();
@@ -17,12 +16,6 @@ export class MenuHandler implements ThemeModule {
         }
 
         this.commonMenu = menu;
-
-        // 在 #commonMenu 元素前插入 <div id="whisperCommonMenu"></div> 元素，用于 CSS 选择器
-        const whisperCommonMenu = document.createElement('div');
-        whisperCommonMenu.id = 'whisperCommonMenu';
-        menu.insertAdjacentElement('beforebegin', whisperCommonMenu);
-        this.whisperCommonMenu = whisperCommonMenu;
 
         // TODO跟进 试试通过 Add plugin event bus to #commonMenu 来实现更准确的监听 https://github.com/TCOTC/Whisper/issues/16 https://github.com/siyuan-note/siyuan/issues/16171
         this.unsubscribe = subscribeCommonMenu(this.handleCommonMenuChange);
@@ -37,16 +30,10 @@ export class MenuHandler implements ThemeModule {
             this.commonMenu.removeEventListener('click', this.handleCloseClick, true);
             this.commonMenu = null;
         }
-
-        if (this.whisperCommonMenu) {
-            this.whisperCommonMenu.remove();
-            this.whisperCommonMenu = null;
-        }
     }
 
     private handleCommonMenuChange = (commonMenu: HTMLElement, menuName: string | null): void => {
         this.commonMenu = commonMenu;
-        this.whisperCommonMenu?.removeAttribute('data-name');
 
         // 先卸载监听再添加，避免重复添加
         commonMenu.removeEventListener('click', this.handleMenuClick, true);
@@ -60,11 +47,6 @@ export class MenuHandler implements ThemeModule {
 
         // 页签菜单
         if (menuName === 'tab') {
-            // TODO测试 验证是否在平板上正常工作
-            // TODO废弃 以下 2 行代码是兼容 v3.3.6 以前的版本，版本号提升到 v3.3.6 时即可移除，并且需要同步修改对应的使用 [data-name="tab-header"] 的 CSS
-            if (this.whisperCommonMenu) {
-                this.whisperCommonMenu.dataset.name = 'tab-header';
-            }
             this.handleTabClose();
         }
     };
@@ -74,7 +56,7 @@ export class MenuHandler implements ThemeModule {
         const commonMenuType = target.closest('#commonMenu')?.getAttribute('data-name') || '';
         switch (commonMenuType) {
             case 'barmode':
-                themeSwitch('commonMenu', event);
+                themeSwitchFromMenu(event);
                 break;
             default:
                 return;

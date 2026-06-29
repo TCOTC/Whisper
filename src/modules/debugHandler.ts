@@ -1,6 +1,6 @@
 import { ThemeModule } from '../types';
 import { ThemeConfig } from './themeConfig';
-import { showMessage } from './message';
+import { showMessage } from './utils';
 import { isIPad, isMobile, isTouchDevice } from './utils';
 
 const DEBUG_DELAY_MS = 5000;

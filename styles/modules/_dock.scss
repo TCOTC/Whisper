@@ -116,6 +116,7 @@ html[data-whisper-layout-dockr-float="float"] body:not(.body--window) .layout__c
 	}
 }
 
+// TODO data-whisper-dock-bottom 属性已经不存在，需要确认样式的用途
 // 右侧栏
 // 底栏会挡住右下侧栏（如果有底部侧栏的话不会挡住、如果关闭了底栏的话不会挡住）
 html[data-whisper-status="show"][data-whisper-dock-bottom="hide"] {
@@ -154,6 +155,7 @@ html[data-whisper-status="show"][data-whisper-dock-bottom="hide"] {
 		bottom: 42px !important; // 底部侧栏的高度
 	}
 }
+// TODO data-whisper-dock-bottom 属性已经不存在，需要确认样式的用途
 html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="translate"]) {
 	bottom: var(--wh-status-height) !important; // 隐藏底部侧栏之后
 	overflow: visible;

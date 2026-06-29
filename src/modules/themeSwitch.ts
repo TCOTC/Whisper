@@ -1,50 +1,109 @@
 import { logging } from './logger';
-import { THEME_LIGHT_MODE, THEME_DARK_MODE, getOSThemeMode, getThemeCurrentMode, getCurrentThemeByValue, getOSThemeModeValue, getThemeCurrentModeValue, getCurrentTheme } from './utils';
+
+/** 思源外观模式：0 明亮、1 暗黑、2 跟随系统（设置项，解析后仍为 0 / 1） */
+
+const isSystemLight = () => window.matchMedia('(prefers-color-scheme: light)').matches;
+
+/** 读取当前已解析的外观模式及对应主题包名 */
+function readAppearance() {
+    const appearance = window.siyuan.config?.appearance;
+    let isLight: boolean;
+    if (appearance?.modeOS) {
+        isLight = isSystemLight();
+    } else if (appearance?.mode === 0) {
+        isLight = true;
+    } else if (appearance?.mode === 1) {
+        isLight = false;
+    } else {
+        const domName = document.documentElement.getAttribute('data-theme-mode');
+        if (domName === 'light') {
+            isLight = true;
+        } else if (domName === 'dark') {
+            isLight = false;
+        } else {
+            isLight = isSystemLight();
+        }
+    }
+    return {
+        isLight,
+        lightTheme: appearance?.themeLight ?? document.documentElement.getAttribute('data-light-theme') ?? '',
+        darkTheme: appearance?.themeDark ?? document.documentElement.getAttribute('data-dark-theme') ?? '',
+    };
+}
+
+/** 获取当前主题 */
+export function getCurrentTheme(): string {
+    const { isLight, lightTheme, darkTheme } = readAppearance();
+    return isLight ? lightTheme : darkTheme;
+}
+
+type AnimationAnchor = Pick<MouseEvent, 'clientX' | 'clientY'>;
+
+/** 判断切换至目标外观模式后是否应播放主题切换动画 */
+function shouldAnimateThemeSwitch(targetIsLight: boolean): boolean {
+    const { isLight, lightTheme, darkTheme } = readAppearance();
+    if (targetIsLight === isLight) {
+        // 目标模式与当前模式相同
+        return false;
+    }
+    if ((targetIsLight ? lightTheme : darkTheme) !== 'Whisper') {
+        // 目标主题不是浅吟
+        return false;
+    }
+    return true;
+}
 
 /**
- * 处理主题切换
- * @param type 事件类型
- * @param event 鼠标事件
+ * 顶栏外观菜单切换主题
  */
-export function themeSwitch(type: string, event: MouseEvent): void {
-    // 判断是否切换了外观模式
-    switch (type) {
-        case 'commonMenu': {
-            // v3.3.0 之后可以通过点击的按钮的 data-id 属性来获取切换后的模式 https://github.com/siyuan-note/siyuan/pull/15052
-            const menuId = (event.target as HTMLElement).closest('.b3-menu__item')?.getAttribute('data-id');
-            if (!menuId || !['themeLight', 'themeDark', 'themeOS'].includes(menuId)) return;
-            
-            // 如果点击了"跟随系统"，则切换后的模式是系统模式
-            const targetMode = menuId === 'themeOS' ? getOSThemeMode() : menuId === 'themeLight' ? THEME_LIGHT_MODE : THEME_DARK_MODE;
-
-            // 如果切换后的模式不变，或者切换后的主题（切换后的模式对应的主题）不是 Whisper，则跳过
-            if (targetMode === getThemeCurrentMode() || 'Whisper' !== getCurrentTheme(targetMode)) return;
+export function themeSwitchFromMenu(event: MouseEvent): void {
+    // v3.3.0 之后可以通过点击的按钮的 data-id 属性来获取切换后的模式 https://github.com/siyuan-note/siyuan/pull/15052
+    const menuId = (event.target as HTMLElement).closest('.b3-menu__item')?.getAttribute('data-id');
+    let targetIsLight: boolean | undefined;
+    switch (menuId) {
+        case 'themeLight':
+            targetIsLight = true;
             break;
-        }
-        case 'dialog': {
-            const target = event.target as Element;
-            const modeValue = parseInt((target.closest('#mode') as HTMLSelectElement)?.value);
-            if (isNaN(modeValue) || ![0, 1, 2].includes(modeValue)) return;
-            
-            // 0: Light, 1: Dark, 2: OS
-            const targetModeValue = modeValue === 2 ? getOSThemeModeValue() : modeValue;
-
-            // 如果切换后的模式不变，或者切换后的主题（切换后的模式对应的主题）不是 Whisper，则跳过
-            if (targetModeValue === getThemeCurrentModeValue() || 'Whisper' !== getCurrentThemeByValue(targetModeValue)) return;
+        case 'themeDark':
+            targetIsLight = false;
             break;
-        }
+        case 'themeOS':
+            targetIsLight = isSystemLight();
+            break;
         default:
             return;
     }
-    
-    applyAnimation(event);
+
+    if (shouldAnimateThemeSwitch(targetIsLight)) {
+        applyAnimation(event);
+    }
+}
+
+/**
+ * 设置面板外观模式切换主题
+ */
+export function themeSwitchFromDialog(select: HTMLSelectElement, anchor: AnimationAnchor): void {
+    const value = parseInt(select.value);
+    let targetIsLight: boolean | undefined;
+    if (value === 0) {
+        targetIsLight = true;
+    } else if (value === 1) {
+        targetIsLight = false;
+    } else if (value === 2) {
+        targetIsLight = isSystemLight();
+    } else {
+        return;
+    }
+
+    if (shouldAnimateThemeSwitch(targetIsLight)) {
+        applyAnimation(anchor);
+    }
 }
 
 /**
  * 执行主题切换动画
- * @param event 鼠标事件
  */
-function applyAnimation(event: MouseEvent): void {
+function applyAnimation(anchor: AnimationAnchor): void {
     // 如果不支持 View Transitions API 就直接返回
     if (!document.startViewTransition) {
         logging.error('View Transitions API is not supported');
@@ -53,8 +112,8 @@ function applyAnimation(event: MouseEvent): void {
 
     const transition = document.startViewTransition();
 
-    const x = event.clientX;
-    const y = event.clientY;
+    const x = anchor.clientX;
+    const y = anchor.clientY;
 
     const targetRadius = Math.hypot(
         Math.max(x, window.innerWidth - x),
