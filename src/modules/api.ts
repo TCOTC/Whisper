@@ -36,3 +36,9 @@ export async function getFile(path: string): Promise<string | ApiRes> {
 }
 
 export const removeFile = (path: string) => post('/api/file/removeFile', { path });
+
+export const pushMsg = (msg: string, timeout?: number) =>
+    post<{ id: string }>('/api/notification/pushMsg', { msg, timeout });
+
+export const pushErrMsg = (msg: string, timeout?: number) =>
+    post<{ id: string }>('/api/notification/pushErrMsg', { msg, timeout });
