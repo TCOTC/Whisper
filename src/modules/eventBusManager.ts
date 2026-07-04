@@ -58,6 +58,12 @@ export class EventBusManager implements ThemeModule {
             app: window.siyuan.ws?.app?.appId || '',
             displayName: themeName,
             i18n: null,
+            // 思源关闭新窗口时会遍历 app.plugins 并调用 plugin.kernel.destroy()，不补齐 kernel 桩会出现异常导致新窗口无法关闭
+            kernel: {
+                state: { code: -1, description: 'inactive' },
+                init: async () => {},
+                destroy: async () => {},
+            },
             eventBus: {
                 on: (type: string, listener: (event: CustomEvent) => void): void => {
                     this.eventTarget?.addEventListener(type, listener as EventListener);

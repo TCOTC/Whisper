@@ -64,6 +64,11 @@ export class EventBusManager implements ThemeModule {
             displayName: string;
             name: string; // 必要
             eventBus: EventBus; // 后面要用
+            kernel = {
+                state: { code: -1, description: 'inactive' },
+                init: async () => {},
+                destroy: async () => {},
+            };
             protyleSlash: any[] = [];
             // customBlockRenders: Record<string, any> = {};
             topBarIcons: any[] = []; // 必要
