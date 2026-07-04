@@ -4,10 +4,15 @@
   "description": "Whisper主题构建工具",
   "main": "../theme.js",
   "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
   "scripts": {
     "dev": "cd builder && vite build --watch",
-    "build": "cd builder && vite build",
-    "lint": "pnpm exec eslint --config builder/eslint.config.mjs"
+    "build": "cd builder && vite build && node zip-package.mjs",
+    "lint": "pnpm exec eslint --config builder/eslint.config.mjs",
+    "push": "git push origin HEAD --tags"
   },
   "keywords": [
     "siyuan",
@@ -18,6 +23,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@types/node": "^24.0.1",
+    "bestzip": "^3.0.1",
     "eslint": "^9.39.2",
     "globals": "^16.5.0",
     "sass": "^1.96.0",
