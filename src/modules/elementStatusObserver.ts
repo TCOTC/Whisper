@@ -83,26 +83,6 @@ export class ElementStatusObserver implements ThemeModule {
                     stateMap: { true: 'hide', false: 'show' }
                 }
             ]),
-            this.createBaseTarget('#dockLeft', [
-                {
-                    datasetProp: 'whisperDockLeft',
-                    attributeFilter: 'class',
-                    check: el => el.classList.contains('fn__none'),
-                    stateMap: { true: 'hide', false: 'show' }
-                }
-            ], {
-                selector: 'body.body--window'
-            }),
-            this.createBaseTarget('#dockRight', [
-                {
-                    datasetProp: 'whisperDockRight',
-                    attributeFilter: 'class',
-                    check: el => el.classList.contains('fn__none'),
-                    stateMap: { true: 'hide', false: 'show' }
-                }
-            ], {
-                selector: 'body.body--window'
-            }),
             // TODO #dockBottom 元素已经不存在，需要确认对应的 data-whisper-dock-bottom 属性的样式的用途
             // this.createBaseTarget('#dockBottom', [
             //     {
@@ -114,29 +94,7 @@ export class ElementStatusObserver implements ThemeModule {
             // ], {
             //     selector: 'body.body--window'
             // }),
-            this.createBaseTarget('.layout__dockl', [
-                {
-                    datasetProp: 'whisperLayoutDockl',
-                    attributeFilter: 'style',
-                    check: el => el.style.width === '0px',
-                    stateMap: { true: 'hide', false: 'show' }
-                },
-                {
-                    datasetProp: 'whisperLayoutDocklFloat',
-                    attributeFilter: 'class',
-                    check: el => el.classList.contains('layout--float'),
-                    stateMap: { true: 'float', false: 'pin' }
-                }
-            ], {
-                selector: 'body.body--window'
-            }),
             this.createBaseTarget('.layout__dockr', [
-                {
-                    datasetProp: 'whisperLayoutDockr',
-                    attributeFilter: 'style',
-                    check: el => el.style.width === '0px',
-                    stateMap: { true: 'hide', false: 'show' }
-                },
                 {
                     datasetProp: 'whisperLayoutDockrFloat',
                     attributeFilter: 'class',
