@@ -6,6 +6,7 @@ dist/
 .idea/
 .vscode/
 .eslintcache
+builder/.scss-watch-trigger
 package.zip
 theme.css
 theme.js

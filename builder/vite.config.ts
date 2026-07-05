@@ -1,8 +1,19 @@
 import { defineConfig, type Plugin } from 'vite';
 import { resolve, dirname } from 'path';
+import { createRequire } from 'node:module';
 import * as fs from 'fs';
 import * as sass from 'sass';
 
+const require = createRequire(import.meta.url);
+// chokidar 由 Vite 间接依赖，通过 createRequire 复用，避免额外安装
+const chokidar = require(require.resolve('chokidar', {
+  paths: [require.resolve('vite')],
+})) as {
+  watch: (paths: string | string[], options?: { ignoreInitial?: boolean }) => {
+    on: (event: string, listener: () => void) => void;
+    close: () => Promise<void>;
+  };
+};
 // 通过检查命令行参数来区分开发模式（--watch）和生产构建模式
 const isDev = process.argv.includes('--watch');
 
@@ -10,7 +21,7 @@ const themeScss = resolve(__dirname, '../styles/theme.scss');
 const emptyScss = resolve(__dirname, 'empty.scss');
 const stylesDir = resolve(__dirname, '../styles');
 const iconsDir = resolve(__dirname, '../icons');
-
+const scssWatchTrigger = resolve(__dirname, '.scss-watch-trigger');
 function readIconFiles(): Map<string, string> {
   const iconFiles = new Map<string, string>();
 
@@ -68,23 +79,37 @@ function stubDevThemeScss(): Plugin {
   };
 }
 
-// 开发模式下监听 SCSS / 图标目录变更，触发重新构建
+// 开发模式下用 chokidar 监听目录，通过触发文件让 Rolldown 重建
 function watchScss(): Plugin {
+  let watcher: ReturnType<typeof chokidar.watch> | undefined;
+
   return {
     name: 'watch-scss',
     buildStart() {
-      if (!isDev) {
+      if (!isDev || watcher) {
         return;
       }
 
-      this.addWatchFile(stylesDir);
-      if (fs.existsSync(iconsDir)) {
-        this.addWatchFile(iconsDir);
+      if (!fs.existsSync(scssWatchTrigger)) {
+        fs.writeFileSync(scssWatchTrigger, '');
       }
+      this.addWatchFile(scssWatchTrigger);
+
+      const bumpTrigger = () => {
+        const now = new Date();
+        fs.utimesSync(scssWatchTrigger, now, now);
+      };
+
+      const watchDirs = [stylesDir, iconsDir].filter((dir) => fs.existsSync(dir));
+      watcher = chokidar.watch(watchDirs, { ignoreInitial: true });
+      watcher.on('all', bumpTrigger);
+    },
+    closeWatcher() {
+      void watcher?.close();
+      watcher = undefined;
     },
   };
 }
-
 // 开发模式下用 Sass 生成 theme.css 与 source map
 function emitDevCssSourceMap() {
   return {
