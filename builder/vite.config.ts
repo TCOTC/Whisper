@@ -1,127 +1,143 @@
-import { defineConfig } from 'vite';
-import { resolve } from 'path';
+import { defineConfig, type Plugin } from 'vite';
+import { resolve, dirname } from 'path';
 import * as fs from 'fs';
 import * as sass from 'sass';
 
 // 通过检查命令行参数来区分开发模式（--watch）和生产构建模式
 const isDev = process.argv.includes('--watch');
 
-// 编译 SCSS 并生成 Source Map，同时处理图标内联
-function compileSass() {
-  return {
-    name: 'compile-sass',
-    async writeBundle() {
-      // 读取所有图标文件
-      const iconFiles = new Map<string, string>();
+const themeScss = resolve(__dirname, '../styles/theme.scss');
+const emptyScss = resolve(__dirname, 'empty.scss');
+const stylesDir = resolve(__dirname, '../styles');
+const iconsDir = resolve(__dirname, '../icons');
 
-      // 递归读取图标目录
-      function readIconDir(dirPath: string, prefix: string = '') {
-        const files = fs.readdirSync(dirPath);
-        for (const file of files) {
-          const fullPath = resolve(dirPath, file);
-          const stat = fs.statSync(fullPath);
-          if (stat.isDirectory()) {
-            readIconDir(fullPath, `${prefix}${file}/`);
-          } else if (file.endsWith('.svg')) {
-            const iconPath = `${prefix}${file}`;
-            const iconContent = fs.readFileSync(fullPath, 'utf8');
-            iconFiles.set(iconPath, iconContent);
-          }
-        }
-      }
+function readIconFiles(): Map<string, string> {
+  const iconFiles = new Map<string, string>();
 
-      // 读取 icons 目录
-      const iconsDir = resolve(__dirname, '../icons');
-      if (fs.existsSync(iconsDir)) {
-        readIconDir(iconsDir);
-      }
-
-      // 编译 SCSS
-      const result = sass.compile('../styles/theme.scss', {
-        style: 'compressed',
-        sourceMap: true,
-      });
-
-      // 处理图标内联
-      let processedCss = result.css;
-
-      if (isDev) {
-        // 开发环境下把 $themeIcons 别名替换为 ./icons/ 路径，不影响 theme.css.map
-        const iconAliasRegex = /\$themeIcons/g;
-        processedCss = processedCss.replace(iconAliasRegex, './icons');
-      } else {
-        // 生产环境下内联图标
-        const iconAliasRegex = /\$themeIcons\/([^"'\s)]+)/g;
-        processedCss = processedCss.replace(iconAliasRegex, (match, iconPath) => {
-          const iconContent = iconFiles.get(iconPath);
-          if (iconContent) {
-            // 将 SVG 内容编码为 data URL
-            const encodedSvg = encodeURIComponent(iconContent);
-            return `data:image/svg+xml,${encodedSvg}`;
-          }
-          return match; // 如果找不到图标，保持原样
-        });
-      }
-
-      if (isDev) {
-        // 开发模式直接写入主题根目录，且作为 writeBundle 最后一步，便于思源 fsnotify 识别 theme.css
-        if (result.sourceMap) {
-          fs.writeFileSync('../theme.css.map', JSON.stringify(result.sourceMap));
-          console.log('✓ theme.css.map\t generated');
-        }
-        const finalContent = processedCss + '/*# sourceMappingURL=theme.css.map */';
-        fs.writeFileSync('../theme.css', finalContent);
-        console.log('✓ theme.css\t generated (with source map)');
-        return;
-      }
-
-      fs.writeFileSync('../dist/theme.css', processedCss);
-
-      if (result.sourceMap) {
-        fs.writeFileSync('../dist/theme.css.map', JSON.stringify(result.sourceMap));
+  function readIconDir(dirPath: string, prefix: string = '') {
+    for (const file of fs.readdirSync(dirPath)) {
+      const fullPath = resolve(dirPath, file);
+      if (fs.statSync(fullPath).isDirectory()) {
+        readIconDir(fullPath, `${prefix}${file}/`);
+      } else if (file.endsWith('.svg')) {
+        iconFiles.set(`${prefix}${file}`, fs.readFileSync(fullPath, 'utf8'));
       }
     }
+  }
+
+  if (fs.existsSync(iconsDir)) {
+    readIconDir(iconsDir);
+  }
+
+  return iconFiles;
+}
+
+function inlineIcons(css: string, iconFiles: Map<string, string>): string {
+  return css.replace(
+    /url\((['"]?)\.\.\/\.\.\/icons\/([^"')]+)\1\)/g,
+    (_match, _quote, iconPath: string) => {
+      const iconContent = iconFiles.get(iconPath);
+      if (!iconContent) {
+        return _match;
+      }
+      return `url("data:image/svg+xml,${encodeURIComponent(iconContent)}")`;
+    },
+  );
+}
+
+// 开发模式下将 theme.scss 替换为空桩，避免 Vite 重复编译 CSS
+function stubDevThemeScss(): Plugin {
+  return {
+    name: 'stub-dev-theme-scss',
+    enforce: 'pre',
+    resolveId(source, importer) {
+      if (!isDev) {
+        return null;
+      }
+      if (source === themeScss) {
+        return emptyScss;
+      }
+      if (source === '../styles/theme.scss' && importer) {
+        return emptyScss;
+      }
+      if (importer && resolve(dirname(importer), source) === themeScss) {
+        return emptyScss;
+      }
+      return null;
+    },
   };
 }
 
-// 复制生成的文件到根目录
+// 开发模式下监听 SCSS / 图标目录变更，触发重新构建
+function watchScss(): Plugin {
+  return {
+    name: 'watch-scss',
+    buildStart() {
+      if (!isDev) {
+        return;
+      }
+
+      this.addWatchFile(stylesDir);
+      if (fs.existsSync(iconsDir)) {
+        this.addWatchFile(iconsDir);
+      }
+    },
+  };
+}
+
+// 开发模式下用 Sass 生成 theme.css 与 source map
+function emitDevCssSourceMap() {
+  return {
+    name: 'emit-dev-css-sourcemap',
+    writeBundle() {
+      if (!isDev) {
+        return;
+      }
+
+      const result = sass.compile(themeScss, {
+        style: 'expanded',
+        sourceMap: true,
+      });
+
+      const css = inlineIcons(result.css, readIconFiles());
+
+      if (result.sourceMap) {
+        fs.writeFileSync('../theme.css.map', JSON.stringify(result.sourceMap));
+        console.log('✓ theme.css.map\t generated');
+      }
+
+      fs.writeFileSync('../theme.css', `${css}/*# sourceMappingURL=theme.css.map */`);
+      console.log('✓ theme.css\t generated');
+    },
+  };
+}
+
+// 将 dist 产物复制到主题根目录，便于思源加载与 fsnotify 识别
 function copyThemeFiles() {
   return {
     name: 'copy-theme-files',
     writeBundle() {
-      // 复制 theme.js
-      if (fs.existsSync('../dist/theme.js')) {
-        if (isDev) {
-          // 开发环境下保留 sourceMap 注释
-          fs.copyFileSync('../dist/theme.js', '../theme.js');
-          console.log('✓ theme.js\t generated (with source map)');
-        } else {
-          // 生产环境下移除 sourceMap 注释
-          const jsContent = fs.readFileSync('../dist/theme.js', 'utf8');
-          const finalContent = jsContent.replace(/\n\/\/# sourceMappingURL=.*$/m, '');
-          fs.writeFileSync('../theme.js', finalContent);
-          console.log('✓ theme.js\t generated');
+      if (!isDev) {
+        for (const mapFile of ['../theme.js.map', '../theme.css.map']) {
+          if (fs.existsSync(mapFile)) {
+            fs.rmSync(mapFile);
+          }
         }
       }
-      if (fs.existsSync('../dist/theme.js.map')) {
+
+      if (fs.existsSync('../dist/theme.js')) {
+        fs.copyFileSync('../dist/theme.js', '../theme.js');
+        console.log('✓ theme.js\t generated');
+      }
+      if (isDev && fs.existsSync('../dist/theme.js.map')) {
         fs.copyFileSync('../dist/theme.js.map', '../theme.js.map');
         console.log('✓ theme.js.map\t generated');
       }
-
-      if (isDev) {
-        return;
-      }
-
-      // 复制 theme.css
-      if (fs.existsSync('../dist/theme-vite.css')) {
-        fs.copyFileSync('../dist/theme-vite.css', '../theme.css');
+      if (!isDev && fs.existsSync('../dist/theme.css')) {
+        fs.copyFileSync('../dist/theme.css', '../theme.css');
         console.log('✓ theme.css\t generated');
       }
-      if (fs.existsSync('../dist/theme.css.map')) {
-        fs.copyFileSync('../dist/theme.css.map', '../theme.css.map');
-        console.log('✓ theme.css.map\t generated');
-      }
-    }
+    },
   };
 }
 
@@ -134,47 +150,43 @@ function cleanDist() {
         fs.rmSync('../dist', { recursive: true, force: true });
         console.log('✓ dist directory removed');
       }
-    }
+    },
   };
 }
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      $themeIcons: resolve('../icons')
-    }
-  },
   build: {
     lib: {
       entry: resolve(__dirname, '../src/theme.ts'),
       name: 'whisperTheme',
       fileName: () => 'theme.js',
-      formats: ['iife']
+      formats: ['iife'],
+      cssFileName: 'theme',
     },
-    minify: 'terser',
+    minify: isDev ? false : 'terser',
     terserOptions: {
       compress: {
         keep_fnames: true,
-        keep_classnames: true
+        keep_classnames: true,
       },
       mangle: {
         keep_fnames: true,
-        keep_classnames: true
-      }
+        keep_classnames: true,
+      },
     },
     outDir: '../dist',
     // 开发 watch 时保留 dist，避免反复清空触发目录级 fsnotify 事件
     emptyOutDir: !isDev,
-    rollupOptions: {
+    assetsInlineLimit: Infinity,
+    rolldownOptions: {
       output: {
         entryFileNames: 'theme.js',
-        assetFileNames: 'theme-vite.css',
-        inlineDynamicImports: true
-      }
+        codeSplitting: false,
+      },
     },
-    sourcemap: true
+    sourcemap: isDev,
   },
   plugins: isDev
-    ? [copyThemeFiles(), compileSass()]
-    : [compileSass(), copyThemeFiles(), cleanDist()]
+    ? [stubDevThemeScss(), watchScss(), copyThemeFiles(), emitDevCssSourceMap()]
+    : [copyThemeFiles(), cleanDist()],
 });
