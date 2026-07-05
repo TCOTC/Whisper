@@ -1,6 +1,8 @@
 // ————————————————————— 模块 ————————————————————————
 
 @use "modules/layout" as *;       // 布局
+@use "modules/toolbar" as *;      // 顶栏
+@use "modules/resize" as *;       // 分隔线
 @use "modules/dock" as *;         // 侧栏和面板
 @use "modules/status" as *;       // 底栏
 @use "modules/editor" as *;       // 编辑器

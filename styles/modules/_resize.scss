@@ -1,0 +1,93 @@
+// 分隔线
+
+@use "toolbar" as toolbar;
+
+// 默认的细分隔线
+.layout__resize {
+    &::after {
+        content: "";
+        transition: background-color 0.2s ease-out;
+    }
+
+    &:hover::after {
+        background-color: var(--b3-theme-primary);
+        transition: background-color 0.2s ease-out 0.3s;
+    }
+
+    &:active::after {
+        background-color: var(--b3-theme-primary);
+        transition: none;
+    }
+}
+
+// 停靠栏的可拖拽分隔线，选择器跟思源 app\src\assets\scss\business\_layout.scss 保持一致
+.layout {
+    &__dockl + .layout__resize,
+    &__center + .layout__resize,
+    &:not(.layout__center) > .layout__resize {
+        // 思源对这组选择器设置了 content: none，伪元素默认不存在，过渡无法生效
+        // 因此在基础态显式创建伪元素，仅在 hover / active 时改变颜色
+        &::after {
+            content: "";
+            background-color: transparent;
+            transition: background-color 0.2s ease-out;
+            top: calc(var(--b3-layout-space) / 4);
+            height: calc(var(--b3-layout-space) / 2);
+        }
+
+        // 竖线
+        &--lr::after {
+            top: 0;
+            height: 100%;
+            left: calc(var(--b3-layout-space) / 4);
+            width: calc(var(--b3-layout-space) / 2);
+        }
+
+        body.body--toolbar-hide & {
+            &--lr::after {
+                top: toolbar.$toolbar-height--hide;
+                height: calc(100% - toolbar.$toolbar-height--hide);
+            }
+        }
+
+        // 鼠标悬浮时是 hover 状态，拖拽过程中是 active 状态，但不一定 hover，所以要分别处理
+        &:hover::after {
+            background-color: var(--b3-theme-primary);
+            transition: background-color 0.2s ease-out 0.3s;
+        }
+
+        &:active::after {
+            background-color: var(--b3-theme-primary);
+            transition: none;
+        }
+    }
+}
+
+// 浮动停靠栏的可拖拽分隔线
+.layout--float > .layout__dockresize {
+    // 思源未定义伪元素，显式创建，仅在 hover / active 时改变颜色
+    &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        background-color: transparent;
+        // .layout__dockresize 元素本身宽 6px，让分隔线居中
+        top: 2px;
+        left: 0;
+        height: 2px;
+        width: 100%;
+    }
+
+    // 竖线
+    &--lr::after {
+        left: 2px;
+        width: 2px;
+        height: 100%;
+    }
+
+    // 鼠标悬浮时是 hover 状态，拖拽过程中是 active 状态，但不一定 hover，所以要分别处理
+    &:hover::after,
+    &:active::after {
+        background-color: var(--b3-theme-primary);
+    }
+}
