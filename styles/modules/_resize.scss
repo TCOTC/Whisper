@@ -73,16 +73,17 @@
         background-color: transparent;
         // .layout__dockresize 元素本身宽 6px，让分隔线居中
         top: 2px;
-        left: 0;
+        left: var(--b3-border-radius-b);
         height: 2px;
-        width: 100%;
+        width: calc(100% - var(--b3-border-radius-b) * 2);
     }
 
     // 竖线
     &--lr::after {
+        top: var(--b3-border-radius-b);
         left: 2px;
         width: 2px;
-        height: 100%;
+        height: calc(100% - var(--b3-border-radius-b) * 2);
     }
 
     // 鼠标悬浮时是 hover 状态，拖拽过程中是 active 状态，但不一定 hover，所以要分别处理

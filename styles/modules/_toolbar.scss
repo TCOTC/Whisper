@@ -1,15 +1,10 @@
 // 顶栏
 // 需要确保对顶栏的更改不跟全屏模式冲突：编辑器全屏、关系图全屏
 
+// 思源原生顶栏不融合时的高度
+$toolbar-height: 32px;
 // 思源原生顶栏融合时的高度
 $toolbar-height--hide: 42px;
-
-// 顶栏融合
-body.body--toolbar-hide {
-    .toolbar {
-        height: $toolbar-height--hide;
-    }
-}
 
 // 主菜单
 #barWorkspace {

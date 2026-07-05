@@ -1,6 +1,8 @@
 // ————————————————————编辑区————————————————————
 // 备注：调整样式的时候分屏看 所见即所得 和 导出预览 模式，有的情况下需要不同的样式
 
+@use "status" as status;
+
 // ————————————————————行级元素————————————————————
 // 在编辑器里和属性面板里，行级元素的上层都有 [data-node-id]
 
@@ -331,7 +333,7 @@ html[data-whisper-status="show"] .layout__center {
 		&.protyle .protyle-content, // 编辑器
 		#viewerContainer {          // PDF 阅读器
 			&::-webkit-scrollbar-track {
-				margin-bottom: var(--wh-status-height);
+				margin-bottom: status.$status-height;
 			}
 		}
 
@@ -339,7 +341,7 @@ html[data-whisper-status="show"] .layout__center {
 		&.sy__backlink .backlinkList + .block__icons, // 反链页签
 		&.sy__outline > .fn__flex-1, // 大纲页签
 		.card__main .card__action {  // 闪卡按钮
-			padding-bottom: var(--wh-status-height);
+			padding-bottom: status.$status-height;
 		}
 	}
 
