@@ -1,18 +1,18 @@
 // ————————————————————— 模块 ————————————————————————
 
-@use "modules/global.scss" as *;  // 全局样式
-@use "modules/toolbar" as *;      // 顶栏
-@use "modules/resize" as *;       // 分隔线
-@use "modules/dock" as *;         // 停靠栏
-@use "modules/status" as *;       // 底部状态栏
-@use "modules/editor" as *;       // 编辑器
-@use "modules/database" as *;     // 数据库
-@use "modules/menu" as *;         // 菜单、浮窗、弹窗
-@use "modules/tips" as *;         // 消息与悬浮提示
-@use "modules/tab-bar" as *;      // 标签页
-@use "modules/search" as *;       // 搜索窗口、搜索页签
-@use "modules/export" as *;       // 导出
-@use "modules/mobile" as *;       // 移动端特有样式
+@use "modules/global" as *;   // 全局样式
+@use "modules/toolbar" as *;  // 顶栏
+@use "modules/resize" as *;   // 分隔线
+@use "modules/dock" as *;     // 停靠栏
+@use "modules/status" as *;   // 底部状态栏
+@use "modules/editor" as *;   // 编辑器
+@use "modules/database" as *; // 数据库
+@use "modules/menu" as *;     // 菜单、浮窗、弹窗
+@use "modules/tips" as *;     // 消息与悬浮提示
+@use "modules/tab-bar" as *;  // 标签页
+@use "modules/search" as *;   // 搜索窗口、搜索页签
+@use "modules/export" as *;   // 导出
+@use "modules/mobile" as *;   // 移动端特有样式
 
 // ————————————————————— 配色 ————————————————————————
 // NOTE 偶尔需要跟进最新版默认主题的变更
@@ -24,4 +24,4 @@
 @use "appearance/dark-graphite" as *; // 石墨（默认配色）
 
 // 文本外观
-// @use "text/text.scss" as *;
+// @use "text/text" as *;
