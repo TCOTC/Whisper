@@ -1,91 +1,85 @@
-// 暗黑基础配色 map
+// 暗黑基础配色 map（OKLCH 源色，编译期输出 rgb / rgba）
 //
-// 只保留主题身份色与被 --wh-* 派生依赖的变量；其余回退到默认主题（midnight）。
-// 被依赖项（on-background / on-surface-light / scroll-color / list-hover / surface-light）的值与默认主题一致，
-// 但仍需保留键，否则 _base.scss 的 c() 会返回 unset。
+// OKLCH 配色体系：
+// - 中性色统一色相 234°（冷石墨灰），用 L 区分层级、C ≤ 0.012 保持克制
+// - 主题身份色 107°（橄榄绿），辅色 76°（暖金）
+// - 语义色锚点：错误 24° / 警告 76° / 成功 145° / 信息 242°
+// - 字体调色板与明亮模式互换深浅档，背景色 L 降至 36–58%
+//
+// 只保留主题身份色与 Whisper 特有变量；其余回退到默认主题（midnight）。
 
 $dark-base-appearance: (
   // 自定义、混合
   wh-theme-on-shadow-color-alpha: .5,
-  wh-img-shadow-color: rgb(255 255 255 / 30%),
+  wh-img-shadow-color: oklch(100% 0 0 / 0.3),
 
-  wh-database-background13: rgb(87, 87, 87),    // 浅灰色
-  wh-database-background14: rgb(131, 131, 131), // 深灰色
-  wh-list-hover-dark: rgba(206, 206, 206, .15),
-  wh-list-hover-darker: rgba(206, 206, 206, .25),
-  wh-toggle-hover: #f5f5f5,
-  mix-theme_primary_background: rgb(56, 60, 45),      // --b3-theme-primary-lightest rgb(154, 147, 0, .12) & --b3-theme-background rgb(43, 48, 51)
-  mix-theme-background_scroll-color: rgb(62, 66, 69), // --b3-theme-background: rgb(43, 48, 51) & --b3-scroll-color: rgba(230, 230, 230, .2)
+  wh-database-background13: oklch(46% 0 0), // 浅灰
+  wh-database-background14: oklch(61% 0 0),   // 深灰
+  wh-list-hover-dark: oklch(85% 0 0 / 0.15),
+  wh-list-hover-darker: oklch(85% 0 0 / 0.25),
+  wh-toggle-hover: oklch(97% 0 0),
+  mix-theme_primary_background: oklch(35% 0.026 120),     // primary-lightest × background
+  mix-theme-background_scroll-color: oklch(38% 0.007 240),  // background × scroll-color
   wh-protyle-inline-link-color-alpha: .5,
 
-  // 主色（主题身份色）
-  b3-theme-primary: rgb(152, 146, 0),
-  b3-theme-primary-light: rgba(165, 157, 51, .54),
-  b3-theme-primary-lighter: rgba(165, 157, 51, .38),
-  b3-theme-primary-lightest: rgba(154, 147, 0, .12),
-  b3-theme-secondary: rgb(171, 123, 43),
-  b3-theme-background: rgb(43, 48, 51),
-  b3-theme-background-light: rgb(70, 75, 77),
-  b3-theme-surface: rgb(55, 60, 63),
-  b3-theme-surface-light: rgba(41, 42, 45, .86), // 与默认主题一致，保留是因为 _base.scss 声明了该变量
-  b3-body-background: rgb(40, 44, 47), // body 框：比内容 rgb(43, 48, 51) 更深以突出边框
+  // 主色（主题身份色，色相 107° / 76°）
+  b3-theme-primary: oklch(64.4% 0.138 107),
+  b3-theme-primary-light: oklch(68% 0.125 105 / 0.54),
+  b3-theme-primary-lighter: oklch(68% 0.125 105 / 0.38),
+  b3-theme-primary-lightest: oklch(65% 0.138 107 / 0.12),
+  b3-theme-secondary: oklch(62% 0.11 76),
+  b3-theme-background: oklch(30.5% 0.009 234),
+  b3-theme-background-light: oklch(41% 0.007 224),
+  b3-theme-surface: oklch(35% 0.009 234),
+  b3-theme-surface-light: oklch(28.5% 0.006 270 / 0.86),
+  b3-body-background: oklch(29% 0.008 234),
 
-  // 文字颜色（与默认主题一致，保留是因为被 --wh-* 派生依赖）
-  b3-theme-on-background: rgb(218, 218, 218),
-  b3-theme-on-surface-light: #bababa,
+  // 卡片背景（语义色，亮色文字 + 深色底）
+  b3-card-error-color: oklch(77% 0.11 24),
+  b3-card-error-background: oklch(34% 0.09 28),
+  b3-card-warning-color: oklch(89% 0.09 76),
+  b3-card-warning-background: oklch(44% 0.08 107),
+  b3-card-info-color: oklch(85% 0.07 242),
+  b3-card-info-background: oklch(40% 0.07 253),
+  b3-card-success-color: oklch(89% 0.14 145),
+  b3-card-success-background: oklch(47% 0.08 151),
 
-  // 滚动条（与默认主题一致，保留是因为被 --wh-scroll-color_* 依赖）
-  b3-scroll-color: rgba(230, 230, 230, .2),
+  // 自定义文字（深浅档与明亮模式互换）
+  b3-font-color1: oklch(59% 0.20 28),    // 红
+  b3-font-color2: oklch(67% 0.16 58),    // 橙
+  b3-font-color3: oklch(85% 0.18 93),    // 黄
+  b3-font-color4: oklch(76% 0.12 145),   // 绿
+  b3-font-color5: oklch(62% 0.17 265),   // 蓝
+  b3-font-color6: oklch(56% 0.10 300),   // 紫
+  b3-font-color7: oklch(74% 0.11 28),    // 浅红
+  b3-font-color8: oklch(73% 0.12 58),    // 浅橙
+  b3-font-color9: oklch(88% 0.16 93),    // 浅黄
+  b3-font-color10: oklch(88% 0.10 145),  // 浅绿
+  b3-font-color11: oklch(85% 0.07 265),  // 浅蓝
+  b3-font-color12: oklch(72% 0.22 300),  // 浅紫
+  b3-font-background1: oklch(41% 0.04 28),
+  b3-font-background2: oklch(42% 0.05 58),
+  b3-font-background3: oklch(47% 0.07 93),
+  b3-font-background4: oklch(42% 0.06 145),
+  b3-font-background5: oklch(41% 0.04 265),
+  b3-font-background6: oklch(36% 0.06 300),
+  b3-font-background7: oklch(54% 0.08 28),
+  b3-font-background8: oklch(58% 0.08 58),
+  b3-font-background9: oklch(66% 0.11 93),
+  b3-font-background10: oklch(58% 0.10 145),
+  b3-font-background11: oklch(53% 0.08 265),
+  b3-font-background12: oklch(49% 0.11 300),
 
-  // 列表（与默认主题一致，保留是因为被 --wh-list-hover_100 依赖）
-  b3-list-hover: rgba(255, 255, 255, .10),
+  // 所见即所得行内元素颜色
+  b3-protyle-inline-s-color: oklch(49% 0 0),
+  b3-protyle-inline-link-color: oklch(63% 0.18 260),
+  b3-protyle-inline-link-s-color: oklch(51% 0.15 260),
+  b3-protyle-inline-mark-background: oklch(67% 0.137 93 / 0.5),
+  b3-protyle-inline-fileref-color: oklch(83% 0.10 145),
+  b3-protyle-inline-fileref-s-color: oklch(53% 0.065 145),
 
-  // 卡片背景（主题特有，影响页签 pin、av 属性色块）
-  b3-card-error-color: rgb(243, 153, 147),
-  b3-card-error-background: rgb(94, 36, 30),
-  b3-card-warning-color: rgb(255, 213, 153),
-  b3-card-warning-background: rgb(88, 86, 25),
-  b3-card-info-color: rgb(166, 213, 250),
-  b3-card-info-background: rgb(44, 73, 107),
-  b3-card-success-color: rgb(155, 243, 159),
-  b3-card-success-background: rgb(52, 104, 67),
-
-  // 自定义文字（文本色是明亮模式上下互换，背景色浅色比明亮模式低160左右、深色比明亮模式低100左右）
-  b3-font-color1: rgb(216, 57, 49),        // 红
-  b3-font-color2: rgb(222, 120, 2),        // 橙
-  b3-font-color3: rgb(189, 198, 12),       // 黄
-  b3-font-color4: rgb(130, 197, 123),      // 绿
-  b3-font-color5: rgb(149, 150, 249),      // 蓝
-  b3-font-color6: rgb(192, 78, 234),       // 紫
-  b3-font-color7: rgb(216, 133, 129),      // 浅红
-  b3-font-color8: rgb(217, 154, 81),       // 浅橙
-  b3-font-color9: rgb(255, 216, 78),       // 浅黄
-  b3-font-color10: rgb(183, 237, 177),     // 浅绿
-  b3-font-color11: rgb(186, 206, 253),     // 浅蓝
-  b3-font-color12: rgb(222, 109, 255),     // 浅紫
-  b3-font-background1: rgb(93, 66, 66),    // 浅红
-  b3-font-background2: rgb(94, 74, 50),    // 浅橙
-  b3-font-background3: rgb(95, 95, 44),    // 浅黄
-  b3-font-background4: rgb(57, 85, 54),    // 浅绿
-  b3-font-background5: rgb(65, 74, 95),    // 浅蓝
-  b3-font-background6: rgb(66, 55, 87),    // 浅紫
-  b3-font-background7: rgb(151, 91, 88),   // 红
-  b3-font-background8: rgb(154, 112, 64),  // 橙
-  b3-font-background9: rgb(155, 152, 63),  // 黄
-  b3-font-background10: rgb(83, 137, 77),  // 绿
-  b3-font-background11: rgb(86, 106, 153), // 蓝
-  b3-font-background12: rgb(105, 78, 150), // 紫
-
-  // 所见即所得行内元素颜色（主题特有）
-  b3-protyle-inline-s-color: rgb(95, 95, 95),
-  b3-protyle-inline-link-color: rgb(66, 133, 244),
-  b3-protyle-inline-link-s-color: rgb(43, 97, 186),
-  b3-protyle-inline-mark-background: rgba(191, 191, 22, .5), // 原来是 #b29100
-  b3-protyle-inline-fileref-color: rgb(158, 218, 158), // 原来是 var(--b3-theme-secondary)
-  b3-protyle-inline-fileref-s-color: rgb(85, 119, 85),
-
-  // PDF（仅保留与默认不同的高亮色）
-  // TODO跟进 https://github.com/siyuan-note/siyuan/issues/14065 修改
-  b3-pdf-background1: rgb(183, 14, 3),
-  b3-pdf-background5: rgb(178, 95, 118),
+  // PDF 高亮色
+  // TODO 跟进 https://github.com/siyuan-note/siyuan/issues/14065 修改
+  b3-pdf-background1: oklch(49% 0.20 30),
+  b3-pdf-background5: oklch(59% 0.11 3),
 );

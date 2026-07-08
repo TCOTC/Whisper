@@ -5,7 +5,9 @@
 // - 思源加载主题时会先加载默认主题（daylight/midnight）作为基底，再加载本主题覆盖。
 //   因此这里只声明"主题身份色"或"被 --wh-* 派生依赖"的变量，其余回退到默认主题值，
 //   以贴近默认配色、增强可维护性。
-// - 派生变量（alpha 通道、混合色）使用 Sass 编译期计算，避免 color-mix 的兼容性问题。
+// - 配色 map 以 OKLCH 为源色，编译期通过 to-rgb() 输出 rgb / rgba，避免 color-mix / oklch 的兼容性问题。
+// - 与默认主题同值的 --b3-* 不重复声明；其 --wh-* 透明度派生改用 color-mix 引用默认主题 CSS 变量。
+// - 其余派生变量（alpha 通道、混合色）使用 Sass 编译期计算。
 // - mixin 中声明的变量必须在 light/dark 两个 map 中都有对应键，否则 c() 会返回 unset。
 
 @use "sass:map";
@@ -17,165 +19,203 @@
 @mixin generate-theme-variables($colors) {
   // 设置全局变量，供 c() 函数使用
   $theme-colors: $colors !global;
-  // 自定义、混合
-  --wh-inline-box-shadow: 0 .1em 0 0;
-  --wh-theme-on-shadow: 0px 0px 2px #{with-alpha(c(b3-theme-on-background), c(wh-theme-on-shadow-color-alpha))};
-  --wh-link-shadow: 0px 0px 2px #{with-alpha(c(b3-protyle-inline-link-color), c(wh-protyle-inline-link-color-alpha))};
-  --wh-img-shadow: 0 0 2px #{c(wh-img-shadow-color)};
+  // Whisper 自定义变量（--wh-* / mix-*）
+  --wh-inline-box-shadow: 0 .1em 0 0; // 行内标记底部阴影偏移
+  --wh-theme-on-shadow: 0px 0px 2px color-mix(in srgb, var(--b3-theme-on-background) #{math.percentage(c(wh-theme-on-shadow-color-alpha))}, transparent); // 块引 / 文件引 hover 字影
+  --wh-link-shadow: 0px 0px 2px #{to-rgb(with-alpha(c(b3-protyle-inline-link-color), c(wh-protyle-inline-link-color-alpha)))}; // 链接 hover 字影
+  --wh-img-shadow: 0 0 2px #{to-rgb(c(wh-img-shadow-color))}; // 图片外发光
 
   --wh-transition: .2s cubic-bezier(0, 0, .2, 1) 0ms;
 
-  --wh-database-background13: #{c(wh-database-background13)}; // 数据库选项
-  --wh-database-background14: #{c(wh-database-background14)}; // 数据库选项
-  --wh-color-blue-light: rgba(0, 202, 255, .85);
-  --wh-list-hover-dark: #{c(wh-list-hover-dark)};
-  --wh-list-hover-darker: #{c(wh-list-hover-darker)};
-  --wh-protyle-kbd-background: #{with-alpha(c(b3-theme-surface), 65%)}; // 键盘元素背景色
-  --wh-protyle-kbd-border-color: rgb(176, 176, 176, .6);              // 键盘元素外框颜色
-  --wh-protyle-kbd-border-color_30: #{with-alpha(rgb(176, 176, 176), 30%)};
-  --wh-toggle-hover: #{c(wh-toggle-hover)};                   // 展开按钮、页签叉号的 hover 颜色
-  --mix-theme_primary_background: #{c(mix-theme_primary_background)}; // --b3-theme-primary-lightest & --b3-theme-background // TODO 改为自动计算混合颜色
-  --mix-theme-background_scroll-color: #{c(mix-theme-background_scroll-color)}; // --b3-theme-background & --b3-scroll-color // TODO 改为自动计算混合颜色
+  --wh-database-background13: #{to-rgb(c(wh-database-background13))}; // 数据库选项色板（映射为 --b3-font-background13）
+  --wh-database-background14: #{to-rgb(c(wh-database-background14))}; // 数据库选项色板（映射为 --b3-font-background14）
+  --wh-color-blue-light: #{to-rgb(oklch(78.3308% 0.1378 232.6611 / 0.85))}; // 块引下划线色
+  --wh-list-hover-dark: #{to-rgb(c(wh-list-hover-dark))}; // 列表折叠圆点（未 hover）
+  --wh-list-hover-darker: #{to-rgb(c(wh-list-hover-darker))}; // 列表折叠圆点 hover
+  --wh-protyle-kbd-background: #{to-rgb(with-alpha(c(b3-theme-surface), 65%))}; // 键盘元素背景色
+  --wh-protyle-kbd-border-color: #{to-rgb(oklch(76.3576% 0 0 / 0.6))}; // 键盘元素边框色
+  --wh-protyle-kbd-border-color_30: #{to-rgb(with-alpha(oklch(76.3576% 0 0), 30%))}; // 引述块内键盘边框（淡化）
+  --wh-toggle-hover: #{to-rgb(c(wh-toggle-hover))}; // 页签关闭按钮 hover 字色
+  --mix-theme_primary_background: #{to-rgb(c(mix-theme_primary_background))}; // 手写中间色（近 primary-lightest × background）；tooltip / snackbar 背景
+  --mix-theme-background_scroll-color: #{to-rgb(c(mix-theme-background_scroll-color))}; // 手写中间色（近 background × scroll-color）；编辑器滚动条滑块
 
   // 主色（主题身份色）
-  --b3-theme-primary: #{c(b3-theme-primary)};                   // 主题色：各种按钮
-  --b3-theme-primary-light: #{c(b3-theme-primary-light)};
-  --b3-theme-primary-lighter: #{c(b3-theme-primary-lighter)};   // 选中文本的颜色
-  --b3-theme-primary-lightest: #{c(b3-theme-primary-lightest)}; // 选中块后的高亮
-  --b3-theme-secondary: #{c(b3-theme-secondary)};
+  --b3-theme-primary: #{to-rgb(c(b3-theme-primary))};                   // 主题主色：主按钮、开关选中、进度条、文字 / 描边按钮等
+  --b3-theme-primary-light: #{to-rgb(c(b3-theme-primary-light))};       // 主色浅一档：输入框 / 下拉框聚焦描边、拖拽竖线、PDF 标注条等
+  --b3-theme-primary-lighter: #{to-rgb(c(b3-theme-primary-lighter))};   // 主色更浅：文本选中背景（::selection）、拖拽横线、按钮按下态
+  --b3-theme-primary-lightest: #{to-rgb(c(b3-theme-primary-lightest))}; // 主色最浅：块选中 / 划选高亮、列表拖拽落点、文字按钮悬停
+  --b3-theme-secondary: #{to-rgb(c(b3-theme-secondary))};               // 次要强调色：大按钮、标签芯片、提示点缀等
 
-  --b3-theme-background: #{to-hex(c(b3-theme-background))};     // 编辑器：必须是十六进制，否则移动端状态栏会变成黑色
-  --b3-body-background: #{c(b3-body-background)};               // body 背景：比内容更深以突出边框（思源 3.7.x 新增）
-  --b3-body-background-hl: #{to-hsl-str(c(b3-theme-primary))} !important; // body 角部渐变光晕：跟随主题主色。思源 setBodyHighlight 会按工作空间名内联设到 <html> 上（盖过普通声明），故用 !important 强制覆盖为暖色
-  --b3-theme-background-light: #{c(b3-theme-background-light)}; // 侧栏按钮：--b3-theme-surface 与 --b3-list-hover 混合 // TODO 改为自动计算混合颜色
-  --b3-theme-surface: #{c(b3-theme-surface)};                   // 侧栏面板
-  --b3-theme-surface-light: #{c(b3-theme-surface-light)};
+  --b3-theme-background: #{to-hex(c(b3-theme-background))};               // 主画布背景：编辑器、停靠面板（侧栏文档树等）、页签内容区（思源 layout__dock* / protyle；需十六进制供移动端状态栏解析）
+  --b3-body-background: #{to-rgb(c(b3-body-background))};                 // 窗口底色：比内容区更深以衬托布局边框；亦用于 theme-color meta（思源 3.7.x 新增）
+  --b3-body-background-hl: #{to-hsl-str(c(b3-theme-primary))} !important; // 窗口左上角径向渐变光晕的 HSL 分量；setBodyHighlight 会按工作空间名内联覆盖，Whisper 用 !important 强制跟主色
+  --b3-theme-background-light: #{to-rgb(c(b3-theme-background-light))};   // 内容区浅灰层：分隔线、页签 hover、水平线等
+  --b3-theme-surface: #{to-rgb(c(b3-theme-surface))};                     // 抬升层背景：对话框、卡片、下拉浮层等（Whisper 非固定页签默认底）
+  --b3-theme-surface-light: #{to-rgb(c(b3-theme-surface-light))};         // 半透明抬升层：毛玻璃页签聚焦、数据库画廊封面等
+  // --b3-theme-surface-lighter: 抬升层边框 / 分隔线色（--b3-border-color 亦引用它）
+  // --b3-theme-error: 错误语义色（删除按钮、错误提示等）
+  // --b3-theme-success: 成功语义色（callout-tip、关系图 callout 节点等）
 
-  // 文字颜色（仅保留被 --wh-* 派生依赖的项，值与默认主题一致）
-  --b3-theme-on-background: #{c(b3-theme-on-background)}; // 文本默认颜色
-  --wh-theme-on-background_85: #{with-alpha(c(b3-theme-on-background), 85%)};
-  --b3-theme-on-surface-light: #{c(b3-theme-on-surface-light)};
-  --wh-theme-on-surface-light_30: #{with-alpha(c(b3-theme-on-surface-light), 30%)};
-
-  // 字体（与默认主题一致）
+  // 文字颜色（--wh-* 派生引用默认主题 CSS 变量）
+  // --b3-theme-on-background: 主内容区正文默认字色（body、编辑器）
+  // --b3-theme-on-surface: 抬升层主字色（对话框、卡片、次级面板）
+  // --b3-theme-on-surface-light: 弱化字色（工具栏图标、占位提示、列表辅助文字）
+  // --b3-theme-on-primary: 主色按钮上的字色
+  // --b3-theme-on-secondary: 次要强调色按钮上的字色
+  // --b3-theme-on-error: 错误色控件上的字色
+  --wh-theme-on-background_85: color-mix(in srgb, var(--b3-theme-on-background) 85%, transparent);
+  --wh-theme-on-surface-light_30: color-mix(in srgb, var(--b3-theme-on-surface-light) 30%, transparent);
 
   // 顶部工具栏（3.7.0 已移除 --b3-toolbar-background / --b3-toolbar-blur-background）
-  --b3-toolbar-color: var(--b3-theme-on-surface);
-  --b3-toolbar-left-mac: 74px; // MacOS 左上角窗口控制按钮的宽度
+  --b3-toolbar-color: var(--b3-theme-on-surface); // Whisper 覆盖；默认主题为 on-surface-light
+  // --b3-toolbar-hover: 工具栏按钮 hover 背景
+  // --b3-toolbar-left-mac: macOS 窗口控制按钮区宽度占位
 
-  // 线条（圆角与默认一致；--b3-border-color 回退默认）
-  --b3-border-radius: 6px;
-  --b3-border-radius-s: 3px;
-  --b3-border-radius-b: 12px;
+  // 线条
+  // --b3-border-color: 通用边框 / 输入框描边（默认引用 surface-lighter）
+  // --b3-border-radius: 默认圆角
+  // --b3-border-radius-s: 小圆角
+  // --b3-border-radius-b: 大圆角（对话框、菜单等）
 
-  // 滚动条（被 --wh-scroll-color_* 依赖，值与默认主题一致）
-  --b3-scroll-color: #{c(b3-scroll-color)};
-  --wh-scroll-color_15: #{with-alpha(c(b3-scroll-color), 15%)};
-  --wh-scroll-color_50: #{with-alpha(c(b3-scroll-color), 50%)};
+  // 滚动条（--wh-* 派生引用默认主题 CSS 变量）
+  // --b3-scroll-color: 滚动条滑轨 / 滑块默认色
+  --wh-scroll-color_15: color-mix(in srgb, var(--b3-scroll-color) 15%, transparent);
+  --wh-scroll-color_50: color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);
 
-  // 列表（被 --wh-list-hover_100 依赖，值与默认主题一致）
-  --wh-list-hover_100: #{with-alpha(c(b3-list-hover), 100%)};
-  --b3-list-hover: #{c(b3-list-hover)};           // 鼠标悬浮在选项上
+  // 列表（--wh-* 派生引用默认主题 CSS 变量）
+  // --b3-list-hover: 列表项 hover / 聚焦背景
+  // --b3-list-icon-hover: 列表图标按钮 hover 背景
+  --wh-list-hover_100: var(--b3-list-hover);
 
   // 提示（背景使用主题混合色；阴影回退默认）
   --b3-tooltips-background: var(--mix-theme_primary_background);
   --b3-tooltips-color: var(--b3-theme-on-background);
 
   // 卡片背景（主题特有，影响页签 pin、av 属性色块）
-  --b3-card-error-color: #{c(b3-card-error-color)};
-  --b3-card-error-background: #{c(b3-card-error-background)};
-  --b3-card-warning-color: #{c(b3-card-warning-color)};
-  --b3-card-warning-background: #{c(b3-card-warning-background)};
-  --b3-card-info-color: #{c(b3-card-info-color)};
-  --b3-card-info-background: #{c(b3-card-info-background)};
-  --b3-card-success-color: #{c(b3-card-success-color)};
-  --b3-card-success-background: #{c(b3-card-success-background)};
+  --b3-card-error-color: #{to-rgb(c(b3-card-error-color))};
+  --b3-card-error-background: #{to-rgb(c(b3-card-error-background))};
+  --b3-card-warning-color: #{to-rgb(c(b3-card-warning-color))};
+  --b3-card-warning-background: #{to-rgb(c(b3-card-warning-background))};
+  --b3-card-info-color: #{to-rgb(c(b3-card-info-color))};
+  --b3-card-info-background: #{to-rgb(c(b3-card-info-background))};
+  --b3-card-success-color: #{to-rgb(c(b3-card-success-color))};
+  --b3-card-success-background: #{to-rgb(c(b3-card-success-background))};
 
   // 开关（选中态统一为 olive 底 + 白圆圈。dark 默认为蓝底 #a8c7fa + olive 圆圈，与 olive 主色错位，故覆盖）
   --b3-switch-checked: #fff;
   --b3-switch-checked-background: var(--b3-theme-primary);
 
-  // 自定义文字
-  --b3-font-color1: #{c(b3-font-color1)};
-  --b3-font-color2: #{c(b3-font-color2)};
-  --b3-font-color3: #{c(b3-font-color3)};
-  --b3-font-color4: #{c(b3-font-color4)};
-  --b3-font-color5: #{c(b3-font-color5)};
-  --b3-font-color6: #{c(b3-font-color6)};
-  --b3-font-color7: #{c(b3-font-color7)};
-  --b3-font-color8: #{c(b3-font-color8)};
-  --b3-font-color9: #{c(b3-font-color9)};
-  --b3-font-color10: #{c(b3-font-color10)};
-  --b3-font-color11: #{c(b3-font-color11)};
-  --b3-font-color12: #{c(b3-font-color12)};
-  --b3-font-background1: #{c(b3-font-background1)};
-  --b3-font-background2: #{c(b3-font-background2)};
-  --b3-font-background3: #{c(b3-font-background3)};
-  --b3-font-background4: #{c(b3-font-background4)};
-  --b3-font-background5: #{c(b3-font-background5)};
-  --b3-font-background6: #{c(b3-font-background6)};
-  --b3-font-background7: #{c(b3-font-background7)};
-  --b3-font-background8: #{c(b3-font-background8)};
-  --b3-font-background9: #{c(b3-font-background9)};
-  --b3-font-background10: #{c(b3-font-background10)};
-  --b3-font-background11: #{c(b3-font-background11)};
-  --b3-font-background12: #{c(b3-font-background12)};
+  // 字体调色板（编辑器 /protyle-font 面板 12 色字 + 12 色底；Whisper 重定义色相）
+  --b3-font-color1: #{to-rgb(c(b3-font-color1))};
+  --b3-font-color2: #{to-rgb(c(b3-font-color2))};
+  --b3-font-color3: #{to-rgb(c(b3-font-color3))};
+  --b3-font-color4: #{to-rgb(c(b3-font-color4))};
+  --b3-font-color5: #{to-rgb(c(b3-font-color5))};
+  --b3-font-color6: #{to-rgb(c(b3-font-color6))};
+  --b3-font-color7: #{to-rgb(c(b3-font-color7))};
+  --b3-font-color8: #{to-rgb(c(b3-font-color8))};
+  --b3-font-color9: #{to-rgb(c(b3-font-color9))};
+  --b3-font-color10: #{to-rgb(c(b3-font-color10))};
+  --b3-font-color11: #{to-rgb(c(b3-font-color11))};
+  --b3-font-color12: #{to-rgb(c(b3-font-color12))};
+  --b3-font-background1: #{to-rgb(c(b3-font-background1))};
+  --b3-font-background2: #{to-rgb(c(b3-font-background2))};
+  --b3-font-background3: #{to-rgb(c(b3-font-background3))};
+  --b3-font-background4: #{to-rgb(c(b3-font-background4))};
+  --b3-font-background5: #{to-rgb(c(b3-font-background5))};
+  --b3-font-background6: #{to-rgb(c(b3-font-background6))};
+  --b3-font-background7: #{to-rgb(c(b3-font-background7))};
+  --b3-font-background8: #{to-rgb(c(b3-font-background8))};
+  --b3-font-background9: #{to-rgb(c(b3-font-background9))};
+  --b3-font-background10: #{to-rgb(c(b3-font-background10))};
+  --b3-font-background11: #{to-rgb(c(b3-font-background11))};
+  --b3-font-background12: #{to-rgb(c(b3-font-background12))};
   --b3-font-background14: var(--wh-database-background14); // 数据库选项专用
+  // --b3-font-color13: 字体面板「反色字」（默认引用 background）
+  // --b3-font-background13: 字体面板反色底（默认引用 on-background；Whisper 数据库选项映射为 wh-database-background13）
 
-  // 图表颜色
-  --b3-graph-p-point: #076f7e;
-  // --b3-graph-heading-point: #8250df;
-  // --b3-graph-math-point: #80FFA5;
-  // --b3-graph-code-point: #00DDFF;
-  // --b3-graph-table-point: #37A2FF;
-  // --b3-graph-list-point: #FF0087;
-  --b3-graph-todo-point: #FFBF00;
-  --b3-graph-olist-point: #b3005f;
-  // --b3-graph-listitem-point: #f65b00;
-  // --b3-graph-bq-point: #8d48e3;
-  --b3-graph-callout-point: var(--b3-theme-success);
-  // --b3-graph-super-point: #dd79ff;
-  // --b3-graph-doc-point: #202124;
-  // --b3-graph-tag-point: #dbf32f;
-  --b3-graph-asset-point: #05c091;
+  // 关系图
+  // --b3-graph-p-point: 段落块节点色
+  // --b3-graph-todo-point: 待办块节点色
+  // --b3-graph-olist-point: 有序列表块节点色
+  // --b3-graph-callout-point: callout 块节点色（默认引用 success）
+  // --b3-graph-asset-point: 资源块节点色
+  // --b3-graph-tag-line: 标签连线色
+  // --b3-graph-tag-tag-line: 标签嵌套连线色
+  // --b3-graph-asset-line: 资源连线色
+  // --b3-graph-hl-point: 高亮节点色
+  // --b3-graph-hl-line: 高亮连线色
   --b3-graph-line: #5f6368;
-  // --b3-graph-ref-line: #d23f31;
-  --b3-graph-tag-line: #5f6b06;
-  --b3-graph-tag-tag-line: #dbf32f;
-  --b3-graph-asset-line: #037457;
-  --b3-graph-hl-point: #f3a92f;
-  --b3-graph-hl-line: #4285f4;
 
-  // 从 Asri 拿的关系图配色
-  --b3-graph-heading-point: #ef6b9a;
-  --b3-graph-math-point: #24a5ff;
-  --b3-graph-code-point: #6a9bff;
-  --b3-graph-table-point: #0abc71;
-  --b3-graph-list-point: #82b025;
-  --b3-graph-listitem-point: #00b89f;
-  --b3-graph-bq-point: #de8700;
-  --b3-graph-super-point: #a2a700;
-  --b3-graph-doc-point: var(--b3-theme-on-background);
-  --b3-graph-tag-point: #ef7747;
-  --b3-graph-ref-line: var(--b3-theme-primary-light);
+  // 关系图节点色（取自 Asri 主题；Graph.ts 按块类型着色）
+  --b3-graph-heading-point: #ef6b9a;                 // 标题块节点
+  --b3-graph-math-point: #24a5ff;                    // 公式块节点
+  --b3-graph-code-point: #6a9bff;                     // 代码块节点
+  --b3-graph-table-point: #0abc71;                    // 表格块节点
+  --b3-graph-list-point: #82b025;                     // 列表块节点
+  --b3-graph-listitem-point: #00b89f;                // 列表项块节点
+  --b3-graph-bq-point: #de8700;                       // 引述块节点
+  --b3-graph-super-point: #a2a700;                  // 超级块节点
+  --b3-graph-doc-point: var(--b3-theme-on-background); // 文档节点
+  --b3-graph-tag-point: #ef7747;                      // 标签节点
+  --b3-graph-ref-line: var(--b3-theme-primary-light); // 块引用连线色（非引用连线用 graph-line）
 
-  // 所见即所得行内元素颜色（主题特有）
-  --b3-protyle-inline-s-color: #{c(b3-protyle-inline-s-color)}; // 原来是 inherit
-  --wh-protyle-inline-s-color_50: #{with-alpha(c(b3-protyle-inline-s-color), 50%)};
-  --b3-protyle-inline-link-color: #{c(b3-protyle-inline-link-color)};
-  --b3-protyle-inline-link-s-color: #{c(b3-protyle-inline-link-s-color)}; // 思源 3.7.0 已弃用，Whisper 用于删除线链接配色
-  --b3-protyle-inline-mark-background: #{c(b3-protyle-inline-mark-background)};
-  --b3-protyle-inline-tag-color: var(--b3-card-success-color); // 原来是 #5f636
-  --b3-protyle-inline-blockref-color: inherit; // 原来是 #8957e5
-  --b3-protyle-inline-fileref-color: #{c(b3-protyle-inline-fileref-color)};
-  --b3-protyle-inline-fileref-s-color: #{c(b3-protyle-inline-fileref-s-color)}; // 思源 3.7.0 已弃用，Whisper 用于删除线文件引用配色
+  // 所见即所得行内元素
+  --b3-protyle-inline-s-color: #{to-rgb(c(b3-protyle-inline-s-color))}; // 删除线字色（思源默认 inherit）
+  --wh-protyle-inline-s-color_50: #{to-rgb(with-alpha(c(b3-protyle-inline-s-color), 50%))}; // 已完成任务列表删除线（淡化）
+  --b3-protyle-inline-link-color: #{to-rgb(c(b3-protyle-inline-link-color))}; // 超链接字色
+  --b3-protyle-inline-link-s-color: #{to-rgb(c(b3-protyle-inline-link-s-color))}; // 思源 3.7.0 已弃用；Whisper 用于删除线链接
+  --b3-protyle-inline-mark-background: #{to-rgb(c(b3-protyle-inline-mark-background))}; // 行内标记（高亮）背景
+  --b3-protyle-inline-tag-color: var(--b3-card-success-color); // 行内标签字色（思源默认半透明黑；Whisper 改为成功色）
+  --b3-protyle-inline-blockref-color: inherit; // 块引字色（思源默认紫色；Whisper 用下划线样式故 inherit）
+  --b3-protyle-inline-fileref-color: #{to-rgb(c(b3-protyle-inline-fileref-color))}; // 文件引字色
+  --b3-protyle-inline-fileref-s-color: #{to-rgb(c(b3-protyle-inline-fileref-s-color))}; // 思源 3.7.0 已弃用；Whisper 用于删除线文件引
+  // --b3-protyle-inline-strong-color: 粗体字色（默认 inherit）
+  // --b3-protyle-inline-em-color: 斜体字色（默认 inherit）
+  // --b3-protyle-inline-u-color: 下划线字色（默认 inherit）
+  // --b3-protyle-inline-mark-color: 行内标记（高亮）字色
+  // --b3-protyle-code-background: 行内代码 / 代码块背景
 
-  // PDF（仅保留与默认不同的高亮色，其余回退默认）
-  --b3-pdf-background1: #{c(b3-pdf-background1)};
-  --b3-pdf-background5: #{c(b3-pdf-background5)};
+  // PDF 批注高亮色
+  --b3-pdf-background1: #{to-rgb(c(b3-pdf-background1))}; // 默认批注色、选区描边
+  --b3-pdf-background5: #{to-rgb(c(b3-pdf-background5))}; // 批注色板第 5 色
+  // --b3-pdf-background2: 批注色板第 2 色
+  // --b3-pdf-background3: 批注色板第 3 色
+  // --b3-pdf-background4: 批注色板第 4 色
+  // --b3-pdf-background6: 批注色板第 6 色
+  // --b3-pdf-background7: 批注色板第 7 色
+  // --b3-pdf-selection: PDF 文本选区背景
+  // --b3-pdf-dark: PDF 深色 UI 元素
 
-  // callout（important 保留主题值；note/tip/caution/warning 回退默认）
-  --b3-callout-important: #8957e5; // 与默认主题实际效果一致，原来是 var(--b3-protyle-inline-blockref-color);
+  // callout
+  --b3-callout-important: #8957e5; // 重要提示色（与默认 daylight 块引紫一致）
+  // --b3-callout-note: 提示 callout 色（默认引用 primary）
+  // --b3-callout-tip: 技巧 callout 色（默认引用 success）
+  // --b3-callout-caution: 注意 callout 色（默认引用 error）
+  // --b3-callout-warning: 警告 callout 色（默认引用 highlight-current-background）
+}
+
+// 提取四舍五入后的 RGB 通道（供 to-rgb / to-hex / with-alpha 内部使用）
+@function channel-rgb($color, $channel) {
+  @return math.round(color.channel($color, $channel, $space: rgb));
+}
+
+// 将 Sass 颜色对象序列化为 rgb / rgba（非颜色值原样返回）
+@function to-rgb($value) {
+  @if meta.type-of($value) != 'color' {
+    @return $value;
+  }
+
+  $r: channel-rgb($value, "red");
+  $g: channel-rgb($value, "green");
+  $b: channel-rgb($value, "blue");
+  $a: color.channel($value, "alpha");
+
+  @if $a < 1 {
+    @return rgba($r, $g, $b, $a);
+  }
+
+  @return rgb($r, $g, $b);
 }
 
 // 将数字转换为两位十六进制字符串
@@ -199,13 +239,13 @@
 // 将颜色转换为十六进制字符串，如果值不是颜色类型则返回原值
 @function to-hex($color) {
   @if meta.type-of($color) == 'color' {
-    $r: color.channel($color, "red", $space: rgb);
-    $g: color.channel($color, "green", $space: rgb);
-    $b: color.channel($color, "blue", $space: rgb);
+    $r: channel-rgb($color, "red");
+    $g: channel-rgb($color, "green");
+    $b: channel-rgb($color, "blue");
     $a: null;
-    @if color.alpha($color) < 1 {
+    @if color.channel($color, "alpha") < 1 {
       // Sass alpha 是 0-1，要映射到 0-255
-      $a: math.round(color.alpha($color) * 255);
+      $a: math.round(color.channel($color, "alpha") * 255);
       @return string.unquote("#" + to-hex-digit($r) + to-hex-digit($g) + to-hex-digit($b) + to-hex-digit($a));
     } @else {
       @return string.unquote("#" + to-hex-digit($r) + to-hex-digit($g) + to-hex-digit($b));
@@ -215,15 +255,14 @@
   }
 }
 
-// 转换颜色的透明度，参数是颜色和 alpha 值（0-1 之间的小数）
-// 当 alpha 为 1 时，返回不带 alpha 通道的颜色（rgb 格式）
+// 转换颜色的透明度，参数是颜色和 alpha 值（0-1 之间的小数或百分比）
+// 返回 Sass 颜色对象，供 to-rgb() 序列化
 @function with-alpha($color, $alpha) {
   @if meta.type-of($color) == 'color' {
     @if $alpha == 1 or $alpha == 100% {
-      // 提取 RGB 值，返回不带 alpha 通道的 rgb 颜色
-      $r: color.channel($color, "red", $space: rgb);
-      $g: color.channel($color, "green", $space: rgb);
-      $b: color.channel($color, "blue", $space: rgb);
+      $r: channel-rgb($color, "red");
+      $g: channel-rgb($color, "green");
+      $b: channel-rgb($color, "blue");
       @return rgb($r, $g, $b);
     } @else {
       @return color.change($color, $alpha: $alpha);

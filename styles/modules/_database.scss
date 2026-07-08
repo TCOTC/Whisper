@@ -190,7 +190,7 @@
 
 	&.av__row--select,
 	&.av__row--hl {
-		background-color: var(--b3-theme-surface); // 侧栏面板的颜色
+		background-color: var(--b3-theme-surface); // 与思源对话框 / 卡片等抬升层同色，避免透明叠加色差
 
 		.av__cell {
 			background-color: unset; // 重置原生的背景色
