@@ -11,7 +11,7 @@
 
 文本配色：
 - 原生：无 `data-whisper-text`（配置 `text` 为空，不附加 Whisper 文本样式）
-- 七彩：Seven（配置默认 `seven`）
+- 虹彩：Rainbow（配置默认 `rainbow`）
 
 样式特性（顶层 boolean 配置；样式写在对应 `modules/` 文件，用属性选择器门控）：
 - 文本半高背景：`text_half_bg`（默认 `true`）→ `data-whisper-text-half-bg`
@@ -23,8 +23,8 @@
 html[data-theme-mode="light"][data-whisper-appearance="blush"] {
   // 界面配色
 }
-html[data-theme-mode="light"][data-whisper-text="seven"] {
-  // 文本配色（七彩）
+html[data-theme-mode="light"][data-whisper-text="rainbow"] {
+  // 文本配色（虹彩）
 }
 html[data-whisper-text-half-bg] {
   // 样式特性：文本半高背景

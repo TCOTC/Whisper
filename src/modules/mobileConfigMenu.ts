@@ -5,12 +5,44 @@ import {
     MenuItemDef,
     THEME_CONFIG_MENU_GROUPS,
     ThemeConfig,
+    ThemeConfigKey,
 } from './themeConfig';
+import { SCHEME_MENU_DEFS, SchemeMenuDef } from './schemeManager';
 import { t } from './i18n';
 import { logging } from './logger';
 
 const MENU_ENTRY_ID = 'menuWhisperTheme';
 const CONFIG_MODEL_ATTR = 'data-whisper-config-model';
+
+function schemeSelectId(key: ThemeConfigKey): string {
+    return `whisper-scheme-${key}`;
+}
+
+/** 移动端 select，对齐思源 config/render/render.ts 的 genSelectOptionsHtml */
+function buildSchemeSelectHtml(id: string, def: SchemeMenuDef, current: string): string {
+    const optionsHtml = def.options.map((option) =>
+        `<option value="${option.value}"${current === option.value ? ' selected' : ''}>${t(option.labelKey)}</option>`,
+    ).join('');
+
+    return `<select class="b3-select fn__flex-center fn__size200" id="${id}">${optionsHtml}</select>`;
+}
+
+/** 移动端 select 行，对齐思源 renderControlParts select 分支（config-wrap） */
+function buildSchemeSelectRow(def: SchemeMenuDef, config: ThemeConfig): string {
+    const selectId = schemeSelectId(def.key);
+
+    return `<div class="fn__flex b3-label config-item config-wrap" data-whisper-scheme-item="${def.key}">
+        <div class="fn__flex-1">
+            <div class="config-name">${t(def.key)}</div>
+        </div>
+        <span class="fn__space"></span>
+        ${buildSchemeSelectHtml(selectId, def, config.get(def.key))}
+    </div>`;
+}
+
+function buildSchemeSelectRows(config: ThemeConfig): string {
+    return SCHEME_MENU_DEFS.map((def) => buildSchemeSelectRow(def, config)).join('');
+}
 
 function buildPanelSwitchRow({ key }: MenuItemDef, config: ThemeConfig): string {
     return `<label class="fn__flex b3-label config-item" data-whisper-config-item="${key}">
@@ -22,14 +54,22 @@ function buildPanelSwitchRow({ key }: MenuItemDef, config: ThemeConfig): string 
     </label>`;
 }
 
-/** 移动端配置面板开关行，参考思源源码 config/render/fragments.ts genSwitchRow */
+/** 移动端配置面板，参考思源 mobile/menu 与 config-group / config-items 结构 */
 function buildPanelHtml(config: ThemeConfig): string {
-    const rows = flatMapMenuGroups(THEME_CONFIG_MENU_GROUPS, {
-        separator: () => '<div class="fn__hr" data-whisper-config-separator></div>',
+    const separator = '<div class="fn__hr" data-whisper-config-separator></div>';
+    const schemeRows = buildSchemeSelectRows(config);
+    const switchRows = flatMapMenuGroups(THEME_CONFIG_MENU_GROUPS, {
+        separator: () => separator,
         item: (item) => buildPanelSwitchRow(item, config),
     }).join('');
 
-    return `<div class="config config--mobile">${rows}</div>`;
+    return `<div class="config config--mobile">
+        <div class="config-group" data-whisper-config-group>
+            <div class="config-items">
+                ${schemeRows}${separator}${switchRows}
+            </div>
+        </div>
+    </div>`;
 }
 
 function openConfigPanel(config: ThemeConfig): HTMLElement | null {
@@ -138,19 +178,31 @@ export class MobileConfigMenu implements ThemeModule {
         this.onEntryClick = null;
     }
 
-    private handleSwitchChange = (event: Event): void => {
-        const input = event.target;
-        if (!(input instanceof HTMLInputElement) || !input.classList.contains('b3-switch')) {
+    private handlePanelChange = (event: Event): void => {
+        const target = event.target;
+
+        if (target instanceof HTMLInputElement && target.classList.contains('b3-switch')) {
+            const key = target.closest('[data-whisper-config-item]')?.getAttribute('data-whisper-config-item');
+            if (!key) {
+                return;
+            }
+
+            this.config.set(key as MenuConfigKey, target.checked);
+            event.stopPropagation();
             return;
         }
 
-        const key = input.closest('[data-whisper-config-item]')?.getAttribute('data-whisper-config-item');
-        if (!key) {
-            return;
-        }
+        if (target instanceof HTMLSelectElement && target.classList.contains('b3-select')) {
+            const key = target.id.startsWith('whisper-scheme-')
+                ? target.id.slice('whisper-scheme-'.length)
+                : target.closest('[data-whisper-scheme-item]')?.getAttribute('data-whisper-scheme-item');
+            if (!key) {
+                return;
+            }
 
-        this.config.set(key as MenuConfigKey, input.checked);
-        event.stopPropagation();
+            this.config.set(key as ThemeConfigKey, target.value);
+            event.stopPropagation();
+        }
     };
 
     private openPanel(): void {
@@ -162,12 +214,12 @@ export class MobileConfigMenu implements ThemeModule {
         }
 
         this.panel = panel;
-        panel.addEventListener('change', this.handleSwitchChange, true);
+        panel.addEventListener('change', this.handlePanelChange, true);
     }
 
     private closePanel(): void {
         if (this.panel) {
-            this.panel.removeEventListener('change', this.handleSwitchChange, true);
+            this.panel.removeEventListener('change', this.handlePanelChange, true);
         }
         this.panel = null;
         closeConfigPanel();

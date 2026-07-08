@@ -25,6 +25,48 @@ const MESSAGES: Record<string, MessageEntry> = {
         tw: '文字半高背景',
         ja: 'テキスト半高背景',
     },
+    appearance_light: {
+        en: 'Light appearance',
+        cn: '明亮界面配色',
+        tw: '明亮介面配色',
+        ja: 'ライト外観',
+    },
+    appearance_dark: {
+        en: 'Dark appearance',
+        cn: '暗黑界面配色',
+        tw: '暗黑介面配色',
+        ja: 'ダーク外観',
+    },
+    text: {
+        en: 'Text colors',
+        cn: '文本配色',
+        tw: '文字配色',
+        ja: 'テキスト配色',
+    },
+    scheme_native: {
+        en: 'Native',
+        cn: '原生',
+        tw: '原生',
+        ja: 'ネイティブ',
+    },
+    scheme_blush: {
+        en: 'Blush',
+        cn: '胭脂',
+        tw: '胭脂',
+        ja: 'ブラッシュ',
+    },
+    scheme_graphite: {
+        en: 'Graphite',
+        cn: '石墨',
+        tw: '石墨',
+        ja: 'グラファイト',
+    },
+    scheme_rainbow: {
+        en: 'Rainbow',
+        cn: '虹彩',
+        tw: '虹彩',
+        ja: '虹色',
+    },
 };
 
 type LocaleKey = keyof MessageEntry;

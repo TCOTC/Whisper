@@ -103,11 +103,11 @@
   // --b3-protyle-code-background: 行内代码 / 代码块背景
 }
 
-// ── § 方案：seven / 七彩 ─────────────────────────────────────────────
+// ── § 方案：rainbow / 虹彩 ─────────────────────────────────────────────
 //
-// 仅在有 data-whisper-text="seven" 时附加文本配色；无属性时回退思源默认（原生）。
+// 仅在有 data-whisper-text="rainbow" 时附加文本配色；无属性时回退思源默认（原生）。
 
-html[data-theme-mode="light"][data-whisper-text="seven"] {
+html[data-theme-mode="light"][data-whisper-text="rainbow"] {
   $seeds: map.merge(
     derive-font-palette((
       // 6 色相：28 浅红 / 58 浅橙 / 93 浅黄 / 145 浅绿 / 265 浅蓝 / 300 浅紫
@@ -145,7 +145,7 @@ html[data-theme-mode="light"][data-whisper-text="seven"] {
   @include emit-text($seeds);
 }
 
-html[data-theme-mode="dark"][data-whisper-text="seven"] {
+html[data-theme-mode="dark"][data-whisper-text="rainbow"] {
   $seeds: map.merge(
     derive-font-palette((
       hues: (28, 58, 93, 145, 265, 300),

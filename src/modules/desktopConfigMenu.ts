@@ -5,12 +5,36 @@ import {
     MenuItemDef,
     THEME_CONFIG_MENU_GROUPS,
     ThemeConfig,
-} from './themeConfig';import { getCommonMenu, subscribeCommonMenu } from './commonMenuObserver';
+    ThemeConfigKey,
+} from './themeConfig';
+import { getCommonMenu, subscribeCommonMenu } from './commonMenuObserver';
+import { SCHEME_MENU_DEFS, SchemeMenuDef } from './schemeManager';
 import { t } from './i18n';
 import { logging } from './logger';
 
 function buildMenuSwitchInput(id: string, checked: boolean): string {
     return `<input class="b3-switch b3-switch--menu" id="${id}" type="checkbox"${checked ? ' checked' : ''}>`;
+}
+
+function buildSchemeMenuItemHtml(def: SchemeMenuDef, config: ThemeConfig): string {
+    const current = config.get(def.key);
+    const optionsHtml = def.options.map((option) => {
+        const selected = current === option.value;
+        return `<button type="button" class="b3-menu__item${selected ? ' b3-menu__item--selected' : ''}" data-whisper-scheme-item="${def.key}" data-whisper-scheme-value="${option.value}">
+            <span class="b3-menu__label">${t(option.labelKey)}</span>
+        </button>`;
+    }).join('');
+
+    return `<div class="b3-menu__item" data-whisper-scheme-submenu="${def.key}">
+        <svg class="b3-menu__icon"><use xlink:href="#${def.icon}"></use></svg>
+        <span class="b3-menu__label">${t(def.key)}</span>
+        <svg class="b3-menu__icon b3-menu__icon--small"><use xlink:href="#iconRight"></use></svg>
+        <div class="b3-menu__submenu"><div class="b3-menu__items">${optionsHtml}</div></div>
+    </div>`;
+}
+
+function buildSchemeMenuHtml(config: ThemeConfig): string {
+    return SCHEME_MENU_DEFS.map((def) => buildSchemeMenuItemHtml(def, config)).join('');
 }
 
 function buildDesktopMenuItemHtml({ key, icon }: MenuItemDef, config: ThemeConfig): string {
@@ -24,16 +48,19 @@ function buildDesktopMenuItemHtml({ key, icon }: MenuItemDef, config: ThemeConfi
 
 function buildDesktopMenuHtml(config: ThemeConfig): string {
     const separator = '<div class="b3-menu__separator" data-whisper-config-separator></div>';
-    return flatMapMenuGroups(THEME_CONFIG_MENU_GROUPS, {
-        leading: () => separator,
+    const schemeItems = buildSchemeMenuHtml(config);
+    const switchItems = flatMapMenuGroups(THEME_CONFIG_MENU_GROUPS, {
         separator: () => separator,
         item: (item) => buildDesktopMenuItemHtml(item, config),
     }).join('');
+
+    return `${separator}${schemeItems}${separator}${switchItems}`;
 }
 
 function removeInjectedMenuElements(): void {
     document.querySelectorAll('[data-whisper-config-separator]').forEach((element) => element.remove());
     document.querySelectorAll('[data-whisper-config-item]').forEach((element) => element.remove());
+    document.querySelectorAll('[data-whisper-scheme-submenu]').forEach((element) => element.remove());
 }
 
 /** 桌面端 barmode 配置子菜单 */
@@ -58,6 +85,7 @@ export class DesktopConfigMenu implements ThemeModule {
 
         if (this.commonMenu) {
             this.commonMenu.removeEventListener('change', this.handleSwitchChange, true);
+            this.commonMenu.removeEventListener('click', this.handleSchemeClick, true);
         }
 
         removeInjectedMenuElements();
@@ -79,9 +107,25 @@ export class DesktopConfigMenu implements ThemeModule {
         event.stopPropagation();
     };
 
+    private handleSchemeClick = (event: MouseEvent): void => {
+        const button = event.target instanceof Element
+            ? event.target.closest('[data-whisper-scheme-value]')
+            : null;
+        const key = button?.getAttribute('data-whisper-scheme-item');
+        if (button && key) {
+            this.config.set(key as ThemeConfigKey, button.getAttribute('data-whisper-scheme-value') ?? '');
+            button.closest('.b3-menu__submenu')?.querySelectorAll('[data-whisper-scheme-value]').forEach((item) => {
+                item.classList.toggle('b3-menu__item--selected', item === button);
+            });
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    };
+
     private handleCommonMenuChange = (menu: HTMLElement, menuName: string | null): void => {
         if (this.commonMenu) {
             this.commonMenu.removeEventListener('change', this.handleSwitchChange, true);
+            this.commonMenu.removeEventListener('click', this.handleSchemeClick, true);
         }
 
         this.commonMenu = menu;
@@ -92,6 +136,7 @@ export class DesktopConfigMenu implements ThemeModule {
 
         this.mountMenu();
         menu.addEventListener('change', this.handleSwitchChange, true);
+        menu.addEventListener('click', this.handleSchemeClick, true);
     };
 
     private mountMenu(): void {

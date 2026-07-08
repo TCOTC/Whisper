@@ -34,7 +34,7 @@ export const THEME_CONFIG_SCHEMA = {
     /** 文本配色方案（对应 data-whisper-text；空字符串表示原生，不写属性、不附加样式） */
     text: {
         type: 'string',
-        default: 'seven',
+        default: 'rainbow',
     },
     /** 主题首次安装时间戳（毫秒），用于首次安装一天内不发送 GA 数据 */
     install_timestamp: {
