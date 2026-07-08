@@ -1,32 +1,30 @@
 import { ThemeModule, TargetConfig } from '../types';
 import { logging } from './logger';
 import { getCurrentTheme } from './themeSwitch';
+import { waitForElement } from './utils';
 
 /**
  * 元素状态观察器：监听元素状态，通过给 html 添加属性来代替使用 :has 选择器
  */
 export class ElementStatusObserver implements ThemeModule {
-    private retryIntervalId: number | null = null;
     private elementObserver: MutationObserver | null = null;
     private targets: TargetConfig[] = [];
+    private destroyed = false;
 
     /**
      * 初始化元素状态观察器
      */
-    public init(): void {
+    public async init(): Promise<void> {
         this.setupTargets();
-        this.startObserving();
+        await this.startObserving();
     }
 
     /**
      * 销毁元素状态观察器
      */
     public destroy(): void {
-        if (this.retryIntervalId) {
-            clearInterval(this.retryIntervalId);
-            this.retryIntervalId = null;
-        }
-        
+        this.destroyed = true;
+
         if (this.elementObserver) {
             this.elementObserver.disconnect();
             this.elementObserver = null;
@@ -89,7 +87,7 @@ export class ElementStatusObserver implements ThemeModule {
     /**
      * 开始观察元素状态
      */
-    private startObserving(): void {
+    private async startObserving(): Promise<void> {
         // 创建一个 MutationObserver 实例来观察所有目标节点的变化
         this.elementObserver = new MutationObserver(mutationsList => {
             for (const mutation of mutationsList) {
@@ -108,64 +106,45 @@ export class ElementStatusObserver implements ThemeModule {
             }
         });
 
-        // 重试机制配置
-        const retryInterval = 100; // 重试间隔时间，单位：毫秒
-        const maxRetries = 50; // 最大重试次数
-        let retryCount = 0;
+        await Promise.all(this.targets.map(target => this.waitForTarget(target)));
+    }
 
-        // 重试查找目标节点
-        const findTargetNodes = () => {
-            retryCount++;
-            let hasRemainingTargets = false;
+    /**
+     * 等待并观察单个目标节点
+     */
+    private async waitForTarget(target: TargetConfig): Promise<void> {
+        const element = await waitForElement(
+            target.selector,
+            () => this.shouldExcludeTarget(target),
+        );
 
-            this.targets.forEach(target => {
-                // 如果已经找到或已超时，跳过
-                if (target.found || target.timedOut) return;
+        if (this.destroyed) return;
 
-                // 先检查是否应该排除该目标
-                let shouldExclude = false;
-                if (target.exclude) {
-                    const excludeElement = document.querySelector(target.exclude.selector);
-                    if (excludeElement) {
-                        shouldExclude = target.exclude.check 
-                            ? target.exclude.check(excludeElement as HTMLElement)
-                            : true;
-                    }
-                }
-                if (shouldExclude) {
-                    // 如果应该排除，标记为已超时并跳过
-                    target.timedOut = true;
-                    return;
-                }
-
-                // 查找目标节点
-                const element = document.querySelector(target.selector) as HTMLElement | null;
-                if (element) {
-                    // 找到该节点
-                    target.element = element;
-                    target.found = true;
-                    this.setupObserver(target); // 设置观察和初始状态
-                } else if (retryCount >= maxRetries) {
-                    // 达到最大重试次数仍未找到
-                    target.timedOut = true;
-                    logging.error(`failed to find target node: ${target.selector}`);
-                } else {
-                    // 继续重试
-                    hasRemainingTargets = true;
-                }
-            });
-
-            // 如果所有节点都处理完毕或达到最大重试次数，停止定时器
-            if (!hasRemainingTargets || retryCount >= maxRetries) {
-                if (this.retryIntervalId) {
-                    clearInterval(this.retryIntervalId);
-                    this.retryIntervalId = null;
-                }
+        if (!element) {
+            target.timedOut = true;
+            if (!this.shouldExcludeTarget(target)) {
+                logging.error(`failed to find target node: ${target.selector}`);
             }
-        };
+            return;
+        }
 
-        // 启动重试机制
-        this.retryIntervalId = window.setInterval(findTargetNodes, retryInterval);
+        target.element = element;
+        target.found = true;
+        this.setupObserver(target);
+    }
+
+    /**
+     * 检查是否应排除该目标
+     */
+    private shouldExcludeTarget(target: TargetConfig): boolean {
+        if (!target.exclude) return false;
+
+        const excludeElement = document.querySelector(target.exclude.selector);
+        if (!excludeElement) return false;
+
+        return target.exclude.check
+            ? target.exclude.check(excludeElement as HTMLElement)
+            : true;
     }
 
     /**

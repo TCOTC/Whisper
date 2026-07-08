@@ -1,75 +1,35 @@
-// ———————————————————— 底栏 ————————————————————
+// 底部状态栏
+
+@use "sass:math";
+
+// 状态栏高度。原生是 32px
+$status-height: 24px;
+
 body:not([data-whisper-device="mobile"]) {
+   &.body--window #status {
+      // 新窗口底栏没有停靠栏按钮
+		padding: 0 2px;
+	}
+
 	#status {
-		position: fixed;
-		right: 0;
-		bottom: 0;
-		height: var(--wh-status-height);
-		border: unset;
-		border-radius: var(--b3-border-radius) 0 0 0;
-		padding: 0 28px 0 0;
+		height: $status-height;
+		line-height: $status-height;
 		align-items: center;
-		z-index: 3; // 高于选中块的高亮伪元素
 
 		.toolbar__item {
-			align-items: center;
-			margin: 0;
-			// z-index: 8; // 暂时不知道这个有什么用
+			margin: 1px 5px; // 跟停靠栏按钮居中对齐
+			padding: 2px;
+			height: 18px; // svg高度(14px)+padding(2px)*2=18px
 
 			svg {
-				height: 12px;
-				width: 12px;
+				height: 14px;
+				width: 14px;
 			}
 		}
 
-		// 停靠栏按钮
-		#barDock {
-			position: absolute;
-			right: 4px;
-		}
-	}
-
-	// 新窗口底栏没有停靠栏按钮
-	&.body--window #status {
-		padding: 0 2px 0 0;
-	}
-
-	.status__counter:not(:empty) {
-		padding: 0 0 0 .1em;
-		line-height: 24px;
-	}
-
-	.status__msg:not(:empty) {
-		animation: statusmsg 5s ease-in-out;
-		max-width: 140px;
-		padding-right: 8px;
-		transition: max-width 300ms, opacity 300ms;
-		transition-delay: 200ms;
-		position: relative;
-		height: 24px;
-		line-height: 24px;
-
-		&:hover {
-			max-width: 600px;
-			transition: max-width 300ms ease-out;
-		}
-
-		&::before {
-			content: "📢";
-			padding-right: 2px;
-		}
-	}
-
-	.status > .fn__flex-1 {
-		display: none;
-	}
-
-	.status__backgroundtask {
-		height: 24px;
-		line-height: 24px;
-
-		&> div {
-			width: 24px;
-		}
+      // 状态栏消息的滚动进度条
+      .status__backgroundtask > div {
+         width: $status-height;
+      }
 	}
 }

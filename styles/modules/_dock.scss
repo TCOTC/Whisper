@@ -38,6 +38,12 @@
 			bottom: var(--b3-layout-space);
 		}
 	}
+
+	&.layout__dockl,
+	&.layout__dockr,
+	&.layout__dockb {
+		box-shadow: 0 0 4px var(--b3-dock-shadow-color);
+	}
 }
 
 // ————————————————————文档树————————————————————
