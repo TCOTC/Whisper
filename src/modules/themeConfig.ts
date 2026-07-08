@@ -21,34 +21,6 @@ type ConfigFieldDef =
 
 /** 主题配置声明（单一数据源：键名、类型、默认值、菜单元数据） */
 export const THEME_CONFIG_SCHEMA = {
-    /** Google Analytics 上次发送数据的时间戳（毫秒） */
-    analytics_last_sent_timestamp: {
-        type: 'number',
-        default: 0,
-    },
-    /** 主题首次安装时间戳（毫秒），用于首次安装一天内不发送 GA 数据 */
-    install_timestamp: {
-        type: 'number',
-        default: () => Date.now(),
-    },
-    /** 文本半高背景（对应 data-whisper-text-half-bg） */
-    text_half_bg: {
-        type: 'boolean',
-        default: true,
-        menu: { icon: 'iconMark', group: 'feature' },
-    },
-    /** 是否启用 Google Analytics 数据收集 */
-    analytics_enable: {
-        type: 'boolean',
-        default: true,
-        menu: { icon: 'iconCloud', group: 'general' },
-    },
-    /** 是否在启动后显示设备类型等调试消息 */
-    debug_show_message: {
-        type: 'boolean',
-        default: false,
-        menu: { icon: 'iconInfo', group: 'general' },
-    },
     /** 明亮模式界面配色（对应 data-whisper-appearance；空字符串表示原生，不写属性） */
     appearance_light: {
         type: 'string',
@@ -63,6 +35,34 @@ export const THEME_CONFIG_SCHEMA = {
     text: {
         type: 'string',
         default: 'seven',
+    },
+    /** 主题首次安装时间戳（毫秒），用于首次安装一天内不发送 GA 数据 */
+    install_timestamp: {
+        type: 'number',
+        default: () => Date.now(),
+    },
+    /** 文本半高背景（对应 data-whisper-text-half-bg） */
+    text_half_bg: {
+        type: 'boolean',
+        default: true,
+        menu: { icon: 'iconFont', group: 'feature' },
+    },
+    /** Google Analytics 上次发送数据的时间戳（毫秒） */
+    analytics_last_sent_timestamp: {
+        type: 'number',
+        default: 0,
+    },
+    /** 是否启用 Google Analytics 数据收集 */
+    analytics_enable: {
+        type: 'boolean',
+        default: true,
+        menu: { icon: 'iconCloud', group: 'general' },
+    },
+    /** 是否在启动后显示设备类型等调试消息 */
+    debug_show_message: {
+        type: 'boolean',
+        default: false,
+        menu: { icon: 'iconInfo', group: 'general' },
     },
 } as const satisfies Record<string, ConfigFieldDef>;
 
