@@ -58,30 +58,25 @@ $primary-ladder-profiles: (
 //
 // 设计原则（适配思源 3.7.0+）：
 // - 思源加载主题时会先加载默认主题（daylight/midnight）作为基底，再加载本主题覆盖。
-//   因此这里只声明"主题身份色"或"被 --wh-* 派生依赖"的变量，其余回退到默认主题值，
-//   以贴近默认配色、增强可维护性。
-// - 配色 map 以 OKLCH 为源色，编译期通过 to-rgb() 输出 rgb / rgba，避免 color-mix / oklch 的兼容性问题。
-// - 与默认主题同值的 --b3-* 不重复声明；其 --wh-* 透明度派生改用 color-mix 引用默认主题 CSS 变量。
-// - 其余派生变量（alpha 通道、混合色）使用 Sass 编译期计算。
+//   因此这里只声明主题身份色与需覆盖的 --b3-*，其余（列表 hover、tooltip、kbd 等）回退默认主题值，
+//   模块内直接引用思源 CSS 变量，以增强可维护性。
+// - 配色 map 以 OKLCH 为源色，编译期通过 to-rgb() / to-hex() 输出 rgb / rgba，避免运行时 oklch() 的兼容性问题。
+// - 主色阶梯（primary-light / lighter / lightest）与种子中的半透明色（如 surface-light）在编译期写入 alpha；
+//   滚动条淡化（--wh-scroll-color_*）为运行时 color-mix，引用默认主题 --b3-scroll-color。
 // - 完整 map 由种子 + expand-ui() 生成；种子键须在明亮 / 暗黑两套中成对出现，
 //   否则 theme-get() 会返回 unset。
-// - color-mix 类透明度派生保留为 --wh-* token，便于统一维护（勿内联到各模块）。
+// - 编辑器装饰（字影、块引下划线等）在 emit-ui 输出，与文本配色方案无关；删除线淡化见 _text.scss。
 
 @mixin emit-ui($colors) {
-  // Whisper 自定义变量（--wh-* / mix-*）
+  // Whisper 结构变量
   --wh-inline-box-shadow: 0 .1em 0 0; // 行内标记底部阴影偏移
   --wh-transition: .2s cubic-bezier(0, 0, .2, 1) 0ms;
 
-  --wh-database-background13: #{fn.to-rgb(fn.theme-get($colors, wh-database-background13))}; // 数据库选项色板（映射为 --b3-font-background13）
-  --wh-database-background14: #{fn.to-rgb(fn.theme-get($colors, wh-database-background14))}; // 数据库选项色板（映射为 --b3-font-background14）
-  --wh-list-hover-dark: #{fn.to-rgb(fn.theme-get($colors, wh-list-hover-dark))}; // 列表折叠圆点（未 hover）
-  --wh-list-hover-darker: #{fn.to-rgb(fn.theme-get($colors, wh-list-hover-darker))}; // 列表折叠圆点 hover
-  --wh-protyle-kbd-background: #{fn.to-rgb(fn.with-alpha(fn.theme-get($colors, b3-theme-surface), 65%))}; // 键盘元素背景色
-  --wh-protyle-kbd-border-color: #{fn.to-rgb(oklch(76.3576% 0 0 / 0.6))}; // 键盘元素边框色
-  --wh-protyle-kbd-border-color_30: #{fn.to-rgb(fn.with-alpha(oklch(76.3576% 0 0), 30%))}; // 引述块内键盘边框（淡化）
-  --wh-toggle-hover: #{fn.to-rgb(fn.theme-get($colors, wh-toggle-hover))}; // 页签关闭按钮 hover 字色
-  --mix-theme_primary_background: #{fn.to-rgb(fn.theme-get($colors, mix-theme_primary_background))}; // 手写中间色（近 primary-lightest × background）；tooltip / snackbar 背景
-  --mix-theme-background_scroll-color: #{fn.to-rgb(fn.theme-get($colors, mix-theme-background_scroll-color))}; // 手写中间色（近 background × scroll-color）；编辑器滚动条滑块
+  // 编辑器装饰（引用思源界面变量，与 data-whisper-text 无关）
+  --wh-theme-on-shadow: 0px 0px 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent); // 块引 / 文件引 hover 字影
+  --wh-link-shadow: 0px 0px 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);     // 链接 hover 字影
+  --wh-img-shadow: 0 0 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);          // 图片外发光
+  --wh-color-blue-light: var(--b3-theme-primary-light);                                          // 块引下划线色
 
   // 主色（主题身份色）
   --b3-theme-primary: #{fn.to-rgb(fn.theme-get($colors, b3-theme-primary))};                   // 主题主色：主按钮、开关选中、进度条、文字 / 描边按钮等
@@ -111,18 +106,16 @@ $primary-ladder-profiles: (
   // --b3-border-radius-s: 小圆角
   // --b3-border-radius-b: 大圆角（对话框、菜单等）
 
-  // 滚动条（--wh-* 派生引用默认主题 CSS 变量）
+  // 滚动条（淡化派生引用默认主题 --b3-scroll-color）
   // --b3-scroll-color: 滚动条滑轨 / 滑块默认色
   --wh-scroll-color_15: color-mix(in srgb, var(--b3-scroll-color) 15%, transparent);
   --wh-scroll-color_50: color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);
 
-  // 列表（--wh-* 派生引用默认主题 CSS 变量）
+  // 列表、提示（回退默认主题，模块内直接引用 --b3-list-hover 等）
   // --b3-list-hover: 列表项 hover / 聚焦背景
   // --b3-list-icon-hover: 列表图标按钮 hover 背景
-
-  // 提示（背景使用主题混合色；阴影回退默认）
-  --b3-tooltips-background: var(--mix-theme_primary_background);
-  --b3-tooltips-color: var(--b3-theme-on-background);
+  // --b3-tooltips-background: tooltip / snackbar 背景
+  // --b3-tooltips-color: tooltip 字色
 
   // 卡片背景（主题特有，影响页签 pin、av 属性色块）
   --b3-card-error-color: #{fn.to-rgb(fn.theme-get($colors, b3-card-error-color))};
@@ -133,6 +126,10 @@ $primary-ladder-profiles: (
   --b3-card-info-background: #{fn.to-rgb(fn.theme-get($colors, b3-card-info-background))};
   --b3-card-success-color: #{fn.to-rgb(fn.theme-get($colors, b3-card-success-color))};
   --b3-card-success-background: #{fn.to-rgb(fn.theme-get($colors, b3-card-success-background))};
+
+  // 自定义文字（思源 13 为反色底；Whisper 数据库 13 / 14 与字体面板区分）
+  --wh-database-background13: #{fn.to-rgb(fn.theme-get($colors, wh-database-background13))}; // 数据库选项 13 号底（模块内局部覆盖 --b3-font-background13）
+  --b3-font-background14: #{fn.to-rgb(fn.theme-get($colors, b3-font-background14))};         // 数据库选项 14 号底（思源无 background14）
 
   // 开关（选中态统一为 olive 底 + 白圆圈。dark 默认为蓝底 #a8c7fa + olive 圆圈，与 olive 主色错位，故覆盖）
   --b3-switch-checked: #fff;
@@ -193,22 +190,13 @@ $primary-ladder-profiles: (
 // - 主题身份色 107°（橄榄绿），辅色 78°（暖金）
 // - 语义色锚点：错误 27° / 警告 70° / 成功 145° / 信息 250°
 //
-// 只保留主题身份色与 Whisper 特有变量；其余回退到默认主题（daylight）。
+// 只保留主题身份色；列表 / tooltip / kbd 等回退默认主题（daylight），由模块直接引用思源变量。
 // 主色阶梯（primary-light / lighter / lightest）由 primary-ladder-profile 派生。
 // 与思源 daylight 对比：卡片语义色差异明显，故保留自定义 b3-card-*。
 
 html[data-theme-mode="light"][data-whisper-appearance="blush"] {
   $seeds: (
     primary-ladder-profile: whisper-light,
-
-    // 自定义、混合
-    wh-database-background13: oklch(94% 0.003 265), // 浅灰
-    wh-database-background14: oklch(78% 0 0),       // 深灰
-    wh-list-hover-dark: oklch(32% 0 0 / 0.15),
-    wh-list-hover-darker: oklch(32% 0 0 / 0.25),
-    wh-toggle-hover: var(--b3-theme-on-background),
-    mix-theme_primary_background: oklch(90% 0.01 93),      // primary-lightest × background
-    mix-theme-background_scroll-color: oklch(90% 0.003 91),  // background × scroll-color
 
     // 主色（主题身份色，色相 107° / 78°）
     b3-theme-primary: oklch(56% 0.12 107),
@@ -229,6 +217,10 @@ html[data-theme-mode="light"][data-whisper-appearance="blush"] {
     b3-card-success-color: oklch(55% 0.18 145),
     b3-card-success-background: oklch(92% 0.10 145),
 
+    // 数据库选项色板（13 仅数据库局部覆盖；14 思源无定义）
+    wh-database-background13: oklch(94% 0.003 265),
+    b3-font-background14: oklch(78% 0 0),
+
     // PDF 高亮色
     b3-pdf-background1: oklch(70% 0.17 28),
     b3-pdf-background5: oklch(76% 0.14 3),
@@ -246,21 +238,13 @@ html[data-theme-mode="light"][data-whisper-appearance="blush"] {
 // - 主题身份色 107°（橄榄绿），辅色 76°（暖金）
 // - 语义色锚点：错误 24° / 警告 76° / 成功 145° / 信息 242°
 //
-// 只保留主题身份色与 Whisper 特有变量；其余回退到默认主题（midnight）。
+// 只保留主题身份色；列表 / tooltip / kbd 等回退默认主题（midnight），由模块直接引用思源变量。
+// 主色阶梯（primary-light / lighter / lightest）由 primary-ladder-profile 派生。
 // 与思源 midnight 对比：卡片语义色差异明显，故保留自定义 b3-card-*。
 
 html[data-theme-mode="dark"][data-whisper-appearance="graphite"] {
   $seeds: (
     primary-ladder-profile: whisper-dark,
-
-    // 自定义、混合
-    wh-database-background13: oklch(46% 0 0), // 浅灰
-    wh-database-background14: oklch(61% 0 0),   // 深灰
-    wh-list-hover-dark: oklch(85% 0 0 / 0.15),
-    wh-list-hover-darker: oklch(85% 0 0 / 0.25),
-    wh-toggle-hover: oklch(97% 0 0),
-    mix-theme_primary_background: oklch(35% 0.026 120),     // primary-lightest × background
-    mix-theme-background_scroll-color: oklch(38% 0.007 240),  // background × scroll-color
 
     // 主色（主题身份色，色相 107° / 76°）
     b3-theme-primary: oklch(64.4% 0.138 107),
@@ -280,6 +264,10 @@ html[data-theme-mode="dark"][data-whisper-appearance="graphite"] {
     b3-card-info-background: oklch(40% 0.07 253),
     b3-card-success-color: oklch(89% 0.14 145),
     b3-card-success-background: oklch(47% 0.08 151),
+
+    // 数据库选项色板（13 仅数据库局部覆盖；14 思源无定义）
+    wh-database-background13: oklch(46% 0 0),
+    b3-font-background14: oklch(61% 0 0),
 
     // PDF 高亮色
     // TODO 跟进 https://github.com/siyuan-note/siyuan/issues/14065 修改

@@ -9,11 +9,11 @@
 	background-color: var(--b3-theme-primary-lighter);
 }
 .protyle-wysiwyg [data-node-id].li[fold="1"] > .protyle-action::after {
-	background-color: var(--wh-list-hover-dark);
+	background-color: var(--b3-list-hover);
 }
 // 无序列表
 .protyle .protyle-wysiwyg .li[data-subtype="u"] > .protyle-action:hover::after {
-	background-color: var(--wh-list-hover-darker);
+	background-color: var(--b3-list-icon-hover);
 }
 // 有序列表、任务列表
 // 图标必须是这一个 Size 为 32 的，位置才能刚好对上 https://fonts.google.com/icons?icon.set=Material+Icons&icon.style=Rounded&icon.size=32&icon.color=%235f6368&icon.query=Play&selected=Material+Icons+Round:play_arrow:&icon.platform=web

@@ -5,7 +5,6 @@
 
 @use "sass:map";
 @use "sass:list";
-@use "sass:math";
 @use "functions" as fn;
 
 // ── § 派生：字体调色板 ──────────────────────────────────────────────
@@ -126,11 +125,6 @@ $font-palette-profiles: (
 // ── § 输出：文本变量 ──────────────────────────────────────────────
 
 @mixin emit-text($colors) {
-  --wh-theme-on-shadow: 0px 0px 2px color-mix(in srgb, var(--b3-theme-on-background) #{math.percentage(fn.theme-get($colors, wh-theme-on-shadow-color-alpha))}, transparent); // 块引 / 文件引 hover 字影
-  --wh-link-shadow: 0px 0px 2px #{fn.to-rgb(fn.with-alpha(fn.theme-get($colors, b3-protyle-inline-link-color), fn.theme-get($colors, wh-protyle-inline-link-color-alpha)))}; // 链接 hover 字影
-  --wh-img-shadow: 0 0 2px #{fn.to-rgb(fn.theme-get($colors, wh-img-shadow-color))}; // 图片外发光
-  --wh-color-blue-light: #{fn.to-rgb(oklch(78.3308% 0.1378 232.6611 / 0.85))}; // 块引下划线色
-
   // 文字颜色（--wh-* 派生引用默认主题 CSS 变量）
   // --b3-theme-on-background: 主内容区正文默认字色（body、编辑器）
   // --b3-theme-on-surface: 抬升层主字色（对话框、卡片、次级面板）
@@ -146,9 +140,6 @@ $font-palette-profiles: (
     --b3-font-color#{$i}: #{fn.to-rgb(fn.theme-get($colors, b3-font-color#{$i}))};
     --b3-font-background#{$i}: #{fn.to-rgb(fn.theme-get($colors, b3-font-background#{$i}))};
   }
-  --b3-font-background14: var(--wh-database-background14); // 数据库选项专用
-  // --b3-font-color13: 字体面板「反色字」（默认引用 background）
-  // --b3-font-background13: 字体面板反色底（默认引用 on-background；Whisper 数据库选项映射为 wh-database-background13）
 
   // 所见即所得行内元素
   --b3-protyle-inline-s-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-s-color))}; // 删除线字色（思源默认 inherit）
@@ -178,10 +169,6 @@ html[data-theme-mode="light"][data-whisper-text="seven"] {
   $seeds: (
     font-palette-profile: seven-light,
 
-    wh-theme-on-shadow-color-alpha: .2,
-    wh-img-shadow-color: oklch(0% 0 0 / 0.3),
-    wh-protyle-inline-link-color-alpha: .2,
-
     // 所见即所得行内元素颜色
     b3-protyle-inline-s-color: oklch(76% 0 0),
     b3-protyle-inline-link-color: oklch(63% 0.18 260),
@@ -200,10 +187,6 @@ html[data-theme-mode="light"][data-whisper-text="seven"] {
 html[data-theme-mode="dark"][data-whisper-text="seven"] {
   $seeds: (
     font-palette-profile: seven-dark,
-
-    wh-theme-on-shadow-color-alpha: .5,
-    wh-img-shadow-color: oklch(100% 0 0 / 0.3),
-    wh-protyle-inline-link-color-alpha: .5,
 
     // 所见即所得行内元素颜色
     b3-protyle-inline-s-color: oklch(49% 0 0),

@@ -108,9 +108,9 @@
 		margin: 0 1px;
 		color: var(--b3-theme-on-background);
 		vertical-align: unset;
-		background-color: var(--wh-protyle-kbd-background);
-		border: solid 1px var(--wh-protyle-kbd-border-color);
-		box-shadow: inset 0 -1px 0 var(--wh-protyle-kbd-border-color);
+		background-color: var(--b3-theme-surface);
+		border: solid 1px var(--b3-theme-surface-lighter);
+		box-shadow: inset 0 -1px 0 var(--b3-theme-surface-lighter);
 
 		font-variant-numeric: tabular-nums;
 		font-variant-ligatures: no-common-ligatures;
