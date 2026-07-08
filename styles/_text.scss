@@ -67,9 +67,12 @@
   @return $result;
 }
 
-// ── § 输出：文本变量 ──────────────────────────────────────────────
+// ── § 默认：原生文本变量 ──────────────────────────────────────────────
+//
+// 无 data-whisper-text 时模块仍引用 --wh-*；此处提供回退值（引用思源 --b3-*）。
+// 自定义方案（rainbow）通过 emit-text 覆盖；--wh-protyle-inline-s-color_50 在 rainbow 下由编译期色值覆盖。
 
-@mixin emit-text($colors) {
+html {
   // 文字颜色（--wh-* 派生引用默认主题 CSS 变量）
   // --b3-theme-on-background: 主内容区正文默认字色（body、编辑器）
   // --b3-theme-on-surface: 抬升层主字色（对话框、卡片、次级面板）
@@ -79,7 +82,12 @@
   // --b3-theme-on-error: 错误色控件上的字色
   --wh-theme-on-background_85: color-mix(in srgb, var(--b3-theme-on-background) 85%, transparent);
   --wh-theme-on-surface-light_30: color-mix(in srgb, var(--b3-theme-on-surface-light) 30%, transparent);
+  --wh-protyle-inline-s-color_50: color-mix(in srgb, var(--b3-theme-on-background) 50%, transparent); // 已完成任务列表删除线（淡化；rainbow 由 emit-text 覆盖）
+}
 
+// ── § 输出：文本变量 ──────────────────────────────────────────────
+
+@mixin emit-text($colors) {
   // 字体调色板（编辑器 /protyle-font 面板 12 色字 + 12 色底；Whisper 重定义色相；值由 derive 从 6 色相展开）
   @for $i from 1 through 12 {
     --b3-font-color#{$i}: #{fn.to-rgb(fn.theme-get($colors, b3-font-color#{$i}))};
@@ -93,7 +101,7 @@
   --b3-protyle-inline-link-s-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-link-s-color))}; // 思源 3.7.0 已弃用；Whisper 用于删除线链接
   --b3-protyle-inline-mark-background: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-mark-background))}; // 行内标记（高亮）背景
   --b3-protyle-inline-tag-color: var(--b3-card-success-color); // 行内标签字色（思源默认半透明黑；Whisper 改为成功色）
-  --b3-protyle-inline-blockref-color: inherit; // 块引字色 inherit；下划线样式见 emit-ui 的 --wh-color-blue-light
+  --b3-protyle-inline-blockref-color: inherit; // 块引字色 inherit；下划线样式见 --wh-color-blue-light
   --b3-protyle-inline-fileref-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-fileref-color))}; // 文件引字色
   --b3-protyle-inline-fileref-s-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-fileref-s-color))}; // 思源 3.7.0 已弃用；Whisper 用于删除线文件引
   // --b3-protyle-inline-strong-color: 粗体字色（默认 inherit）

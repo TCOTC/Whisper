@@ -61,6 +61,29 @@ $primary-ladder-profiles: (
   );
 }
 
+// ── § 默认：原生界面变量 ──────────────────────────────────────────────
+//
+// 无 data-whisper-appearance 时模块仍引用 --wh-*；此处提供回退值（引用思源 --b3-* 或固定值）。
+// 自定义方案（blush / graphite）通过 emit-ui 覆盖。
+
+html {
+  // Whisper 结构变量
+  --wh-inline-box-shadow: 0 .1em 0 0; // 行内标记底部阴影偏移
+  --wh-transition: .2s cubic-bezier(0, 0, .2, 1) 0ms;
+
+  // 编辑器装饰（引用思源界面变量，与 data-whisper-text 无关）
+  --wh-theme-on-shadow: 0px 0px 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent); // 块引 / 文件引 hover 字影
+  --wh-link-shadow: 0px 0px 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);     // 链接 hover 字影
+  --wh-img-shadow: 0 0 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);          // 图片外发光
+  --wh-color-blue-light: var(--b3-theme-primary-light);                                          // 块引下划线色
+
+  // 滚动条（淡化派生引用默认主题 --b3-scroll-color）
+  --wh-scroll-color_15: color-mix(in srgb, var(--b3-scroll-color) 15%, transparent);
+  --wh-scroll-color_50: color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);
+
+  --wh-database-background13: var(--b3-font-background13); // 数据库选项 13 号底（原生回退思源色板；blush / graphite 由 emit-ui 覆盖）
+}
+
 // ── § 输出：界面变量 ──────────────────────────────────────────────
 //
 // 设计原则（适配思源 3.7.0+）：
@@ -72,19 +95,9 @@ $primary-ladder-profiles: (
 //   滚动条淡化（--wh-scroll-color_*）为运行时 color-mix，引用默认主题 --b3-scroll-color。
 // - 完整 map 由种子 + expand-ui() 生成；种子键须在明亮 / 暗黑两套中成对出现，
 //   否则 theme-get() 会返回 unset。
-// - 编辑器装饰（字影、块引下划线等）在 emit-ui 输出，与文本配色方案无关；删除线淡化见 _text.scss。
+// - 编辑器装饰（字影、块引下划线等）在 § 默认 声明，与文本配色方案无关；删除线淡化见 _text.scss。
 
 @mixin emit-ui($colors) {
-  // Whisper 结构变量
-  --wh-inline-box-shadow: 0 .1em 0 0; // 行内标记底部阴影偏移
-  --wh-transition: .2s cubic-bezier(0, 0, .2, 1) 0ms;
-
-  // 编辑器装饰（引用思源界面变量，与 data-whisper-text 无关）
-  --wh-theme-on-shadow: 0px 0px 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent); // 块引 / 文件引 hover 字影
-  --wh-link-shadow: 0px 0px 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);     // 链接 hover 字影
-  --wh-img-shadow: 0 0 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);          // 图片外发光
-  --wh-color-blue-light: var(--b3-theme-primary-light);                                          // 块引下划线色
-
   // 主色（主题身份色）
   --b3-theme-primary: #{fn.to-rgb(fn.theme-get($colors, b3-theme-primary))};                   // 主题主色：主按钮、开关选中、进度条、文字 / 描边按钮等
   --b3-theme-primary-light: #{fn.to-rgb(fn.theme-get($colors, b3-theme-primary-light))};       // 主色浅一档：输入框 / 下拉框聚焦描边、拖拽竖线、PDF 标注条等
@@ -113,10 +126,8 @@ $primary-ladder-profiles: (
   // --b3-border-radius-s: 小圆角
   // --b3-border-radius-b: 大圆角（对话框、菜单等）
 
-  // 滚动条（淡化派生引用默认主题 --b3-scroll-color）
+  // 滚动条
   // --b3-scroll-color: 滚动条滑轨 / 滑块默认色
-  --wh-scroll-color_15: color-mix(in srgb, var(--b3-scroll-color) 15%, transparent);
-  --wh-scroll-color_50: color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);
 
   // 列表、提示（回退默认主题，模块内直接引用 --b3-list-hover 等）
   // --b3-list-hover: 列表项 hover / 聚焦背景
