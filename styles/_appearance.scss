@@ -6,7 +6,6 @@
 
 @use "sass:map";
 @use "sass:color";
-@use "sass:math";
 @use "functions" as fn;
 
 // ── § 派生：主色阶梯 ──────────────────────────────────────────────
@@ -37,9 +36,17 @@ $primary-ladder-profiles: (
 
   @each $step, $params in $profile {
     $h: $h-base + map.get($params, h-offset);
-    $c: if(map.get($params, c-from-primary), color.channel($primary, "chroma", $space: oklch), map.get($params, c));
+    $c: map.get($params, c);
+    @if map.get($params, c-from-primary) {
+      $c: color.channel($primary, "chroma", $space: oklch);
+    }
     $color: fn.oklch-color(map.get($params, l), $c, $h, map.get($params, a));
-    $key: if($step == light, b3-theme-primary-light, if($step == lighter, b3-theme-primary-lighter, b3-theme-primary-lightest));
+    $key: b3-theme-primary-lightest;
+    @if $step == light {
+      $key: b3-theme-primary-light;
+    } @else if $step == lighter {
+      $key: b3-theme-primary-lighter;
+    }
     $result: map.merge($result, ($key: $color));
   }
 

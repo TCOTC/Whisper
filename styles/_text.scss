@@ -1,7 +1,8 @@
 // 文本配色（text）
 //
+// 备注：偶尔需要跟进最新版默认主题的变更
 // 结构：§ 派生 → § 输出 → § 方案
-// 拓展方式：新增方案时复制一个 § 方案 块，调整 $seeds 与选择器即可
+// 拓展方式：新增方案时复制一个 § 方案 块，调整字体调色板与选择器即可
 
 @use "sass:map";
 @use "sass:list";
@@ -9,69 +10,14 @@
 
 // ── § 派生：字体调色板 ──────────────────────────────────────────────
 //
-// 拓展方式：
-// - 新方案通过 map.merge($seeds, $overrides) 覆盖种子
-// - font-hues 等键可在 $font-palette-profiles 中扩展
-
-// —— 字体调色板（6 色相 × 浅 / 深两档）——
-
-$font-palette-profiles: (
-  seven-light: (
-    // 6 色相：28 浅红 / 58 浅橙 / 93 浅黄 / 145 浅绿 / 265 浅蓝 / 300 浅紫
-    hues: (28, 58, 93, 145, 265, 300),
-    // 槽位 1–6：浅色字；7–12：深色字
-    text-a: (
-      l: (74%, 73%, 88%, 88%, 85%, 81%),
-      c: (0.11, 0.12, 0.16, 0.10, 0.07, 0.10),
-    ),
-    text-b: (
-      l: (59%, 67%, 85%, 76%, 62%, 56%),
-      c: (0.20, 0.16, 0.18, 0.12, 0.17, 0.10),
-    ),
-    bg-a: (
-      l: (94%, 95%, 98%, 94%, 94%, 90%),
-      c: (0.03, 0.04, 0.07, 0.05, 0.03, 0.04),
-    ),
-    bg-b: (
-      l: (86%, 89%, 97%, 89%, 85%, 81%),
-      c: (0.07, 0.08, 0.11, 0.10, 0.07, 0.10),
-    ),
-    swap-text-roles: false,
-  ),
-  seven-dark: (
-    hues: (28, 58, 93, 145, 265, 300),
-    text-a: (
-      l: (74%, 73%, 88%, 88%, 85%, 81%),
-      c: (0.11, 0.12, 0.16, 0.10, 0.07, 0.10),
-    ),
-    text-b: (
-      l: (59%, 67%, 85%, 76%, 62%, 56%),
-      c: (0.20, 0.16, 0.18, 0.12, 0.17, 0.10),
-    ),
-    bg-a: (
-      l: (94%, 95%, 98%, 94%, 94%, 90%),
-      c: (0.03, 0.04, 0.07, 0.05, 0.03, 0.04),
-    ),
-    // 暗色：background1–6 用较深底，background7–12 用 bg-b-alt
-    bg-b: (
-      l: (41%, 42%, 47%, 42%, 41%, 36%),
-      c: (0.04, 0.05, 0.07, 0.06, 0.04, 0.06),
-    ),
-    bg-b-alt: (
-      l: (54%, 58%, 66%, 58%, 53%, 49%),
-      c: (0.08, 0.08, 0.11, 0.10, 0.08, 0.11),
-    ),
-    // 暗色模式：color1–6 用 text-b，color7–12 用 text-a
-    swap-text-roles: true,
-  ),
-);
+// 从方案块内联的 profile map 展开 12 色字 + 12 色底。
+// profile 键：hues、text-a、text-b、bg-a、bg-b、swap-text-roles；暗色可另加 bg-b-alt。
 
 @function list-nth-oklch($list, $index, $channel) {
   @return list.nth(map.get($list, $channel), $index);
 }
 
-@function derive-font-palette($profile-name) {
-  $profile: map.get($font-palette-profiles, $profile-name);
+@function derive-font-palette($profile) {
   $hues: map.get($profile, hues);
   $swap: map.get($profile, swap-text-roles);
   $text-a: map.get($profile, text-a);
@@ -81,14 +27,18 @@ $font-palette-profiles: (
 
   @for $i from 1 through 6 {
     $hue: list.nth($hues, $i);
-    $text-slot-a: if($swap, $text-b, $text-a);
-    $text-slot-b: if($swap, $text-a, $text-b);
-    $bg-for-1-6: if($swap, map.get($profile, bg-b), $bg-a);
-    $bg-for-7-12: if(
-      $swap,
-      if(map.has-key($profile, bg-b-alt), map.get($profile, bg-b-alt), map.get($profile, bg-b)),
-      map.get($profile, bg-b)
-    );
+    $text-slot-a: $text-a;
+    $text-slot-b: $text-b;
+    $bg-for-1-6: $bg-a;
+    $bg-for-7-12: map.get($profile, bg-b);
+    @if $swap {
+      $text-slot-a: $text-b;
+      $text-slot-b: $text-a;
+      $bg-for-1-6: map.get($profile, bg-b);
+      @if map.has-key($profile, bg-b-alt) {
+        $bg-for-7-12: map.get($profile, bg-b-alt);
+      }
+    }
 
     $result: map.merge($result, (
       b3-font-color#{$i}: fn.oklch-color(
@@ -117,11 +67,6 @@ $font-palette-profiles: (
   @return $result;
 }
 
-@function expand-text($seeds) {
-  $profile: map.get($seeds, font-palette-profile);
-  @return map.merge(map.remove($seeds, font-palette-profile), derive-font-palette($profile));
-}
-
 // ── § 输出：文本变量 ──────────────────────────────────────────────
 
 @mixin emit-text($colors) {
@@ -148,7 +93,7 @@ $font-palette-profiles: (
   --b3-protyle-inline-link-s-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-link-s-color))}; // 思源 3.7.0 已弃用；Whisper 用于删除线链接
   --b3-protyle-inline-mark-background: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-mark-background))}; // 行内标记（高亮）背景
   --b3-protyle-inline-tag-color: var(--b3-card-success-color); // 行内标签字色（思源默认半透明黑；Whisper 改为成功色）
-  --b3-protyle-inline-blockref-color: inherit; // 块引字色（思源默认紫色；Whisper 用下划线样式故 inherit）
+  --b3-protyle-inline-blockref-color: inherit; // 块引字色 inherit；下划线样式见 emit-ui 的 --wh-color-blue-light
   --b3-protyle-inline-fileref-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-fileref-color))}; // 文件引字色
   --b3-protyle-inline-fileref-s-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-fileref-s-color))}; // 思源 3.7.0 已弃用；Whisper 用于删除线文件引
   // --b3-protyle-inline-strong-color: 粗体字色（默认 inherit）
@@ -161,41 +106,83 @@ $font-palette-profiles: (
 // ── § 方案：seven / 七彩 ─────────────────────────────────────────────
 //
 // 仅在有 data-whisper-text="seven" 时附加文本配色；无属性时回退思源默认（原生）。
-// 明亮模式文本种子：
-// - 字体调色板 6 色相（28 / 58 / 93 / 145 / 265 / 300），浅色系 L 74–88%，深色系 L 56–67%
-//   （具体 L/C 由 font-palette-profile 展开，不在此手写 24 键）
 
 html[data-theme-mode="light"][data-whisper-text="seven"] {
-  $seeds: (
-    font-palette-profile: seven-light,
-
-    // 所见即所得行内元素颜色
-    b3-protyle-inline-s-color: oklch(76% 0 0),
-    b3-protyle-inline-link-color: oklch(63% 0.18 260),
-    b3-protyle-inline-link-s-color: oklch(76% 0.075 260),
-    b3-protyle-inline-mark-background: oklch(89% 0.11 85 / 0.5),
-    b3-protyle-inline-fileref-color: oklch(54% 0.15 145),
-    b3-protyle-inline-fileref-s-color: oklch(82% 0.11 145),
+  $seeds: map.merge(
+    derive-font-palette((
+      // 6 色相：28 浅红 / 58 浅橙 / 93 浅黄 / 145 浅绿 / 265 浅蓝 / 300 浅紫
+      hues: (28, 58, 93, 145, 265, 300),
+      // 槽位 1–6：浅色字；7–12：深色字
+      text-a: (
+        l: (74%, 73%, 88%, 88%, 85%, 81%),
+        c: (0.11, 0.12, 0.16, 0.10, 0.07, 0.10),
+      ),
+      text-b: (
+        l: (59%, 67%, 85%, 76%, 62%, 56%),
+        c: (0.20, 0.16, 0.18, 0.12, 0.17, 0.10),
+      ),
+      bg-a: (
+        l: (94%, 95%, 98%, 94%, 94%, 90%),
+        c: (0.03, 0.04, 0.07, 0.05, 0.03, 0.04),
+      ),
+      bg-b: (
+        l: (86%, 89%, 97%, 89%, 85%, 81%),
+        c: (0.07, 0.08, 0.11, 0.10, 0.07, 0.10),
+      ),
+      swap-text-roles: false,
+    )),
+    (
+      // 所见即所得行内元素颜色
+      b3-protyle-inline-s-color: oklch(76% 0 0),
+      b3-protyle-inline-link-color: oklch(63% 0.18 260),
+      b3-protyle-inline-link-s-color: oklch(76% 0.075 260),
+      b3-protyle-inline-mark-background: oklch(89% 0.11 85 / 0.5),
+      b3-protyle-inline-fileref-color: oklch(54% 0.15 145),
+      b3-protyle-inline-fileref-s-color: oklch(82% 0.11 145),
+    )
   );
 
-  @include emit-text(expand-text($seeds));
+  @include emit-text($seeds);
 }
 
-// 暗黑模式文本种子：
-// - 字体调色板与明亮模式互换深浅档，背景色 L 降至 36–58%（由 derive 展开）
-
 html[data-theme-mode="dark"][data-whisper-text="seven"] {
-  $seeds: (
-    font-palette-profile: seven-dark,
-
-    // 所见即所得行内元素颜色
-    b3-protyle-inline-s-color: oklch(49% 0 0),
-    b3-protyle-inline-link-color: oklch(63% 0.18 260),
-    b3-protyle-inline-link-s-color: oklch(51% 0.15 260),
-    b3-protyle-inline-mark-background: oklch(67% 0.137 93 / 0.5),
-    b3-protyle-inline-fileref-color: oklch(83% 0.10 145),
-    b3-protyle-inline-fileref-s-color: oklch(53% 0.065 145),
+  $seeds: map.merge(
+    derive-font-palette((
+      hues: (28, 58, 93, 145, 265, 300),
+      text-a: (
+        l: (74%, 73%, 88%, 88%, 85%, 81%),
+        c: (0.11, 0.12, 0.16, 0.10, 0.07, 0.10),
+      ),
+      text-b: (
+        l: (59%, 67%, 85%, 76%, 62%, 56%),
+        c: (0.20, 0.16, 0.18, 0.12, 0.17, 0.10),
+      ),
+      bg-a: (
+        l: (94%, 95%, 98%, 94%, 94%, 90%),
+        c: (0.03, 0.04, 0.07, 0.05, 0.03, 0.04),
+      ),
+      // 暗色：background1–6 用较深底，background7–12 用 bg-b-alt
+      bg-b: (
+        l: (41%, 42%, 47%, 42%, 41%, 36%),
+        c: (0.04, 0.05, 0.07, 0.06, 0.04, 0.06),
+      ),
+      bg-b-alt: (
+        l: (54%, 58%, 66%, 58%, 53%, 49%),
+        c: (0.08, 0.08, 0.11, 0.10, 0.08, 0.11),
+      ),
+      // 暗色模式：color1–6 用 text-b，color7–12 用 text-a
+      swap-text-roles: true,
+    )),
+    (
+      // 所见即所得行内元素颜色
+      b3-protyle-inline-s-color: oklch(49% 0 0),
+      b3-protyle-inline-link-color: oklch(63% 0.18 260),
+      b3-protyle-inline-link-s-color: oklch(51% 0.15 260),
+      b3-protyle-inline-mark-background: oklch(67% 0.137 93 / 0.5),
+      b3-protyle-inline-fileref-color: oklch(83% 0.10 145),
+      b3-protyle-inline-fileref-s-color: oklch(53% 0.065 145),
+    )
   );
 
-  @include emit-text(expand-text($seeds));
+  @include emit-text($seeds);
 }
