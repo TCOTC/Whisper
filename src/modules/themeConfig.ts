@@ -16,7 +16,8 @@ export const CONFIG_STORAGE_KEY = 'whisper-theme-config-v2';
 
 type ConfigFieldDef =
     | { type: 'boolean'; default: boolean; menu?: { icon: string } }
-    | { type: 'number'; default: number | (() => number) };
+    | { type: 'number'; default: number | (() => number) }
+    | { type: 'string'; default: string | (() => string) };
 
 /** 主题配置声明（单一数据源：键名、类型、默认值、菜单元数据） */
 export const THEME_CONFIG_SCHEMA = {
@@ -42,12 +43,31 @@ export const THEME_CONFIG_SCHEMA = {
         default: false,
         menu: { icon: 'iconInfo' },
     },
+    /** 明亮模式界面配色（对应 data-whisper-appearance；空字符串表示原生，不写属性） */
+    appearance_light: {
+        type: 'string',
+        default: 'blush',
+    },
+    /** 暗黑模式界面配色（对应 data-whisper-appearance；空字符串表示原生，不写属性） */
+    appearance_dark: {
+        type: 'string',
+        default: 'graphite',
+    },
+    /** 文本配色方案（对应 data-whisper-text；空字符串表示原生，不写属性、不附加样式） */
+    text: {
+        type: 'string',
+        default: 'seven',
+    },
 } as const satisfies Record<string, ConfigFieldDef>;
 
 export type ThemeConfigKey = keyof typeof THEME_CONFIG_SCHEMA;
 
 export type ThemeConfigSchema = {
-    [K in ThemeConfigKey]: (typeof THEME_CONFIG_SCHEMA)[K]['type'] extends 'boolean' ? boolean : number;
+    [K in ThemeConfigKey]: {
+        boolean: boolean;
+        number: number;
+        string: string;
+    }[(typeof THEME_CONFIG_SCHEMA)[K]['type']];
 };
 
 /** 带 menu 的 boolean 配置键 */
