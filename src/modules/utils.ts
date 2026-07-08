@@ -1,6 +1,44 @@
 import { pushErrMsg, pushMsg } from './api';
 
 /**
+ * 轮询等待 DOM 元素出现
+ * @param selector 目标元素选择器
+ * @param shouldAbort 每次重试前调用，若返回 true 则中止等待并返回 null（不计为超时）
+ * @returns 找到的元素，超时或中止时返回 null
+ */
+export function waitForElement(
+    selector: string,
+    shouldAbort?: () => boolean,
+): Promise<HTMLElement | null> {
+    return new Promise((resolve) => {
+        let retryCount = 0;
+
+        const tryFind = () => {
+            if (shouldAbort?.()) {
+                resolve(null);
+                return;
+            }
+
+            const element = document.querySelector(selector);
+            if (element instanceof HTMLElement) {
+                resolve(element);
+                return;
+            }
+
+            if (retryCount >= 50) { // 最大重试 50 次
+                resolve(null);
+                return;
+            }
+
+            retryCount++;
+            setTimeout(tryFind, 100); // 间隔 100ms 重试
+        };
+
+        tryFind();
+    });
+}
+
+/**
  * 判断是否为内核只读模式
  */
 export function isReadOnly(): boolean {

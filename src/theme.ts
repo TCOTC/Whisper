@@ -6,6 +6,7 @@ import { MobileConfigMenu } from './modules/mobileConfigMenu';
 import { DebugHandler } from './modules/debugHandler';
 import { DeviceDetector } from './modules/deviceDetector';
 import { BlockFocusHandler } from './modules/blockFocusHandler';
+import { FileTreeClickHandler } from './modules/fileTreeClickHandler';
 import { ElementStatusObserver } from './modules/elementStatusObserver';
 import { TooltipHandler } from './modules/tooltipHandler';
 import { MenuHandler } from './modules/menuHandler';
@@ -104,6 +105,7 @@ class ModuleManager {
         // 非移动端
         moduleManager.register(new TooltipHandler());        // 悬浮提示处理：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
         moduleManager.register(new ElementStatusObserver()); // 元素状态观察：监听元素状态，通过给 html 添加属性来代替使用 :has 选择器
+        moduleManager.register(new FileTreeClickHandler());  // 文档树点击：点击空白处取消选中文档或笔记本
         moduleManager.register(new DialogHandler());         // 对话框处理：为搜索对话框(Dialog)添加 resize__move 类
         moduleManager.register(new MenuHandler());           // 菜单处理：外观模式菜单、页签菜单
     }
