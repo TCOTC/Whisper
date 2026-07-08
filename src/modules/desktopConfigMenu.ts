@@ -1,6 +1,11 @@
 import { ThemeModule } from '../types';
-import { THEME_CONFIG_MENU_ITEMS, MenuConfigKey, ThemeConfig } from './themeConfig';
-import { getCommonMenu, subscribeCommonMenu } from './commonMenuObserver';
+import {
+    flatMapMenuGroups,
+    MenuConfigKey,
+    MenuItemDef,
+    THEME_CONFIG_MENU_GROUPS,
+    ThemeConfig,
+} from './themeConfig';import { getCommonMenu, subscribeCommonMenu } from './commonMenuObserver';
 import { t } from './i18n';
 import { logging } from './logger';
 
@@ -8,17 +13,22 @@ function buildMenuSwitchInput(id: string, checked: boolean): string {
     return `<input class="b3-switch b3-switch--menu" id="${id}" type="checkbox"${checked ? ' checked' : ''}>`;
 }
 
-function buildDesktopMenuHtml(config: ThemeConfig): string {
-    const items = THEME_CONFIG_MENU_ITEMS.map(({ key, icon }) => {
-        return `<label class="b3-menu__item" data-whisper-config-item="${key}">
-            <svg class="b3-menu__icon"><use xlink:href="#${icon}"></use></svg>
-            <span class="fn__flex-center">${t(key)}</span>
-            <span class="fn__space fn__flex-1"></span>
-            ${buildMenuSwitchInput(key, config.get(key))}
-        </label>`;
-    }).join('');
+function buildDesktopMenuItemHtml({ key, icon }: MenuItemDef, config: ThemeConfig): string {
+    return `<label class="b3-menu__item" data-whisper-config-item="${key}">
+        <svg class="b3-menu__icon"><use xlink:href="#${icon}"></use></svg>
+        <span class="fn__flex-center">${t(key)}</span>
+        <span class="fn__space fn__flex-1"></span>
+        ${buildMenuSwitchInput(key, config.get(key))}
+    </label>`;
+}
 
-    return `<div class="b3-menu__separator" data-whisper-config-separator></div>${items}`;
+function buildDesktopMenuHtml(config: ThemeConfig): string {
+    const separator = '<div class="b3-menu__separator" data-whisper-config-separator></div>';
+    return flatMapMenuGroups(THEME_CONFIG_MENU_GROUPS, {
+        leading: () => separator,
+        separator: () => separator,
+        item: (item) => buildDesktopMenuItemHtml(item, config),
+    }).join('');
 }
 
 function removeInjectedMenuElements(): void {

@@ -1,5 +1,18 @@
 import { pushErrMsg, pushMsg } from './api';
 
+/** 同步元素属性：值相同时跳过；空字符串时移除属性 */
+export function syncAttr(element: HTMLElement, name: string, value: string): void {
+    const current = element.getAttribute(name) ?? '';
+    if (current === value) {
+        return;
+    }
+    if (value) {
+        element.setAttribute(name, value);
+    } else {
+        element.removeAttribute(name);
+    }
+}
+
 /**
  * 轮询等待 DOM 元素出现
  * @param selector 目标元素选择器

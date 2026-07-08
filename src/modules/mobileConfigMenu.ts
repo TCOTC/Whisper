@@ -1,21 +1,32 @@
 import { ThemeModule } from '../types';
-import { THEME_CONFIG_MENU_ITEMS, MenuConfigKey, ThemeConfig } from './themeConfig';
+import {
+    flatMapMenuGroups,
+    MenuConfigKey,
+    MenuItemDef,
+    THEME_CONFIG_MENU_GROUPS,
+    ThemeConfig,
+} from './themeConfig';
 import { t } from './i18n';
 import { logging } from './logger';
 
 const MENU_ENTRY_ID = 'menuWhisperTheme';
 const CONFIG_MODEL_ATTR = 'data-whisper-config-model';
 
-/** 移动端配置面板开关行，参考 config/render/fragments.ts genSwitchRow */
+function buildPanelSwitchRow({ key }: MenuItemDef, config: ThemeConfig): string {
+    return `<label class="fn__flex b3-label config-item" data-whisper-config-item="${key}">
+        <div class="fn__flex-1">
+            <div class="config-name">${t(key)}</div>
+        </div>
+        <span class="fn__space"></span>
+        <input class="b3-switch fn__flex-center" id="${key}" type="checkbox"${config.get(key) ? ' checked' : ''}>
+    </label>`;
+}
+
+/** 移动端配置面板开关行，参考思源源码 config/render/fragments.ts genSwitchRow */
 function buildPanelHtml(config: ThemeConfig): string {
-    const rows = THEME_CONFIG_MENU_ITEMS.map(({ key }) => {
-        return `<label class="fn__flex b3-label config-item" data-whisper-config-item="${key}">
-            <div class="fn__flex-1">
-                <div class="config-name">${t(key)}</div>
-            </div>
-            <span class="fn__space"></span>
-            <input class="b3-switch fn__flex-center" id="${key}" type="checkbox"${config.get(key) ? ' checked' : ''}>
-        </label>`;
+    const rows = flatMapMenuGroups(THEME_CONFIG_MENU_GROUPS, {
+        separator: () => '<div class="fn__hr" data-whisper-config-separator></div>',
+        item: (item) => buildPanelSwitchRow(item, config),
     }).join('');
 
     return `<div class="config config--mobile">${rows}</div>`;

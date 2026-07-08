@@ -1,6 +1,7 @@
 import '../styles/theme.scss';
 
 import { SchemeManager } from './modules/schemeManager';
+import { FeaturesManager } from './modules/featuresManager';
 import { ThemeConfig } from './modules/themeConfig';
 import { DesktopConfigMenu } from './modules/desktopConfigMenu';
 import { MobileConfigMenu } from './modules/mobileConfigMenu';
@@ -85,11 +86,12 @@ class ModuleManager {
 
     // 注册所有模块（ThemeConfig 须排首位，init 时加载配置）
     moduleManager.register(themeConfig);
-    moduleManager.register(new SchemeManager(themeConfig));  // 配色方案：data-whisper-appearance / data-whisper-text
-    moduleManager.register(new DebugHandler());              // 调试信息：按配置显示设备类型等消息
-    moduleManager.register(new DeviceDetector());            // 设备检测：添加设备类型标识，用于 CSS 选择器（避免使用 :has() 选择器导致性能问题）
-    moduleManager.register(new BlockFocusHandler());         // 块焦点处理：给焦点所在块添加属性 data-whisper-block-focus
-    moduleManager.register(new EventBusManager());           // 事件总线管理：聚焦折叠的列表项时自动展开
+    moduleManager.register(new SchemeManager(themeConfig));   // 配色方案：data-whisper-appearance / data-whisper-text
+    moduleManager.register(new FeaturesManager(themeConfig)); // 样式特性：data-whisper-* 布尔开关
+    moduleManager.register(new DebugHandler());               // 调试信息：按配置显示设备类型等消息
+    moduleManager.register(new DeviceDetector());             // 设备检测：添加设备类型标识，用于 CSS 选择器（避免使用 :has() 选择器导致性能问题）
+    moduleManager.register(new BlockFocusHandler());          // 块焦点处理：给焦点所在块添加属性 data-whisper-block-focus
+    moduleManager.register(new EventBusManager());            // 事件总线管理：聚焦折叠的列表项时自动展开
 
     if (!readOnly) {
         // 非发布模式

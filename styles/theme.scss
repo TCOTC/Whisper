@@ -1,5 +1,3 @@
-// 模块外观
-
 @use "modules/global" as *;   // 全局样式
 @use "modules/toolbar" as *;  // 顶栏
 @use "modules/resize" as *;   // 分隔线
@@ -14,9 +12,5 @@
 @use "modules/export" as *;   // 导出
 @use "modules/mobile" as *;   // 移动端特有样式
 
-// 配色
-// 备注：偶尔需要跟进最新版默认主题的变更
-
-@use "appearance";     // 界面配色
-@use "text";           // 文本配色
-// @use "text-layout"; // TODO功能 文本外观（全高 / 半高背景等）
+@use "appearance"; // 界面配色
+@use "text";       // 文本配色

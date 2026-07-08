@@ -19,6 +19,12 @@ const MESSAGES: Record<string, MessageEntry> = {
         tw: '除錯資訊',
         ja: 'デバッグ情報',
     },
+    text_half_bg: {
+        en: 'Text half-height background',
+        cn: '文本半高背景',
+        tw: '文字半高背景',
+        ja: 'テキスト半高背景',
+    },
 };
 
 type LocaleKey = keyof MessageEntry;

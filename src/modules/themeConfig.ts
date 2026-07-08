@@ -15,18 +15,12 @@ export interface ConfigObject {
 export const CONFIG_STORAGE_KEY = 'whisper-theme-config-v2';
 
 type ConfigFieldDef =
-    | { type: 'boolean'; default: boolean; menu?: { icon: string } }
+    | { type: 'boolean'; default: boolean; menu?: { icon: string; group: string } }
     | { type: 'number'; default: number | (() => number) }
     | { type: 'string'; default: string | (() => string) };
 
 /** 主题配置声明（单一数据源：键名、类型、默认值、菜单元数据） */
 export const THEME_CONFIG_SCHEMA = {
-    /** 是否启用 Google Analytics 数据收集 */
-    analytics_enable: {
-        type: 'boolean',
-        default: true,
-        menu: { icon: 'iconCloud' },
-    },
     /** Google Analytics 上次发送数据的时间戳（毫秒） */
     analytics_last_sent_timestamp: {
         type: 'number',
@@ -37,11 +31,23 @@ export const THEME_CONFIG_SCHEMA = {
         type: 'number',
         default: () => Date.now(),
     },
+    /** 文本半高背景（对应 data-whisper-text-half-bg） */
+    text_half_bg: {
+        type: 'boolean',
+        default: true,
+        menu: { icon: 'iconMark', group: 'feature' },
+    },
+    /** 是否启用 Google Analytics 数据收集 */
+    analytics_enable: {
+        type: 'boolean',
+        default: true,
+        menu: { icon: 'iconCloud', group: 'general' },
+    },
     /** 是否在启动后显示设备类型等调试消息 */
     debug_show_message: {
         type: 'boolean',
         default: false,
-        menu: { icon: 'iconInfo' },
+        menu: { icon: 'iconInfo', group: 'general' },
     },
     /** 明亮模式界面配色（对应 data-whisper-appearance；空字符串表示原生，不写属性） */
     appearance_light: {
@@ -62,12 +68,13 @@ export const THEME_CONFIG_SCHEMA = {
 
 export type ThemeConfigKey = keyof typeof THEME_CONFIG_SCHEMA;
 
+type ConfigFieldType<T extends ConfigFieldDef> =
+    T extends { type: 'boolean' } ? boolean :
+    T extends { type: 'number' } ? number :
+    string;
+
 export type ThemeConfigSchema = {
-    [K in ThemeConfigKey]: {
-        boolean: boolean;
-        number: number;
-        string: string;
-    }[(typeof THEME_CONFIG_SCHEMA)[K]['type']];
+    [K in ThemeConfigKey]: ConfigFieldType<(typeof THEME_CONFIG_SCHEMA)[K]>;
 };
 
 /** 带 menu 的 boolean 配置键 */
@@ -77,13 +84,65 @@ export type MenuConfigKey = {
         : never;
 }[ThemeConfigKey];
 
-/** 可在菜单中切换的配置项（由 schema 推导） */
-export const THEME_CONFIG_MENU_ITEMS = (Object.keys(THEME_CONFIG_SCHEMA) as ThemeConfigKey[])
-    .filter((key): key is MenuConfigKey => {
+export type MenuItemDef = { key: MenuConfigKey; icon: string };
+
+function collectMenuGroups(): Map<string, MenuItemDef[]> {
+    const groups = new Map<string, MenuItemDef[]>();
+
+    for (const key of Object.keys(THEME_CONFIG_SCHEMA) as ThemeConfigKey[]) {
         const field = THEME_CONFIG_SCHEMA[key];
-        return field.type === 'boolean' && 'menu' in field;
-    })
-    .map((key) => ({ key, icon: THEME_CONFIG_SCHEMA[key].menu.icon }));
+        if (field.type !== 'boolean' || !('menu' in field)) {
+            continue;
+        }
+
+        const group = field.menu.group;
+        const items = groups.get(group);
+        const item = { key: key as MenuConfigKey, icon: field.menu.icon };
+
+        if (items) {
+            items.push(item);
+        } else {
+            groups.set(group, [item]);
+        }
+    }
+
+    return groups;
+}
+
+const MENU_GROUP_MAP = collectMenuGroups();
+
+/** 按 group 分段的菜单项（顺序为 schema 中各 group 首次出现的顺序） */
+export const THEME_CONFIG_MENU_GROUPS: readonly MenuItemDef[][] = [...MENU_GROUP_MAP.values()];
+
+/** 样式特性菜单项 */
+export const THEME_CONFIG_FEATURE_MENU_ITEMS = MENU_GROUP_MAP.get('feature') ?? [];
+
+/** 将分组菜单项映射为片段，组间自动插入 separator */
+export function flatMapMenuGroups<T>(
+    groups: readonly MenuItemDef[][],
+    options: {
+        leading?: () => T;
+        separator?: () => T;
+        item: (item: MenuItemDef) => T;
+    },
+): T[] {
+    const parts: T[] = [];
+
+    if (options.leading) {
+        parts.push(options.leading());
+    }
+
+    groups.forEach((items, index) => {
+        if (index > 0 && options.separator) {
+            parts.push(options.separator());
+        }
+        for (const item of items) {
+            parts.push(options.item(item));
+        }
+    });
+
+    return parts;
+}
 
 /** 默认配置（由 schema 在模块加载时生成；install_timestamp 在此时记录） */
 const DEFAULT_CONFIG = Object.fromEntries(
