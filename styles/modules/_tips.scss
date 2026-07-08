@@ -1,26 +1,32 @@
 // 消息与悬浮提示
 
 // ————————————————————右上角消息————————————————————
+
 .b3-snackbar__content {
-    padding: 8px 16px;
-    color: var(--b3-theme-on-background);
-    background-color: var(--b3-tooltips-background);
+    outline: 1px solid rgba(0, 0, 0, 0.1);
+    outline-offset: -1px;
+    color: var(--b3-tooltips-color);
 
     a {
         color: var(--b3-protyle-inline-link-color);
     }
-}
-.b3-snackbar--error .b3-snackbar__content::after {
-    left: 6px;
-}
-.b3-snackbar--error .b3-snackbar__content {
-    padding-left: 30px;
+
+    .b3-snackbar--error & {
+        padding-left: 30px;
+        padding-right: 15px;
+    
+        &::after {
+            left: 6px;
+        }
+    
+        // 需要点击才能关闭的消息 https://ld246.com/article/1739431983843
+        &--close {
+            color: var(--b3-theme-on-primary);
+            background-color: var(--b3-theme-secondary);
+        }
+    }
 }
 
-// 需要点击才能关闭的消息 https://ld246.com/article/1739431983843
-.b3-snackbar__content--close {
-    background-color: var(--b3-theme-secondary);
-}
 .b3-snackbar__close {
     display: none;
 }
@@ -53,15 +59,10 @@
 }
 
 // NOTE 伪元素提示和悬浮提示统一样式、渐变动画
-.b3-tooltips::before, .b3-tooltips:hover::before {
-    display: none; // 隐藏小三角
-}
 .b3-tooltips::after, .b3-tooltips:hover::after {
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .1); // 阴影
-    outline: 1px solid rgba(0, 0, 0, 0.1);  // 外框
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .1);
+    outline: 1px solid rgba(0, 0, 0, 0.1);
     outline-offset: -1px;
-    background-color: var(--b3-tooltips-background);
-    color: var(--b3-tooltips-color);
 }
 .b3-tooltips:hover::after {
     animation-name: tooltipFadeIn;
@@ -75,11 +76,9 @@
 
 // ————————————————————悬浮提示————————————————————
 .tooltip {
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .1); // 阴影
-    outline: 1px solid rgba(0, 0, 0, 0.1);  // 外框
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .1);
+    outline: 1px solid rgba(0, 0, 0, 0.1);
     outline-offset: -1px;
-    background-color: var(--b3-tooltips-background);
-    color: var(--b3-tooltips-color);
     animation-name: tooltipFadeIn;
     animation-duration: 100ms; // 动画过渡时间
     animation-delay: 800ms;    // 延迟显示动画

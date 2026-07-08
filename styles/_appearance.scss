@@ -88,7 +88,8 @@ html {
 //
 // 设计原则（适配思源 3.7.0+）：
 // - 思源加载主题时会先加载默认主题（daylight/midnight）作为基底，再加载本主题覆盖。
-//   因此这里只声明主题身份色与需覆盖的 --b3-*，其余（列表 hover、tooltip、kbd 等）回退默认主题值，
+//   因此这里只声明主题身份色与需覆盖的 --b3-*，其余（列表 hover、kbd 等）回退默认主题值；
+//   tooltip 背景 / 字色引用 body-background / on-background。
 //   模块内直接引用思源 CSS 变量，以增强可维护性。
 // - 配色 map 以 OKLCH 为源色，编译期通过 to-rgb() / to-hex() 输出 rgb / rgba，避免运行时 oklch() 的兼容性问题。
 // - 主色阶梯（primary-light / lighter / lightest）与种子中的半透明色（如 surface-light）在编译期写入 alpha；
@@ -132,8 +133,8 @@ html {
   // 列表、提示（回退默认主题，模块内直接引用 --b3-list-hover 等）
   // --b3-list-hover: 列表项 hover / 聚焦背景
   // --b3-list-icon-hover: 列表图标按钮 hover 背景
-  // --b3-tooltips-background: tooltip / snackbar 背景
-  // --b3-tooltips-color: tooltip 字色
+  --b3-tooltips-background: var(--b3-body-background);     // tooltip / snackbar 背景
+  --b3-tooltips-color: var(--b3-theme-on-background);      // tooltip 字色
 
   // 卡片背景（主题特有，影响页签 pin、av 属性色块）
   --b3-card-error-color: #{fn.to-rgb(fn.theme-get($colors, b3-card-error-color))};
@@ -208,7 +209,8 @@ html {
 // - 主题身份色 107°（橄榄绿），辅色 78°（暖金）
 // - 语义色锚点：错误 27° / 警告 70° / 成功 145° / 信息 250°
 //
-// 只保留主题身份色；列表 / tooltip / kbd 等回退默认主题（daylight），由模块直接引用思源变量。
+// 只保留主题身份色；列表 / kbd 等回退默认主题（daylight），由模块直接引用思源变量。
+// tooltip 背景 / 字色在 emit-ui 中引用 body-background / on-background。
 // 主色阶梯（primary-light / lighter / lightest）由 primary-ladder-profile 派生。
 // 与思源 daylight 对比：卡片语义色差异明显，故保留自定义 b3-card-*。
 
@@ -256,7 +258,8 @@ html[data-theme-mode="light"][data-whisper-appearance="blush"] {
 // - 主题身份色 107°（橄榄绿），辅色 76°（暖金）
 // - 语义色锚点：错误 24° / 警告 76° / 成功 145° / 信息 242°
 //
-// 只保留主题身份色；列表 / tooltip / kbd 等回退默认主题（midnight），由模块直接引用思源变量。
+// 只保留主题身份色；列表 / kbd 等回退默认主题（midnight），由模块直接引用思源变量。
+// tooltip 背景 / 字色在 emit-ui 中引用 body-background / on-background。
 // 主色阶梯（primary-light / lighter / lightest）由 primary-ladder-profile 派生。
 // 与思源 midnight 对比：卡片语义色差异明显，故保留自定义 b3-card-*。
 
