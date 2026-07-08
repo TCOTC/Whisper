@@ -1,0 +1,236 @@
+// 行级元素
+// 备注：在编辑器里和属性面板里，行级元素的上层都有 [data-node-id]
+
+// NOTE 这些样式需要跟进原生样式的变更
+// .b3-typography导出预览，[data-node-id]导出PDF/图片/大纲面板，.protyle-wysiwyg编辑器
+:is(.b3-typography, [data-node-id], .protyle-wysiwyg [data-node-id]) {
+	// 行级标记。放在最前面用于覆盖原生的颜色
+	mark,
+	span[data-type~=mark] {
+		background-color: transparent; // 覆盖标记样式本身的背景色，并且不会影响带背景色的文本
+		box-shadow: 0 -0.7em 0 0 inset var(--b3-protyle-inline-mark-background), var(--wh-inline-box-shadow) var(--b3-protyle-inline-mark-background); // 添加透明度，避免完全覆盖文本背景色
+
+		&.mark--hl {
+			background-color: var(--b3-theme-primary-lighter);
+			box-shadow: 0 0 0 .5px var(--b3-theme-on-background);
+		}
+	}
+	// 反链匹配文本的高亮
+	.def--mark {
+		color: var(--b3-theme-on-background) !important;
+		background-color: var(--b3-theme-secondary);
+	}
+
+	// 行级标记。放在最前面用于覆盖原生的颜色。主题色虚线 CSS片段 https://github.com/TCOTC/siyuan-css-dashed-line-memo
+	span[data-type~=inline-memo] {
+		background-color: transparent; // 覆盖备注样式本身的背景色，并且不会影响带背景色的文本
+		border-bottom: medium dashed var(--b3-theme-primary);
+	}
+
+	span[data-type~=sup],
+	span[data-type~=sub] {
+		position: relative;
+		font-size: 75%;
+		line-height: 0;
+		vertical-align: baseline;
+	}
+
+	span[data-type~=sup] {
+		top: -.5em;
+	}
+
+	span[data-type~=sub] {
+		bottom: -.25em;
+	}
+
+	em,
+	span[data-type~=em] {
+		font-style: italic;
+		color: var(--b3-protyle-inline-em-color);
+	}
+
+	s,
+	span[data-type~=s] {
+		color: var(--b3-protyle-inline-s-color);
+		text-decoration: line-through;
+	}
+	// 已完成的任务列表项
+	.protyle-task--done > [data-node-id] > [spellcheck] > span[data-type~=s] {
+		color: var(--wh-protyle-inline-s-color_50);
+	}
+
+	strong,
+	span[data-type~=strong] {
+		font-weight: bold;
+	}
+
+	// 行级标签。导出预览是纯文本所以没有行级标签样式
+	span[data-type~=tag] {
+		border-bottom: unset;
+		transition: unset;
+		color: var(--b3-protyle-inline-tag-color); // 在大纲中也显示默认颜色
+
+		&:hover {
+			background-color: var(--b3-card-success-background);
+			border-radius: var(--b3-border-radius-s);
+
+			// 在大纲中不显示标签的 hover 样式
+			@at-root [data-treetype="outline"]#{&} {
+				background-color: unset;
+				border-radius: unset;
+			}
+		}
+
+		&::before {
+			content: "#\200D"; // 使用零宽连字（zero-width joiner，ZWJ）避免在井号后换行，但只在导出时有效，因为 protyle 中的行级标签前有零宽空格导致换行
+		}
+	}
+
+	span[data-type~=inline-math] {
+		user-select: text;
+		display: inline;
+	}
+
+	// 行级代码 Part 1
+	code:not(.hljs), span[data-type~=code] {
+		padding: .2em .4em;
+		margin: 0 1px;
+		font-size: 85%;
+		border-radius: var(--b3-border-radius);
+		word-break: break-word;
+		background-size: 20px 20px;
+		white-space: pre-wrap;
+	}
+
+	// 键盘样式
+	kbd,
+	span[data-type~=kbd] {
+		margin: 0 1px;
+		color: var(--b3-theme-on-background);
+		vertical-align: unset;
+		background-color: var(--wh-protyle-kbd-background);
+		border: solid 1px var(--wh-protyle-kbd-border-color);
+		box-shadow: inset 0 -1px 0 var(--wh-protyle-kbd-border-color);
+
+		font-variant-numeric: tabular-nums;
+		font-variant-ligatures: no-common-ligatures;
+		font-size: .9em;
+		font-family: var(--b3-font-family-kbd), var(--b3-font-family), serif;
+	}
+
+	u {
+		text-decoration: none;
+		border-bottom: 1px solid;
+	}
+
+	// 下划线
+	u,
+	span[data-type~=u] {
+		border-bottom: 0.1em solid;
+	}
+
+	a,
+	span[data-type~=a] {
+		color: var(--b3-protyle-inline-link-color);
+		opacity: 1;
+		transition: unset;
+
+		&[data-type~=s] {
+			color: var(--b3-protyle-inline-link-s-color); // 删除线下的文本变淡
+		}
+
+		&:hover {
+			text-shadow: var(--wh-link-shadow); // 代替 opacity 变化
+		}
+
+		&:not([data-type~=u]):hover {
+			border-bottom: unset; // 简约，不必要下划线
+		}
+	}
+
+	// 虚拟引用
+	span[data-type~=virtual-block-ref] {
+		transition: unset;
+	}
+
+	// 块引、数据库块引下划线
+	span[data-type~=block-ref]:not(.av__celltext),
+	.av__celltext--ref {
+		opacity: 1;
+		border-bottom: 0.15em solid var(--wh-color-blue-light); // 直接覆盖下划线样式、box-shadow 跟标记样式冲突
+		transition: unset;
+
+		&:hover {
+			text-shadow: var(--wh-theme-on-shadow); // 代替 opacity 变化
+		}
+	}
+	span[data-type~=block-ref]:not(.av__celltext)[data-type~=s] {
+		color: var(--b3-protyle-inline-s-color); // 删除线下的文本变淡
+	}
+	// 块引用静态锚文本用虚线下划线
+	span[data-type~=block-ref][data-subtype="s"]:not(.av__celltext),
+	.av__celltext--ref[data-subtype="s"] { // TODO跟进 数据库的锚文本类型是写死的，需要修复 https://github.com/siyuan-note/siyuan/issues/13889
+		border-bottom: 0.15em dashed var(--wh-color-blue-light);
+	}
+
+	// PDF 标注
+	span[data-type~=file-annotation-ref] {
+		opacity: 1;
+		transition: unset;
+
+		&[data-type~=s] {
+			color: var(--b3-protyle-inline-fileref-s-color); // 删除线下的文本变淡
+		}
+
+		&:hover {
+			text-shadow: var(--wh-theme-on-shadow); // 代替 opacity 变化
+		}
+	}
+
+	.img {
+		img {
+			border-radius: var(--b3-border-radius); // 图片圆角
+			box-shadow: var(--wh-img-shadow);
+		}
+
+		.protyle-action__title:has(> span:empty) {
+			display: none; // 隐藏空标题
+		}
+	}
+}
+
+@mixin half-height-bg($n, $full: false) {
+	span[style*="background-color: var(--b3-font-background#{$n})"] {
+		background-color: transparent !important;
+		@if $full {
+			background: linear-gradient(to bottom, var(--b3-font-background#{$n}) 0%, var(--b3-font-background#{$n}) 100%) center bottom / 100% no-repeat;
+		} @else {
+			background: linear-gradient(to bottom, var(--b3-font-background#{$n}) 0%, var(--b3-font-background#{$n}) 100%) center bottom / 100% .6em no-repeat;
+		}
+	}
+}
+
+// 不在导出预览中使用的样式
+.protyle-wysiwyg [data-node-id] {
+	// 半高背景色（导出预览不支持复制该样式）
+	@include half-height-bg(1);
+	@include half-height-bg(2);
+	@include half-height-bg(3);
+	@include half-height-bg(4);
+	@include half-height-bg(5);
+	@include half-height-bg(6);
+	@include half-height-bg(7);
+	@include half-height-bg(8);
+	@include half-height-bg(9);
+	@include half-height-bg(10);
+	@include half-height-bg(11);
+	@include half-height-bg(12);
+
+	// 反色保留全高
+	@include half-height-bg(13, $full: true);
+	
+	// 行级代码 Part 2
+	code:not(.hljs), span[data-type~=code] {
+		background-color: var(--b3-protyle-code-background); // 行级代码背景色为 --b3-card 系列时被错误覆盖，不能用 !important
+	}
+}

@@ -1,0 +1,62 @@
+// 代码块
+
+// 代码块滚动时语言和按钮固定在编辑器顶部 CSS片段
+// author by JeffreyChen https://ld246.com/article/1728146248791
+// NOTE 用:not(#preview)排除导出PDF，用:not(.export-img)排除导出图片，用.protyle-wysiwyg排除导出预览，.protyle-wysiwyg[data-readonly="true"]是只读模式
+// NOTE 导出预览的代码块没有 .protyle-action
+.b3-typography .code-block, .protyle-wysiwyg .code-block {
+	background: var(--b3-protyle-code-background); // 代码块背景色强制统一，覆盖代码块主题；代码块文本颜色遵循代码块主题
+	border-radius: var(--b3-border-radius);
+}
+// 集市包 README 的代码块需要背景色，否则会被 README 特效样式影响
+.item__readme pre {
+	background: var(--b3-theme-surface);
+	border-radius: var(--b3-border-radius);
+}
+.protyle-wysiwyg:not(.protyle-wysiwyg--hiderange) .hljs ::selection {
+	background-color: var(--b3-theme-primary-lighter); // 选中文本的高亮颜色覆盖代码块主题
+	color: inherit;
+}
+
+div:not(#preview):not(.export-img) > .protyle-wysiwyg .code-block:not(pre) { // 排除导出 PDF 和导出图片
+	.protyle-action {
+		background-color: var(--b3-parent-background);
+		position: sticky;
+		top: 0;
+
+		&::after {
+			content: "";
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			background-color: var(--b3-protyle-code-background);
+			pointer-events: none;
+		}
+
+		.protyle-action__language {
+			color: var(--b3-theme-on-background);
+		}
+	}
+
+	// 代码块本身有背景色的情况
+	&[style*="--b3-parent-background"] .protyle-action::after {
+		background-color: var(--b3-parent-background);
+	}
+
+	.hljs {
+		padding: 0 1em 24px; // .protyle-icon 的高度是 24px，要让上下边距对称的话底部也要留 24px
+	}
+}
+
+// 始终显示设置的代码块语言
+.protyle-wysiwyg .code-block:not(pre):not(:hover) .protyle-action__language {
+	opacity: .5;
+}
+// 让代码块语言和按钮高于伪元素显示
+.protyle-wysiwyg .code-block:not(pre) :is(.protyle-action__language, .protyle-icon) {
+	z-index: 1;
+}
+// 只有 hover 代码块时才显示代码块语言占位符
+.protyle-wysiwyg[data-readonly=false] .code-block:not(pre):not(:hover) .protyle-action .protyle-action__language:empty::after {
+	opacity: 0;
+}

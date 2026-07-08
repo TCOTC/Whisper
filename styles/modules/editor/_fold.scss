@@ -1,0 +1,92 @@
+// 折叠块
+
+// 列表
+.protyle-wysiwyg [data-node-id].li:has([data-whisper-block-focus]) > .protyle-action {
+	color: var(--b3-theme-primary);
+}
+// 折叠的列表项
+.protyle-wysiwyg [data-node-id].li[fold="1"]:has([data-whisper-block-focus]) > .protyle-action::after {
+	background-color: var(--b3-theme-primary-lighter);
+}
+.protyle-wysiwyg [data-node-id].li[fold="1"] > .protyle-action::after {
+	background-color: var(--wh-list-hover-dark);
+}
+// 无序列表
+.protyle .protyle-wysiwyg .li[data-subtype="u"] > .protyle-action:hover::after {
+	background-color: var(--wh-list-hover-darker);
+}
+// 有序列表、任务列表
+// 图标必须是这一个 Size 为 32 的，位置才能刚好对上 https://fonts.google.com/icons?icon.set=Material+Icons&icon.style=Rounded&icon.size=32&icon.color=%235f6368&icon.query=Play&selected=Material+Icons+Round:play_arrow:&icon.platform=web
+// 在 figma 基于上面这个图标改成了中空的：https://www.figma.com/design/d4H0T3mfcSljDQBm6G6eic
+.protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
+	content: '';
+	position: absolute;
+	left: -13px;
+	width: 14px;
+	height: 14px;
+	margin-top: 1.5px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position-y: center;
+	pointer-events: none; // 伪元素会影响块标移动
+}
+// svg 里的 fill 填的是 --b3-theme-on-surface-light，两个模式的颜色不同
+html[data-theme-mode="light"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
+	background-image: url('../../../icons/task-lists/play_arrow_5F6368_light.svg');
+}
+html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
+	background-image: url('../../../icons/task-lists/play_arrow_5F6368_dark.svg');
+}
+.protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::after {
+	background-color: unset; // 有序列表、任务列表折叠的时候不需要阴影
+}
+
+// 标题块
+.protyle-wysiwyg [data-node-id][data-type="NodeHeading"][fold="1"]::before {
+	display: none;
+}
+
+// 代码块
+.protyle-wysiwyg [data-node-id][fold="1"].code-block {
+	height: 5em !important; // 显示前两行半的代码
+}
+
+// 给折叠的非列表项块添加背景
+// 这个选择器用于覆盖原生样式
+.protyle-wysiwyg [data-node-id][fold="1"]:not(.li) {
+	background-image: repeating-linear-gradient(
+		-45deg,
+		var(--b3-theme-background-light),
+		var(--b3-theme-background-light) 5px,
+		var(--b3-list-hover) 0,
+		var(--b3-list-hover) 10px
+	);
+
+	// 折叠的代码块
+	&.code-block:not(pre) {
+		.protyle-action {
+			background-image: inherit; // 继承父级的背景图
+			background-position: 8px 0;
+
+			&::after {
+				background-color: var(--b3-list-hover) !important;
+			}
+		}
+
+		.hljs {
+			background-image: inherit;
+			background-position: 11px 0;
+			background-color: var(--b3-theme-background-light);
+		}
+	}
+
+	// 折叠的提示块
+	&.callout[data-node-id][fold="1"] {
+		height: unset;
+	
+		.callout-content {
+			display: none;
+		}
+	}
+}
+

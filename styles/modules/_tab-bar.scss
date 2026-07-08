@@ -1,3 +1,10 @@
+// 标签页
+
+// 隐藏标签页栏底部边框
+.layout-tab-bar {
+	border-bottom: unset;
+}
+
 // ————————————————————选项卡————————————————————
 
 .layout-tab-bar:not(.layout-tab-bar--readonly) {

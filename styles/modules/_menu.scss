@@ -1,3 +1,5 @@
+// 菜单、浮窗、弹窗
+
 .block__icons .fn__space, // 文件树的按钮间距 https://github.com/siyuan-note/siyuan/commit/a1d9c1239a1128f65de1defc1dc73bf6924c0759
 .block__icon, .toolbar__item, .protyle-icons, .protyle-icon, .dock__item--pin, .b3-select {
 	transition: unset !important; // 按钮感觉不跟手，不要过渡样式
@@ -559,4 +561,17 @@ html[data-theme-mode="dark"] {
 	top: 0;
 	left: 0;
 	background-color: var(--b3-mask-background);
+}
+
+// ————————————————————浮窗————————————————————
+
+// 减小浮窗工具栏高度
+$popover-toolbar-height: 34px;
+
+.block__popover > .block__icons {
+	min-height: $popover-toolbar-height;
+
+	&> .resize__move {
+		height: $popover-toolbar-height;
+	}
 }
