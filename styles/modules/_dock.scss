@@ -1,329 +1,79 @@
-// ————————————————————侧栏面板布局————————————————————
-// NOTE: .file-tree 也存在于大纲/反链页签中，要检查样式是否对其子元素有不必要的影响
+// 停靠栏
+// .file-tree 也存在于大纲/反链页签中，改动之后要检查样式是否对其子元素有不必要的影响
 
-.file-tree {
-	&>.block__icons {
-		padding-left: 3px; // 跟下面的 .b3-list 对齐
-		padding-right: 13px; // 滚动条的宽度 + .b3-list 的 margin-right
-	}
+@use "toolbar" as toolbar;
+@use "status" as status;
 
-	&>.fn__flex-1 {
-		scrollbar-gutter: stable;
+.file-tree > .fn__flex-1 {
+	scrollbar-gutter: stable;
 
-		&>.b3-list {
-			margin-left: 3px; // 尽可能利用空间
-			margin-right: 3px;
+	&>.b3-list .b3-list-item {
+		&[data-type="navigation-root"], // 文档树-笔记本
+		&[data-type="navigation-file"], // 文档树-文档
+		&[data-treetype] { // 大纲、标签、书签、反链
+			margin-right: 0;
 
-			.b3-list-item:is([data-type="navigation-root"], [data-type="navigation-file"], [data-treetype]) {
-				margin-left: 0;
-				margin-right: 0;
-
-				// 避免点击展开按钮时误触，只要箭头颜色变深就能点击
-				.b3-list-item__toggle {
-					height: 28px; // 列表项的高度
-					border-radius: unset;
-					transition: unset; // 即时响应
-
-					&.b3-list-item__toggle--hl:hover {
-						background-color: unset;
-						color: var(--wh-toggle-hover);
-					}
-				}
+			// 面板选项的折叠按钮
+			.b3-list-item__toggle.b3-list-item__toggle--hl:hover {
+				background-color: unset;
+				color: var(--b3-theme-on-background);
 			}
 		}
 	}
 }
-.sy__backlink > .fn__flex-1 > .b3-list {
-	margin: 0; // 反链面板编辑器尽可能宽
-}
 
-.layout__dockr .file-tree {
-	margin-left: 3px; // 这里有可能会导致侧栏面板宽度异常，暂时用下面的 min-width 解决
-}
-// TODO废弃 提升版本号到 3.3.6 之后就不再需要下面这段样式了 https://github.com/siyuan-note/siyuan/issues/13516 https://github.com/siyuan-note/siyuan/issues/14856 https://github.com/siyuan-note/siyuan/pull/15011
-.layout__dockl:not(.layout--float):not([style*="width: 0px;"]):has(> .fn__flex-1:not(.fn__none)),
-.layout__dockr:not(.layout--float):not([style*="width: 0px;"]):has(> .fn__flex-1:not(.fn__none)) {
-	min-width: 232px;
-}
+// 左右浮动停靠栏：四角圆角 + 高度填满编辑区（与底部浮动停靠栏一致）
+.layout--float {
+	&.layout__dockl,
+	&.layout__dockr {
+		border-radius: var(--b3-border-radius-b);
+		top: toolbar.$toolbar-height;
+		bottom: status.$status-height;
 
-// 有底栏的情况下，未钉住的右侧栏弹出之后要隐藏底栏，更美观
-html[data-whisper-status="show"] .layout__dockr.layout--float {
-	overflow: visible;
-
-	&::after {
-		content: "";
-		position: absolute;
-		right: calc(28px - 42px); // 侧栏的宽度 // 露出"显示/隐藏停靠栏"按钮
-		bottom: 0;
-		height: var(--wh-status-height);
-		width: calc(42px - 28px); // 侧栏的宽度 // 露出"显示/隐藏停靠栏"按钮
-		background-color: var(--b3-theme-surface);
-	}
-}
-
-// 调整侧栏浮窗高度与层级 CSS片段
-.layout__dockl.layout--float,
-.layout__dockr.layout--float {
-	top: 32px !important; // 顶栏的高度
-	bottom: 0 !important; // 直接把底栏盖住
-	// z-index: 4 !important; // 不改侧栏层级了
-	border: unset;
-	border-radius: unset;
-	box-shadow: unset; // 阴影样式比较奇怪，先去掉
-	opacity: 1 !important;
-	// transition-delay: 1s; !* TODO跟进 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!
-}
-
-// 取消钉住右侧栏时，右侧文档的滚动条与侧栏之间需要间隔
-// 右侧没有 .layout__resize--lr（纵向的拖拽条）的页签就是最靠右的页签（可以是多个页签）
-// 新窗口没有侧栏，使用 body:not(.body--window) 排除
-html[data-whisper-layout-dockr-float="float"] body:not(.body--window) .layout__center {
-	.fn__flex:not(:has(+ .layout__resize--lr)) .layout-tab-container > .fn__flex-1 {
-		// 编辑器
-		&.protyle {
-			.protyle-content {
-				margin-right: 15px;
-			}
-
-			.protyle-scroll {
-				right: 25px;
-			}
+		body.body--toolbar-hide & {
+			top: toolbar.$toolbar-height--hide;
 		}
 
-		// PDF 阅读器
-		#viewerContainer {
-			margin-right: 15px;
-		}
-	}
-	
-	// 多次分屏之后 .fn__flex 有可能形成多层嵌套，需要重置
-	.fn__flex:has(+ .layout__resize--lr) .layout-tab-container > .fn__flex-1 {
-		// 编辑器
-		&.protyle {
-			.protyle-content {
-				margin-right: unset !important;
-			}
-
-			.protyle-scroll {
-				right: 12px !important;
-			}
-		}
-
-		// PDF 阅读器
-		#viewerContainer {
-			margin-right: unset !important;
+		html[data-whisper-status="hide"] & {
+			bottom: var(--b3-layout-space);
 		}
 	}
 }
-
-// TODO data-whisper-dock-bottom 属性已经不存在，需要确认样式的用途
-// 右侧栏
-// 底栏会挡住右下侧栏（如果有底部侧栏的话不会挡住、如果关闭了底栏的话不会挡住）
-html[data-whisper-status="show"][data-whisper-dock-bottom="hide"] {
-	#dockRight,
-	.layout__dockr .layout__dockresize {
-		padding-bottom: var(--wh-status-height);
-	}
-}
-
-// 底部侧栏
-#dockBottom {
-	padding: 0;
-
-	.dock__item--space {
-		display: none; // 底部侧栏的左右两边都合并到左边
-	}
-
-	.dock__item {
-		order: 1;
-	}
-
-	.dock__item.dock__item--pin {
-		order: 0; // 钉住按钮始终放在最左边
-	}
-}
-
-// 悬浮的底部侧栏面板
-.layout__dockb.layout--float {
-	border: unset;
-	border-radius: unset;
-	box-shadow: unset;
-	opacity: 1 !important;
-	// transition-delay: 1s; !* TODO跟进 悬浮侧栏延迟弹出。跟进 https://github.com/siyuan-note/siyuan/issues/13920 *!
-
-	&:not([style*="translate"]) {
-		bottom: 42px !important; // 底部侧栏的高度
-	}
-}
-// TODO data-whisper-dock-bottom 属性已经不存在，需要确认样式的用途
-html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="translate"]) {
-	bottom: var(--wh-status-height) !important; // 隐藏底部侧栏之后
-	overflow: visible;
-
-	&::after {
-		content: "";
-		position: absolute;
-		bottom: calc(-1 * var(--wh-status-height));
-		height: var(--wh-status-height);
-		width: calc(100% - 28px); // 露出"显示/隐藏停靠栏"按钮
-		background-color: var(--b3-theme-surface);
-	}
-}
-
-.layout--float.layout__dockr > .layout__dockresize--lr {
-	top: -1px; // 元素有宽度，要避免顶部露出一点 border
-	border-left: 1px solid var(--b3-scroll-color);
-
-	&:hover {
-		border-left: 2px solid var(--b3-scroll-color); // 跟 .layout__resize 相同
-	}
-
-	&:active {
-		border-color: var(--b3-theme-primary);
-	}
-}
-.layout--float.layout__dockl > .layout__dockresize--lr {
-	top: -1px; // 元素有宽度，要避免顶部露出一点 border
-	border-right: 1px solid var(--b3-scroll-color);
-
-	&:hover {
-		border-right: 2px solid var(--b3-scroll-color); // 跟 .layout__resize 相同
-	}
-
-	&:active {
-		border-color: var(--b3-theme-primary);
-	}
-}
-.layout--float.layout__dockb > .layout__dockresize {
-	border-top: 1px solid var(--b3-scroll-color);
-
-	&:hover {
-		border-top: 2px solid var(--b3-scroll-color); // 跟 .layout__resize 相同
-	}
-
-	&:active {
-		border-color: var(--b3-theme-primary);
-	}
-}
-
-// 侧栏面板悬浮时始终显示按钮，避免面板弹出时按钮闪烁
-.layout--float .block__icon:not([disabled]) {
-	opacity: 1;
-}
-
-// 侧栏面板焦点状态的侧栏按钮样式
-.dock .dock__item.dock__item--activefocus{
-	background-color: var(--b3-theme-primary-lightest);
-	color: var(--b3-theme-primary);
-}
-
 
 // ————————————————————文档树————————————————————
 
-// 笔记本区隔
-.sy__file ul.b3-list.b3-list--background {
-	border-radius: var(--b3-border-radius);
-	margin: 3px 4px;
-	outline: 1px solid var(--b3-theme-on-surface-light);
-	// overflow: hidden;
-}
-.sy__file .b3-list-item[data-type="navigation-root"] {
-	line-height: 30px; // 笔记本行高
-}
-// 文档树和大纲的 dragover
-.sy__file .dragover[data-type="navigation-root"]::after,
-.sy__outline [data-subtype="h1"]::after {
-	width: 100%;
-	left: 0;
-}
-// flex 布局避免笔记本外边距合并
-.sy__file > .fn__flex-1 {
-	display: flex;
-	flex-direction: column;
-}
-// 笔记本 dragover
-.sy__file [data-type="navigation-root"] {
-	&:is(.dragover__top, .dragover__bottom)::after {
-		height: 4px;
-		width: calc(100% - 10px);
-		left: 5px;
-	}
-
-	&.dragover__top::after {
-		top: -5px;
-	}
-
-	&.dragover__bottom::after {
-		bottom: -5px;
-	}
-}
-
-.sy__file .b3-list-item {
-	padding-left: 0;
-
-	// 笔记本
-	&[data-type="navigation-root"]  {
-		margin: 0;
-		padding-left: 4px;
-
-		&:hover > .b3-list-item__toggle--hl {
-			color: var(--b3-theme-on-background);
-		}
-	}
-
-	// 已关闭的笔记本
-	&[data-type="toggle"] {
-		margin: 1px 0;
-		padding-left: 8px; // 跟文档树笔记本的展开图标对齐
-		padding-right: 18px; // 跟文档树文档的块引计数对齐
-
-		&:not(:hover) {
-			opacity: 0.6;
-		}
-
-		.b3-list-item__toggle {
-			color: var(--b3-theme-on-background);
-		}
-
-		.b3-list-item__text {
-			padding-left: 4px; // 跟文档树笔记本的图标对齐
-		}
-
-		// 笔记本
-		&+ ul > li {
-			margin: 1px 14px 1px 4px; // 跟文档树的笔记本对齐
-
-			.b3-list-item__icon {
-				margin-left: 4px; // 跟文档树笔记本的图标对齐
-			}
-
-			&:hover {
-				background-color: var(--b3-list-hover);
-				border-radius: var(--b3-border-radius);
-			}
-		}
-	}
-}
 // 在达到 max-height 之前，高度由已关闭的笔记本的数量决定
 .sy__file > .b3-list {
 	height: unset !important;
 	max-height: 40%;
 }
 
-// ————————————————————反链、提及面板————————————————————
+// ———————————————————大纲面板———————————————————
 
-// 反链、提及面板固定文档名称 CSS片段
-// author by JeffreyChen https://ld246.com/article/1737207365006
+// 大纲上的文档计数对齐下面的标题计数
+.sy__outline > .b3-list-item .counter {
+	margin-right: 2px;
+}
+
+// ————————————————反链、提及面板————————————————
+
+// 反链、提及面板固定文档名称
+// 原始 CSS 片段 https://ld246.com/article/1737207365006
 // TODO跟进 需要跟进 https://github.com/siyuan-note/siyuan/issues/13679 修改
+// [data-treetype] 匹配反链/提及中的文档名称元素
 :is(.backlinkMList, .backlinkList) .b3-list-item[data-treetype] {
-	// [data-treetype] 匹配反链/提及中的文档名称元素
 	position: sticky;
 	top: 0;
-	padding: 0;
-	margin: 0;
-	z-index: 4; // 高于选中块的伪元素高亮
-	background-color: var(--b3-theme-surface) !important;
+	margin-top: 0; // 跟 top: 0 配合
+	padding-left: 0;
+	background-color: var(--b3-theme-background) !important;
 	border-radius: unset;
+	z-index: 4; // 高于选中块的伪元素高亮
+
+	.b3-list-item__toggle--hl::before {
+		// 折叠按钮热区拓展到面板边界
+		left: -8px;
+  }
 
 	&:hover {
 		&::after {
@@ -335,27 +85,5 @@ html[data-whisper-dock-bottom="hide"] .layout__dockb.layout--float:not([style*="
 			border-radius: var(--b3-border-radius);
 			pointer-events: none;
 		}
-
-		&>.b3-list-item__toggle {
-			color: var(--b3-theme-on-background); // 只要箭头颜色变深就代表能展开
-		}
 	}
-
-	&>.b3-list-item__toggle {
-		margin-left: 4px;
-
-		&:hover {
-			background: unset;
-		}
-	}
-
-	&>.counter {
-		margin-right: 4px;
-	}
-}
-
-// ————————————————————大纲面板————————————————————
-
-.sy__outline > .b3-list-item {
-	margin-right: 13px; // 标题计数对齐，适配 https://github.com/siyuan-note/siyuan/pull/16360
 }
