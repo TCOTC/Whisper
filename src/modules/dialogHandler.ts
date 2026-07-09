@@ -152,11 +152,7 @@ export class DialogHandler implements ThemeModule {
         if (!this.modeSelect) {
             return;
         }
-        const rect = this.modeSelect.getBoundingClientRect();
-        themeSwitchFromDialog(this.modeSelect, {
-            clientX: rect.left + rect.width / 2,
-            clientY: rect.top + rect.height / 2 + 30, // 偏移到下拉菜单中
-        });
+        themeSwitchFromDialog(this.modeSelect);
     };
 
     /**

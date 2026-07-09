@@ -37,8 +37,6 @@ export function getCurrentTheme(): string {
     return isLight ? lightTheme : darkTheme;
 }
 
-type AnimationAnchor = Pick<MouseEvent, 'clientX' | 'clientY'>;
-
 /** 判断切换至目标外观模式后是否应播放主题切换动画 */
 function shouldAnimateThemeSwitch(targetIsLight: boolean): boolean {
     const { isLight, lightTheme, darkTheme } = readAppearance();
@@ -75,14 +73,14 @@ export function themeSwitchFromMenu(event: MouseEvent): void {
     }
 
     if (shouldAnimateThemeSwitch(targetIsLight)) {
-        applyAnimation(event);
+        applyAnimation();
     }
 }
 
 /**
  * 设置面板外观模式切换主题
  */
-export function themeSwitchFromDialog(select: HTMLSelectElement, anchor: AnimationAnchor): void {
+export function themeSwitchFromDialog(select: HTMLSelectElement): void {
     const value = parseInt(select.value);
     let targetIsLight: boolean | undefined;
     if (value === 0) {
@@ -96,61 +94,43 @@ export function themeSwitchFromDialog(select: HTMLSelectElement, anchor: Animati
     }
 
     if (shouldAnimateThemeSwitch(targetIsLight)) {
-        applyAnimation(anchor);
+        applyAnimation();
     }
 }
 
 /**
- * 执行主题切换动画
+ * 执行主题切换动画（交叉淡入淡出）
  */
-function applyAnimation(anchor: AnimationAnchor): void {
+function applyAnimation(): void {
     // 如果不支持 View Transitions API 就直接返回
     if (!document.startViewTransition) {
         logging.error('View Transitions API is not supported');
         return;
     }
 
-    const transition = document.startViewTransition();
-
-    const x = anchor.clientX;
-    const y = anchor.clientY;
-
-    const targetRadius = Math.hypot(
-        Math.max(x, window.innerWidth - x),
-        Math.max(y, window.innerHeight - y)
-    );
-
     const styleElement = document.createElement('style');
-    styleElement.innerHTML = '::view-transition-old(root),::view-transition-new(root){animation: none;}';
+    styleElement.innerHTML = `
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation-duration: 700ms;
+            animation-timing-function: ease-in-out;
+        }
+    `;
     document.head.appendChild(styleElement);
 
-    transition.ready.then(() => {
-        const animation = document.documentElement.animate(
-            {
-                clipPath: [
-                    `circle(0 at ${x}px ${y}px)`,
-                    `circle(${targetRadius}px at ${x}px ${y}px)`
-                ]
-            },
-            {
-                duration: 550,
-                pseudoElement: '::view-transition-new(root)',
-                easing: 'ease-in-out'
-            }
-        );
+    const transition = document.startViewTransition();
 
-        // 过程中点击，立即结束动画
-        const clickHandler = () => {
-            animation.finish();
-        };
-        document.addEventListener('mousedown', clickHandler);
+    // 过程中点击，立即结束动画
+    const clickHandler = () => {
+        transition.skipTransition();
+    };
+    document.addEventListener('mousedown', clickHandler);
 
+    transition.finished.finally(() => {
+        document.removeEventListener('mousedown', clickHandler);
         // 动画结束后需要延迟一点移除 style 元素，否则会闪烁
-        animation.onfinish = () => {
-            document.removeEventListener('mousedown', clickHandler);
-            setTimeout(() => {
-                styleElement?.remove();
-            }, 300);
-        };
+        setTimeout(() => {
+            styleElement.remove();
+        }, 300);
     });
 }
