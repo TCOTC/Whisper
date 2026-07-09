@@ -68,13 +68,9 @@ $primary-ladder-profiles: (
 
 html {
   // Whisper 结构变量
-  --wh-inline-box-shadow: 0 .1em 0 0; // 行内标记底部阴影偏移
   --wh-transition: .2s cubic-bezier(0, 0, .2, 1) 0ms;
 
   // 编辑器装饰（引用思源界面变量，与 data-whisper-text 无关）
-  --wh-theme-on-shadow: 0px 0px 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent); // 块引 / 文件引 hover 字影
-  --wh-link-shadow: 0px 0px 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);     // 链接 hover 字影
-  --wh-img-shadow: 0 0 2px color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);          // 图片外发光
   --wh-color-blue-light: var(--b3-theme-primary-light);                                          // 块引下划线色
 
   // 滚动条（淡化派生引用默认主题 --b3-scroll-color）

@@ -82,7 +82,6 @@ html {
   // --b3-theme-on-error: 错误色控件上的字色
   --wh-theme-on-background_85: color-mix(in srgb, var(--b3-theme-on-background) 85%, transparent);
   --wh-theme-on-surface-light_30: color-mix(in srgb, var(--b3-theme-on-surface-light) 30%, transparent);
-  --wh-protyle-inline-s-color_50: color-mix(in srgb, var(--b3-theme-on-background) 50%, transparent); // 已完成任务列表删除线（淡化；rainbow 由 emit-text 覆盖）
 }
 
 // ── § 输出：文本变量 ──────────────────────────────────────────────
@@ -96,7 +95,6 @@ html {
 
   // 所见即所得行内元素
   --b3-protyle-inline-s-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-s-color))}; // 删除线字色（思源默认 inherit）
-  --wh-protyle-inline-s-color_50: #{fn.to-rgb(fn.with-alpha(fn.theme-get($colors, b3-protyle-inline-s-color), 50%))}; // 已完成任务列表删除线（淡化）
   --b3-protyle-inline-link-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-link-color))}; // 超链接字色
   --b3-protyle-inline-link-s-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-link-s-color))}; // 思源 3.7.0 已弃用；Whisper 用于删除线链接
   --b3-protyle-inline-mark-background: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-mark-background))}; // 行内标记（高亮）背景
@@ -186,7 +184,7 @@ html[data-theme-mode="dark"][data-whisper-text="rainbow"] {
       b3-protyle-inline-s-color: oklch(49% 0 0),
       b3-protyle-inline-link-color: oklch(63% 0.18 260),
       b3-protyle-inline-link-s-color: oklch(51% 0.15 260),
-      b3-protyle-inline-mark-background: oklch(78% 0.17 93 / 0.6),
+      b3-protyle-inline-mark-background: oklch(70% 0.17 93 / 0.6),
       b3-protyle-inline-fileref-color: oklch(83% 0.10 145),
       b3-protyle-inline-fileref-s-color: oklch(53% 0.065 145),
     )
