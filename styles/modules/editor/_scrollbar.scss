@@ -1,86 +1,8 @@
 // 滚动条
 
-@use "../status" as status;
-
-// 动态滚动条
-.protyle-scroll :is(.protyle-scroll__down, .protyle-scroll__up) {
+// 始终显示动态滚动条上下的按钮
+.protyle-scroll__down,
+.protyle-scroll__up {
 	opacity: 1;
 	color: var(--b3-scroll-color);
-
-	&:hover {
-		color: var(--wh-scroll-color_50);
-	}
 }
-.protyle-scroll__bar .b3-slider {
-	&::-webkit-slider-runnable-track {
-		background-color: var(--b3-scroll-color);
-	}
-
-	&::-webkit-slider-thumb {
-		background-color: var(--b3-scroll-color);
-	}
-
-	// 兼容 Firefox
-	&::-moz-range-track {
-		background-color: var(--b3-scroll-color);
-	}
-
-	&::-moz-range-thumb {
-		background-color: var(--b3-scroll-color);
-	}
-}
-
-// 滚动条的厚度保持为 10px，因为其他地方的布局已经考虑到了 10px 的滚动条；原生是 10px 就行了，这里不需要再写样式，否则会影响导出 PDF 的滚动条
-// ::-webkit-scrollbar {
-// width: 10px;
-// height: 10px;
-// }
-::-webkit-scrollbar-thumb {
-	background-clip: padding-box;
-	border: 2px solid transparent;
-}
-::-webkit-scrollbar-thumb:hover {
-	background-color: var(--wh-scroll-color_15);
-	border-width: unset;
-}
-
-// 避免底栏遮挡
-// .layout__resize--lr 是纵向的拖拽条，.layout__resize 是横向的拖拽条
-// 右侧没有 .layout__resize--lr（纵向的拖拽条）、下方没有 .layout__resize（横向的拖拽条）的页签就是最靠右下方的页签（可以是多个页签）
-html[data-whisper-status="show"] .layout__center {
-	.fn__flex:not(:has(+ .layout__resize--lr)):not(:has(+ .layout__resize)) .layout-tab-container > .fn__flex-1 {
-		// 右下角的编辑器，滚动条的底部需要留出底栏的高度，否则会被底栏挡住
-		&.protyle .protyle-content, // 编辑器
-		#viewerContainer {          // PDF 阅读器
-			&::-webkit-scrollbar-track {
-				margin-bottom: status.$status-height;
-			}
-		}
-
-		// 底栏会挡住右下角的 反链页签/大纲页签/闪卡按钮
-		&.sy__backlink .backlinkList + .block__icons, // 反链页签
-		&.sy__outline > .fn__flex-1, // 大纲页签
-		.card__main .card__action {  // 闪卡按钮
-			padding-bottom: status.$status-height;
-		}
-	}
-
-	// 多次分屏之后 .fn__flex 有可能形成多层嵌套，需要重置
-	:is(.fn__flex:has(+ .layout__resize--lr), .fn__flex:has(+ .layout__resize)) .layout-tab-container > .fn__flex-1 {
-		&.protyle .protyle-content, // 编辑器
-		#viewerContainer {          // PDF 阅读器
-			&::-webkit-scrollbar-track {
-				margin-bottom: unset !important;
-			}
-		}
-
-		&.sy__backlink .backlinkList + .block__icons, // 反链页签
-		&.sy__outline > .fn__flex-1 { // 大纲页签
-			padding-bottom: unset !important;
-		}
-		.card__main .card__action {   // 闪卡按钮
-			padding-bottom: 8px !important;
-		}
-	}
-}
-

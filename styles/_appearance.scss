@@ -75,7 +75,6 @@ html {
 
   // 滚动条（淡化派生引用默认主题 --b3-scroll-color）
   --wh-scroll-color_15: color-mix(in srgb, var(--b3-scroll-color) 15%, transparent);
-  --wh-scroll-color_50: color-mix(in srgb, var(--b3-scroll-color) 50%, transparent);
 
   --wh-database-background13: var(--b3-font-background13); // 数据库选项 13 号底（原生回退思源色板；blush / graphite 由 emit-ui 覆盖）
 }
