@@ -92,8 +92,23 @@ export class BlockFocusHandler implements ThemeModule {
         // 光标在块内，并且这个块不在嵌入块内时，给这个块添加属性 data-whisper-block-focus
         if (block && !block.closest('.protyle-wysiwyg__embed')) {
             block.dataset.whisperBlockFocus = '';
+            this.markAncestorListItems(block);
         }
     };
+
+    /**
+     * 给焦点块的祖先列表项加上 data-whisper-block-focus
+     * 这样折叠列表的图标高亮不必依赖 .li:has([data-whisper-block-focus])
+     */
+    private markAncestorListItems(block: HTMLElement): void {
+        let ancestor: HTMLElement | null = block.parentElement;
+        while (ancestor && !ancestor.classList.contains('protyle-wysiwyg')) {
+            if (ancestor.classList.contains('li') && ancestor.hasAttribute('data-node-id')) {
+                ancestor.dataset.whisperBlockFocus = '';
+            }
+            ancestor = ancestor.parentElement;
+        }
+    }
 
     /**
      * 清除指定容器内或整个文档中的块焦点属性
