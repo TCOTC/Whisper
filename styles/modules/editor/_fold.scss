@@ -38,6 +38,7 @@ html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype
 	background-image: url('../../../icons/task-lists/play_arrow_5F6368_dark.svg');
 }
 .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action::after {
+	// TODO 为什么要这个样式？会导致列表折叠之后 hover 在图标上的时候不出现伪元素
 	background-color: unset; // 有序列表、任务列表折叠的时候不需要阴影
 }
 

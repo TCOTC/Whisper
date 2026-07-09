@@ -1,5 +1,11 @@
 // 列表块
 
+// 任务列表项前的方框，伪元素用圆角矩形
+// TODO 应该直接给思源 PR 这个样式
+.protyle-wysiwyg [data-node-id].li > .protyle-action--task::after {
+	border-radius: var(--b3-border-radius);
+}
+
 // 列表内的块
 body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 	// 子块

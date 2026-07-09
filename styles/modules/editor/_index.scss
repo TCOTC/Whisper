@@ -2,11 +2,12 @@
 // 备注：调整样式的时候分屏看 所见即所得 和 导出预览 模式，有的情况下需要不同的样式
 
 @use "inline";
-@use "scrollbar";
-@use "header";
 @use "blocks";
 @use "fold";
 @use "heading";
 @use "list";
 @use "code-block";
 @use "callout";
+
+@use "header";
+@use "scrollbar";
