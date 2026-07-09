@@ -44,8 +44,9 @@ function readIconFiles(): Map<string, string> {
 }
 
 function inlineIcons(css: string, iconFiles: Map<string, string>): string {
+  // Sass 会保留相对路径层数（如 ../../icons 或 ../../../icons），故匹配任意层 ../
   return css.replace(
-    /url\((['"]?)\.\.\/\.\.\/icons\/([^"')]+)\1\)/g,
+    /url\((['"]?)(?:\.\.\/)+icons\/([^"')]+)\1\)/g,
     (_match, _quote, iconPath: string) => {
       const iconContent = iconFiles.get(iconPath);
       if (!iconContent) {
