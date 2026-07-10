@@ -1,3 +1,6 @@
+@use "sass:list";
+@use "sass:math";
+
 // 标题块
 
 // 展开标题块时一闪而过的 loading-pure.svg
@@ -14,35 +17,27 @@
 		background-repeat: no-repeat;
 	}
 
-	&.h1:not([title]) > [spellcheck] {
-		padding-left: calc(1.75em / 1.75 * .43);
-		background-image: url('../../../icons/headings/h1.svg');
-		background-position: calc(1.75px / 1.75 * 0) calc(1.75em / 1.75 * .3 + .04em);
-	}
-	&.h2 > [spellcheck] {
-		padding-left: calc(1.75em / 1.55 * .43);
-		background-image: url('../../../icons/headings/h2.svg');
-		background-position: calc(1.75px / 1.55 * .5) calc(1.75em / 1.55 * .3 - .02em);
-	}
-	&.h3 > [spellcheck] {
-		padding-left: calc(1.75em / 1.38 * .43);
-		background-image: url('../../../icons/headings/h3.svg');
-		background-position: calc(1.75px / 1.38 * .8) calc(1.75em / 1.38 * .3 - .06em);
-	}
-	&.h4 > [spellcheck] {
-		padding-left: calc(1.75em / 1.25 * .43);
-		background-image: url('../../../icons/headings/h4.svg');
-		background-position: calc(1.75px / 1.25 * 1) calc(1.75em / 1.25 * .3 - .08em);
-	}
-	&.h5 > [spellcheck] {
-		padding-left: calc(1.75em / 1.13 * .43);
-		background-image: url('../../../icons/headings/h5.svg');
-		background-position: calc(1.75px / 1.13 * 1.2) calc(1.75em / 1.13 * .3 - .14em);
-	}
-	&.h6 > [spellcheck] {
-		padding-left: calc(1.75em / 1 * .43);
-		background-image: url('../../../icons/headings/h6.svg');
-		background-position: calc(1.75px / 1 * 1.5) calc(1.75em / 1 * .3 - .2em);
+	// 标题图标定位算法：
+	// 1. background-size 为 1em，图标随标题字号缩放；但 padding / 位置若直接用 em，
+	//    大标题会把左侧留白和图标偏移一并放大，跨级别视觉不一致。
+	// 2. 故用思源字号倍率表，令 $base = 1.75 / 倍率，把尺寸折回以 h1 为基准的绝对尺度。
+	// 3. padding-left = $base × 0.43em，保证各级左侧留白在绝对像素上接近一致。
+	// 4. background-position 在归一化基准上再按级别做线性光学微调（级别越小越往右、往上）：
+	//    X = $base × (i − 1) × 0.3 px
+	//    Y = $base × 0.3em + (0.05em − (i − 1) × 0.05em)
+	$heading-scales: 1.75, 1.55, 1.38, 1.25, 1.13, 1;
+	@for $i from 1 through 6 {
+		$base: math.div(1.75, list.nth($heading-scales, $i));
+		$sel: "&.h#{$i}";
+		@if $i == 1 {
+			$sel: "&.h1:not([title])";
+		}
+
+		#{$sel} > [spellcheck] {
+			padding-left: $base * .43em;
+			background-image: url("../../../icons/headings/h#{$i}.svg");
+			background-position: $base * ($i - 1) * .3 * 1px $base * .3em + (.05em - ($i - 1) * .05em);
+		}
 	}
 
 	// 居中、居右的标题块不需要显示图标
