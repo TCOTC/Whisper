@@ -42,3 +42,21 @@ export const pushMsg = (msg: string, timeout?: number) =>
 
 export const pushErrMsg = (msg: string, timeout?: number) =>
     post<{ id: string }>('/api/notification/pushErrMsg', { msg, timeout });
+
+/** 读取思源「页签融合至顶栏」状态（appearance.hideToolbar） */
+export function getHideToolbar(): boolean {
+    const appearance = window.siyuan?.config?.appearance as { hideToolbar?: boolean } | undefined;
+    return !!appearance?.hideToolbar;
+}
+
+/** 切换思源「页签融合至顶栏」（appearance.hideToolbar），由内核广播同步布局 */
+export function setHideToolbar(hideToolbar: boolean): Promise<ApiRes<{ hideToolbar: boolean } | null>> {
+    const appearance = window.siyuan?.config?.appearance;
+    if (!appearance) {
+        return Promise.resolve({ code: 500, msg: 'appearance config unavailable', data: null });
+    }
+    return post<{ hideToolbar: boolean } | null>('/api/setting/setAppearance', {
+        ...appearance,
+        hideToolbar,
+    });
+}

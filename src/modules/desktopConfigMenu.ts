@@ -9,8 +9,12 @@ import {
 } from './themeConfig';
 import { getCommonMenu, subscribeCommonMenu } from './commonMenuObserver';
 import { SCHEME_MENU_DEFS, SchemeMenuDef } from './schemeManager';
+import { getHideToolbar, setHideToolbar } from './api';
 import { t } from './i18n';
 import { logging } from './logger';
+
+/** 思源设置开关：不写入主题配置，状态与思源保持一致 */
+const SIYUAN_SETTING_HIDE_TOOLBAR = 'hideToolbar';
 
 function buildMenuSwitchInput(id: string, checked: boolean): string {
     return `<input class="b3-switch b3-switch--menu" id="${id}" type="checkbox"${checked ? ' checked' : ''}>`;
@@ -46,12 +50,30 @@ function buildDesktopMenuItemHtml({ key, icon }: MenuItemDef, config: ThemeConfi
     </label>`;
 }
 
+/** 顶栏融合：映射思源 appearance.hideToolbar，不参与主题配置持久化 */
+function buildToolbarFusionMenuItemHtml(): string {
+    const id = 'whisper_toolbar_fusion';
+    return `<label class="b3-menu__item" data-whisper-siyuan-setting="${SIYUAN_SETTING_HIDE_TOOLBAR}">
+        <svg class="b3-menu__icon"><use xlink:href="#iconLayout"></use></svg>
+        <span class="fn__flex-center">${t('toolbar_fusion')}</span>
+        <span class="fn__space fn__flex-1"></span>
+        ${buildMenuSwitchInput(id, getHideToolbar())}
+    </label>`;
+}
+
 function buildDesktopMenuHtml(config: ThemeConfig): string {
     const separator = '<div class="b3-menu__separator" data-whisper-config-separator></div>';
     const schemeItems = buildSchemeMenuHtml(config);
     const switchItems = flatMapMenuGroups(THEME_CONFIG_MENU_GROUPS, {
         separator: () => separator,
-        item: (item) => buildDesktopMenuItemHtml(item, config),
+        item: (item) => {
+            const html = buildDesktopMenuItemHtml(item, config);
+            // 在「文本半高背景」之前插入顶栏融合开关
+            if (item.key === 'text_half_bg') {
+                return `${buildToolbarFusionMenuItemHtml()}${html}`;
+            }
+            return html;
+        },
     }).join('');
 
     return `${separator}${schemeItems}${separator}${switchItems}`;
@@ -60,6 +82,7 @@ function buildDesktopMenuHtml(config: ThemeConfig): string {
 function removeInjectedMenuElements(): void {
     document.querySelectorAll('[data-whisper-config-separator]').forEach((element) => element.remove());
     document.querySelectorAll('[data-whisper-config-item]').forEach((element) => element.remove());
+    document.querySelectorAll('[data-whisper-siyuan-setting]').forEach((element) => element.remove());
     document.querySelectorAll('[data-whisper-scheme-submenu]').forEach((element) => element.remove());
 }
 
@@ -95,6 +118,21 @@ export class DesktopConfigMenu implements ThemeModule {
     private handleSwitchChange = (event: Event): void => {
         const input = event.target;
         if (!(input instanceof HTMLInputElement) || !input.classList.contains('b3-switch')) {
+            return;
+        }
+
+        const siyuanSetting = input.closest('[data-whisper-siyuan-setting]')?.getAttribute('data-whisper-siyuan-setting');
+        if (siyuanSetting === SIYUAN_SETTING_HIDE_TOOLBAR) {
+            void setHideToolbar(input.checked).then((result) => {
+                if (result.code !== 0) {
+                    logging.error(`Failed to set hideToolbar: ${result.msg}`);
+                    return;
+                }
+                if (result.data) {
+                    input.checked = result.data.hideToolbar;
+                }
+            });
+            event.stopPropagation();
             return;
         }
 

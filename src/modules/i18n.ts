@@ -25,6 +25,12 @@ const MESSAGES: Record<string, MessageEntry> = {
         tw: '文字半高背景',
         ja: 'テキスト半高背景',
     },
+    toolbar_fusion: {
+        en: 'Top bar fusion',
+        cn: '顶栏融合',
+        tw: '頂欄融合',
+        ja: 'トップバー融合',
+    },
     appearance_light: {
         en: 'Light appearance',
         cn: '明亮界面配色',
