@@ -1,5 +1,18 @@
 // 编辑器顶部
 
+@use "../_toolbar" as toolbar;
+
+// 面包屑缩小高度更靠近文档标签页
+.protyle-breadcrumb {
+	min-height: 30px;
+}
+// 顶栏融合时文档标签页在顶栏上的编辑器的面包屑的高度不缩小
+.layout__wnd--center {
+	& > [data-type=wnd] .layout-tab-container .protyle-breadcrumb {
+		min-height: toolbar.$toolbar-height--hide;
+	}
+}
+
 // 文档标题
 .protyle-title {
 	margin-top: 0 !important;
