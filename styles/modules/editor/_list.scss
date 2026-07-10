@@ -1,68 +1,36 @@
 // 列表块
 
-// 任务列表项前的方框，伪元素用圆角矩形
-// TODO 应该直接给思源 PR 这个样式
-.protyle-wysiwyg [data-node-id].li > .protyle-action--task::after {
-	border-radius: var(--b3-border-radius);
-}
-
 // 焦点块及其祖先 .li 均由 JS 打上 data-whisper-block-focus，避免使用 :has()
 .protyle-wysiwyg [data-node-id].li[data-whisper-block-focus] > .protyle-action {
 	color: var(--b3-theme-primary);
 }
 
-// 列表内的块
-body .protyle-wysiwyg [data-node-id].li > .protyle-action {
-	// 子块
-	&~ div:not(.code-block) {
-		line-height: 1.625em;
-
-		&:is(.h1, .h2, .h3, .h4, .h5, .h6) {
-			line-height: 1.625em; // 提高选择器优先级，覆盖原生样式 https://github.com/siyuan-note/siyuan/pull/15375
-		}
-
-		&> [spellcheck] {
-			min-height: 1.625em;
-		}
-	}
-
-	// 子块中的标题块
-	&~ div[data-type=NodeHeading] > [spellcheck] {
-		min-height: 1em;
-	}
-
-	// 首个子块
-	&+ [data-node-id] {
-		&.h1 {
-			// line-height: calc(1.625em / 1.75);
-			// 一级标题加一点行间距 https://github.com/siyuan-note/siyuan/issues/14062#issuecomment-2661340834
-			line-height: 1em;
-		}
-
-		&.h2 {
-			line-height: calc(1.625em / 1.55);
-		}
-
-		&.h3 {
-			line-height: calc(1.625em / 1.38);
-		}
-
-		&.h4 {
-			line-height: calc(1.625em / 1.25);
-		}
-
-		&.h5 {
-			line-height: calc(1.625em / 1.13);
-		}
-
-		&.h6 {
-			line-height: 1.625em;
-		}
-	}
+// 任务列表项前的方框，伪元素用圆角矩形
+// TODO跟进 等待 https://github.com/siyuan-note/siyuan/issues/18180 改进后移除该样式
+.protyle-wysiwyg [data-node-id].li > .protyle-action--task::after {
+	border-radius: var(--b3-border-radius);
 }
 
 // 已完成的任务列表项
 // 如果已完成的任务列表项的子块中包含非段落块（非段落块没有删除线），则这个非段落块之后的段落块也不需要删除线
 .protyle-task--done > div[data-node-id]:not(.p) ~ [data-node-id].p {
 	text-decoration: unset; // 覆盖原生样式
+}
+
+// 列表项的直接子块
+body .protyle-wysiwyg [data-node-id].li > [data-node-id]:not(.code-block) {
+	line-height: 1.625em;
+
+	& > [spellcheck] {
+		min-height: 1.625em;
+	}
+
+	// 直接子块是标题块
+	&[data-type="NodeHeading"] {
+		line-height: 1.625em; // 提高选择器优先级，覆盖原生样式 https://github.com/siyuan-note/siyuan/pull/15375
+
+		& > [spellcheck] {
+			min-height: 1em;
+		}
+	}
 }
