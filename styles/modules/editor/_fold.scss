@@ -1,92 +1,112 @@
 // 折叠块
 
-// 列表（焦点块及其祖先 .li 均由 JS 打上 data-whisper-block-focus，避免使用 :has()）
-.protyle-wysiwyg [data-node-id].li[data-whisper-block-focus] > .protyle-action {
-	color: var(--b3-theme-primary);
-}
-// 折叠的列表项
-.protyle-wysiwyg [data-node-id].li[fold="1"][data-whisper-block-focus] > .protyle-action::after {
-	background-color: var(--b3-theme-primary-lighter);
-}
-.protyle-wysiwyg [data-node-id].li[fold="1"] > .protyle-action::after {
-	background-color: var(--b3-list-hover);
-}
-// 无序列表
-.protyle .protyle-wysiwyg .li[data-subtype="u"] > .protyle-action:hover::after {
-	background-color: var(--b3-list-icon-hover);
-}
-// 有序列表、任务列表
-// 折叠图标使用 Lucide play（圆角空心三角）：https://lucide.dev/icons/play
+// 折叠图标
+// Lucide play（圆角空心三角）：https://lucide.dev/icons/play
 // 旧版是在 figma 基于上面这个图标改成了中空的：https://www.figma.com/design/d4H0T3mfcSljDQBm6G6eic
-.protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
-	content: '';
-	position: absolute;
-	left: -13px;
-	width: 10px;
-	height: 10px;
-	margin-top: 0.5px;
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position-y: center;
-	pointer-events: none; // 伪元素会影响块标移动
-}
 // svg 里的 fill 填的是 --b3-theme-on-surface-light，两个模式的颜色不同
-html[data-theme-mode="light"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
-	background-image: url('../../../icons/task-lists/play_arrow_5F6368_light.svg');
-}
-html[data-theme-mode="dark"] .protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"] > .protyle-action::before {
-	background-image: url('../../../icons/task-lists/play_arrow_5F6368_dark.svg');
-}
-.protyle-wysiwyg [data-node-id].li:is([data-subtype="o"], [data-subtype="t"])[fold="1"]>.protyle-action:not(:hover)::after {
-	background-color: unset; // 有序列表、任务列表折叠的时候不需要阴影
+html[data-theme-mode="light"] {
+	--wh-fold-list-icon: url('../../../icons/task-lists/play_arrow_5F6368_light.svg');
 }
 
-// 标题块
-.protyle-wysiwyg [data-node-id][data-type="NodeHeading"][fold="1"]::before {
-	display: none;
+html[data-theme-mode="dark"] {
+	--wh-fold-list-icon: url('../../../icons/task-lists/play_arrow_5F6368_dark.svg');
 }
 
-// 代码块
-.protyle-wysiwyg [data-node-id][fold="1"].code-block {
-	height: 5em !important; // 显示前两行半的代码
-}
-
-// 给折叠的非列表项块添加背景
-// 这个选择器用于覆盖原生样式
-.protyle-wysiwyg [data-node-id][fold="1"]:not(.li) {
-	background-image: repeating-linear-gradient(
+html {
+	--wh-fold-background-image: linear-gradient(
 		-45deg,
-		var(--b3-theme-background-light),
-		var(--b3-theme-background-light) 5px,
-		var(--b3-list-hover) 0,
-		var(--b3-list-hover) 10px
+		var(--b3-theme-background-light) 25%,
+		var(--b3-list-hover) 25%,
+		var(--b3-list-hover) 50%,
+		var(--b3-theme-background-light) 50%,
+		var(--b3-theme-background-light) 75%,
+		var(--b3-list-hover) 75%,
+		var(--b3-list-hover)
 	);
+	--wh-fold-background-image-size: 14px 14px; // ≈ 10px / √2 * 2，条纹宽度接近原 5px
+}
+
+.protyle-wysiwyg [data-node-id][fold="1"] {
+	// 列表项
+	&.li {
+		&[data-whisper-block-focus] > .protyle-action::after {
+			background-color: var(--b3-theme-primary-lighter);
+		}
+
+		> .protyle-action::after {
+			background-color: var(--b3-list-hover);
+		}
+
+		// 有序列表、任务列表
+		&[data-subtype="o"],
+		&[data-subtype="t"] {
+			> .protyle-action {
+				// 折叠图标
+				&::before {
+					content: '';
+					position: absolute;
+					left: -13px;
+					width: 10px;
+					height: 10px;
+					margin-top: 0.5px;
+					background-image: var(--wh-fold-list-icon);
+					background-size: contain;
+					background-repeat: no-repeat;
+					background-position-y: center;
+					pointer-events: none; // 伪元素会影响块标移动
+				}
+
+				// 有序列表、任务列表折叠的时候不需要阴影
+				&:not(:hover)::after {
+					background-color: unset;
+				}
+			}
+		}
+	}
+
+	// 标题块
+	&[data-type="NodeHeading"]::before {
+		display: none;
+	}
+
+	// 代码块
+	&.code-block {
+		height: 5em !important; // 显示前两行半的代码
+	}
+
+	// 给折叠的非列表项块添加背景
+	// 这个选择器用于覆盖原生样式
+	// 用 linear-gradient + 整数 background-size 平铺，避免 repeating-linear-gradient 在 -45deg 下的亚像素接缝
+	&:not(.li) {
+		background-image: var(--wh-fold-background-image);
+		background-size: var(--wh-fold-background-image-size);
+	}
 
 	// 折叠的代码块
 	&.code-block:not(pre) {
 		.protyle-action {
-			background-image: inherit; // 继承父级的背景图
-			background-position: 8px 0;
-
 			&::after {
-				background-color: var(--b3-list-hover) !important;
+				background-color: var(--b3-protyle-code-background) !important;
+				background-image: var(--wh-fold-background-image);
+				background-size: var(--wh-fold-background-image-size);
+				background-position: 6px 0;
 			}
 		}
 
-		.hljs {
-			background-image: inherit;
-			background-position: 11px 0;
-			background-color: var(--b3-theme-background-light);
-		}
+		// .hljs {
+		// 	background-color: var(--b3-theme-background-light);
+		// 	background-image: var(--wh-fold-background-image);
+		// 	background-size: var(--wh-fold-background-image-size);
+		// 	background-position: 12px 0;
+		// }
 	}
 
 	// 折叠的提示块
-	&.callout[data-node-id][fold="1"] {
+	&.callout {
 		height: unset;
-	
+
 		.callout-content {
 			display: none;
 		}
 	}
 }
-

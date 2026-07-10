@@ -6,6 +6,11 @@
 	border-radius: var(--b3-border-radius);
 }
 
+// 焦点块及其祖先 .li 均由 JS 打上 data-whisper-block-focus，避免使用 :has()
+.protyle-wysiwyg [data-node-id].li[data-whisper-block-focus] > .protyle-action {
+	color: var(--b3-theme-primary);
+}
+
 // 列表内的块
 body .protyle-wysiwyg [data-node-id].li > .protyle-action {
 	// 子块
