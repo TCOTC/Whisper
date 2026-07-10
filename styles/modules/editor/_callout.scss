@@ -1,6 +1,6 @@
 // 提示块
 
-:is(.b3-typography, .protyle-wysiwyg) .callout {
+.protyle-wysiwyg .callout {
 	padding: 0;
 	color: var(--b3-theme-on-background);
 	background-color: transparent;
@@ -57,7 +57,7 @@
 	}
 
 	.callout-content {
-		padding: 4px 4px 4px max(.25em, 4px);
+		padding: 4px;
 		color: var(--b3-theme-on-background);
 		background-color: transparent;
 	}
