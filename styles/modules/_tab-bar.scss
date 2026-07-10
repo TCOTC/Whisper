@@ -1,340 +1,287 @@
 // 标签页
+// 备注：样式要同时适配顶栏融合与非顶栏融合
 
-// 隐藏标签页栏底部边框
+// ——————————————————文档标签页——————————————————
+
 .layout-tab-bar {
-	border-bottom: unset;
-}
+	// border-bottom: unset;
+    border-bottom-color: transparent;
 
-// ————————————————————选项卡————————————————————
+    &:not(.layout-tab-bar--readonly) {
+        .item {
+            min-height: 26px;
+            transition: unset;
+            overflow: visible; // 显示外侧分隔线伪元素
+            background-color: var(--b3-body-background); // 使用窗口颜色，跟编辑器颜色对比
+            // 分隔线颜色
+            --wh-tab-bar-separator-color: var(--b3-theme-surface-lighter);
 
-.layout-tab-bar:not(.layout-tab-bar--readonly) {
-	height: unset;
-	padding: 8px 5px 5px; // 默认边距：距离其他元素 8px（.item本身有3px左右边距），底部留 5px 给伪元素
+            body.body--toolbar-hide .layout__wnd--center & {
+                background-color: var(--b3-theme-background); // 使用编辑器颜色，跟窗口颜色对比
+                --wh-tab-bar-separator-color: var(--b3-theme-background);
+            }
 
-	.item {
-		border-radius: var(--b3-border-radius);
-		min-height: unset;
-		min-width: unset;
-		overflow: visible;
-		height: 26px;
-		margin: 0 3px;
-		transition: unset;
+            &, body.body--toolbar-hide .layout__wnd--center & {
+                // 焦点选项
+                &--focus {
+                    background-color: var(--b3-theme-primary-lightest);
+                }
+    
+                &--pin {
+                    // 按位置循环四种卡片色
+                    &:nth-child(4n-3) { --wh-tab-pin-bg: var(--b3-card-error-background); }
+                    &:nth-child(4n-2) { --wh-tab-pin-bg: var(--b3-card-warning-background); }
+                    &:nth-child(4n-1) { --wh-tab-pin-bg: var(--b3-card-info-background); }
+                    &:nth-child(4n) { --wh-tab-pin-bg: var(--b3-card-success-background); }
 
-		&:not(.item--pin) {
-			background-color: var(--b3-theme-surface); // 默认背景色
-		}
+                    background-color: var(--wh-tab-pin-bg);
 
-		&:not(.item--focus):hover { // 聚焦时背景色不要变
-			background-color: var(--b3-theme-background-light) !important;
-		}
+                    &:hover {
+                        background-color: color-mix(in srgb, var(--wh-tab-pin-bg) 50%, var(--b3-theme-primary-lightest)) !important;
+                    }
 
-		.item__text {
-			-webkit-mask-image: none;
-			transition: unset;
-		}
-	}
+                    // 钉住且聚焦时 hover 保持原色
+                    &.item--focus:hover {
+                        background-color: var(--wh-tab-pin-bg) !important;
+                    }
+                }
+        
+                &:not(.item--focus):hover {
+                    background-color: var(--b3-theme-primary-lightest);
+                }
+            }
 
-	// 焦点选项
-	.item--focus {
-		// 伪元素下划线
-		&::after {
-			height: 2px;
-			bottom: -5px;
-			pointer-events: none; // 伪元素会影响悬浮提示
-		}
+            // 钉住的页签与未钉住的页签之间添加分隔线
+            &--pin + .item:not(.item--pin) {
+                margin-left: 10px;
 
-		.item__text {
-			color: var(--b3-theme-on-background);
-		}
-	}
-}
+                &::before {
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    left: -8px;
+                    width: 2px;
+                    height: 20px;
+                    background-color: var(--wh-tab-bar-separator-color);
+                    border-radius: var(--b3-border-radius);
+                    pointer-events: none;
+                }
+            }
 
+            .item__icon {
+                padding: 2px 0 3px 8px;
 
-// ————————————————————数据库————————————————————
+                & + .item__text {
+                    padding-left: 3px;
+                }
+            }
 
-.av__views > .layout-tab-bar {
-	height: 38px;
-	padding: 0;
+            .item__text {
+            	transition: unset;
+                // padding: 0;
+                // margin: 0 6px;
+            }
 
-	// 视图图标
-	.item__graphic {
-		padding: 0 2px 0 8px;
-	}
-}
-
-
-// ————————————————————页签————————————————————
-
-#layouts .fn__flex:not(.av__views) {
-	&>.layout-tab-bar:not(.layout-tab-bar--readonly) {
-		padding: 4px 0 5px 5px; // 跟面包屑对齐
-
-		// 页签宽度
-		.item:not(.item--pin) {
-			.item__text {
-				min-width: 4em; // 页签最少显示的字符数宽度
+            &:not(.item--pin) .item__text {
+                min-width: 3em; // 页签最少显示的字符数宽度
 				text-align-last: left; // 文本居左
-				padding-right: 22px; // 留给叉号图标的位置
-				-webkit-mask-image: -webkit-linear-gradient(right, transparent 20px, var(--b3-theme-on-surface) 24px); // 标题文本渐变，使叉号不与标题文本重叠
-				mask-image: linear-gradient(to left, transparent 20px, var(--b3-theme-on-surface) 24px);
-			}
+                // margin-right: 3px;
+            }
 
-			.item__close {
-				position: absolute; // 让叉号靠右
-				right: 0;
-				padding: 0 3px 0 0; // 叉号点击范围
+            .item__close {
+                padding: 5px 6px 5px 0;
 
-				svg {
-					opacity: .68; // 始终显示页签叉号
-					transition: unset;
-					height: 10px; // 叉号图标大小
-					width: 10px;
-					background-color: unset;
-				}
+                // 始终显示页签叉号
+                svg {
+                    opacity: 0.68;
+                }
 
-				&:hover svg {
-					color: var(--b3-theme-on-background);
-				}
-			}
-		}
+                &:hover svg {
+                    background-color: var(--b3-list-icon-hover);
+                }
+            }
 
-		// 钉住的页签
-		.item--pin {
-			.item__icon {
-				padding: 0 5px;
-			}
+    		// 关闭页签时的宽度缩小渐变动画 https://github.com/siyuan-note/siyuan/blob/41f2861c87575ff5ac4b50a0520b1a4fe55b4a70/app/src/layout/Wnd.ts#L841
+    		// 不用 overflow: hidden（会裁掉外侧分隔线）；用 clip-path 只向左扩出分隔线空间，其余方向裁切溢出内容
+    		&[style*="max-width: 0"] {
+    			transition: max-width .2s cubic-bezier(0, 0, .2, 1) 0ms; // 只写 max-width 不写 all，避免被 margin 造成动画异常抖动
+    			min-width: unset !important;
+    			clip-path: inset(0 0 0 -10px);
 
-			.item__text {
-				min-width: 4em; // 页签最少显示的字符数宽度
-				text-align-last: left; // 文本居左
-				// padding-right 为 8px
-				-webkit-mask-image: -webkit-linear-gradient(right, transparent 4px, var(--b3-theme-on-surface) 8px);
-				mask-image: linear-gradient(to left, transparent 4px, var(--b3-theme-on-surface) 8px);
-			}
+    			.item__text {
+    				min-width: unset; // 文本也需要一并缩小
+    			}
 
-			// 颜色
-			&:nth-child(4n-3) {
-				background-color: var(--b3-card-error-background);
-
-				&:hover {
-					background-color: color-mix(in srgb, var(--b3-card-error-background) 90%, var(--b3-list-hover)) !important;
-				}
-			}
-			&:nth-child(4n-2) {
-				background-color: var(--b3-card-warning-background);
-
-				&:hover {
-					background-color: color-mix(in srgb, var(--b3-card-warning-background) 90%, var(--b3-list-hover)) !important;
-				}
-			}
-			&:nth-child(4n-1) {
-				background-color: var(--b3-card-info-background);
-
-				&:hover {
-					background-color: color-mix(in srgb, var(--b3-card-info-background) 90%, var(--b3-list-hover)) !important;
-				}
-			}
-			&:nth-child(4n) {
-				background-color: var(--b3-card-success-background);
-
-				&:hover {
-					background-color: color-mix(in srgb, var(--b3-card-success-background) 90%, var(--b3-list-hover)) !important;
-				}
-			}
-			// 钉住且聚焦的页签
-			&.item--focus {
-				&:nth-child(4n-3):hover {
-					background-color: var(--b3-card-error-background) !important;
-				}
-				&:nth-child(4n-2):hover {
-					background-color: var(--b3-card-warning-background) !important;
-				}
-				&:nth-child(4n-1):hover {
-					background-color: var(--b3-card-info-background) !important;
-				}
-				&:nth-child(4n):hover {
-					background-color: var(--b3-card-success-background) !important;
-				}
-			}
-
-			// 钉住的页签与未钉住的页签之间添加分隔线
-			&+.item:not(.item--pin, .item--readonly) {
-				margin-left: 10px;
-
-				&::before {
-					content: "";
-					display: block;
-					position: absolute;
-					left: -8px;
-					width: .2em;
-					height: 1.5em;
-					background-color: var(--b3-theme-surface-lighter);
-					border-radius: var(--b3-border-radius);
-					pointer-events: none;
-				}
-			}
-		}
-
-		// 关闭页签时的宽度缩小渐变动画 https://github.com/siyuan-note/siyuan/blob/a05faf6fc1c8fc44471fe8102899be72d3940f48/app/src/layout/Wnd.ts#L835
-		.item[style*="max-width: 0"] {
-			transition: var(--b3-transition);
-			min-width: unset !important;
-
-			.item__text {
-				min-width: unset; // 文本也需要一并缩小
-			}
-
-			.item__close svg {
-				opacity: 0 !important;
-			}
-		}
-	}
-
-	&>.layout-tab-bar--readonly {
-		min-width: 69px;
-
-		.item--readonly {
-			padding: 0 8px 0 5px;
-		}
-	}
+    			.item__close svg {
+    				opacity: 0 !important;
+    			}
+    		}
+        }
+    }
 }
 
-// 窗口左上角留一点空位用于拖拽窗口
-#toolbar:not(.toolbar--browser) {
-	padding-left: 0; // 预留 5px
 
-	#barWorkspace {
-		margin-left: 0; // 预留 2px
-	}
+// // ————————————————————数据库————————————————————
 
-	&::before {
-		content: "";
-		width: 7px; // 前面预留出来的 7px 区域
-		app-region: drag;
-	}
-}
-body:not(.body--win32) #toolbar:not(.toolbar--browser)::before {
-	margin-right: calc(var(--b3-toolbar-left-mac) - 7px); // 给 Mac 左上角的窗口控制按钮留空位
-}
-// 浏览器打开时的顶栏样式
-.toolbar--browser {
-	padding-left: env(titlebar-area-x, 5px);
-}
+// .av__views > .layout-tab-bar {
+// 	height: 38px;
+// 	padding: 0;
 
-// 新窗口
-.body--window {
-	// 窗口左上角和顶部留一点空位用于拖拽窗口
-	&::before {
-		content: "";
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 8px;
-		height: 42px; // 页签元素的高度
-		app-region: drag;
-	}
+// 	// 视图图标
+// 	.item__graphic {
+// 		padding: 0 2px 0 8px;
+// 	}
+// }
 
-	&::after {
-		content: "";
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 8px;
-		app-region: drag;
 
-		@at-root .body--win32#{&} {
-			width: calc(100% - 42px * 4); // 避开 Windows 新窗口右上角的四个控制按钮
-		}
-	}
+// // ————————————————————页签————————————————————
 
-	// 页签右边留一点位置用来拖拽窗口 TODO跟进 等 https://github.com/siyuan-note/siyuan/issues/12302 改进了应该就能移除这个样式
-	#layouts .fn__flex:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
-		min-width: 100px;
-	}
+// #layouts .fn__flex:not(.av__views) {
+// 	&>.layout-tab-bar--readonly {
+// 		min-width: 69px;
 
-	.layout__resize + .fn__flex-1 > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
-		min-width: 69px !important;
-	}
-}
+// 		.item--readonly {
+// 			padding: 0 8px 0 5px;
+// 		}
+// 	}
+// }
 
-// 窗口失去焦点时
-body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
-	box-shadow: none !important;
+// // 窗口左上角留一点空位用于拖拽窗口
+// #toolbar:not(.toolbar--browser) {
+// 	padding-left: 0; // 预留 5px
 
-	&::after {
-		background-color: var(--b3-theme-background-light);
-	}
-}
+// 	#barWorkspace {
+// 		margin-left: 0; // 预留 2px
+// 	}
 
-// ————————————————————窗口————————————————————
+// 	&::before {
+// 		content: "";
+// 		width: 7px; // 前面预留出来的 7px 区域
+// 		app-region: drag;
+// 	}
+// }
+// body:not(.body--win32) #toolbar:not(.toolbar--browser)::before {
+// 	margin-right: calc(var(--b3-toolbar-left-mac) - 7px); // 给 Mac 左上角的窗口控制按钮留空位
+// }
+// // 浏览器打开时的顶栏样式
+// .toolbar--browser {
+// 	padding-left: env(titlebar-area-x, 5px);
+// }
 
-// 属性面板
-.b3-dialog--open[data-key="dialog-attr"] .layout-tab-bar {
-	padding: 8px 9px 5px;
-}
+// // 新窗口
+// .body--window {
+// 	// 窗口左上角和顶部留一点空位用于拖拽窗口
+// 	&::before {
+// 		content: "";
+// 		position: fixed;
+// 		top: 0;
+// 		left: 0;
+// 		width: 8px;
+// 		height: 42px; // 页签元素的高度
+// 		app-region: drag;
+// 	}
 
-// 数据历史
-.b3-dialog--open[data-key="dialog-history"] .layout-tab-bar {
-	padding: 8px 5px 5px;
-}
+// 	&::after {
+// 		content: "";
+// 		position: fixed;
+// 		top: 0;
+// 		left: 0;
+// 		width: 100%;
+// 		height: 8px;
+// 		app-region: drag;
 
-// 设置
-.b3-dialog--open[data-key="dialog-setting"] .config__tab-container {
-	// AI
-	&[data-name="AI"] {
-		// 隐藏唯一的 Tab，不用 display: none 是因为要保留元素的 16px 高度作为页面上边距
-		.layout-tab-bar {
-			padding: 0;
-			opacity: 0;
-			max-height: 16px;
-			pointer-events: none;
-		}
-	}
+// 		@at-root .body--win32#{&} {
+// 			width: calc(100% - 42px * 4); // 避开 Windows 新窗口右上角的四个控制按钮
+// 		}
+// 	}
 
-	// 资源
-	&[data-name="image"] {
-		.layout-tab-bar {
-			padding: 8px 5px 5px;
-		}
-	}
+// 	// 页签右边留一点位置用来拖拽窗口 TODO跟进 等 https://github.com/siyuan-note/siyuan/issues/12302 改进了应该就能移除这个样式
+// 	#layouts .fn__flex:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
+// 		min-width: 100px;
+// 	}
 
-	// 集市
-	&[data-name="bazaar"] {
-		.layout-tab-bar {
-			padding: 10px 13px 5px;
-		}
+// 	.layout__resize + .fn__flex-1 > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
+// 		min-width: 69px !important;
+// 	}
+// }
 
-		.config-bazaar__title {
-			padding-left: 16px;
-			padding-right: 6px;
-			background-color: rgb(from var(--b3-theme-background) r g b / .68);
-		}
+// // 窗口失去焦点时
+// body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
+// 	box-shadow: none !important;
 
-		.config-bazaar__panel {
-			scrollbar-gutter: stable;
-		}
-	}
-}
-// 手机设置。隐藏唯一的 AI Tab
-#modelMain .layout-tab-bar:has(>.item[data-type="openai"]) {
-	display: none;
-}
+// 	&::after {
+// 		background-color: var(--b3-theme-background-light);
+// 	}
+// }
 
-// ————————————————————切换页签 菜单————————————————————
+// // ————————————————————窗口————————————————————
 
-#commonMenu[data-name="tabList"] .b3-menu__items {
-	scrollbar-gutter: stable;
-	padding-right: 0;
+// // 属性面板
+// .b3-dialog--open[data-key="dialog-attr"] .layout-tab-bar {
+// 	padding: 8px 9px 5px;
+// }
 
-	.b3-menu__label {
-		padding-right: 8px;
-		// padding-right 为 8px
-		-webkit-mask-image: -webkit-linear-gradient(right, transparent 4px, var(--b3-theme-on-surface) 8px);
-		mask-image: linear-gradient(to left, transparent 4px, var(--b3-theme-on-surface) 8px);
-	}
+// // 数据历史
+// .b3-dialog--open[data-key="dialog-history"] .layout-tab-bar {
+// 	padding: 8px 5px 5px;
+// }
 
-	.b3-menu__action {
-		margin-left: 0;
-	}
-}
+// // 设置
+// .b3-dialog--open[data-key="dialog-setting"] .config__tab-container {
+// 	// AI
+// 	&[data-name="AI"] {
+// 		// 隐藏唯一的 Tab，不用 display: none 是因为要保留元素的 16px 高度作为页面上边距
+// 		.layout-tab-bar {
+// 			padding: 0;
+// 			opacity: 0;
+// 			max-height: 16px;
+// 			pointer-events: none;
+// 		}
+// 	}
+
+// 	// 资源
+// 	&[data-name="image"] {
+// 		.layout-tab-bar {
+// 			padding: 8px 5px 5px;
+// 		}
+// 	}
+
+// 	// 集市
+// 	&[data-name="bazaar"] {
+// 		.layout-tab-bar {
+// 			padding: 10px 13px 5px;
+// 		}
+
+// 		.config-bazaar__title {
+// 			padding-left: 16px;
+// 			padding-right: 6px;
+// 			background-color: rgb(from var(--b3-theme-background) r g b / .68);
+// 		}
+
+// 		.config-bazaar__panel {
+// 			scrollbar-gutter: stable;
+// 		}
+// 	}
+// }
+// // 手机设置。隐藏唯一的 AI Tab
+// #modelMain .layout-tab-bar:has(>.item[data-type="openai"]) {
+// 	display: none;
+// }
+
+// // ————————————————————切换页签 菜单————————————————————
+
+// #commonMenu[data-name="tabList"] .b3-menu__items {
+// 	scrollbar-gutter: stable;
+// 	padding-right: 0;
+
+// 	.b3-menu__label {
+// 		padding-right: 8px;
+// 		// padding-right 为 8px
+// 		-webkit-mask-image: -webkit-linear-gradient(right, transparent 4px, var(--b3-theme-on-surface) 8px);
+// 		mask-image: linear-gradient(to left, transparent 4px, var(--b3-theme-on-surface) 8px);
+// 	}
+
+// 	.b3-menu__action {
+// 		margin-left: 0;
+// 	}
+// }
