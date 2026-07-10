@@ -13,6 +13,7 @@ html[data-theme-mode="dark"] {
 }
 
 html {
+	// 用 linear-gradient + 整数 background-size 平铺，避免 repeating-linear-gradient 在 -45deg 下的亚像素接缝
 	--wh-fold-background-image: linear-gradient(
 		-45deg,
 		var(--b3-theme-background-light) 25%,
@@ -64,46 +65,44 @@ html {
 		}
 	}
 
+	// 给非列表项块添加背景
+	&:not(.li) {
+		background-color: var(--b3-theme-background-light);
+		background-image: var(--wh-fold-background-image);
+		background-size: var(--wh-fold-background-image-size);
+
+		&:not([data-type=NodeHeading]) {
+			opacity: 0.5;
+	  	}
+	}
+
 	// 标题块
-	&[data-type="NodeHeading"]::before {
-		display: none;
+	&[data-type="NodeHeading"] {
+		background-color: color-mix(in srgb, var(--b3-theme-background-light) 50%, transparent 50%);
+		&::before {
+			display: none;
+		}
 	}
 
 	// 代码块
 	&.code-block {
 		height: 5em !important; // 显示前两行半的代码
-	}
-
-	// 给折叠的非列表项块添加背景
-	// 这个选择器用于覆盖原生样式
-	// 用 linear-gradient + 整数 background-size 平铺，避免 repeating-linear-gradient 在 -45deg 下的亚像素接缝
-	&:not(.li) {
-		background-image: var(--wh-fold-background-image);
-		background-size: var(--wh-fold-background-image-size);
-	}
-
-	// 折叠的代码块
-	&.code-block:not(pre) {
+		
 		.protyle-action {
+			background-color: var(--b3-theme-background-light) !important;
+
 			&::after {
-				background-color: var(--b3-protyle-code-background) !important;
+				background-color: transparent !important;
 				background-image: var(--wh-fold-background-image);
 				background-size: var(--wh-fold-background-image-size);
-				background-position: 6px 0;
+				background-position: -4px -4px;
 			}
 		}
-
-		// .hljs {
-		// 	background-color: var(--b3-theme-background-light);
-		// 	background-image: var(--wh-fold-background-image);
-		// 	background-size: var(--wh-fold-background-image-size);
-		// 	background-position: 12px 0;
-		// }
 	}
 
-	// 折叠的提示块
+	// 提示块
 	&.callout {
-		height: unset;
+		height: unset !important;
 
 		.callout-content {
 			display: none;
