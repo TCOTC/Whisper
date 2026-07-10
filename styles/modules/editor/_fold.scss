@@ -67,7 +67,7 @@ html {
 
 	// 给非列表项块添加背景
 	&:not(.li) {
-		background-color: var(--b3-theme-background-light);
+		background-color: var(--b3-protyle-code-background);
 		background-image: var(--wh-fold-background-image);
 		background-size: var(--wh-fold-background-image-size);
 
@@ -78,7 +78,7 @@ html {
 
 	// 标题块
 	&[data-type="NodeHeading"] {
-		background-color: color-mix(in srgb, var(--b3-theme-background-light) 50%, transparent 50%);
+		background-color: color-mix(in srgb, var(--b3-protyle-code-background) 50%, transparent 50%);
 		&::before {
 			display: none;
 		}
@@ -89,10 +89,9 @@ html {
 		height: 5em !important; // 显示前两行半的代码
 		
 		.protyle-action {
-			background-color: var(--b3-theme-background-light) !important;
+			background-color: var(--b3-theme-background) !important;
 
 			&::after {
-				background-color: transparent !important;
 				background-image: var(--wh-fold-background-image);
 				background-size: var(--wh-fold-background-image-size);
 				background-position: -4px -4px;
