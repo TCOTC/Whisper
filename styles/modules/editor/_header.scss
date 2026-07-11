@@ -2,14 +2,62 @@
 
 @use "../_toolbar" as toolbar;
 
+// 面包屑默认高度（勿写死 height，历史上会导致输入卡死）
+$breadcrumb-height: 30px;
+
 // 面包屑缩小高度更靠近文档标签页
 .protyle-breadcrumb {
-	min-height: 30px;
+	min-height: $breadcrumb-height;
 }
+
 // 顶栏融合时文档标签页在顶栏上的编辑器的面包屑的高度不缩小
 .layout__wnd--center {
 	& > [data-type=wnd] .layout-tab-container .protyle-breadcrumb {
 		min-height: toolbar.$toolbar-height--hide;
+	}
+}
+
+// 隐藏文档面包屑：叠层透明 + 隐藏路径栏，保留右侧按钮（不透明）
+// 仅非全屏的文档页签顶层面包屑；全屏保持思源原生以便拖拽/操作；嵌入块/反链内的 __bar 不受影响
+html[data-whisper-hide-doc-breadcrumb] {
+	.layout-tab-container > .protyle:not(.fullscreen) > .protyle-breadcrumb {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		// 高于块选中/高亮 ::after(3)，避免划过按钮时盖住；低于工具栏(5)
+		z-index: 4;
+		background-color: transparent;
+		pointer-events: none;
+
+		.protyle-breadcrumb__bar {
+			display: none;
+		}
+
+		.protyle-breadcrumb__icon,
+		.block__icon {
+			pointer-events: auto;
+			background-color: var(--b3-theme-background);
+		}
+
+		// 原生 __icon 默认就有 list-hover 底，叠在实色上保持芯片观感且不透明
+		.protyle-breadcrumb__icon {
+			background-image: linear-gradient(var(--b3-list-hover), var(--b3-list-hover));
+		}
+
+		.block__icon:hover:not([disabled]):not(.block__icon--text):not(.block__icon--warning),
+		.block__icon.block__icon--active {
+			background-image: linear-gradient(var(--b3-list-icon-hover), var(--b3-list-icon-hover));
+		}
+
+		// 内容区顶部留白，避免被右侧按钮挡住
+		& + .protyle-content {
+			padding-top: $breadcrumb-height;
+		}
+	}
+
+	.layout__wnd--center > [data-type=wnd] .layout-tab-container > .protyle:not(.fullscreen) > .protyle-breadcrumb + .protyle-content {
+		padding-top: toolbar.$toolbar-height--hide;
 	}
 }
 

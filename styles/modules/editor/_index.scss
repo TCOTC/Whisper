@@ -1,6 +1,9 @@
 // 编辑器
 // 备注：调整样式的时候分屏看 所见即所得 和 导出预览 模式，有的情况下需要不同的样式
 
+@use "header";
+@use "scrollbar";
+
 @use "inline";
 @use "blocks";
 @use "fold";
@@ -8,6 +11,3 @@
 @use "list";
 @use "code-block";
 @use "callout";
-
-@use "header";
-@use "scrollbar";

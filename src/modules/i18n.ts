@@ -19,6 +19,12 @@ const MESSAGES: Record<string, MessageEntry> = {
         tw: '除錯資訊',
         ja: 'デバッグ情報',
     },
+    hide_doc_breadcrumb: {
+        en: 'Hide document breadcrumb',
+        cn: '隐藏文档面包屑',
+        tw: '隱藏文件麵包屑',
+        ja: 'ドキュメントパンくずを隠す',
+    },
     text_half_bg: {
         en: 'Text half-height background',
         cn: '文本半高背景',

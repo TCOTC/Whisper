@@ -41,6 +41,12 @@ export const THEME_CONFIG_SCHEMA = {
         type: 'number',
         default: () => Date.now(),
     },
+    /** 隐藏文档面包屑：叠层透明并隐藏路径栏，保留右侧按钮（对应 data-whisper-hide-doc-breadcrumb；不影响嵌入块/反链） */
+    hide_doc_breadcrumb: {
+        type: 'boolean',
+        default: false,
+        menu: { icon: 'iconFile', group: 'feature' },
+    },
     /** 文本半高背景（对应 data-whisper-text-half-bg） */
     text_half_bg: {
         type: 'boolean',

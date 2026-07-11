@@ -66,17 +66,11 @@ function buildDesktopMenuHtml(config: ThemeConfig): string {
     const schemeItems = buildSchemeMenuHtml(config);
     const switchItems = flatMapMenuGroups(THEME_CONFIG_MENU_GROUPS, {
         separator: () => separator,
-        item: (item) => {
-            const html = buildDesktopMenuItemHtml(item, config);
-            // 在「文本半高背景」之前插入顶栏融合开关
-            if (item.key === 'text_half_bg') {
-                return `${buildToolbarFusionMenuItemHtml()}${html}`;
-            }
-            return html;
-        },
+        item: (item) => buildDesktopMenuItemHtml(item, config),
     }).join('');
 
-    return `${separator}${schemeItems}${separator}${switchItems}`;
+    // 顶栏融合放在开关列表第一位
+    return `${separator}${schemeItems}${separator}${buildToolbarFusionMenuItemHtml()}${switchItems}`;
 }
 
 function removeInjectedMenuElements(): void {

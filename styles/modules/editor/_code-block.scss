@@ -1,5 +1,8 @@
 // 代码块
 
+@use "header" as header;
+@use "../toolbar" as toolbar;
+
 // 代码块背景色强制统一，覆盖代码块主题；代码块文本颜色遵循代码块主题
 .b3-typography .code-block,
 .protyle-wysiwyg .code-block {
@@ -66,5 +69,16 @@
 		.hljs {
 			padding: 0 1em 12px; // .protyle-icon 的高度是 24px，但底部没必要留一致的高度，否则看起来有点怪
 		}
+	}
+}
+
+// 隐藏文档面包屑时 content 有 padding-top，sticky 需用负 top 抵消，否则会偏下
+html[data-whisper-hide-doc-breadcrumb] {
+	.layout-tab-container > .protyle:not(.fullscreen) .code-block .protyle-action {
+		top: -(header.$breadcrumb-height) !important;
+	}
+
+	.layout__wnd--center > [data-type=wnd] .layout-tab-container .protyle:not(.fullscreen) .code-block .protyle-action {
+		top: -(toolbar.$toolbar-height--hide) !important;
 	}
 }
