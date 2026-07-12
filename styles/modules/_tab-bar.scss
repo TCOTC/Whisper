@@ -16,17 +16,25 @@
             // 分隔线颜色
             --wh-tab-bar-separator-color: var(--b3-theme-surface-lighter);
 
+            // 焦点选项
+            &--focus,
+            body.body--blur .layout__wnd--active &--focus {
+                background-color: var(--b3-theme-primary-lightest);
+            }
+
+            // 顶栏融合：未聚焦保持窗口色融入顶栏，聚焦用编辑器色更显眼
             body.body--toolbar-hide .layout__wnd--center & {
-                background-color: var(--b3-theme-background); // 使用编辑器颜色，跟窗口颜色对比
-                --wh-tab-bar-separator-color: var(--b3-theme-background);
+                &:not([data-av-type]) {
+                    background-color: var(--b3-theme-background-light);
+                }
+
+                &--focus:not([data-av-type]),
+                body.body--blur .layout__wnd--active &--focus:not([data-av-type]) {
+                    background-color: var(--b3-theme-background);
+                }
             }
 
             &, body.body--toolbar-hide .layout__wnd--center & {
-                // 焦点选项
-                &--focus {
-                    background-color: var(--b3-theme-primary-lightest);
-                }
-    
                 &--pin {
                     // 按位置循环四种卡片色
                     &:nth-child(4n-3) { --wh-tab-pin-bg: var(--b3-card-error-background); }
@@ -34,7 +42,7 @@
                     &:nth-child(4n-1) { --wh-tab-pin-bg: var(--b3-card-info-background); }
                     &:nth-child(4n) { --wh-tab-pin-bg: var(--b3-card-success-background); }
 
-                    background-color: var(--wh-tab-pin-bg);
+                    background-color: var(--wh-tab-pin-bg) !important;
 
                     &:hover {
                         background-color: color-mix(in srgb, var(--wh-tab-pin-bg) 50%, var(--b3-theme-primary-lightest)) !important;
@@ -82,7 +90,8 @@
                 // margin: 0 6px;
             }
 
-            &:not(.item--pin) .item__text {
+            // 避免影响非文档标签页
+            &[data-type="tab-header"]:not(.item--pin) .item__text {
                 min-width: 3em; // 页签最少显示的字符数宽度
 				text-align-last: left; // 文本居左
                 // margin-right: 3px;
@@ -120,168 +129,10 @@
     }
 }
 
+// —————————————————数据库标签页——————————————————
 
-// // ————————————————————数据库————————————————————
-
-// .av__views > .layout-tab-bar {
-// 	height: 38px;
-// 	padding: 0;
-
-// 	// 视图图标
-// 	.item__graphic {
-// 		padding: 0 2px 0 8px;
-// 	}
-// }
-
-
-// // ————————————————————页签————————————————————
-
-// #layouts .fn__flex:not(.av__views) {
-// 	&>.layout-tab-bar--readonly {
-// 		min-width: 69px;
-
-// 		.item--readonly {
-// 			padding: 0 8px 0 5px;
-// 		}
-// 	}
-// }
-
-// // 窗口左上角留一点空位用于拖拽窗口
-// #toolbar:not(.toolbar--browser) {
-// 	padding-left: 0; // 预留 5px
-
-// 	#barWorkspace {
-// 		margin-left: 0; // 预留 2px
-// 	}
-
-// 	&::before {
-// 		content: "";
-// 		width: 7px; // 前面预留出来的 7px 区域
-// 		app-region: drag;
-// 	}
-// }
-// body:not(.body--win32) #toolbar:not(.toolbar--browser)::before {
-// 	margin-right: calc(var(--b3-toolbar-left-mac) - 7px); // 给 Mac 左上角的窗口控制按钮留空位
-// }
-// // 浏览器打开时的顶栏样式
-// .toolbar--browser {
-// 	padding-left: env(titlebar-area-x, 5px);
-// }
-
-// // 新窗口
-// .body--window {
-// 	// 窗口左上角和顶部留一点空位用于拖拽窗口
-// 	&::before {
-// 		content: "";
-// 		position: fixed;
-// 		top: 0;
-// 		left: 0;
-// 		width: 8px;
-// 		height: 42px; // 页签元素的高度
-// 		app-region: drag;
-// 	}
-
-// 	&::after {
-// 		content: "";
-// 		position: fixed;
-// 		top: 0;
-// 		left: 0;
-// 		width: 100%;
-// 		height: 8px;
-// 		app-region: drag;
-
-// 		@at-root .body--win32#{&} {
-// 			width: calc(100% - 42px * 4); // 避开 Windows 新窗口右上角的四个控制按钮
-// 		}
-// 	}
-
-// 	// 页签右边留一点位置用来拖拽窗口 TODO跟进 等 https://github.com/siyuan-note/siyuan/issues/12302 改进了应该就能移除这个样式
-// 	#layouts .fn__flex:not(:has(+ .layout__resize--lr)) > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
-// 		min-width: 100px;
-// 	}
-
-// 	.layout__resize + .fn__flex-1 > div[data-type="wnd"] > .fn__flex > .layout-tab-bar--readonly {
-// 		min-width: 69px !important;
-// 	}
-// }
-
-// // 窗口失去焦点时
-// body.body--blur .layout__wnd--active .layout-tab-bar .item--focus {
-// 	box-shadow: none !important;
-
-// 	&::after {
-// 		background-color: var(--b3-theme-background-light);
-// 	}
-// }
-
-// // ————————————————————窗口————————————————————
-
-// // 属性面板
-// .b3-dialog--open[data-key="dialog-attr"] .layout-tab-bar {
-// 	padding: 8px 9px 5px;
-// }
-
-// // 数据历史
-// .b3-dialog--open[data-key="dialog-history"] .layout-tab-bar {
-// 	padding: 8px 5px 5px;
-// }
-
-// // 设置
-// .b3-dialog--open[data-key="dialog-setting"] .config__tab-container {
-// 	// AI
-// 	&[data-name="AI"] {
-// 		// 隐藏唯一的 Tab，不用 display: none 是因为要保留元素的 16px 高度作为页面上边距
-// 		.layout-tab-bar {
-// 			padding: 0;
-// 			opacity: 0;
-// 			max-height: 16px;
-// 			pointer-events: none;
-// 		}
-// 	}
-
-// 	// 资源
-// 	&[data-name="image"] {
-// 		.layout-tab-bar {
-// 			padding: 8px 5px 5px;
-// 		}
-// 	}
-
-// 	// 集市
-// 	&[data-name="bazaar"] {
-// 		.layout-tab-bar {
-// 			padding: 10px 13px 5px;
-// 		}
-
-// 		.config-bazaar__title {
-// 			padding-left: 16px;
-// 			padding-right: 6px;
-// 			background-color: rgb(from var(--b3-theme-background) r g b / .68);
-// 		}
-
-// 		.config-bazaar__panel {
-// 			scrollbar-gutter: stable;
-// 		}
-// 	}
-// }
-// // 手机设置。隐藏唯一的 AI Tab
-// #modelMain .layout-tab-bar:has(>.item[data-type="openai"]) {
-// 	display: none;
-// }
-
-// // ————————————————————切换页签 菜单————————————————————
-
-// #commonMenu[data-name="tabList"] .b3-menu__items {
-// 	scrollbar-gutter: stable;
-// 	padding-right: 0;
-
-// 	.b3-menu__label {
-// 		padding-right: 8px;
-// 		// padding-right 为 8px
-// 		-webkit-mask-image: -webkit-linear-gradient(right, transparent 4px, var(--b3-theme-on-surface) 8px);
-// 		mask-image: linear-gradient(to left, transparent 4px, var(--b3-theme-on-surface) 8px);
-// 	}
-
-// 	.b3-menu__action {
-// 		margin-left: 0;
-// 	}
-// }
+// 数据库块视图图标
+.av__header .layout-tab-bar .item__graphic {
+    padding-top: 0;
+    padding-bottom: 0;
+}

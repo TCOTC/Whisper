@@ -50,7 +50,7 @@ html[data-whisper-hide-doc-breadcrumb] {
 			background-image: linear-gradient(var(--b3-list-icon-hover), var(--b3-list-icon-hover));
 		}
 
-		// 内容区顶部留白，避免被右侧按钮挡住
+		// 内容区顶部留白
 		& + .protyle-content {
 			padding-top: $breadcrumb-height;
 		}
@@ -58,6 +58,11 @@ html[data-whisper-hide-doc-breadcrumb] {
 
 	.layout__wnd--center > [data-type=wnd] .layout-tab-container > .protyle:not(.fullscreen) > .protyle-breadcrumb + .protyle-content {
 		padding-top: toolbar.$toolbar-height--hide;
+	}
+
+	// 数据库字段行 fixed 吸顶 z-index:3；文档标签栏需更高，否则会被盖住
+	[data-type="wnd"] > .fn__flex > .layout-tab-bar {
+		z-index: 4;
 	}
 }
 
