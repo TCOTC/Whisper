@@ -5,12 +5,6 @@
 	color: var(--b3-theme-primary);
 }
 
-// 任务列表项前的方框，伪元素用圆角矩形
-// TODO跟进 等待 https://github.com/siyuan-note/siyuan/issues/18180 改进后移除该样式
-.protyle-wysiwyg [data-node-id].li > .protyle-action--task::after {
-	border-radius: var(--b3-border-radius);
-}
-
 // 已完成的任务列表项
 // 如果已完成的任务列表项的子块中包含非段落块（非段落块没有删除线），则这个非段落块之后的段落块也不需要删除线
 .protyle-task--done > div[data-node-id]:not(.p) ~ [data-node-id].p {

@@ -75,8 +75,6 @@ html {
 
   // 滚动条（淡化派生引用默认主题 --b3-scroll-color）
   --wh-scroll-color_15: color-mix(in srgb, var(--b3-scroll-color) 15%, transparent);
-
-  --wh-database-background13: var(--b3-font-background13); // 数据库选项 13 号底（原生回退思源色板；blush / graphite 由 emit-ui 覆盖）
 }
 
 // ── § 输出：界面变量 ──────────────────────────────────────────────
@@ -140,10 +138,6 @@ html {
   --b3-card-info-background: #{fn.to-rgb(fn.theme-get($colors, b3-card-info-background))};
   --b3-card-success-color: #{fn.to-rgb(fn.theme-get($colors, b3-card-success-color))};
   --b3-card-success-background: #{fn.to-rgb(fn.theme-get($colors, b3-card-success-background))};
-
-  // 自定义文字（思源 13 为反色底；Whisper 数据库 13 / 14 与字体面板区分）
-  --wh-database-background13: #{fn.to-rgb(fn.theme-get($colors, wh-database-background13))}; // 数据库选项 13 号底（模块内局部覆盖 --b3-font-background13）
-  --b3-font-background14: #{fn.to-rgb(fn.theme-get($colors, b3-font-background14))};         // 数据库选项 14 号底（思源无 background14）
 
   // 开关（选中态统一为 olive 底 + 白圆圈。dark 默认为蓝底 #a8c7fa + olive 圆圈，与 olive 主色错位，故覆盖）
   --b3-switch-checked: #fff;
@@ -232,10 +226,6 @@ html[data-theme-mode="light"][data-whisper-appearance="blush"] {
     b3-card-success-color: oklch(55% 0.18 145),
     b3-card-success-background: oklch(92% 0.10 145),
 
-    // 数据库选项色板（13 仅数据库局部覆盖；14 思源无定义）
-    wh-database-background13: oklch(94% 0.003 265),
-    b3-font-background14: oklch(78% 0 0),
-
     // PDF 高亮色
     b3-pdf-background1: oklch(70% 0.17 28),
     b3-pdf-background5: oklch(76% 0.14 3),
@@ -280,10 +270,6 @@ html[data-theme-mode="dark"][data-whisper-appearance="graphite"] {
     b3-card-info-background: oklch(40% 0.07 253),
     b3-card-success-color: oklch(89% 0.14 145),
     b3-card-success-background: oklch(47% 0.08 151),
-
-    // 数据库选项色板（13 仅数据库局部覆盖；14 思源无定义）
-    wh-database-background13: oklch(46% 0 0),
-    b3-font-background14: oklch(61% 0 0),
 
     // PDF 高亮色
     // TODO 跟进 https://github.com/siyuan-note/siyuan/issues/14065 修改

@@ -141,7 +141,7 @@ a:hover {
 	text-decoration: none;
 }
 
-a,
+a, // 全局的链接都使用同样的颜色
 .b3-typography span[data-type~=a],
 .protyle-wysiwyg [data-node-id] span[data-type~=a],
 [data-node-id] span[data-type~=a]  {

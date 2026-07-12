@@ -12,9 +12,15 @@
 //
 // 从方案块内联的 profile map 展开 12 色字 + 12 色底。
 // profile 键：hues、text-a、text-b、bg-a、bg-b、swap-text-roles；暗色可另加 bg-b-alt。
+// 槽位内 l / c 可为标量（整组共用）或 6 项列表（按色相取值）。
 
-@function list-nth-oklch($list, $index, $channel) {
-  @return list.nth(map.get($list, $channel), $index);
+@function list-nth-oklch($slot, $index, $channel) {
+  $value: map.get($slot, $channel);
+  // 标量或单元素列表：整组共用；多元素列表：按色相取第 n 项
+  @if list.length($value) == 1 {
+    @return list.nth($value, 1);
+  }
+  @return list.nth($value, $index);
 }
 
 @function derive-font-palette($profile) {
@@ -81,7 +87,17 @@ html {
   // --b3-theme-on-secondary: 次要强调色按钮上的字色
   // --b3-theme-on-error: 错误色控件上的字色
   --wh-theme-on-background_85: color-mix(in srgb, var(--b3-theme-on-background) 85%, transparent);
-  --wh-theme-on-surface-light_30: color-mix(in srgb, var(--b3-theme-on-surface-light) 30%, transparent);
+
+  // 数据库选项字色（L 与 rainbow 浅字 / 深字组一致；13 号由模块局部覆盖 --b3-font-color13）
+  &[data-theme-mode="light"] {
+    --wh-database-color13: #{fn.to-rgb(oklch(82% 0 0))}; // 浅灰字
+    --b3-font-color14: #{fn.to-rgb(oklch(67% 0 0))};     // 深灰字（思源无 color14）
+  }
+
+  &[data-theme-mode="dark"] {
+    --wh-database-color13: #{fn.to-rgb(oklch(82% 0 0))}; // 浅灰字
+    --b3-font-color14: #{fn.to-rgb(oklch(67% 0 0))};     // 深灰字（思源无 color14）
+  }
 }
 
 // ── § 输出：文本变量 ──────────────────────────────────────────────
@@ -118,21 +134,21 @@ html[data-theme-mode="light"][data-whisper-text="rainbow"] {
     derive-font-palette((
       // 6 色相：28 浅红 / 58 浅橙 / 93 浅黄 / 145 浅绿 / 265 浅蓝 / 300 浅紫
       hues: (28, 58, 93, 145, 265, 300),
-      // 槽位 1–6：浅色字；7–12：深色字
+      // 槽位 1–6：浅色字；7–12：深色字；L 标量整组共用（取原均值附近）
       text-a: (
-        l: (74%, 73%, 88%, 88%, 85%, 81%),
+        l: 82%,
         c: (0.11, 0.12, 0.16, 0.10, 0.07, 0.10),
       ),
       text-b: (
-        l: (59%, 67%, 85%, 76%, 62%, 56%),
+        l: 67%,
         c: (0.20, 0.16, 0.18, 0.12, 0.17, 0.10),
       ),
       bg-a: (
-        l: (94%, 95%, 98%, 94%, 94%, 90%),
+        l: 94%,
         c: (0.03, 0.04, 0.07, 0.05, 0.03, 0.04),
       ),
       bg-b: (
-        l: (86%, 89%, 97%, 89%, 85%, 81%),
+        l: 88%,
         c: (0.07, 0.08, 0.11, 0.10, 0.07, 0.10),
       ),
       swap-text-roles: false,
@@ -156,24 +172,24 @@ html[data-theme-mode="dark"][data-whisper-text="rainbow"] {
     derive-font-palette((
       hues: (28, 58, 93, 145, 265, 300),
       text-a: (
-        l: (74%, 73%, 88%, 88%, 85%, 81%),
+        l: 82%,
         c: (0.11, 0.12, 0.16, 0.10, 0.07, 0.10),
       ),
       text-b: (
-        l: (59%, 67%, 85%, 76%, 62%, 56%),
+        l: 67%,
         c: (0.20, 0.16, 0.18, 0.12, 0.17, 0.10),
       ),
       bg-a: (
-        l: (94%, 95%, 98%, 94%, 94%, 90%),
+        l: 94%,
         c: (0.03, 0.04, 0.07, 0.05, 0.03, 0.04),
       ),
-      // 暗色：background1–6 用较深底，background7–12 用 bg-b-alt
+      // 暗色：background1–6 用较深底，background7–12 用 bg-b-alt；L 标量整组共用
       bg-b: (
-        l: (41%, 42%, 47%, 42%, 41%, 36%),
+        l: 42%,
         c: (0.04, 0.05, 0.07, 0.06, 0.04, 0.06),
       ),
       bg-b-alt: (
-        l: (54%, 58%, 66%, 58%, 53%, 49%),
+        l: 56%,
         c: (0.08, 0.08, 0.11, 0.10, 0.08, 0.11),
       ),
       // 暗色模式：color1–6 用 text-b，color7–12 用 text-a
