@@ -1,13 +1,21 @@
-// 菜单、浮窗、弹窗
+// 菜单、弹窗、浮窗
 
-.block__icons .fn__space, // 文件树的按钮间距 https://github.com/siyuan-note/siyuan/commit/a1d9c1239a1128f65de1defc1dc73bf6924c0759
-.block__icon, .toolbar__item, .protyle-icons, .protyle-icon, .dock__item--pin, .b3-select {
-	transition: unset !important; // 按钮感觉不跟手，不要过渡样式
+@use "sass:list";
+@use "util" as util;
+
+.b3-menu--list .b3-menu__label {
+	-webkit-mask-image: unset;
 }
 
-// 工具栏
-.protyle-toolbar {
-	transition: none; // 禁用工具栏平移效果 // TODO废弃 v3.3.5 之后就不需要覆盖这个样式了，以后提升版本号达到 3.3.5 再移除 https://github.com/siyuan-note/siyuan/commit/a1f275e3c329e8bb93863d353741c1d106faaf55
+// 按钮带过渡感觉不跟手，去掉过渡样式
+.block__icons .fn__space, // 停靠栏面板的按钮间距 https://github.com/siyuan-note/siyuan/commit/a1d9c1239a1128f65de1defc1dc73bf6924c0759
+.block__icon,
+.toolbar__item,
+.protyle-icons,
+.protyle-icon,
+.b3-select,
+.b3-button {
+	transition: unset !important;
 }
 
 // 超链接菜单，链接和锚文本输入框默认两行高（不显示滚动条就需要 50px）
@@ -26,517 +34,147 @@ button {
 	}
 }
 
-// 菜单里的链接跟行内链接用同样的颜色
-a {
-    color: var(--b3-protyle-inline-link-color);
+.b3-menu__items {
+	scrollbar-gutter: stable;
+	padding-right: 0;
+	padding-left: util.$scrollbar-width;
 }
-
-// 开关按钮：隐藏悬浮样式
-label:hover .b3-switch:checked:not(:disabled)::after, .b3-switch:checked:hover:not(:disabled)::after {
-	background-color: var(--b3-switch-checked);
-}
-.b3-switch::before,
-label:hover .b3-switch:checked:not(:disabled)::before, .b3-switch:checked:hover:not(:disabled)::before {
-	background-color: unset;
-}
-
 
 // 选项菜单
 .b3-menu__item {
-	line-height: 27px;
-	align-items: center;
-	min-width: 100px;
+	line-height: 26px;
+	min-width: 100px; // 菜单如果太窄的话用起来不方便，至少 100px
+	// align-items: center; // TODO跟进 https://github.com/siyuan-note/siyuan/issues/18198 解决后就不需要这个样式了
 
-	// 隐藏不常用的块标选项
-	&:is([data-id="jumpTo"], [data-id="jumpToParentNext"], [data-id="jumpToParentPrev"], [data-id="jumpToParent"], [data-id="enterBack"]) {
-		display: none;
+	// 减小菜单文本的最小宽度，进而减小菜单整体的宽度
+	.b3-menu__label {
+		min-width: 25px;
+
+		// TODO跟进 https://github.com/siyuan-note/siyuan/issues/18198 解决后就不需要这个样式了
+		// .av__panel & {
+		// 	min-height: 26px; // 跟选项本身的 line-height 一样，避免选项内容不垂直居中
+		// }
 	}
-	&[data-id="docInfo"] .b3-menu__label,&[data-id="updateAndCreatedAt"] .b3-menu__label {
+
+	// 缩小菜单里的时间信息
+	&[data-id="docInfo"] .b3-menu__label,
+	&[data-id="updateAndCreatedAt"] .b3-menu__label {
 		line-height: 18px;
 		font-size: 85%;
 	}
 
-	// 菜单宽度：文本的宽度
-	.b3-menu__label {
-		min-width: 25px;
+	// 宽度、高度菜单的输入框 https://github.com/siyuan-note/siyuan/issues/14163
+	body:not([data-whisper-device="mobile"]) & {
+		button[data-id="widthInput"] input,
+		button[data-id="heightInput"] input {
+			width: 150px;
+		}
 	}
 }
-.av__panel .b3-menu__label {
-	min-height: 27px; // 跟前面的选项 line-height 一样，避免选项内容不垂直居中
+
+// 移动端和桌面端显示特定设备上隐藏的设置 Tab
+// 搜索时选项会添加 display: none; 内联样式，所以使用 .fn__none 来避免搜索时也始终显示
+#menu > .b3-menu__items > b3-menu__item.fn__none,
+.config__tab-scroll .b3-list-item.fn__none {
+	display: flex !important;
 }
 
-// 页签菜单
+// 页签菜单，把关闭放在末尾
 #commonMenu[data-name="tab"] > .b3-menu__items {
 	display: flex;
 	flex-direction: column;
 
-	[data-id="copy"] {
-		order: 1;
-	}
+	$order: (copy, split, pin, unpin, tabToWindow, separator_1, close);
 
-	[data-id="split"] {
-		order: 2;
-	}
-
-	[data-id="pin"] {
-		order: 3;
-	}
-
-	[data-id="unpin"] {
-		order: 3;
-	}
-
-	[data-id="tabToWindow"] {
-		order: 4;
-	}
-
-	[data-id="separator_1"] {
-		order: 5;
-	}
-
-	[data-id="close"] {
-		order: 6;
+	@each $id in $order {
+		@each $name in $id {
+			[data-id="#{$name}"] {
+				order: list.index($order, $id);
+			}
+		}
 	}
 }
 
-button, input, select, textarea {
-	font-size: 97%;
-}
-.b3-button {
-	transition: unset; // 按钮不需要过渡
-}
-
-// 输入框、下拉框聚焦状态
-.b3-text-field:not(.b3-text-field--text):focus, .pcr-app .pcr-interaction .pcr-result:not(.b3-text-field--text):focus,
-.b3-select:focus {
-    box-shadow: inset 0 0 0 .6px var(--b3-theme-on-background);
-}
 
 // 隐藏闪卡按钮上的图标
 .card__icon {
 	display: none;
 }
 
-// 设置窗口
-.b3-dialog--open[data-key="dialog-setting"] .config__tab-title.resize__move {
-	&+ .b3-form__icon + .config__tab-hr {
-		display: none; // 隐藏分隔线
-	}
-}
-
-// 按钮样式
-.b3-button {
-	&:active {
-		box-shadow: unset;
-	}
-
-	&:not(.b3-button--outline):hover,&:not(.b3-button--outline):focus {
-		box-shadow: unset;
-	}
-
-	&.b3-button--outline {
-		transition: unset;
-	}
-}
-
-// 菜单选项分隔线
-body:not([data-whisper-device="mobile"]) .b3-menu__separator {
-	width: 95%;
-	justify-self: center;
-}
-
-//————————————————————块菜单、右键菜单————————————————————
-
-// 调整宽度或高度百分比时，让菜单变透明一点
-#commonMenu:has(.b3-slider:active) {
-	opacity: 0.86;
-}
-
-// 宽度、高度菜单的输入框 https://github.com/siyuan-note/siyuan/issues/14163
-body:not([data-whisper-device="mobile"]) button:is([data-id="widthInput"], [data-id="heightInput"]) input {
-	width: 150px;
-}
-
 
 // ————————————————————外观菜单————————————————————
-// 隐藏 最近使用的外观
-.protyle-font > div.fn__flex:first-child,
-.protyle-font > div.fn__flex:first-child + .fn__hr--small,
-.protyle-font > div.fn__flex:first-child + .fn__hr--small + .fn__flex-wrap,
-.protyle-font > div.fn__flex:first-child + .fn__hr--small + .fn__flex-wrap + .fn__hr {
-	display: none;
-}
-// 隐藏 字体效果
-.protyle-font > div:has(+ .fn__hr--small + .fn__flex > .protyle-font__style),
-.protyle-font > div:has(+ .fn__flex > .protyle-font__style),
-.protyle-font > div:has(> .protyle-font__style),
-.protyle-font > div:has(> .protyle-font__style) + .fn__hr {
-	display: none;
-}
-// 隐藏 字号
-.protyle-font > div:has(> .fn__flex > .b3-switch),
-.protyle-font > div:has(> .fn__flex > .b3-slider),
-.protyle-font > div.fn__hr--b {
-	display: none;
-}
-.protyle-font {
-	max-width: 238px;
-	scrollbar-gutter: auto;
 
-	// TODO废弃 最低版本号提升到 v3.3.6 及之后，移除前面三段代码，改为下面的使用标题元素不同的 data-id 属性 (否则如果有插件在菜单里添加元素的话可能会冲突，以及需要去除 :has 选择器) https://github.com/siyuan-note/siyuan/pull/16162
-	// // 隐藏 最近使用的外观、字体效果、字号
-	// > :is(
-	// 		[data-id="lastUsed"], [data-id="lastUsed"] + .fn__hr--small, [data-id="lastUsedWrap"], [data-id="lastUsedWrap"] + .fn__hr,
-	// 		[data-id="fontStyle"], [data-id="fontStyle"] + .fn__hr--small, [data-id="fontStyleWrap"], [data-id="fontStyleWrap"] + .fn__hr,
-	// 		[data-id="fontSize"], [data-id="fontSizeWrap"], [data-id="fontSizeWrap"] + .fn__hr--b
-	// 	) {
-	// 	display: none;
-	// }
+.protyle-font {
+	padding-left: util.$scrollbar-width;
+	padding-right: 0;
+
+	// 隐藏 最近使用的外观、字体效果
+	[data-id="lastUsed"],
+	[data-id="lastUsed"] + .fn__hr--small,
+	[data-id="lastUsedWrap"],
+	[data-id="lastUsedWrap"] + .fn__hr,
+	[data-id="fontStyle"],
+	[data-id="fontStyle"] + .fn__hr--small,
+	[data-id="fontStyleWrap"],
+	[data-id="fontStyleWrap"] + .fn__hr {
+		display: none;
+	}
 }
+
+// 数据库选项颜色菜单
+.b3-menu[data-name="av-col-option"] .color__square {
+	background-color: transparent !important;
+
+	// 数据库选项 13 号色块预览（字色）
+	--b3-font-color13: var(--wh-database-color13);
+}
+
 // 颜色选项
 .color__square {
-	&:is([data-type="color"], [data-type="style1"]) {
+	&[data-type="color"],
+	&[data-type="style1"] {
 		font-size: 18px;
 		font-weight: bold; // 字体加粗更清晰
 	}
-	&:is([style*="--b3-font-color1"], [style*="--b3-font-background1"]) {
-		order: 1;
+
+	$orders: 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13;
+
+	@for $i from 1 through 12 {
+		&[style*="--b3-font-color#{$i}"],
+		&[style*="--b3-font-background#{$i}"] {
+			order: list.nth($orders, $i);
+		}
 	}
-	&:is([style*="--b3-font-color2"], [style*="--b3-font-background2"]) {
-		order: 2;
-	}
-	&:is([style*="--b3-font-color3"], [style*="--b3-font-background3"]) {
-		order: 3;
-	}
-	&:is([style*="--b3-font-color4"], [style*="--b3-font-background4"]) {
-		order: 4;
-	}
-	&:is([style*="--b3-font-color5"], [style*="--b3-font-background5"]) {
-		order: 5;
-	}
-	&:is([style*="--b3-font-color6"], [style*="--b3-font-background6"]) {
-		order: 6;
-	}
-	&:is([style*="--b3-font-color7"], [style*="--b3-font-background7"]) {
-		order: 8;
-	}
-	&:is([style*="--b3-font-color8"], [style*="--b3-font-background8"]) {
-		order: 9;
-	}
-	&:is([style*="--b3-font-color9"], [style*="--b3-font-background9"]) {
-		order: 10;
-	}
-	&:is([style*="--b3-font-color10"], [style*="--b3-font-background10"]) {
-		order: 11;
-	}
-	&:is([style*="--b3-font-color11"], [style*="--b3-font-background11"]) {
-		order: 12;
-	}
-	&:is([style*="--b3-font-color12"], [style*="--b3-font-background12"]) {
-		order: 13;
-	}
-	&:is([style*="--b3-font-color13"], [style*="--b3-font-background13"]) {
+
+	&[style*="--b3-font-color13"],
+	&[style*="--b3-font-background13"] {
 		order: 7; // 把 13 号颜色排到默认色正下方；在数据库选项颜色弹窗里是第一行最右边
 
-		&[data-type="color"]{
+		&[data-type="color"] {
 			color: var(--b3-theme-on-background) !important;
 			-webkit-text-stroke: .1px var(--b3-theme-on-background);
 			-webkit-text-fill-color: transparent;
 		}
 	}
-	&:is([style*="--b3-font-color14"], [style*="--b3-font-background14"]) {
+
+	&[data-color="14"] {
 		order: 14; // 数据库选项专有颜色
 	}
 }
-// 数据库选项颜色菜单
-.b3-menu[data-name="av-col-option"] .color__square {
-	color: transparent !important;
 
-	// 数据库选项 13 号色块预览
-	--b3-font-background13: var(--wh-database-background13);
+// 表情选择器最近使用的表情只显示两行
+.emojis__panel .emojis__title[data-type="0"] + .emojis__content {
+	max-height: 68px; // 最近使用的表情只显示两行
+	overflow: hidden;
 }
 
-// ————————————————————集市————————————————————
-.config-bazaar__panel {
-	// 已下载页面
-	&[data-type=downloaded] {
-		// 并列显示
-		.config-bazaar__content {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-			margin-top: 16px;
-			margin-right: 6px;
+// ————————————————————属性面板————————————————————
 
-			.b3-card {
-				display: grid;
-				grid-template-columns: 90px 1fr;
-				margin: 0 0 16px 16px;
-				transition: unset;
-
-				&:hover {
-					background-color: var(--b3-theme-background-light);
-				}
-
-				.b3-card__info {
-					white-space: nowrap;
-					overflow: hidden;
-					text-overflow: ellipsis;
-
-					.b3-card__desc {
-						display: block;
-					}
-				}
-
-				.b3-card__actions {
-					position: absolute;
-					bottom: 12px;
-					right: 0;
-				}
-			}
-		}
-
-		.fn__hr {
-			display: none; // “未找到相关内容”
-		}
-		.b3-list--empty {
-			margin-top: 15px;
-		}
-	}
-
-	.b3-cards {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-		margin-right: 6px;
-
-		.b3-card--wrap {
-			min-width: unset;
-		}
-
-		.b3-card {
-			display: grid;
-			grid-template-columns: 90px 1fr;
-			margin: 16px 0 0 16px;
-			transition: unset;
-
-			&:hover {
-				background-color: var(--b3-theme-background-light);
-			}
-
-			.b3-card__info {
-				overflow: hidden;
-
-				.b3-card__desc {
-					display: -webkit-box;
-					-webkit-line-clamp: 2;
-					line-clamp: 2; // Firefox, Safari
-				}
-			}
-		}
-
-		& > .fn__flex-1:not(.b3-card) {
-			display: none; // 额外的占位元素会导致布局问题，故隐藏 https://github.com/siyuan-note/siyuan/commit/ecdebf85f796be62ea1286d994c262b9c2093e22
-		}
-	}
+// 内置属性 - 备注输入框高度适应内容
+.custom-attr textarea[data-name="memo"] {
+	field-sizing: content;
 }
 
-// 华为设备上显示集市（华为只有集市被隐藏了，AI没有隐藏）
-.config__panel > .b3-tab-bar .b3-list-item[data-name="bazaar"].fn__none {
-	display: flex !important;
-}
-
-// 集市 README
-#configBazaarReadme .item__main {
-	.item__preview {
-		border-radius: var(--b3-border-radius-b);
-		transition: unset;
-	}
-
-	&>.b3-typography:nth-child(2) > blockquote:first-child {
-		border-radius: var(--b3-border-radius-b);
-		padding: 12px 20px;
-		color: var(--wh-theme-on-background_85);
-		font-weight: bold;
-		font-size: 120%;
-		outline: 2px solid var(--b3-theme-on-surface-light);
-		outline-offset: -2px;
-
-		&::before {
-			display: none;
-		}
-	}
-
-	.b3-typography blockquote {
-		color: var(--wh-theme-on-background_85);
-
-		&::before {
-			background-color: var(--wh-theme-on-background_85);
-		}
-	}
-}
-
-// 给 TCOTC 的插件和主题的 README 加点特效
-html[data-theme-mode="light"] {
-	// 明亮模式配色
-	--wh-bazaar-bg-color: rgba(228, 147, 208, .5);
-	--wh-bazaar-gradient-1: rgba(235, 105, 78, .5);
-	--wh-bazaar-gradient-1-transparent: rgba(235, 105, 78, 0);
-	--wh-bazaar-gradient-2: rgba(243, 11, 164, .5);
-	--wh-bazaar-gradient-2-transparent: rgba(243, 11, 164, 0);
-	--wh-bazaar-gradient-3: rgba(254, 234, 131, .5);
-	--wh-bazaar-gradient-3-transparent: rgba(254, 234, 131, 0);
-	--wh-bazaar-gradient-4: rgba(170, 142, 245, .5);
-	--wh-bazaar-gradient-4-transparent: rgba(170, 142, 245, 0);
-	--wh-bazaar-gradient-5: rgba(248, 192, 147, .5);
-	--wh-bazaar-gradient-5-transparent: rgba(248, 192, 147, 0);
-}
-html[data-theme-mode="dark"] {
-	// 暗黑模式配色
-	--wh-bazaar-bg-color: rgba(120, 80, 100, .3);
-	--wh-bazaar-gradient-1: rgba(150, 80, 60, .3);
-	--wh-bazaar-gradient-1-transparent: rgba(150, 80, 60, 0);
-	--wh-bazaar-gradient-2: rgba(120, 60, 100, .3);
-	--wh-bazaar-gradient-2-transparent: rgba(120, 60, 100, 0);
-	--wh-bazaar-gradient-3: rgba(180, 160, 80, .3);
-	--wh-bazaar-gradient-3-transparent: rgba(180, 160, 80, 0);
-	--wh-bazaar-gradient-4: rgba(100, 80, 150, .3);
-	--wh-bazaar-gradient-4-transparent: rgba(100, 80, 150, 0);
-	--wh-bazaar-gradient-5: rgba(150, 120, 80, .3);
-	--wh-bazaar-gradient-5-transparent: rgba(150, 120, 80, 0);
-}
-// 原始样式来源于 https://www.bilibili.com/video/BV1b44y1e7Wx/ https://codepen.io/stevenlei/pen/ZEJxXGL
-#configBazaarReadme.config-bazaar__readme--show:has(> .item__side[data-obj*="TCOTC"]) {
-	background: var(--b3-theme-surface);
-	
-	&::before {
-		content: '';
-		display: block;
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		border-radius: var(--b3-border-radius-b);
-		background-color: var(--wh-bazaar-bg-color);
-		background-image:
-			radial-gradient(closest-side, var(--wh-bazaar-gradient-1), var(--wh-bazaar-gradient-1-transparent)),
-			radial-gradient(closest-side, var(--wh-bazaar-gradient-2), var(--wh-bazaar-gradient-2-transparent)),
-			radial-gradient(closest-side, var(--wh-bazaar-gradient-3), var(--wh-bazaar-gradient-3-transparent)),
-			radial-gradient(closest-side, var(--wh-bazaar-gradient-4), var(--wh-bazaar-gradient-4-transparent)),
-			radial-gradient(closest-side, var(--wh-bazaar-gradient-5), var(--wh-bazaar-gradient-5-transparent));
-		background-size:
-			130vmax 130vmax,
-			80vmax 80vmax,
-			90vmax 90vmax,
-			110vmax 110vmax,
-			90vmax 90vmax;
-		background-position:
-			-80vmax -80vmax,
-			60vmax -30vmax,
-			10vmax 10vmax,
-			-30vmax -10vmax,
-			50vmax 50vmax;
-		background-repeat: no-repeat;
-		animation: 10s movement linear infinite;
-	}
-
-	&::after {
-		content: '';
-		display: block;
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		border-radius: var(--b3-border-radius-b);
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		pointer-events: none;
-	}
-
-	.item__side, .item__main {
-		z-index: 1;
-	}
-
-	.item__title {
-		text-shadow: 0 0 1em var(--b3-protyle-inline-mark-background), 0 0 0.2em var(--b3-protyle-inline-mark-background); // 标题文本光晕
-	}
-}
-@keyframes movement {
-	0%, 100% {
-		background-size:
-			130vmax 130vmax,
-			80vmax 80vmax,
-			90vmax 90vmax,
-			110vmax 110vmax,
-			90vmax 90vmax;
-		background-position:
-			-80vmax -80vmax,
-			60vmax -30vmax,
-			10vmax 10vmax,
-			-30vmax -10vmax,
-			50vmax 50vmax;
-	}
-	25% {
-		background-size:
-			100vmax 100vmax,
-			90vmax 90vmax,
-			100vmax 100vmax,
-			90vmax 90vmax,
-			60vmax 60vmax;
-		background-position:
-			-60vmax -90vmax,
-			50vmax -40vmax,
-			0 -20vmax,
-			-40vmax -20vmax,
-			40vmax 60vmax;
-	}
-	50% {
-		background-size:
-			80vmax 80vmax,
-			110vmax 110vmax,
-			80vmax 80vmax,
-			60vmax 60vmax,
-			80vmax 80vmax;
-		background-position:
-			-50vmax -70vmax,
-			40vmax -30vmax,
-			10vmax 0,
-			20vmax 10vmax,
-			30vmax 70vmax;
-	}
-	75% {
-		background-size:
-			90vmax 90vmax,
-			90vmax 90vmax,
-			100vmax 100vmax,
-			90vmax 90vmax,
-			70vmax 70vmax;
-		background-position:
-			-50vmax -40vmax,
-			50vmax -30vmax,
-			20vmax 0,
-			-10vmax 10vmax,
-			40vmax 60vmax;
-	}
-}
-
-// 表情选择器
-.emojis__panel {
-	// overflow-x: hidden;
-
-	.emojis__title[data-type="0"] + .emojis__content {
-		max-height: 68px; // 最近使用的表情只显示两行
-		// width: calc(100% + 10px);
-		overflow: hidden;
-	}
-
-	.emojis__title[data-type="1"]:not(:has(+ .emojis__content > .emojis__item)),
-	.emojis__title[data-type="1"] + .emojis__content:not(:has(> .emojis__item)) {
-		display: none; // 如果没有自定义表情就隐藏
-	}
-}
-
-// 属性面板
 // 数据库 - 标题
 .custom-attr__avheader .block__logo {
 	color: var(--b3-theme-primary);
@@ -546,10 +184,8 @@ html[data-theme-mode="dark"] {
 		display: none;
 	}
 }
-// 内置属性 - 备注
-.custom-attr textarea[data-name="memo"] {
-	field-sizing: content; // 输入框高度适应内容，仅适用于 Chromium ; https://caniuse.com/?search=field-sizing
-}
+
+// ————————————————————弹窗————————————————————
 
 // 闪卡窗口背景变暗一点
 .b3-dialog--open[data-key="dialog-opencard"] .b3-dialog__scrim::before {
