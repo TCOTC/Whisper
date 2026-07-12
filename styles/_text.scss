@@ -2,71 +2,89 @@
 //
 // 备注：偶尔需要跟进最新版默认主题的变更
 // 结构：§ 派生 → § 输出 → § 方案
-// 拓展方式：新增方案时复制一个 § 方案 块，调整字体调色板与选择器即可
+// 拓展方式：新增方案时复制一个 § 方案 块，调整派生参数与选择器即可
 
 @use "sass:map";
-@use "sass:list";
+@use "sass:math";
 @use "functions" as fn;
 
-// ── § 派生：字体调色板 ──────────────────────────────────────────────
+// ── § 派生：虹彩调色板 ──────────────────────────────────────────────
 //
-// 从方案块内联的 profile map 展开 12 色字 + 12 色底。
-// profile 键：hues、text-a、text-b、bg-a、bg-b、swap-text-roles；暗色可另加 bg-b-alt。
-// 槽位内 l / c 可为标量（整组共用）或 6 项列表（按色相取值）。
+// 均分色相环 + 角色仅指定 L / 目标 C；色度经 oklch-gamut 裁到 sRGB 可显示上限。
+// 暗色：字色角色对调；底色改用更深的 L（仍共用同一套 C 目标语义）。
 
-@function list-nth-oklch($slot, $index, $channel) {
-  $value: map.get($slot, $channel);
-  // 标量或单元素列表：整组共用；多元素列表：按色相取第 n 项
-  @if list.length($value) == 1 {
-    @return list.nth($value, 1);
-  }
-  @return list.nth($value, $index);
+$rainbow-count: 6;
+$rainbow-hue-start: 30;
+
+// 明暗共用：浅字 / 深字 / 淡底 / 浓底；暗色底另覆写 L
+// C 取「多数色相可达到、又不至于在宽色域色相上过艳」的目标值，超出部分由 oklch-gamut 压掉
+$rainbow-tones: (
+  text-soft: (l: 82%, c: 0.12),
+  text-strong: (l: 67%, c: 0.16),
+  bg-soft: (l: 94%, c: 0.045),
+  bg-strong: (l: 88%, c: 0.085),
+);
+
+$rainbow-tones-dark-bg: (
+  bg-soft: (l: 42%, c: 0.055),
+  bg-strong: (l: 56%, c: 0.09),
+);
+
+@function rainbow-hue($index) {
+  @return $rainbow-hue-start + ($index - 1) * math.div(360, $rainbow-count);
 }
 
-@function derive-font-palette($profile) {
-  $hues: map.get($profile, hues);
-  $swap: map.get($profile, swap-text-roles);
-  $text-a: map.get($profile, text-a);
-  $text-b: map.get($profile, text-b);
-  $bg-a: map.get($profile, bg-a);
+@function rainbow-tone-color($tones, $role, $hue, $alpha: 1) {
+  $slot: map.get($tones, $role);
+  @return fn.oklch-gamut(map.get($slot, l), map.get($slot, c), $hue, $alpha);
+}
+
+@function derive-rainbow($mode) {
+  $tones: $rainbow-tones;
+  $text-a: text-soft;
+  $text-b: text-strong;
+
+  @if $mode == dark {
+    $tones: map.merge($tones, $rainbow-tones-dark-bg);
+    // 暗色：color1–6 用深字，color7–12 用浅字
+    $text-a: text-strong;
+    $text-b: text-soft;
+  }
+
   $result: ();
 
-  @for $i from 1 through 6 {
-    $hue: list.nth($hues, $i);
-    $text-slot-a: $text-a;
-    $text-slot-b: $text-b;
-    $bg-for-1-6: $bg-a;
-    $bg-for-7-12: map.get($profile, bg-b);
-    @if $swap {
-      $text-slot-a: $text-b;
-      $text-slot-b: $text-a;
-      $bg-for-1-6: map.get($profile, bg-b);
-      @if map.has-key($profile, bg-b-alt) {
-        $bg-for-7-12: map.get($profile, bg-b-alt);
-      }
-    }
-
+  @for $i from 1 through $rainbow-count {
+    $hue: rainbow-hue($i);
     $result: map.merge($result, (
-      b3-font-color#{$i}: fn.oklch-color(
-        list-nth-oklch($text-slot-a, $i, l),
-        list-nth-oklch($text-slot-a, $i, c),
-        $hue
-      ),
-      b3-font-color#{$i + 6}: fn.oklch-color(
-        list-nth-oklch($text-slot-b, $i, l),
-        list-nth-oklch($text-slot-b, $i, c),
-        $hue
-      ),
-      b3-font-background#{$i}: fn.oklch-color(
-        list-nth-oklch($bg-for-1-6, $i, l),
-        list-nth-oklch($bg-for-1-6, $i, c),
-        $hue
-      ),
-      b3-font-background#{$i + 6}: fn.oklch-color(
-        list-nth-oklch($bg-for-7-12, $i, l),
-        list-nth-oklch($bg-for-7-12, $i, c),
-        $hue
-      ),
+      b3-font-color#{$i}: rainbow-tone-color($tones, $text-a, $hue),
+      b3-font-color#{$i + $rainbow-count}: rainbow-tone-color($tones, $text-b, $hue),
+      b3-font-background#{$i}: rainbow-tone-color($tones, bg-soft, $hue),
+      b3-font-background#{$i + $rainbow-count}: rainbow-tone-color($tones, bg-strong, $hue),
+    ));
+  }
+
+  // 行内元素：取均分环上黄 / 绿 / 蓝（第 2 / 3 / 5 槽）
+  $h-yellow: rainbow-hue(2);
+  $h-green: rainbow-hue(3);
+  $h-blue: rainbow-hue(5);
+
+  @if $mode == light {
+    $result: map.merge($result, (
+      b3-protyle-inline-s-color: oklch(76% 0 0),
+      b3-protyle-inline-link-color: rainbow-tone-color($tones, text-strong, $h-blue),
+      b3-protyle-inline-link-s-color: fn.oklch-gamut(76%, 0.08, $h-blue),
+      b3-protyle-inline-mark-background: fn.oklch-gamut(93%, 0.17, $h-yellow, 0.6),
+      b3-protyle-inline-fileref-color: fn.oklch-gamut(54%, 0.15, $h-green),
+      b3-protyle-inline-fileref-s-color: rainbow-tone-color($tones, text-soft, $h-green),
+    ));
+  } @else {
+    $result: map.merge($result, (
+      b3-protyle-inline-s-color: oklch(49% 0 0),
+      b3-protyle-inline-link-color: rainbow-tone-color($tones, text-strong, $h-blue),
+      b3-protyle-inline-link-s-color: fn.oklch-gamut(51%, 0.15, $h-blue),
+      b3-protyle-inline-mark-background: fn.oklch-gamut(70%, 0.17, $h-yellow, 0.6),
+      b3-protyle-inline-fileref-color: rainbow-tone-color($tones, text-soft, $h-green),
+      b3-protyle-inline-fileref-s-color: fn.oklch-gamut(53%, 0.07, $h-green),
     ));
   }
 
@@ -88,22 +106,26 @@ html {
   // --b3-theme-on-error: 错误色控件上的字色
   --wh-theme-on-background_85: color-mix(in srgb, var(--b3-theme-on-background) 85%, transparent);
 
-  // 数据库选项字色（L 与 rainbow 浅字 / 深字组一致；13 号由模块局部覆盖 --b3-font-color13）
+  // 数据库选项字色（L 与 rainbow 浅字 / 深字组一致；13 / 14 号由模块局部覆盖）
   &[data-theme-mode="light"] {
     --wh-database-color13: #{fn.to-rgb(oklch(82% 0 0))}; // 浅灰字
-    --b3-font-color14: #{fn.to-rgb(oklch(67% 0 0))};     // 深灰字（思源无 color14）
+    --wh-database-color14: #{fn.to-rgb(oklch(67% 0 0))}; // 深灰字（思源无 color14）
   }
 
   &[data-theme-mode="dark"] {
-    --wh-database-color13: #{fn.to-rgb(oklch(82% 0 0))}; // 浅灰字
-    --b3-font-color14: #{fn.to-rgb(oklch(67% 0 0))};     // 深灰字（思源无 color14）
+    --wh-database-color13: #{fn.to-rgb(oklch(67% 0 0))}; // 深字组明度（暗色下偏暗）
+    --wh-database-color14: #{fn.to-rgb(oklch(82% 0 0))}; // 浅字组明度（暗色下比 13 更亮）
   }
+
+	@for $i from 1 through 12 {
+		--wh-database-color#{$i}: var(--b3-font-color#{$i});
+	}
 }
 
 // ── § 输出：文本变量 ──────────────────────────────────────────────
 
 @mixin emit-text($colors) {
-  // 字体调色板（编辑器 /protyle-font 面板 12 色字 + 12 色底；Whisper 重定义色相；值由 derive 从 6 色相展开）
+  // 字体调色板（编辑器 /protyle-font 面板 12 色字 + 12 色底；值由虹彩算法展开）
   @for $i from 1 through 12 {
     --b3-font-color#{$i}: #{fn.to-rgb(fn.theme-get($colors, b3-font-color#{$i}))};
     --b3-font-background#{$i}: #{fn.to-rgb(fn.theme-get($colors, b3-font-background#{$i}))};
@@ -130,81 +152,9 @@ html {
 // 仅在有 data-whisper-text="rainbow" 时附加文本配色；无属性时回退思源默认（原生）。
 
 html[data-theme-mode="light"][data-whisper-text="rainbow"] {
-  $seeds: map.merge(
-    derive-font-palette((
-      // 6 色相：28 浅红 / 58 浅橙 / 93 浅黄 / 145 浅绿 / 265 浅蓝 / 300 浅紫
-      hues: (28, 58, 93, 145, 265, 300),
-      // 槽位 1–6：浅色字；7–12：深色字；L 标量整组共用（取原均值附近）
-      text-a: (
-        l: 82%,
-        c: (0.11, 0.12, 0.16, 0.10, 0.07, 0.10),
-      ),
-      text-b: (
-        l: 67%,
-        c: (0.20, 0.16, 0.18, 0.12, 0.17, 0.10),
-      ),
-      bg-a: (
-        l: 94%,
-        c: (0.03, 0.04, 0.07, 0.05, 0.03, 0.04),
-      ),
-      bg-b: (
-        l: 88%,
-        c: (0.07, 0.08, 0.11, 0.10, 0.07, 0.10),
-      ),
-      swap-text-roles: false,
-    )),
-    (
-      // 所见即所得行内元素颜色
-      b3-protyle-inline-s-color: oklch(76% 0 0),
-      b3-protyle-inline-link-color: oklch(63% 0.18 260),
-      b3-protyle-inline-link-s-color: oklch(76% 0.075 260),
-      b3-protyle-inline-mark-background: oklch(93% 0.17 93 / 0.6),
-      b3-protyle-inline-fileref-color: oklch(54% 0.15 145),
-      b3-protyle-inline-fileref-s-color: oklch(82% 0.11 145),
-    )
-  );
-
-  @include emit-text($seeds);
+  @include emit-text(derive-rainbow(light));
 }
 
 html[data-theme-mode="dark"][data-whisper-text="rainbow"] {
-  $seeds: map.merge(
-    derive-font-palette((
-      hues: (28, 58, 93, 145, 265, 300),
-      text-a: (
-        l: 82%,
-        c: (0.11, 0.12, 0.16, 0.10, 0.07, 0.10),
-      ),
-      text-b: (
-        l: 67%,
-        c: (0.20, 0.16, 0.18, 0.12, 0.17, 0.10),
-      ),
-      bg-a: (
-        l: 94%,
-        c: (0.03, 0.04, 0.07, 0.05, 0.03, 0.04),
-      ),
-      // 暗色：background1–6 用较深底，background7–12 用 bg-b-alt；L 标量整组共用
-      bg-b: (
-        l: 42%,
-        c: (0.04, 0.05, 0.07, 0.06, 0.04, 0.06),
-      ),
-      bg-b-alt: (
-        l: 56%,
-        c: (0.08, 0.08, 0.11, 0.10, 0.08, 0.11),
-      ),
-      // 暗色模式：color1–6 用 text-b，color7–12 用 text-a
-      swap-text-roles: true,
-    )),
-    (
-      // 所见即所得行内元素颜色
-      b3-protyle-inline-s-color: oklch(49% 0 0),
-      b3-protyle-inline-link-color: oklch(63% 0.18 260),
-      b3-protyle-inline-link-s-color: oklch(51% 0.15 260),
-      b3-protyle-inline-mark-background: oklch(70% 0.17 93 / 0.6),
-      b3-protyle-inline-fileref-color: oklch(83% 0.10 145),
-      b3-protyle-inline-fileref-s-color: oklch(53% 0.065 145),
-    )
-  );
-
-  @include emit-text($seeds);
+  @include emit-text(derive-rainbow(dark));
 }

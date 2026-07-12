@@ -99,3 +99,10 @@
   }
   @return $color;
 }
+
+// 构造 OKLCH 并按 sRGB 色域上限裁切色度（同 L/h 下超出可显示范围时压到最大可显示 C）
+@function oklch-gamut($l, $c, $h, $alpha: 1) {
+  $maxed: color.to-gamut(oklch($l 0.4 $h), $space: srgb, $method: local-minde);
+  $c-max: color.channel($maxed, "chroma", $space: oklch);
+  @return oklch-color($l, math.min($c, $c-max), $h, $alpha);
+}
