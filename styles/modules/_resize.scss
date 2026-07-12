@@ -4,19 +4,57 @@
 
 // 默认的细分隔线
 .layout__resize {
+    z-index: 5; // 比文档标签页更高
+
     &::after {
         content: "";
-        transition: background-color 0.2s ease-out;
+        transition: background-color 0.2s ease-out, height 0.2s ease-out;
+        height: 1px;
     }
 
     &:hover::after {
         background-color: var(--b3-theme-primary);
-        transition: background-color 0.2s ease-out 0.3s;
+        transition: background-color 0.2s ease-out 0.3s, height 0.2s ease-out 0.3s;
+        height: 2px;
     }
 
     &:active::after {
         background-color: var(--b3-theme-primary);
         transition: none;
+        height: 2px;
+    }
+}
+
+// 搜索界面分隔线
+.search__layout {
+    // 上下布局
+    &:not(.search__layout--row) .search__drag {
+        &:hover::after {
+            background-color: var(--b3-theme-primary);
+            transition: background-color 0.2s ease-out 0.3s, height 0.2s ease-out 0.3s;
+            height: 2px;
+        }
+    
+        &:active::after {
+            background-color: var(--b3-theme-primary);
+            transition: none;
+            height: 2px;
+        }
+    }
+
+    // 左右布局
+    &.search__layout--row .search__drag {
+        &:hover::after {
+            background-color: var(--b3-theme-primary);
+            transition: background-color 0.2s ease-out 0.3s, width 0.2s ease-out 0.3s;
+            width: 2px;
+        }
+
+        &:active::after {
+            background-color: var(--b3-theme-primary);
+            transition: none;
+            width: 2px;
+        }
     }
 }
 
