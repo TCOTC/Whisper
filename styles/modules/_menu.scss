@@ -42,18 +42,17 @@ button {
 
 // 选项菜单
 .b3-menu__item {
-	line-height: 26px;
+	$menu-item-line-height: 26px;
+	line-height: $menu-item-line-height;
 	min-width: 100px; // 菜单如果太窄的话用起来不方便，至少 100px
-	// align-items: center; // TODO跟进 https://github.com/siyuan-note/siyuan/issues/18198 解决后就不需要这个样式了
 
 	// 减小菜单文本的最小宽度，进而减小菜单整体的宽度
 	.b3-menu__label {
 		min-width: 25px;
 
-		// TODO跟进 https://github.com/siyuan-note/siyuan/issues/18198 解决后就不需要这个样式了
-		// .av__panel & {
-		// 	min-height: 26px; // 跟选项本身的 line-height 一样，避免选项内容不垂直居中
-		// }
+		.av__panel & {
+			min-height: $menu-item-line-height; // 选项内容垂直居中
+		}
 	}
 
 	// 缩小菜单里的时间信息
@@ -152,7 +151,7 @@ button {
 
 		&[data-type="color"] {
 			color: var(--b3-theme-on-background) !important;
-			-webkit-text-stroke: .1px var(--b3-theme-on-background);
+			-webkit-text-stroke: .4px var(--b3-theme-on-background);
 			-webkit-text-fill-color: transparent;
 		}
 	}
