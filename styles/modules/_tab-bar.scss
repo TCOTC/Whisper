@@ -101,6 +101,7 @@
                 // 始终显示页签叉号
                 svg {
                     opacity: 0.68;
+                    transition: unset;
                 }
 
                 &:hover svg {
