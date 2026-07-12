@@ -1,0 +1,174 @@
+// 集市
+
+.config-bazaar__panel {
+	// 集市包卡片
+	.b3-card {
+		// 中西文间距（需要 Chromium 140) | CJK 和非 CJK 字符之间的间距 https://developer.mozilla.org/en-US/docs/Web/CSS/text-autospace
+		text-autospace: normal;
+	}
+
+	// 已下载页面的列表
+	&[data-type="downloaded"] .config-bazaar__content.b3-cards--nowrap {
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 342px), 1fr)); // 跟原生的在线集市列表卡片布局一致
+
+		.b3-card {
+			&__info {
+				white-space: nowrap;
+
+				&--left {
+					padding-right: 16px;
+				}
+			}
+
+			&__actions {
+				position: absolute;
+				bottom: 16px;
+				right: 0;
+				padding-right: 16px;
+			}
+		}
+	}
+}
+
+// 集市包详情页
+#configBazaarReadme .item__main {
+	// 预览图
+	.item__preview {
+		border-radius: var(--b3-border-radius-b);
+		transition: unset; // 移除放大和缩小预览图时的过渡动画
+
+		// 简介描述
+		& + .b3-typography > blockquote {
+			border-radius: var(--b3-border-radius-b);
+			background-color: var(--b3-theme-surface);
+			padding: 9px 14px;
+			text-autospace: normal;
+	
+			&::before {
+				display: none;
+			}
+		}
+	}
+}
+
+// 给我的集市包详情页加点特效
+html[data-theme-mode="light"] {
+	// 明亮模式配色
+	--wh-bazaar-bg-color: rgba(228, 147, 208, .5);
+	--wh-bazaar-gradient-1: rgba(235, 105, 78, .5);
+	--wh-bazaar-gradient-1-transparent: rgba(235, 105, 78, 0);
+	--wh-bazaar-gradient-2: rgba(243, 11, 164, .5);
+	--wh-bazaar-gradient-2-transparent: rgba(243, 11, 164, 0);
+	--wh-bazaar-gradient-3: rgba(254, 234, 131, .5);
+	--wh-bazaar-gradient-3-transparent: rgba(254, 234, 131, 0);
+	--wh-bazaar-gradient-4: rgba(170, 142, 245, .5);
+	--wh-bazaar-gradient-4-transparent: rgba(170, 142, 245, 0);
+	--wh-bazaar-gradient-5: rgba(248, 192, 147, .5);
+	--wh-bazaar-gradient-5-transparent: rgba(248, 192, 147, 0);
+}
+html[data-theme-mode="dark"] {
+	// 暗黑模式配色
+	--wh-bazaar-bg-color: rgba(120, 80, 100, .3);
+	--wh-bazaar-gradient-1: rgba(150, 80, 60, .3);
+	--wh-bazaar-gradient-1-transparent: rgba(150, 80, 60, 0);
+	--wh-bazaar-gradient-2: rgba(120, 60, 100, .3);
+	--wh-bazaar-gradient-2-transparent: rgba(120, 60, 100, 0);
+	--wh-bazaar-gradient-3: rgba(180, 160, 80, .3);
+	--wh-bazaar-gradient-3-transparent: rgba(180, 160, 80, 0);
+	--wh-bazaar-gradient-4: rgba(100, 80, 150, .3);
+	--wh-bazaar-gradient-4-transparent: rgba(100, 80, 150, 0);
+	--wh-bazaar-gradient-5: rgba(150, 120, 80, .3);
+	--wh-bazaar-gradient-5-transparent: rgba(150, 120, 80, 0);
+}
+// 原始样式来源于 https://www.bilibili.com/video/BV1b44y1e7Wx/ https://codepen.io/stevenlei/pen/ZEJxXGL
+#configBazaarReadme .item__side[data-repourl*="/TCOTC/"] + .item__main::before {
+	content: '';
+	z-index: -1;
+	pointer-events: none;
+	display: block;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	border-radius: var(--b3-border-radius-b);
+	background-color: var(--wh-bazaar-bg-color);
+	background-image:
+		radial-gradient(closest-side, var(--wh-bazaar-gradient-1), var(--wh-bazaar-gradient-1-transparent)),
+		radial-gradient(closest-side, var(--wh-bazaar-gradient-2), var(--wh-bazaar-gradient-2-transparent)),
+		radial-gradient(closest-side, var(--wh-bazaar-gradient-3), var(--wh-bazaar-gradient-3-transparent)),
+		radial-gradient(closest-side, var(--wh-bazaar-gradient-4), var(--wh-bazaar-gradient-4-transparent)),
+		radial-gradient(closest-side, var(--wh-bazaar-gradient-5), var(--wh-bazaar-gradient-5-transparent));
+	background-size:
+		130vmax 130vmax,
+		80vmax 80vmax,
+		90vmax 90vmax,
+		110vmax 110vmax,
+		90vmax 90vmax;
+	background-position:
+		-80vmax -80vmax,
+		60vmax -30vmax,
+		10vmax 10vmax,
+		-30vmax -10vmax,
+		50vmax 50vmax;
+	background-repeat: no-repeat;
+	animation: 10s movement linear infinite;
+}
+@keyframes movement {
+	0%, 100% {
+		background-size:
+			130vmax 130vmax,
+			80vmax 80vmax,
+			90vmax 90vmax,
+			110vmax 110vmax,
+			90vmax 90vmax;
+		background-position:
+			-80vmax -80vmax,
+			60vmax -30vmax,
+			10vmax 10vmax,
+			-30vmax -10vmax,
+			50vmax 50vmax;
+	}
+	25% {
+		background-size:
+			100vmax 100vmax,
+			90vmax 90vmax,
+			100vmax 100vmax,
+			90vmax 90vmax,
+			60vmax 60vmax;
+		background-position:
+			-60vmax -90vmax,
+			50vmax -40vmax,
+			0 -20vmax,
+			-40vmax -20vmax,
+			40vmax 60vmax;
+	}
+	50% {
+		background-size:
+			80vmax 80vmax,
+			110vmax 110vmax,
+			80vmax 80vmax,
+			60vmax 60vmax,
+			80vmax 80vmax;
+		background-position:
+			-50vmax -70vmax,
+			40vmax -30vmax,
+			10vmax 0,
+			20vmax 10vmax,
+			30vmax 70vmax;
+	}
+	75% {
+		background-size:
+			90vmax 90vmax,
+			90vmax 90vmax,
+			100vmax 100vmax,
+			90vmax 90vmax,
+			70vmax 70vmax;
+		background-position:
+			-50vmax -40vmax,
+			50vmax -30vmax,
+			20vmax 0,
+			-10vmax 10vmax,
+			40vmax 60vmax;
+	}
+}
