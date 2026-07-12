@@ -4,7 +4,9 @@
 
 // 默认的细分隔线
 .layout__resize {
-    z-index: 5; // 比文档标签页更高
+    html[data-whisper-hide-doc-breadcrumb] & {
+        z-index: 5; // 比文档标签页更高
+    }
 
     &::after {
         content: "";
@@ -22,6 +24,25 @@
         background-color: var(--b3-theme-primary);
         transition: none;
         height: 2px;
+    }
+
+    &--lr {
+        &::after {
+            transition: background-color 0.2s ease-out, width 0.2s ease-out;
+            width: 1px;
+            height: 100%;
+        }
+
+        &:hover::after {
+            transition: background-color 0.2s ease-out 0.3s, width 0.2s ease-out 0.3s;
+            width: 2px;
+            height: 100%;
+        }
+
+        &:active::after {
+            width: 2px;
+            height: 100%;
+        }
     }
 }
 
