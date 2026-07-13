@@ -7,12 +7,13 @@
 }
 
 // 导出 PDF 或图片时显示内容块备注
-:is(body > #preview, .export-img) .protyle-attr {
+body > #preview .protyle-attr,
+.export-img .protyle-attr {
     pointer-events: none; // 鼠标悬浮在内容块备注上时不需要显示 tooltip
 
     // 显示内容块备注（导出图片时这个伪元素不显示，所以导出图片不支持显示内容块备注）
     // v3.3.5 以后块备注默认是通过 tooltip 显示的，没有 .b3-tooltips 类名 https://github.com/siyuan-note/siyuan/pull/16025
-    &>div.protyle-attr--memo {
+    & > .protyle-attr--memo {
         max-width: 25vw;
         display: flex;
         align-items: center;
@@ -56,7 +57,7 @@
 
 // 添加覆盖整个导出页面的伪元素，避免把 hover 样式导出 https://github.com/siyuan-note/siyuan/issues/14153
 // HTML 导出后没有 .exporting；PDF 导出状态时没有 #action
-body > #preview.exporting::before {
+body.exporting #preview::before {
     content: '';
     position: fixed;
     top: 0;
@@ -65,8 +66,13 @@ body > #preview.exporting::before {
     height: 100vh;
     background-color: transparent;
     z-index: 5;
+    user-select: none;
 }
+
 // 图片处于导出中的状态时 .b3-dialog__container 的内联样式中没有 height，此时添加覆盖整个导出页面的伪元素
+.b3-dialog__container[style*="height"] .export-img::before {
+    display: none;
+}
 .export-img::before {
     content: '';
     position: absolute;
@@ -76,8 +82,5 @@ body > #preview.exporting::before {
     height: 100%;
     background-color: transparent;
     z-index: 5;
-}
-body > #action + #preview::before,
-.b3-dialog__container[style*="height"] .export-img::before {
-    display: none;
+    user-select: none;
 }
