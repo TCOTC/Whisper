@@ -1,11 +1,6 @@
-// 移动端特有样式
+// 移动端样式
 
-// 隐藏相邻的多余分隔线
-.b3-menu__separator[data-whisper-separator] + .b3-menu__separator {
-  display: none;
-}
-
-// 在“关于”后面添加分隔线，用于分隔内置选项和插件选项
-#menu .b3-menu__item[id="menuAbout"] {
+// 在右侧栏“关于”选项后面添加分隔线，分隔内置选项和插件选项
+#menuConfigAbout {
   margin-bottom: 16px;
 }
