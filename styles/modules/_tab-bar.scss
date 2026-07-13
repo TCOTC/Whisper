@@ -22,18 +22,6 @@
                 background-color: var(--b3-theme-primary-lightest);
             }
 
-            // 顶栏融合：未聚焦保持窗口色融入顶栏，聚焦用编辑器色更显眼
-            body.body--toolbar-hide .layout__wnd--center & {
-                &:not([data-av-type]) {
-                    background-color: var(--b3-theme-background-light);
-                }
-
-                &--focus:not([data-av-type]),
-                body.body--blur .layout__wnd--active &--focus:not([data-av-type]) {
-                    background-color: var(--b3-theme-background);
-                }
-            }
-
             &, body.body--toolbar-hide .layout__wnd--center & {
                 &--pin {
                     // 按位置循环四种卡片色
