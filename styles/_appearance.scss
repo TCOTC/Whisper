@@ -101,6 +101,7 @@ html {
 
   --b3-body-background: #{fn.to-rgb(fn.theme-get($colors, b3-body-background))};                 // 窗口底色：比内容区更深以衬托布局边框；亦用于 theme-color meta（思源 3.7.x 新增）
   --b3-body-background-hl: #{fn.to-hsl-str(fn.theme-get($colors, b3-theme-primary))} !important; // 窗口左上角径向渐变光晕的 HSL 分量；setBodyHighlight 会按工作空间名内联覆盖，Whisper 用 !important 强制跟主色
+  // TODO跟进 等 3.7.2 更新之后试试不用十六进制 https://github.com/siyuan-note/siyuan/pull/18073
   --b3-theme-background: #{fn.to-hex(fn.theme-get($colors, b3-theme-background))};               // 主画布背景：编辑器、停靠面板（侧栏文档树等）、页签内容区（思源 layout__dock* / protyle；需十六进制供移动端状态栏解析）
   --b3-theme-background-light: #{fn.to-rgb(fn.theme-get($colors, b3-theme-background-light))};   // 内容区浅灰层：分隔线、页签 hover、水平线等
   --b3-theme-surface: #{fn.to-rgb(fn.theme-get($colors, b3-theme-surface))};                     // 抬升层背景：对话框、卡片、下拉浮层等（Whisper 非固定页签默认底）
