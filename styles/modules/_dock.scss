@@ -67,7 +67,8 @@
 // 原始 CSS 片段 https://ld246.com/article/1737207365006
 // TODO跟进 需要跟进 https://github.com/siyuan-note/siyuan/issues/13679 修改
 // [data-treetype] 匹配反链/提及中的文档名称元素
-:is(.backlinkMList, .backlinkList) .b3-list-item[data-treetype] {
+.backlinkMList .b3-list-item[data-treetype],
+.backlinkList .b3-list-item[data-treetype] {
 	position: sticky;
 	top: 0;
 	margin-top: 0; // 跟 top: 0 配合
