@@ -73,6 +73,7 @@ button {
 
 // 移动端和桌面端显示特定设备上隐藏的设置 Tab
 // 搜索时选项会添加 display: none; 内联样式，所以使用 .fn__none 来避免搜索时也始终显示
+// TODO跟进 移动端依赖 https://github.com/siyuan-note/siyuan/pull/18208
 #menu > .b3-menu__items > .b3-menu__item.fn__none,
 .config__tab-scroll .b3-list-item.fn__none {
 	display: flex !important;
