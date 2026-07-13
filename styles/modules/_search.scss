@@ -1,149 +1,52 @@
 // 搜索窗口、搜索页签
 
+@use "menu" as menu;
+
 // 原始样式参考 Savor 主题 v5.2.9 https://github.com/royc01/notion-theme/blob/27ee462ef0eb2e1ff244f860d317014fa56ac75c/style/module/search.css
-.b3-dialog--open:is([data-key="dialog-search"],[data-key="dialog-replace"],[data-key="dialog-globalsearch"]) .b3-dialog__container .fn__flex-column{
-    display: flex;
-    flex-direction: column;
-    background-color: var(--b3-theme-surface);
-
-    & > .block__icons {
-        order: 2;
-        min-height: 28px;
-    }
-
-    .b3-form__icon.search__header { // 搜索
-        order: 1;
-        border-top: none;
-
-        &:not(:has(+.b3-form__icon.search__header:not(.fn__none))) {
-            border-radius: 0 0 var(--b3-border-radius-b) var(--b3-border-radius-b); // 搜索或替换输入框的圆角
-        }
-
-        .block__icon { // 输入框上的按钮
-            padding: 6px; // 跟查询条件按钮一致
-
-            svg {
-                color: var(--b3-theme-on-background);
-            }
-        }
-
-        &+.b3-form__icon.search__header { // 替换
-            border-top: 1px solid var(--b3-theme-surface-lighter);
-
-            .b3-button { // 两个替换按钮
-                padding: 5px 7px; // 跟查询条件按钮一致
-                line-height: unset;
-            }
-        }
-
-        .search__history-icon {
-            margin-left: 5px;
-
-            .search__arrowdown{
-                margin-left: 3px;
-            }
-        }
-
-        input {
-            padding: 5px 8px 5px 52px !important;
-            border-bottom-left-radius: 10px;
-        }
-    }
-
-    .search__layout { // 搜索结果
-        order: 4;
-        border-top: none;
-
-        &:not(.search__layout--row) { // 上下布局
-            #searchList {
-                border-top: none;
-            }
-
-            #searchAssetList {
-                border-radius: var(--b3-border-radius-b) var(--b3-border-radius-b) 0 0;
-                border-top: none;
-            }
-        }
-
-        &.search__layout--row { // 左右布局
-            // border-radius: var(--b3-border-radius-b) var(--b3-border-radius-b) 0 0;
-
-            #searchAssetList {
-                border-radius: var(--b3-border-radius-b) 0 0 0;
-            }
-
-            #searchAssetPreview {
-                border-radius: 0 var(--b3-border-radius-b) 0 0;
-            }
-        }
-    }
-
-    #searchUnRefPanel {
+.b3-dialog--open[data-key="dialog-search"],
+.b3-dialog--open[data-key="dialog-replace"],
+.b3-dialog--open[data-key="dialog-globalsearch"] {
+    .b3-dialog__container .fn__flex-column {
+        // 顶部拖拽工具栏
         & > .block__icons {
-            border-radius: 0;
-        }
-    }
+            min-height: menu.$popover-toolbar-height;
 
-    .search__empty {
-        box-shadow: none !important;
-    }
-
-    #criteria {
-        order: 3;
-        border-top: none;
-        border-radius: var(--b3-border-radius-b) var(--b3-border-radius-b) 0 0;
-
-        .b3-chip { // 查询条件按钮
-            padding: 5px 7px;
-            transition: unset;
-
-            .b3-chip__close {
-                transition: unset;
-                height: 12px;
-                width: 12px;
+            // 搜索行
+            & + .b3-form__icon.search__header {
+                border-top: none;
             }
         }
 
-        .b3-button {
-            padding: 5px 7px; // 跟查询条件按钮一致
-            line-height: unset;
-        }
-    }
+        // 查询条件行
+        #criteria {
+            $criteria-padding: 1px 4px;
 
-    .search__tip { // 底部快捷键提示
-        order: 5;
-        border: none;
-    }
-}
+            // 查询条件按钮
+            .b3-chip {
+                padding: $criteria-padding;
+                transition: unset;
+    
+                .b3-chip__close {
+                    transition: unset;
+                }
+            }
 
-// 搜索界面拖拽线
-.search__layout {
-    &:not(.search__layout--row) .search__drag { // 上下布局
-        &:hover::after {
-            background-color: var(--b3-scroll-color);
-            height: 2px;
-        }
-
-        &:active::after {
-            background-color: var(--b3-theme-primary);
-        }
-    }
-
-    &.search__layout--row .search__drag { // 左右布局
-        &:hover::after {
-            background-color: var(--b3-scroll-color);
-            height: 100%;
-            width: 2px;
+            // 保存和重置查询条件按钮
+            .b3-button {
+                padding: $criteria-padding;
+            }
         }
 
-        &:active::after {
-            background-color: var(--b3-theme-primary);
+        // 底部快捷键提示
+        .search__tip {
+            border: none;
+            user-select: none;
         }
     }
 }
 
-// 搜素类型和替换类型弹窗
-:is([data-key="dialog-searchtype"],[data-key="dialog-replacetype"]) .b3-dialog__content {
+// 替换类型弹窗
+.b3-dialog--open[data-key="dialog-replacetype"] .b3-dialog__content {
     display: grid;
     gap: 0 40px;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -151,83 +54,42 @@
     .b3-label {
         padding: 10px 10px;
         border-bottom: none;
-
-        &+.fn__space {
-            display: none;
-        }
-    }
-
-    .fn__flex-1:last-child {
-        overflow: visible;
-
-        .b3-label__text {
-            padding: 0 10px 10px 0;
-            word-break: break-word;
-        }
     }
 }
 
-// 搜索结果显示多行、样式改进
-#searchList {
-    // 搜索结果列表
-    padding-top: 0;
-}
+// 左右布局，列出引用失效的块 预览文档
 .search__layout.search__layout--row #searchUnRefPreview {
-    // 左右布局，列出引用失效的块 预览文档
     padding-top: 6px;
 }
-:is(#searchList, #searchAssetList) {
+
+#searchList,
+#searchAssetList {
     scrollbar-gutter: stable;
 
-    // 使用原生的高亮样式方便查看
-    mark {
-        background-color: var(--b3-protyle-inline-mark-background);
-        color: var(--b3-theme-on-background); // 使用文本默认颜色，对比度更高
-        box-shadow: unset;
-    }
-
-    // 搜索结果为空时的新建文档选项
-    .b3-list-item[data-type="search-new"] {
-        height: 3em;
-    }
-
     // 直接子元素：不按文档分组
-    &>.b3-list-item[data-type="search-item"] {
+    // 搜索结果为空时的新建文档选项是 [data-type="search-new"]
+    & > .b3-list-item[data-type="search-item"] {
         flex-wrap: wrap;
         justify-content: flex-end;
-        padding-right: 0;
-        padding-bottom: 2px;
-        margin-top: 3px;
-        margin-bottom: 3px;
         margin-right: 0;
         overflow: hidden; // 文档路径过长时截断
 
         // 块标
         .b3-list-item__graphic {
             position: absolute;
-            padding-top: 5px;
             left: 4px;
-            top: 0;
-        }
-        // 资源文件搜索-文件拓展名
-        .ft__on-surface,
-        .ft__on-surface + .fn__space {
-            display: none;
-        }
-        // 资源文件搜索-搜索结果文本
-        .ft__on-surface + .fn__space + .b3-list-item__text {
-            margin: 0;
+            top: 4px;
         }
 
         // 文档图标
-        &>.b3-list-item__graphic + .b3-list-item__graphic {
+        & > .b3-list-item__graphic + .b3-list-item__graphic {
             position: absolute;
             margin-left: 20px;
-        }
 
-        // 带文档图标的文档标题
-        &>.b3-list-item__graphic + .b3-list-item__graphic + .b3-list-item__text {
-            text-indent: 20px;
+            // 带文档图标的文档标题
+            & + .b3-list-item__text {
+                text-indent: 20px;
+            }
         }
 
         // 搜索结果文本或文档标题
@@ -236,12 +98,23 @@
             text-align: justify; // 两侧对齐
             margin-left: 20px;
             padding: 3px 3px 3px 0;
-            // overflow-y: auto !important;
-            // flex-grow: 1;
-            // flex-shrink: 0;
-            // flex-basis: calc(100% - 28px);
             flex-basis: 100%;
             display: block; // 换行完整显示
+        }
+
+        // 资源文件搜索-文件拓展名
+        .ft__on-surface {
+            display: none;
+
+            // 文件拓展名后面的间隔
+            & + .fn__space {
+                display: none;
+
+                // 搜索结果文本
+                & + .b3-list-item__text {
+                    margin: 0;
+                }
+            }
         }
 
         // 其他属性
@@ -249,14 +122,8 @@
             line-height: 20px;
             opacity: .54; // 减弱元信息的干扰
 
-            &:has(> mark) {
-                opacity: 1; // 突出显示搜索结果文本
-            }
-
             // 属性图标
             .b3-list-item__hinticon {
-                width: 10px;
-                height: 10px;
                 margin-right: 2px;
             }
 
@@ -270,27 +137,23 @@
                 font-size: .7rem;
                 max-width: none;
 
-                &::before{
-                    content: "#";
-                    font-size: 1.1em;
-                    padding-right: .1em;
-                    color: var(--b3-theme-primary);
+                // 标签
+                &:not(.ariaLabel) {
+                    opacity: 1; // 突出显示
+
+                    &::before {
+                        content: "#";
+                        font-size: 1.1em;
+                        padding-right: .1em;
+                        color: var(--b3-theme-primary);
+                    }
                 }
 
                 // 路径
                 &.ariaLabel {
                     padding-right: 3px;
-
-                    &::before {
-                        content: unset;
-                    }
                 }
             }
         }
     }
-}
-
-// 搜索窗口底部的快捷键提示栏
-.search__tip {
-    user-select: none;
 }
