@@ -182,7 +182,7 @@ export class DesktopConfigMenu implements ThemeModule {
         }
 
         menuItems.insertAdjacentHTML('beforeend', buildDesktopMenuHtml(this.config));
-        // 插入选项后菜单高度变化，按思源逻辑重新定位，避免超出窗口
+        // 插入选项后菜单宽度和高度变化，按思源逻辑重新定位，避免超出窗口
         // 参见 app/src/menus/Menu.ts resetPosition / util/setPosition.ts
         (window.siyuan.menus?.menu as { resetPosition?: () => void } | undefined)?.resetPosition?.();
     }
