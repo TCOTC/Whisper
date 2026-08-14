@@ -162,8 +162,8 @@ button {
 }
 
 // 表情选择器最近使用的表情只显示两行
-.emojis__panel .emojis__title[data-type="0"] + .emojis__content {
-	max-height: 68px; // 最近使用的表情只显示两行
+.emojis__section[data-category="recent"] .emojis__content {
+	max-height: 68px;
 	overflow: hidden;
 }
 
