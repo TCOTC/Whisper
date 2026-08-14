@@ -93,6 +93,19 @@ html[data-whisper-hide-doc-breadcrumb] {
 .protyle-background {
 	margin-bottom: 14px;
 
+	html[data-whisper-hide-doc-breadcrumb] & {
+		$breadcrumb-height: 42px;
+		margin-top: $breadcrumb-height; // 面包屑的高度
+
+		.protyle-background__img {
+			margin-top: -$breadcrumb-height !important; // 题头图上方不留空白
+
+			.protyle-icons {
+				top: $breadcrumb-height; // 避免题头图按钮与面包屑按钮重叠
+			}
+		}
+	}
+
 	.protyle-background__img {
 		margin: 0 !important;
 
