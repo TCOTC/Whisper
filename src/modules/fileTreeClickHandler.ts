@@ -45,9 +45,14 @@ export class FileTreeClickHandler implements ThemeModule {
             return;
         }
 
+        if (target.closest('.b3-list-item__icon, .b3-list-item__toggle, .block__icon:not([data-type="collapse"])')) {
+            // 图标 / 折叠按钮交给思源：展开下级、改图标、打开文档
+            return;
+        }
+
         const notebook = target.closest('.b3-list-item[data-type="navigation-root"]') as HTMLElement | null;
-        if (!notebook && target.closest('.block__icon:not([data-type="collapse"]), .b3-list, .b3-list-item__toggle')) {
-            // 点击非折叠按钮或文档区域时跳过
+        if (!notebook && target.closest('.b3-list')) {
+            // 点击文档区域时跳过
             return;
         }
 

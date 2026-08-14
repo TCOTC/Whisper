@@ -34,7 +34,8 @@ button {
 	}
 }
 
-.b3-menu__items {
+// 有的带搜索框的 .b3-menu__items[style*="overflow: initial"] 不是滚动容器，子元素才是滚动容器 https://github.com/TCOTC/Whisper/issues/19#issuecomment-5252790111
+.b3-menu__items:not(.b3-menu__groups):not([style*="overflow: initial"]) {
 	scrollbar-gutter: stable;
 	padding-right: 0;
 	padding-left: scrollbar.$scrollbar-width;
@@ -71,9 +72,8 @@ button {
 	}
 }
 
-// 移动端和桌面端显示特定设备上隐藏的设置 Tab
+// 桌面端显示特定设备上隐藏的设置 Tab（例如华为上的集市）
 // 搜索时选项会添加 display: none; 内联样式，所以使用 .fn__none 来避免搜索时也始终显示
-#menu > .b3-menu__items > .b3-menu__item.fn__none,
 .config__tab-scroll .b3-list-item.fn__none {
 	display: flex !important;
 }
@@ -172,16 +172,6 @@ button {
 // 内置属性 - 备注输入框高度适应内容
 .custom-attr textarea[data-name="memo"] {
 	field-sizing: content;
-}
-
-// 数据库 - 标题
-.custom-attr__avheader .block__logo {
-	color: var(--b3-theme-primary);
-	font-size: 1.25em;
-
-	&>.block__logoicon {
-		display: none;
-	}
 }
 
 // ————————————————————弹窗————————————————————

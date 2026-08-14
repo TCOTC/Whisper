@@ -170,9 +170,12 @@ html {
   --b3-graph-tag-point: #ef7747;                      // 标签节点
   --b3-graph-ref-line: var(--b3-theme-primary-light); // 块引用连线色（非引用连线用 graph-line）
 
-  // PDF 批注高亮色
-  --b3-pdf-background1: #{fn.to-rgb(fn.theme-get($colors, b3-pdf-background1))}; // 默认批注色、选区描边
-  --b3-pdf-background5: #{fn.to-rgb(fn.theme-get($colors, b3-pdf-background5))}; // 批注色板第 5 色
+  // PDF 批注高亮色：只提供色板，运行时由 .pdf__outer / .pdf__outer--dark 映射到 --b3-pdf-backgroundN
+  // 参见 https://github.com/siyuan-note/siyuan/issues/14065
+  --b3-pdf-background1-light: #{fn.to-rgb(fn.theme-get($colors, b3-pdf-background1-light))};
+  --b3-pdf-background1-dark: #{fn.to-rgb(fn.theme-get($colors, b3-pdf-background1-dark))};
+  --b3-pdf-background5-light: #{fn.to-rgb(fn.theme-get($colors, b3-pdf-background5-light))};
+  --b3-pdf-background5-dark: #{fn.to-rgb(fn.theme-get($colors, b3-pdf-background5-dark))};
   // --b3-pdf-background2: 批注色板第 2 色
   // --b3-pdf-background3: 批注色板第 3 色
   // --b3-pdf-background4: 批注色板第 4 色
@@ -228,8 +231,10 @@ html[data-theme-mode="light"][data-whisper-appearance="blush"] {
     b3-card-success-background: oklch(92% 0.10 145),
 
     // PDF 高亮色
-    b3-pdf-background1: oklch(70% 0.17 28),
-    b3-pdf-background5: oklch(76% 0.14 3),
+    b3-pdf-background1-light: oklch(70% 0.17 28),
+    b3-pdf-background1-dark: oklch(49% 0.20 30),
+    b3-pdf-background5-light: oklch(76% 0.14 3),
+    b3-pdf-background5-dark: oklch(59% 0.11 3),
   );
 
   @include emit-ui(expand-ui($seeds));
@@ -273,9 +278,10 @@ html[data-theme-mode="dark"][data-whisper-appearance="graphite"] {
     b3-card-success-background: oklch(47% 0.08 151),
 
     // PDF 高亮色
-    // TODO跟进 https://github.com/siyuan-note/siyuan/issues/14065 修改
-    b3-pdf-background1: oklch(49% 0.20 30),
-    b3-pdf-background5: oklch(59% 0.11 3),
+    b3-pdf-background1-light: oklch(70% 0.17 28),
+    b3-pdf-background1-dark: oklch(49% 0.20 30),
+    b3-pdf-background5-light: oklch(76% 0.14 3),
+    b3-pdf-background5-dark: oklch(59% 0.11 3),
   );
 
   @include emit-ui(expand-ui($seeds));

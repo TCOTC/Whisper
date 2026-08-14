@@ -60,37 +60,3 @@
 .sy__outline > .b3-list-item .counter {
 	margin-right: 2px;
 }
-
-// ————————————————反链、提及面板————————————————
-
-// 反链、提及面板固定文档名称
-// 原始 CSS 片段 https://ld246.com/article/1737207365006
-// TODO跟进 需要跟进 https://github.com/siyuan-note/siyuan/issues/13679 修改
-// [data-treetype] 匹配反链/提及中的文档名称元素
-.backlinkMList .b3-list-item[data-treetype],
-.backlinkList .b3-list-item[data-treetype] {
-	position: sticky;
-	top: 0;
-	margin-top: 0; // 跟 top: 0 配合
-	padding-left: 0;
-	background-color: var(--b3-theme-background) !important;
-	border-radius: unset;
-	z-index: 4; // 高于选中块的伪元素高亮
-
-	.b3-list-item__toggle--hl::before {
-		// 折叠按钮热区拓展到面板边界
-		left: -8px;
-  }
-
-	&:hover {
-		&::after {
-			content: "";
-			position: absolute;
-			height: 100%;
-			width: 100%;
-			background-color: var(--b3-list-hover);
-			border-radius: var(--b3-border-radius);
-			pointer-events: none;
-		}
-	}
-}

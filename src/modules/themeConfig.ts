@@ -15,7 +15,7 @@ export interface ConfigObject {
 export const CONFIG_STORAGE_KEY = 'whisper-theme-config-v2';
 
 type ConfigFieldDef =
-    | { type: 'boolean'; default: boolean; menu?: { icon: string; group: string } }
+    | { type: 'boolean'; default: boolean; menu?: { icon: string; group: string; mobile?: boolean } }
     | { type: 'number'; default: number | (() => number) }
     | { type: 'string'; default: string | (() => string) };
 
@@ -41,11 +41,11 @@ export const THEME_CONFIG_SCHEMA = {
         type: 'number',
         default: () => Date.now(),
     },
-    /** 隐藏文档面包屑：叠层透明并隐藏路径栏，保留右侧按钮（对应 data-whisper-hide-doc-breadcrumb；不影响嵌入块/反链） */
+    /** 隐藏文档面包屑：叠层透明并隐藏路径栏，保留右侧按钮（对应 data-whisper-hide-doc-breadcrumb；不影响嵌入块/反链；仅桌面端生效） */
     hide_doc_breadcrumb: {
         type: 'boolean',
         default: false,
-        menu: { icon: 'iconFile', group: 'feature' },
+        menu: { icon: 'iconFile', group: 'feature', mobile: false },
     },
     /** 文本半高背景（对应 data-whisper-text-half-bg） */
     text_half_bg: {
@@ -90,7 +90,7 @@ export type MenuConfigKey = {
         : never;
 }[ThemeConfigKey];
 
-export type MenuItemDef = { key: MenuConfigKey; icon: string };
+export type MenuItemDef = { key: MenuConfigKey; icon: string; mobile: boolean };
 
 function collectMenuGroups(): Map<string, MenuItemDef[]> {
     const groups = new Map<string, MenuItemDef[]>();
@@ -103,7 +103,11 @@ function collectMenuGroups(): Map<string, MenuItemDef[]> {
 
         const group = field.menu.group;
         const items = groups.get(group);
-        const item = { key: key as MenuConfigKey, icon: field.menu.icon };
+        const item = {
+            key: key as MenuConfigKey,
+            icon: field.menu.icon,
+            mobile: !('mobile' in field.menu) || field.menu.mobile !== false,
+        };
 
         if (items) {
             items.push(item);
@@ -119,6 +123,11 @@ const MENU_GROUP_MAP = collectMenuGroups();
 
 /** 按 group 分段的菜单项（顺序为 schema 中各 group 首次出现的顺序） */
 export const THEME_CONFIG_MENU_GROUPS: readonly MenuItemDef[][] = [...MENU_GROUP_MAP.values()];
+
+/** 移动端菜单项（排除 schema 中 menu.mobile === false 的项） */
+export const THEME_CONFIG_MOBILE_MENU_GROUPS: readonly MenuItemDef[][] = THEME_CONFIG_MENU_GROUPS
+    .map((items) => items.filter((item) => item.mobile))
+    .filter((items) => items.length > 0);
 
 /** 样式特性菜单项 */
 export const THEME_CONFIG_FEATURE_MENU_ITEMS = MENU_GROUP_MAP.get('feature') ?? [];
