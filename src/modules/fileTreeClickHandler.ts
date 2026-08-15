@@ -45,8 +45,9 @@ export class FileTreeClickHandler implements ThemeModule {
             return;
         }
 
-        if (target.closest('.b3-list-item__icon, .b3-list-item__toggle, .block__icon:not([data-type="collapse"])')) {
-            // 图标 / 折叠按钮交给思源：展开下级、改图标、打开文档
+        // 行内操作与面板工具栏交给思源。删除等菜单项会在点击时查询 .b3-list-item--focus，
+        // 若这里清掉选中态，菜单只会关闭而不会弹出确认框。
+        if (target.closest('.b3-list-item__icon, .b3-list-item__toggle, .b3-list-item__action, .b3-list-item__switch, .block__icon')) {
             return;
         }
 
