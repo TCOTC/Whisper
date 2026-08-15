@@ -2,7 +2,7 @@
   "name": "Whisper",
   "author": "Jeffrey Chen",
   "url": "https://github.com/TCOTC/Whisper",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "minAppVersion": "3.8.0",
   "displayName": {
     "default": "Whisper",
