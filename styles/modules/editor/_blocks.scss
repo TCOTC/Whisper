@@ -1,12 +1,5 @@
 // 细碎的内容块样式
 
-// 表格首行：文本不要加粗、要灰色背景
-.b3-typography table thead th,
-.protyle-wysiwyg table thead th {
-	font-weight: normal;
-	background-color: var(--b3-table-even-background);
-}
-
 // 引述块内部整体变浅
 .b3-typography blockquote,
 .b3-typography .bq,
