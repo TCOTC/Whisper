@@ -1,12 +1,18 @@
+import { IEventBusMap } from 'siyuan';
 import { ThemeModule } from '../types';
+import { EventBusManager } from './eventBusManager';
 import { isLocalPath } from './utils';
 import { logging } from './logger';
 
 /**
- * 悬浮提示处理器：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
+ * 悬浮提示处理器：通过事件总线 before-show-tooltip / before-hide-tooltip https://github.com/TCOTC/Whisper/issues/15
+ * 给 tooltip 添加 data-whisper-tooltip，供样式区分
  */
 export class TooltipHandler implements ThemeModule {
     private tooltipElement: HTMLElement | null = null;
+
+    constructor(private readonly eventBusManager: EventBusManager) {}
+
     private getTooltipElement(): void {
         if (!this.tooltipElement) {
             this.tooltipElement = document.getElementById('tooltip');
@@ -22,14 +28,16 @@ export class TooltipHandler implements ThemeModule {
             logging.error('tooltip element does not exist.');
         }
 
-        document.addEventListener('mouseover', this.updateTooltipData);
+        this.eventBusManager.on('before-show-tooltip', this.onBeforeShowTooltip);
+        this.eventBusManager.on('before-hide-tooltip', this.onBeforeHideTooltip);
     }
 
     /**
      * 销毁悬浮提示处理器
      */
     public destroy(): void {
-        document.removeEventListener('mouseover', this.updateTooltipData);
+        this.eventBusManager.off('before-show-tooltip', this.onBeforeShowTooltip);
+        this.eventBusManager.off('before-hide-tooltip', this.onBeforeHideTooltip);
 
         this.getTooltipElement();
         this.tooltipElement?.removeAttribute('data-whisper-tooltip');
@@ -37,49 +45,54 @@ export class TooltipHandler implements ThemeModule {
     }
 
     /**
-     * 更新悬浮提示属性
+     * tooltip 即将显示：按触发元素写入属性
      */
-    private updateTooltipData = (event: MouseEvent): void => {
-        if (!event.target || (event.target as Node).nodeType === 9) return;
-        if (!this.tooltipElement) {
+    private onBeforeShowTooltip = (event: CustomEvent<IEventBusMap['before-show-tooltip']>): void => {
+        const { target, tooltipElement } = event.detail ?? {};
+        if (tooltipElement instanceof HTMLElement) {
+            this.tooltipElement = tooltipElement;
+        } else {
             this.getTooltipElement();
+        }
+
+        if (!(target instanceof HTMLElement) || !this.tooltipElement) {
             return;
         }
-        
-        const e = (event.target as Node).nodeType === 3 
-            ? (event.target as Text).parentElement as HTMLElement 
-            : event.target as HTMLElement;
 
+        this.setTooltipData(this.classifyTooltip(target));
+    };
+
+    /**
+     * tooltip 即将隐藏：左下角提示需保留 data-whisper-tooltip，供 CSS 淡出
+     */
+    private onBeforeHideTooltip = (event: CustomEvent<IEventBusMap['before-hide-tooltip']>): void => {
+        const { tooltipElement } = event.detail ?? {};
+        if (tooltipElement instanceof HTMLElement) {
+            this.tooltipElement = tooltipElement;
+        }
+        // 不在此处清空属性：href / tab_header 的淡出依赖属性仍在
+    };
+
+    /**
+     * 根据触发元素判断 tooltip 类型
+     */
+    private classifyTooltip(e: HTMLElement): string {
         // 按照触发频率排序
-
-        // 文档树
-        // TODO跟进 文档信息显示在左下角的问题还是没解决，估计是思源本体的问题：鼠标划过笔记本之后 tooltip 不隐藏 https://github.com/siyuan-note/siyuan/issues/14823
-        //  到时候把这部分代码注释掉测试看看还会不会有问题
-
-        // TODO跟进 试试通过 Add plugin event bus to tooltip 来实现更准确的监听 https://github.com/TCOTC/Whisper/issues/15 https://github.com/siyuan-note/siyuan/issues/16151
-        const doc = e.closest('[data-type="navigation-file"]');
-        if (doc) {
-            this.removeTooltipData();
-            return;
-        }
 
         // 文本超链接
         const href = e.getAttribute('data-href');
         if (href) {
             // 资源文件链接
             if (isLocalPath(href)) {
-                this.setTooltipData('href_asset');
-                return;
+                return 'href_asset';
             }
             // 普通链接
-            this.setTooltipData('href', true);
-            return;
+            return 'href';
         }
 
         // 页签
         if (e.closest('[data-type="tab-header"]')) {
-            this.setTooltipData('tab_header', true);
-            return;
+            return 'tab_header';
         }
 
         // 数据库
@@ -87,56 +100,30 @@ export class TooltipHandler implements ThemeModule {
             e.closest('[data-av-id]') || // 数据库块、属性面板数据库选项卡
             e.closest('.av__panel')      // 数据库菜单：选项描述、资源字段条目
         ) {
-            this.setTooltipData('av');
-            return;
+            return 'av';
         }
 
         // 表情选择器上的表情、底部选项
         if (e.classList.contains('emojis__item') || e.classList.contains('emojis__type')) {
-            this.setTooltipData('emoji');
-            return;
+            return 'emoji';
         }
 
         // 块备注（角标）https://github.com/siyuan-note/siyuan/pull/16025
         if (e.closest('.protyle-attr--memo')) {
-            this.setTooltipData('block_memo');
-            return;
+            return 'block_memo';
         }
 
-        // 如果正在显示的 tooltip 不属于特定元素，就将属性置空
-        if (this.tooltipElement && !this.tooltipElement.classList.contains('fn__none')) {
-            this.tooltipElement.dataset.whisperTooltip = '';
-        }
-    };
+        return '';
+    }
 
     /**
      * 设置悬浮提示属性
      */
-    private setTooltipData(data: string, displayFlex: boolean = false): void {
+    private setTooltipData(data: string): void {
         if (!this.tooltipElement) return;
         
         if (this.tooltipElement.dataset?.whisperTooltip !== data) {
             this.tooltipElement.dataset.whisperTooltip = data;
         }
-        
-        if (displayFlex) {
-            // 设置 tooltip 元素的 display 属性
-            // display:flex 用于普通链接和页签提示淡出。样式会被原生的 messageElement.removeAttribute("style"); 方法移除，不需要管理
-            const tooltipStyle = this.tooltipElement.getAttribute('style') || '';
-            this.tooltipElement.setAttribute('style', `${tooltipStyle} display: flex !important`);
-        } else {
-            this.tooltipElement.style.removeProperty('display');
-        }
     }
-
-    /**
-     * 移除悬浮提示属性
-     */
-    private removeTooltipData(data?: string): void {
-        if (!this.tooltipElement) return;
-        
-        if (!data || this.tooltipElement.dataset?.whisperTooltip === data) {
-            this.tooltipElement.dataset.whisperTooltip = '';
-        }
-    }
-} 
+}

@@ -6,9 +6,11 @@ import { ThemeModule } from '../types';
 // 定义基本的插件接口，只包含我们需要的属性
 type BasicPlugin = { name: string } & Record<string, any>;
 
+export type EventBusHandler = (event: CustomEvent) => void;
+
 export class EventBusManager implements ThemeModule {
     private themeName: string = 'whisper-theme';
-    private eventHandlers: Map<TEventBus, (event: CustomEvent) => void> = new Map();
+    private eventHandlers: Map<TEventBus, Set<EventBusHandler>> = new Map();
     private eventTarget: Comment | null = null;
 
     /**
@@ -23,7 +25,7 @@ export class EventBusManager implements ThemeModule {
 
         // 批量绑定事件处理器
         events.forEach(event => {
-            this.eventBusOn(event, this.eventBusHandler);
+            this.on(event, this.eventBusHandler);
         });
     }
 
@@ -31,11 +33,42 @@ export class EventBusManager implements ThemeModule {
      * 销毁事件总线管理器
      */
     public destroy(): void {
-        // 解绑所有事件处理器
-        this.eventHandlers.forEach((handler, eventName) => {
-            this.eventBusOff(eventName, handler);
+        // 解绑所有事件处理器（先复制，避免遍历 Set 时 off 删除当前项）
+        this.eventHandlers.forEach((handlers, eventName) => {
+            [...handlers].forEach(handler => {
+                this.off(eventName, handler);
+            });
         });
+        this.eventHandlers.clear();
         this.removeMyTheme();
+    }
+
+    /**
+     * 绑定事件监听器（同一事件可注册多个回调）
+     */
+    public on(eventName: TEventBus, callback: EventBusHandler): void {
+        const plugin = this.getThisTheme();
+        let handlers = this.eventHandlers.get(eventName);
+        if (!handlers) {
+            handlers = new Set();
+            this.eventHandlers.set(eventName, handlers);
+        }
+        if (handlers.has(callback)) {
+            return;
+        }
+        handlers.add(callback);
+        (plugin.eventBus as unknown as { on: (type: string, listener: EventBusHandler) => void })
+            .on(eventName, callback);
+    }
+
+    /**
+     * 解绑事件监听器
+     */
+    public off(eventName: TEventBus, callback: EventBusHandler): void {
+        const plugin = this.getThisTheme();
+        (plugin.eventBus as unknown as { off: (type: string, listener: EventBusHandler) => void })
+            .off(eventName, callback);
+        this.eventHandlers.get(eventName)?.delete(callback);
     }
 
     /**
@@ -116,26 +149,6 @@ export class EventBusManager implements ThemeModule {
         // 清理 DOM 中的注释节点
         this.eventTarget?.remove();
         this.eventTarget = null;
-    }
-
-    /**
-     * 绑定事件监听器
-     */
-    private eventBusOn(eventName: TEventBus, callback: (event: CustomEvent) => void): void {
-        const plugin = this.getThisTheme();
-        this.eventHandlers.set(eventName, callback);
-        (plugin.eventBus as unknown as { on: (type: string, listener: (event: CustomEvent) => void) => void })
-            .on(eventName, callback);
-    }
-
-    /**
-     * 解绑事件监听器
-     */
-    private eventBusOff(eventName: TEventBus, callback: (event: CustomEvent) => void): void {
-        const plugin = this.getThisTheme();
-        (plugin.eventBus as unknown as { off: (type: string, listener: (event: CustomEvent) => void) => void })
-            .off(eventName, callback);
-        this.eventHandlers.delete(eventName);
     }
 
     /**

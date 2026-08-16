@@ -27,8 +27,8 @@ importers:
         specifier: ^1.96.0
         version: 1.96.0
       siyuan:
-        specifier: 1.1.5
-        version: 1.1.5
+        specifier: github:siyuan-note/petal#8f85ff7be24c33ce920fef0f6980e2427b9f3477
+        version: https://codeload.github.com/siyuan-note/petal/tar.gz/8f85ff7be24c33ce920fef0f6980e2427b9f3477
       terser:
         specifier: ^5.44.1
         version: 5.48.0
@@ -43,6 +43,15 @@ importers:
         version: 8.1.3(@types/node@24.13.2)(esbuild@0.28.1)(sass@1.96.0)(terser@5.48.0)
 
 packages:
+
+  '@dop251/types-goja_nodejs-buffer@0.0.0-20260212111938-1f56ff5bcf14':
+    resolution: {integrity: sha512-+ZEK3z3RVSE9O7Ml8HoeLtYSI/yR2ifa7Ppabfjq5fW06Kf00PcUz6hjz2we1h9CxlhiI7pLglEy4+hTUYGsQA==}
+
+  '@dop251/types-goja_nodejs-global@0.0.0-20260212111938-1f56ff5bcf14':
+    resolution: {integrity: sha512-NYnSveyts20w79Qp+Cs6a8vyrP3+8QVisseCU/2F0rMXK/WmLvbQYmyjNFMlDbY8g3HcooTIB/2AwcwonabQEg==}
+
+  '@dop251/types-goja_nodejs-url@0.0.0-20260212111938-1f56ff5bcf14':
+    resolution: {integrity: sha512-RyxfUr5u0WOO0dV2/BxV+zJ2QwUqnIoSwIoPQcGHakWp8elJ/nSU86pUB9gSO77e2XHWZYAZvNN5tXa9yOXJaA==}
 
   '@emnapi/core@1.11.1':
     resolution: {integrity: sha512-RSvbQmHzdKzNsLYa/wHrbc3KN4sYLKAdPZxqiM2HATqv/SBk2/ENSHpvXGaLOMcsAyz0poEGqkmmKYG3OWiJEQ==}
@@ -1201,8 +1210,9 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  siyuan@1.1.5:
-    resolution: {integrity: sha512-euXC+H/gmSpqOjTW3T6hefqZWxWVk9L9IVKczl3jR3xkeZtmmcmvrTxn6ONgtB7aoXG10TsA//26+b9ILoStyw==}
+  siyuan@https://codeload.github.com/siyuan-note/petal/tar.gz/8f85ff7be24c33ce920fef0f6980e2427b9f3477:
+    resolution: {gitHosted: true, integrity: sha512-smat4LgqL3zW7vzep9dVZ0+proXw7sL4MhZGJ2gQRZRu+oD7U999LKSFOpb5cUG8jAeYexoN/cfjPwvHti+g8A==, tarball: https://codeload.github.com/siyuan-note/petal/tar.gz/8f85ff7be24c33ce920fef0f6980e2427b9f3477}
+    version: 1.2.4
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -1381,7 +1391,20 @@ packages:
     resolution: {integrity: sha512-dSvYKdvLsAHCDqPOhIwk/q5CvuWtTB3Dgpoe0uVEFjTzIOAmsQpprX25InCvrvJsirEbu1OHyy67n/kAj1Sw/w==}
     engines: {node: '>=18'}
 
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
+
 snapshots:
+
+  '@dop251/types-goja_nodejs-buffer@0.0.0-20260212111938-1f56ff5bcf14':
+    dependencies:
+      '@dop251/types-goja_nodejs-global': 0.0.0-20260212111938-1f56ff5bcf14
+
+  '@dop251/types-goja_nodejs-global@0.0.0-20260212111938-1f56ff5bcf14': {}
+
+  '@dop251/types-goja_nodejs-url@0.0.0-20260212111938-1f56ff5bcf14':
+    dependencies:
+      '@dop251/types-goja_nodejs-global': 0.0.0-20260212111938-1f56ff5bcf14
 
   '@emnapi/core@1.11.1':
     dependencies:
@@ -2404,7 +2427,12 @@ snapshots:
 
   shebang-regex@3.0.0: {}
 
-  siyuan@1.1.5: {}
+  siyuan@https://codeload.github.com/siyuan-note/petal/tar.gz/8f85ff7be24c33ce920fef0f6980e2427b9f3477:
+    dependencies:
+      '@dop251/types-goja_nodejs-buffer': 0.0.0-20260212111938-1f56ff5bcf14
+      '@dop251/types-goja_nodejs-global': 0.0.0-20260212111938-1f56ff5bcf14
+      '@dop251/types-goja_nodejs-url': 0.0.0-20260212111938-1f56ff5bcf14
+      zod: 4.4.3
 
   source-map-js@1.2.1: {}
 
@@ -2577,3 +2605,5 @@ snapshots:
       compress-commons: 7.0.1
       normalize-path: 3.0.0
       readable-stream: 4.7.0
+
+  zod@4.4.3: {}

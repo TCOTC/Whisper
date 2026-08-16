@@ -80,8 +80,8 @@ class ModuleManager {
     const mobile = isMobile();
     const readOnly = isReadOnly();
     
-    // 创建模块管理器
     const moduleManager = new ModuleManager();
+    const eventBusManager = new EventBusManager();
 
     // 注册所有模块（ThemeConfig 须排首位，init 时加载配置）
     moduleManager.register(themeConfig);
@@ -90,7 +90,7 @@ class ModuleManager {
     moduleManager.register(new DebugHandler());               // 调试信息：按配置显示设备类型等消息
     moduleManager.register(new DeviceDetector());             // 设备检测：添加设备类型标识，用于 CSS 选择器（避免使用 :has() 选择器导致性能问题）
     moduleManager.register(new BlockFocusHandler());          // 块焦点处理：给焦点所在块添加属性 data-whisper-block-focus
-    moduleManager.register(new EventBusManager());            // 事件总线管理：聚焦折叠的列表项时自动展开
+    moduleManager.register(eventBusManager);                  // 事件总线管理：聚焦折叠的列表项时自动展开、tooltip 事件
 
     if (!readOnly) {
         // 非发布模式
@@ -105,17 +105,18 @@ class ModuleManager {
 
     if (!mobile) {
         // 非移动端
-        moduleManager.register(new TooltipHandler());        // 悬浮提示处理：鼠标悬浮在特定元素上时，给当前显示的 tooltip 添加特定属性
-        moduleManager.register(new ElementStatusObserver()); // 元素状态观察：监听元素状态，通过给 html 添加属性来代替使用 :has 选择器
-        moduleManager.register(new FileTreeClickHandler());  // 文档树点击：点击空白处取消选中文档或笔记本
-        moduleManager.register(new DialogHandler());         // 对话框处理：为搜索对话框(Dialog)添加 resize__move 类
-        moduleManager.register(new MenuHandler());           // 菜单处理：外观模式菜单、页签菜单
+        moduleManager.register(new TooltipHandler(eventBusManager)); // 悬浮提示处理：通过事件总线给 tooltip 添加特定属性
+        moduleManager.register(new ElementStatusObserver());         // 元素状态观察：监听元素状态，通过给 html 添加属性来代替使用 :has 选择器
+        moduleManager.register(new FileTreeClickHandler());          // 文档树点击：点击空白处取消选中文档或笔记本
+        moduleManager.register(new DialogHandler());                 // 对话框处理：为搜索对话框(Dialog)添加 resize__move 类
+        moduleManager.register(new MenuHandler());                   // 菜单处理：外观模式菜单、页签菜单
     }
     
     // 初始化所有模块
     await moduleManager.initAll();
 
     // 删除旧版配置文件
+    // TODO: 这个逻辑等 2027 再删除，尽量等旧版用户升级完
     if (!readOnly) {
         void themeConfig.removeLegacyConfigFile();
     }

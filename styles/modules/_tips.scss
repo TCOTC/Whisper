@@ -119,6 +119,9 @@
 // 路径信息的悬浮提示显示在左下角
 .tooltip[data-whisper-tooltip="href"],
 .tooltip[data-whisper-tooltip="tab_header"] {
+    // 覆盖 .fn__none，供淡出动画；同时让标题 + 链接的 flex 布局生效
+    // 不再用 JS 写 display，避免被原生 messageElement.removeAttribute("style") 清掉
+    display: flex !important;
     // line-height: 16px + padding: 4px * 2 = 底栏高度 $status-height 24px
     line-height: 16px;
     padding: 4px 8px;

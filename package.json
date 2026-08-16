@@ -28,7 +28,7 @@
     "eslint": "^9.39.2",
     "globals": "^16.5.0",
     "sass": "^1.96.0",
-    "siyuan": "1.1.5",
+    "siyuan": "github:siyuan-note/petal#8f85ff7be24c33ce920fef0f6980e2427b9f3477",
     "terser": "^5.44.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.49.0",
