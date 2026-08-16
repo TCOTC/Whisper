@@ -4,6 +4,8 @@
 
 // 面包屑默认高度（勿写死 height，历史上会导致输入卡死）
 $breadcrumb-height: 30px;
+// 顶栏融合时中间编辑器与融合顶栏对齐，保持思源原生高度
+$breadcrumb-height--center: toolbar.$toolbar-height--hide;
 
 // 面包屑缩小高度更靠近文档标签页
 .protyle-breadcrumb {
@@ -13,51 +15,56 @@ $breadcrumb-height: 30px;
 // 顶栏融合时文档标签页在顶栏上的编辑器的面包屑的高度不缩小
 .layout__wnd--center {
 	& > [data-type=wnd] .layout-tab-container .protyle-breadcrumb {
-		min-height: toolbar.$toolbar-height--hide;
+		min-height: $breadcrumb-height--center;
 	}
 }
 
 // 隐藏文档面包屑：叠层透明 + 隐藏路径栏，保留右侧按钮（不透明）
 // 仅非全屏的文档页签顶层面包屑；全屏保持思源原生以便拖拽/操作；嵌入块/反链内的 __bar 不受影响
 html[data-whisper-hide-doc-breadcrumb] {
-	.layout-tab-container > .protyle:not(.fullscreen) > .protyle-breadcrumb {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		// 高于块选中/高亮 ::after(3)，避免划过按钮时盖住；低于工具栏(5)
-		z-index: 4;
-		background-color: transparent;
-		pointer-events: none;
+	.layout-tab-container > .protyle:not(.fullscreen) {
+		// 按编辑器位置切换 30px / 42px，供 padding 与题头图偏移共用
+		--wh-breadcrumb-height: #{$breadcrumb-height};
 
-		.protyle-breadcrumb__bar {
-			display: none;
-		}
+		> .protyle-breadcrumb {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			// 高于块选中/高亮 ::after(3)，避免划过按钮时盖住；低于工具栏(5)
+			z-index: 4;
+			background-color: transparent;
+			pointer-events: none;
 
-		.protyle-breadcrumb__icon,
-		.block__icon {
-			pointer-events: auto;
-			background-color: var(--b3-theme-background);
-		}
+			.protyle-breadcrumb__bar {
+				display: none;
+			}
 
-		// 原生 __icon 默认就有 list-hover 底，叠在实色上保持芯片观感且不透明
-		.protyle-breadcrumb__icon {
-			background-image: linear-gradient(var(--b3-list-hover), var(--b3-list-hover));
-		}
+			.protyle-breadcrumb__icon,
+			.block__icon {
+				pointer-events: auto;
+				background-color: var(--b3-theme-background);
+			}
 
-		.block__icon:hover:not([disabled]):not(.block__icon--text):not(.block__icon--warning),
-		.block__icon.block__icon--active {
-			background-image: linear-gradient(var(--b3-list-icon-hover), var(--b3-list-icon-hover));
-		}
+			// 原生 __icon 默认就有 list-hover 底，叠在实色上保持芯片观感且不透明
+			.protyle-breadcrumb__icon {
+				background-image: linear-gradient(var(--b3-list-hover), var(--b3-list-hover));
+			}
 
-		// 内容区顶部留白
-		& + .protyle-content {
-			padding-top: $breadcrumb-height;
+			.block__icon:hover:not([disabled]):not(.block__icon--text):not(.block__icon--warning),
+			.block__icon.block__icon--active {
+				background-image: linear-gradient(var(--b3-list-icon-hover), var(--b3-list-icon-hover));
+			}
+
+			// 内容区顶部留白
+			& + .protyle-content {
+				padding-top: var(--wh-breadcrumb-height);
+			}
 		}
 	}
 
-	.layout__wnd--center > [data-type=wnd] .layout-tab-container > .protyle:not(.fullscreen) > .protyle-breadcrumb + .protyle-content {
-		padding-top: toolbar.$toolbar-height--hide;
+	.layout__wnd--center > [data-type=wnd] .layout-tab-container > .protyle:not(.fullscreen) {
+		--wh-breadcrumb-height: #{$breadcrumb-height--center};
 	}
 
 	// 数据库字段行 fixed 吸顶 z-index:3；文档标签栏需更高，否则会被盖住
@@ -93,15 +100,14 @@ html[data-whisper-hide-doc-breadcrumb] {
 .protyle-background {
 	margin-bottom: 14px;
 
-	html[data-whisper-hide-doc-breadcrumb] & {
-		$breadcrumb-height: 42px;
-		margin-top: $breadcrumb-height; // 面包屑的高度
+	html[data-whisper-hide-doc-breadcrumb] .layout-tab-container > .protyle:not(.fullscreen) & {
+		margin-top: var(--wh-breadcrumb-height); // 面包屑的高度
 
 		.protyle-background__img {
-			margin-top: -$breadcrumb-height !important; // 题头图上方不留空白
+			margin-top: calc(-1 * var(--wh-breadcrumb-height)) !important; // 题头图上方不留空白
 
 			.protyle-icons {
-				top: $breadcrumb-height; // 避免题头图按钮与面包屑按钮重叠
+				top: var(--wh-breadcrumb-height); // 避免题头图按钮与面包屑按钮重叠
 			}
 		}
 	}
