@@ -27,8 +27,8 @@ importers:
         specifier: ^1.96.0
         version: 1.96.0
       siyuan:
-        specifier: github:siyuan-note/petal#8f85ff7be24c33ce920fef0f6980e2427b9f3477
-        version: https://codeload.github.com/siyuan-note/petal/tar.gz/8f85ff7be24c33ce920fef0f6980e2427b9f3477
+        specifier: github:siyuan-note/petal#c3b943a0a8d7fe95b9a3c5a99eb2fe892418db90
+        version: https://codeload.github.com/siyuan-note/petal/tar.gz/c3b943a0a8d7fe95b9a3c5a99eb2fe892418db90
       terser:
         specifier: ^5.44.1
         version: 5.48.0
@@ -1210,8 +1210,8 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  siyuan@https://codeload.github.com/siyuan-note/petal/tar.gz/8f85ff7be24c33ce920fef0f6980e2427b9f3477:
-    resolution: {gitHosted: true, integrity: sha512-smat4LgqL3zW7vzep9dVZ0+proXw7sL4MhZGJ2gQRZRu+oD7U999LKSFOpb5cUG8jAeYexoN/cfjPwvHti+g8A==, tarball: https://codeload.github.com/siyuan-note/petal/tar.gz/8f85ff7be24c33ce920fef0f6980e2427b9f3477}
+  siyuan@https://codeload.github.com/siyuan-note/petal/tar.gz/c3b943a0a8d7fe95b9a3c5a99eb2fe892418db90:
+    resolution: {gitHosted: true, integrity: sha512-ICtq8aC4a9EUtVItqW+jnjnDH+YJb9jxZhT5PqXIULxzZINouV/Sexdl6p9HEHGirA+06AQqigbH6f2wiRNHcg==, tarball: https://codeload.github.com/siyuan-note/petal/tar.gz/c3b943a0a8d7fe95b9a3c5a99eb2fe892418db90}
     version: 1.2.4
 
   source-map-js@1.2.1:
@@ -2427,7 +2427,7 @@ snapshots:
 
   shebang-regex@3.0.0: {}
 
-  siyuan@https://codeload.github.com/siyuan-note/petal/tar.gz/8f85ff7be24c33ce920fef0f6980e2427b9f3477:
+  siyuan@https://codeload.github.com/siyuan-note/petal/tar.gz/c3b943a0a8d7fe95b9a3c5a99eb2fe892418db90:
     dependencies:
       '@dop251/types-goja_nodejs-buffer': 0.0.0-20260212111938-1f56ff5bcf14
       '@dop251/types-goja_nodejs-global': 0.0.0-20260212111938-1f56ff5bcf14

@@ -1,3 +1,4 @@
+import { IEventBusMap } from 'siyuan';
 import { ThemeModule } from '../types';
 import {
     flatMapMenuGroups,
@@ -7,7 +8,7 @@ import {
     ThemeConfig,
     ThemeConfigKey,
 } from './themeConfig';
-import { getCommonMenu, subscribeCommonMenu } from './commonMenuObserver';
+import { EventBusManager } from './eventBusManager';
 import { SCHEME_MENU_DEFS, SchemeMenuDef } from './schemeManager';
 import { getHideToolbar, setHideToolbar } from './api';
 import { t } from './i18n';
@@ -82,31 +83,32 @@ function removeInjectedMenuElements(): void {
 
 /** 桌面端 barmode 配置子菜单 */
 export class DesktopConfigMenu implements ThemeModule {
-    private unsubscribe: (() => void) | null = null;
     private commonMenu: HTMLElement | null = null;
 
-    constructor(private readonly config: ThemeConfig) {}
+    constructor(
+        private readonly config: ThemeConfig,
+        private readonly eventBusManager: EventBusManager,
+    ) {}
 
     init(): void {
-        if (!getCommonMenu()) {
-            logging.error('commonMenu element does not exist.');
-            return;
-        }
-
-        this.unsubscribe = subscribeCommonMenu(this.handleCommonMenuChange);
+        this.eventBusManager.on('common-menu-open', this.onCommonMenuOpen);
+        this.eventBusManager.on('common-menu-closed', this.onCommonMenuClosed);
     }
 
     destroy(): void {
-        this.unsubscribe?.();
-        this.unsubscribe = null;
-
-        if (this.commonMenu) {
-            this.commonMenu.removeEventListener('change', this.handleSwitchChange, true);
-            this.commonMenu.removeEventListener('click', this.handleSchemeClick, true);
-        }
-
+        this.eventBusManager.off('common-menu-open', this.onCommonMenuOpen);
+        this.eventBusManager.off('common-menu-closed', this.onCommonMenuClosed);
+        this.unbindMenuListeners();
         removeInjectedMenuElements();
         this.commonMenu = null;
+    }
+
+    private unbindMenuListeners(): void {
+        if (!this.commonMenu) {
+            return;
+        }
+        this.commonMenu.removeEventListener('change', this.handleSwitchChange, true);
+        this.commonMenu.removeEventListener('click', this.handleSchemeClick, true);
     }
 
     private handleSwitchChange = (event: Event): void => {
@@ -154,21 +156,30 @@ export class DesktopConfigMenu implements ThemeModule {
         }
     };
 
-    private handleCommonMenuChange = (menu: HTMLElement, menuName: string | null): void => {
-        if (this.commonMenu) {
-            this.commonMenu.removeEventListener('change', this.handleSwitchChange, true);
-            this.commonMenu.removeEventListener('click', this.handleSchemeClick, true);
+    private onCommonMenuOpen = (event: CustomEvent<IEventBusMap['common-menu-open']>): void => {
+        const { menu, name } = event.detail ?? {};
+        if (!(menu instanceof HTMLElement)) {
+            return;
         }
 
+        this.unbindMenuListeners();
         this.commonMenu = menu;
 
-        if (menuName !== 'barmode') {
+        if (name !== 'barmode') {
             return;
         }
 
         this.mountMenu();
         menu.addEventListener('change', this.handleSwitchChange, true);
         menu.addEventListener('click', this.handleSchemeClick, true);
+    };
+
+    private onCommonMenuClosed = (event: CustomEvent<IEventBusMap['common-menu-closed']>): void => {
+        const { menu } = event.detail ?? {};
+        if (menu instanceof HTMLElement) {
+            this.commonMenu = menu;
+        }
+        this.unbindMenuListeners();
     };
 
     private mountMenu(): void {
@@ -182,8 +193,5 @@ export class DesktopConfigMenu implements ThemeModule {
         }
 
         menuItems.insertAdjacentHTML('beforeend', buildDesktopMenuHtml(this.config));
-        // 插入选项后菜单宽度和高度变化，按思源逻辑重新定位，避免超出窗口
-        // 参见 app/src/menus/Menu.ts resetPosition / util/setPosition.ts
-        (window.siyuan.menus?.menu as { resetPosition?: () => void } | undefined)?.resetPosition?.();
     }
 }

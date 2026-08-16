@@ -96,11 +96,11 @@ class ModuleManager {
         // 非发布模式
         if (mobile) {
             // 移动端
-            moduleManager.register(new MobileConfigMenu(themeConfig));  // 移动端配置菜单
+            moduleManager.register(new MobileConfigMenu(themeConfig));                   // 移动端配置菜单
         } else {
-            moduleManager.register(new DesktopConfigMenu(themeConfig)); // 桌面端配置菜单
+            moduleManager.register(new DesktopConfigMenu(themeConfig, eventBusManager)); // 桌面端配置菜单
         }
-        moduleManager.register(new GoogleAnalytics());                  // Google 分析：发送统计信息
+        moduleManager.register(new GoogleAnalytics());                                   // Google 分析：发送统计信息
     }
 
     if (!mobile) {
@@ -109,7 +109,7 @@ class ModuleManager {
         moduleManager.register(new ElementStatusObserver());         // 元素状态观察：监听元素状态，通过给 html 添加属性来代替使用 :has 选择器
         moduleManager.register(new FileTreeClickHandler());          // 文档树点击：点击空白处取消选中文档或笔记本
         moduleManager.register(new DialogHandler());                 // 对话框处理：为搜索对话框(Dialog)添加 resize__move 类
-        moduleManager.register(new MenuHandler());                   // 菜单处理：外观模式菜单、页签菜单
+        moduleManager.register(new MenuHandler(eventBusManager));    // 菜单处理：外观模式菜单、页签菜单
     }
     
     // 初始化所有模块

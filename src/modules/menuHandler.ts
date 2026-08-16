@@ -1,54 +1,66 @@
+import { IEventBusMap } from 'siyuan';
 import { ThemeModule } from '../types';
-import { getCommonMenu, subscribeCommonMenu } from './commonMenuObserver';
+import { EventBusManager } from './eventBusManager';
 import { themeSwitchFromMenu } from './themeSwitch';
-import { logging } from './logger';
 import { isTouchDevice } from './utils';
 
+/**
+ * 菜单处理：通过事件总线 common-menu-open / common-menu-closed
+ * https://github.com/TCOTC/Whisper/issues/16
+ * https://github.com/siyuan-note/siyuan/issues/16171
+ */
 export class MenuHandler implements ThemeModule {
-    private unsubscribe: (() => void) | null = null;
     private commonMenu: HTMLElement | null = null;
 
+    constructor(private readonly eventBusManager: EventBusManager) {}
+
     public init(): void {
-        const menu = getCommonMenu();
-        if (!menu) {
-            logging.error('commonMenu element does not exist.');
-            return;
-        }
-
-        this.commonMenu = menu;
-
-        // TODO跟进 试试通过 Add plugin event bus to #commonMenu 来实现更准确的监听 https://github.com/TCOTC/Whisper/issues/16 https://github.com/siyuan-note/siyuan/issues/16171
-        this.unsubscribe = subscribeCommonMenu(this.handleCommonMenuChange);
+        this.eventBusManager.on('common-menu-open', this.onCommonMenuOpen);
+        this.eventBusManager.on('common-menu-closed', this.onCommonMenuClosed);
     }
 
     public destroy(): void {
-        this.unsubscribe?.();
-        this.unsubscribe = null;
-
-        if (this.commonMenu) {
-            this.commonMenu.removeEventListener('click', this.handleMenuClick, true);
-            this.commonMenu.removeEventListener('click', this.handleCloseClick, true);
-            this.commonMenu = null;
-        }
+        this.eventBusManager.off('common-menu-open', this.onCommonMenuOpen);
+        this.eventBusManager.off('common-menu-closed', this.onCommonMenuClosed);
+        this.unbindMenuListeners();
+        this.commonMenu = null;
     }
 
-    private handleCommonMenuChange = (commonMenu: HTMLElement, menuName: string | null): void => {
-        this.commonMenu = commonMenu;
+    private unbindMenuListeners(): void {
+        if (!this.commonMenu) {
+            return;
+        }
+        this.commonMenu.removeEventListener('click', this.handleMenuClick, true);
+        this.commonMenu.removeEventListener('click', this.handleCloseClick, true);
+    }
 
-        // 先卸载监听再添加，避免重复添加
-        commonMenu.removeEventListener('click', this.handleMenuClick, true);
-        commonMenu.removeEventListener('click', this.handleCloseClick, true);
+    private onCommonMenuOpen = (event: CustomEvent<IEventBusMap['common-menu-open']>): void => {
+        const { menu, name } = event.detail ?? {};
+        if (!(menu instanceof HTMLElement)) {
+            return;
+        }
+
+        this.unbindMenuListeners();
+        this.commonMenu = menu;
 
         // 外观模式菜单
-        if (menuName === 'barmode') {
-            commonMenu.addEventListener('click', this.handleMenuClick, true);
+        if (name === 'barmode') {
+            menu.addEventListener('click', this.handleMenuClick, true);
             return;
         }
 
         // 页签菜单
-        if (menuName === 'tab') {
+        if (name === 'tab') {
             this.handleTabClose();
         }
+    };
+
+    private onCommonMenuClosed = (event: CustomEvent<IEventBusMap['common-menu-closed']>): void => {
+        const { menu } = event.detail ?? {};
+        if (menu instanceof HTMLElement) {
+            this.commonMenu = menu;
+        }
+        this.unbindMenuListeners();
     };
 
     private handleMenuClick = (event: MouseEvent): void => {
