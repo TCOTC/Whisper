@@ -23,6 +23,7 @@
     "ja": "README.ja.md"
   },
   "funding": {"custom": ["https://mytemos.com/"]},
+  "frontends": ["all"],
   "modes": ["light","dark"],
   "keywords": ["浅吟主题","whisper theme"]
 }
