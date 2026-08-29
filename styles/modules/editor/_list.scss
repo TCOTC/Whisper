@@ -24,7 +24,7 @@ body .protyle-wysiwyg [data-node-id].li > [data-node-id]:not(.code-block) {
 		line-height: 1.625em; // 提高选择器优先级，覆盖原生样式 https://github.com/siyuan-note/siyuan/pull/15375
 
 		& > [spellcheck] {
-			min-height: 1em;
+			min-height: 1lh; // 与行高对齐，避免空白标题块的选区阴影位置偏移 https://github.com/siyuan-note/siyuan/issues/18992
 		}
 	}
 }
