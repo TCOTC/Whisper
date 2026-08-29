@@ -6,11 +6,11 @@
   "type": "module",
   "packageManager": "pnpm@11.9.0",
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=20.19.0"
   },
   "scripts": {
-    "dev": "cd builder && vite build --watch",
-    "build": "cd builder && vite build && node zip-package.mjs",
+    "dev": "node builder/build.mjs --watch",
+    "build": "node builder/build.mjs && node builder/zip-package.mjs",
     "lint": "pnpm exec eslint --config builder/eslint.config.mjs",
     "push": "git push origin HEAD --tags"
   },
@@ -22,15 +22,9 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@types/node": "^24.0.1",
     "bestzip": "^3.0.1",
     "eslint": "^9.39.2",
     "globals": "^16.5.0",
-    "sass": "^1.96.0",
-    "siyuan": "github:siyuan-note/petal#c3b943a0a8d7fe95b9a3c5a99eb2fe892418db90",
-    "terser": "^5.44.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.49.0",
-    "vite": "^8.1.3"
+    "sass": "^1.96.0"
   }
 }

@@ -1,6 +1,7 @@
 packages:
   - .
 
+# 明确拒绝构建脚本：@parcel/watcher 是 sass 的可选原生依赖，构建脚本用 fs.watch，无需编译
 allowBuilds:
-  '@parcel/watcher': true
-  esbuild: true
+  '@parcel/watcher': false
+  esbuild: false
