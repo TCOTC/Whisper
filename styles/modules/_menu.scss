@@ -2,6 +2,7 @@
 
 @use "sass:list";
 @use "editor/scrollbar" as scrollbar;
+@use "../mixins" as *;
 
 .b3-menu--list .b3-menu__label {
 	-webkit-mask-image: unset;
@@ -64,9 +65,8 @@ button {
 	}
 
 	// 宽度、高度菜单的输入框 https://github.com/siyuan-note/siyuan/issues/14163
-	// 仅桌面端（可精确悬停的指针设备）生效；媒体查询替代 data-whisper-device 属性，
-	// 未安装插件时移动端也不会误用桌面端样式
-	@media (hover: hover) and (pointer: fine) {
+	// 仅桌面端生效；用思源 html 上的 data-frontend 属性判断，移动端不会误用桌面端样式
+	@include desktop-only-append {
 		button[data-id="widthInput"] input,
 		button[data-id="heightInput"] input {
 			width: 150px;

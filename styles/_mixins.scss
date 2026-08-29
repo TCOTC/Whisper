@@ -1,0 +1,24 @@
+// 公共 mixin（供各模块文件复用）
+
+// 思源桌面端前端标识（与思源 app/src/util/functions.ts 中 getFrontend() 的取值一致）
+$desktop-frontends: ("desktop", "desktop-window", "browser-desktop");
+
+// 仅桌面端生效的样式（顶层包装使用）
+// @include desktop-only { ... }
+@mixin desktop-only {
+	@each $frontend in $desktop-frontends {
+		html[data-frontend="#{$frontend}"] {
+			@content;
+		}
+	}
+}
+
+// 仅桌面端生效的样式（在嵌套选择器内使用，选择器排在当前嵌套之后）
+// .foo { @include desktop-only-append { ... } } → html[data-frontend="desktop"] .foo { ... }
+@mixin desktop-only-append {
+	@each $frontend in $desktop-frontends {
+		html[data-frontend="#{$frontend}"] & {
+			@content;
+		}
+	}
+}

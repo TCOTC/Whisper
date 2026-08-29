@@ -1,13 +1,13 @@
 // 底部状态栏
 
 @use "sass:math";
+@use "../mixins" as *;
 
 // 状态栏高度。原生是 32px
 $status-height: 24px;
 
-// 桌面端（可精确悬停的指针设备）专用样式；
-// 用媒体查询替代 data-whisper-device 属性，未安装插件时移动端也不会误用桌面端样式
-@media (hover: hover) and (pointer: fine) {
+// 桌面端专用样式；用思源 html 上的 data-frontend 属性判断，移动端不会误用桌面端样式
+@include desktop-only {
 	body {
 		&.body--window #status {
 			// 新窗口底栏没有停靠栏按钮
