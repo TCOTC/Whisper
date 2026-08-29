@@ -18,8 +18,16 @@
 	
 		.callout-title {
 			margin-left: 0;
+			padding: 0 4px; // 标题支持直接编辑，留出舒适的操作区域 https://github.com/siyuan-note/siyuan/issues/18926
 			transition: unset;
 			color: var(--b3-theme-on-background);
+
+			// 编辑中的高亮反馈
+			&:focus {
+				outline: none;
+				border-radius: var(--b3-border-radius);
+				background-color: rgba(from var(--b3-theme-on-surface) r g b / .08);
+			}
 		}
 	}
 
