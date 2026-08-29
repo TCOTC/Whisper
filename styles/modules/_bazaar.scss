@@ -7,8 +7,8 @@
 		text-autospace: normal;
 	}
 
-	// 已下载页面的列表
-	&[data-type="downloaded"] .config-bazaar__content.b3-cards--nowrap {
+	// 已下载页面的列表（仅桌面端生效；移动端由思源原生 grid 布局接管，主题的绝对定位操作栏会遮挡卡片导致无法点击打开详情页）
+	body:not([data-whisper-device="mobile"]) &[data-type="downloaded"] .config-bazaar__content.b3-cards--nowrap {
 		grid-template-columns: repeat(auto-fill, minmax(min(100%, 342px), 1fr)); // 跟原生的在线集市列表卡片布局一致
 
 		.b3-card {
