@@ -1,6 +1,8 @@
+> **Recent update**: The theme's JS features have been migrated to the standalone companion plugin.
+
 This is a personally styled SiYuan Note theme, designed to provide SiYuan users with a smoother and more comfortable writing experience. Inspired by minimalism and modern aesthetics, it emphasizes the balance between content and visuals, helping users focus on creation while minimizing unnecessary distractions.
 
-> **Prerequisite**: The theme's default color schemes and features are built in. The companion plugin [Whisper-Plus](https://github.com/TCOTC/Whisper-Plus) provides the settings menus to switch schemes and toggle features. It is recommended to install it for the full experience.
+The theme's default color schemes and styles work without any plugin. The companion plugin [Whisper-Plus](siyuan://bazaar/plugins/Whisper-Plus/readme) provides color scheme switching and feature toggles; installing it gives you a more complete experience.
 
 ### Features
 

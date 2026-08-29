@@ -1,12 +1,12 @@
 {
   "name": "whisper-theme-builder",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "description": "Whisper Theme Building Tool",
   "type": "module",
-  "packageManager": "pnpm@11.9.0",
+  "packageManager": "pnpm@11.22.0",
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=24.0.0"
   },
   "scripts": {
     "dev": "node builder/build.mjs --watch",
@@ -21,10 +21,10 @@
   "author": "Jeffrey Chen",
   "license": "MIT",
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^10.0.1",
     "bestzip": "^3.0.1",
-    "eslint": "^9.39.2",
-    "globals": "^16.5.0",
-    "sass": "^1.96.0"
+    "eslint": "^10.8.0",
+    "globals": "^17.8.0",
+    "sass": "^1.102.0"
   }
 }
