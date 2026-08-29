@@ -33,13 +33,17 @@
 		//   - 用.protyle-wysiwyg排除导出预览
 		//   - .protyle-wysiwyg[data-readonly="true"]是只读模式
 		//   - 导出预览的代码块没有 .protyle-action
-		.protyle-action {
-			background-color: var(--b3-parent-background);
+		//   - 代码块设置固定高度（max-height）后块内滚动，操作栏不再吸顶
+		&:not([style*="max-height:"]) .protyle-action {
 			position: sticky;
 			// sticky 的 top 相对 .protyle-content 滚动视口（padding box），
 			// 隐藏面包屑时的 padding-top 不必用负 top 抵消，否则会裁出可视区
 			top: 0;
-	
+		}
+
+		.protyle-action {
+			background-color: var(--b3-parent-background);
+
 			&::after {
 				content: "";
 				position: absolute;
@@ -48,7 +52,7 @@
 				background-color: var(--b3-protyle-code-background);
 				pointer-events: none;
 			}
-	
+
 			.protyle-action__language {
 				color: var(--b3-theme-on-background);
 			}
