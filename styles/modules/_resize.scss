@@ -4,7 +4,7 @@
 
 // 默认的细分隔线
 .layout__resize {
-    html[data-whisper-hide-doc-breadcrumb] & {
+    html[data-whisper-hide-doc-breadcrumb="true"] & {
         z-index: 5; // 比文档标签页更高
     }
 

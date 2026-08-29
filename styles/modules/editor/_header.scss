@@ -21,7 +21,8 @@ $breadcrumb-height--center: toolbar.$toolbar-height--hide;
 
 // 隐藏文档面包屑：叠层透明 + 隐藏路径栏，保留右侧按钮（不透明）
 // 仅非全屏的文档页签顶层面包屑；全屏保持思源原生以便拖拽/操作；嵌入块/反链内的 __bar 不受影响
-html[data-whisper-hide-doc-breadcrumb] {
+// 默认关闭：仅 data-whisper-hide-doc-breadcrumb="true"（插件写入）时生效
+html[data-whisper-hide-doc-breadcrumb="true"] {
 	.layout-tab-container > .protyle:not(.fullscreen) {
 		// 按编辑器位置切换 30px / 42px，供 padding 与题头图偏移共用
 		--wh-breadcrumb-height: #{$breadcrumb-height};
@@ -100,7 +101,7 @@ html[data-whisper-hide-doc-breadcrumb] {
 .protyle-background {
 	margin-bottom: 14px;
 
-	html[data-whisper-hide-doc-breadcrumb] .layout-tab-container > .protyle:not(.fullscreen) & {
+	html[data-whisper-hide-doc-breadcrumb="true"] .layout-tab-container > .protyle:not(.fullscreen) & {
 		margin-top: var(--wh-breadcrumb-height); // 面包屑的高度
 
 		.protyle-background__img {

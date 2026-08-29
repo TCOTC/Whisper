@@ -63,8 +63,9 @@ $primary-ladder-profiles: (
 
 // ── § 默认：原生界面变量 ──────────────────────────────────────────────
 //
-// 无 data-whisper-appearance 时模块仍引用 --wh-*；此处提供回退值（引用思源 --b3-* 或固定值）。
-// 自定义方案（blush / graphite）通过 emit-ui 覆盖。
+// data-whisper-appearance="native"（或自定义方案未覆盖的变量）时模块仍引用 --wh-*；
+// 此处提供回退值（引用思源 --b3-* 或固定值）。
+// 默认方案（blush / graphite）内置在 § 方案，无属性（未安装插件）时也生效。
 
 html {
   // Whisper 结构变量
@@ -194,7 +195,8 @@ html {
 
 // ── § 方案：blush / 胭脂 ─────────────────────────────────────────────
 //
-// 仅在有 data-whisper-appearance="blush" 时附加界面配色；无属性时回退思源默认（原生）。
+// 默认方案（内置）：无 data-whisper-appearance 属性（未安装插件）时也生效；
+// 插件显式写入 data-whisper-appearance="native" 时才回退思源默认（原生）。
 // 明亮模式种子色（OKLCH 源色，编译期输出 rgb / rgba）
 //
 // OKLCH 配色体系：
@@ -207,7 +209,7 @@ html {
 // 主色阶梯（primary-light / lighter / lightest）由 primary-ladder-profile 派生。
 // 与思源 daylight 对比：卡片语义色差异明显，故保留自定义 b3-card-*。
 
-html[data-theme-mode="light"][data-whisper-appearance="blush"] {
+html[data-theme-mode="light"]:not([data-whisper-appearance="native"]) {
   $seeds: (
     primary-ladder-profile: whisper-light,
 
@@ -254,7 +256,7 @@ html[data-theme-mode="light"][data-whisper-appearance="blush"] {
 // 主色阶梯（primary-light / lighter / lightest）由 primary-ladder-profile 派生。
 // 与思源 midnight 对比：卡片语义色差异明显，故保留自定义 b3-card-*。
 
-html[data-theme-mode="dark"][data-whisper-appearance="graphite"] {
+html[data-theme-mode="dark"]:not([data-whisper-appearance="native"]) {
   $seeds: (
     primary-ladder-profile: whisper-dark,
 

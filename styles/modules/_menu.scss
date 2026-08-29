@@ -64,7 +64,9 @@ button {
 	}
 
 	// 宽度、高度菜单的输入框 https://github.com/siyuan-note/siyuan/issues/14163
-	body:not([data-whisper-device="mobile"]) & {
+	// 仅桌面端（可精确悬停的指针设备）生效；媒体查询替代 data-whisper-device 属性，
+	// 未安装插件时移动端也不会误用桌面端样式
+	@media (hover: hover) and (pointer: fine) {
 		button[data-id="widthInput"] input,
 		button[data-id="heightInput"] input {
 			width: 150px;

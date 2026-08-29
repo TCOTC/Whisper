@@ -5,31 +5,35 @@
 // 状态栏高度。原生是 32px
 $status-height: 24px;
 
-body:not([data-whisper-device="mobile"]) {
-   &.body--window #status {
-      // 新窗口底栏没有停靠栏按钮
-		padding: 0 2px;
-	}
-
-	#status {
-		height: $status-height;
-		line-height: $status-height;
-		align-items: center;
-
-		.toolbar__item {
-			margin: 1px 5px; // 跟停靠栏按钮居中对齐
-			padding: 2px;
-			height: 18px; // svg高度(14px)+padding(2px)*2=18px
-
-			svg {
-				height: 14px;
-				width: 14px;
-			}
+// 桌面端（可精确悬停的指针设备）专用样式；
+// 用媒体查询替代 data-whisper-device 属性，未安装插件时移动端也不会误用桌面端样式
+@media (hover: hover) and (pointer: fine) {
+	body {
+		&.body--window #status {
+			// 新窗口底栏没有停靠栏按钮
+			padding: 0 2px;
 		}
 
-      // 状态栏消息的滚动进度条
-      .status__backgroundtask > div {
-         width: $status-height;
-      }
+		#status {
+			height: $status-height;
+			line-height: $status-height;
+			align-items: center;
+
+			.toolbar__item {
+				margin: 1px 5px; // 跟停靠栏按钮居中对齐
+				padding: 2px;
+				height: 18px; // svg高度(14px)+padding(2px)*2=18px
+
+				svg {
+					height: 14px;
+					width: 14px;
+				}
+			}
+
+			// 状态栏消息的滚动进度条
+			.status__backgroundtask > div {
+				width: $status-height;
+			}
+		}
 	}
 }

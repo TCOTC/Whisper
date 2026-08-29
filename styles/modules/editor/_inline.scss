@@ -240,8 +240,10 @@ a,
 }
 
 // 半高背景色（features.text_half_bg）。
+// 默认开启（内置）：无属性（未安装插件）或 data-whisper-text-half-bg="true" 时生效；
+// 插件显式写入 data-whisper-text-half-bg="false" 时关闭。
 // 仅在编辑器里显示；导出预览不支持复制该样式粘贴到其他平台，所以直接不显示半高背景色
-html[data-whisper-text-half-bg] .protyle-wysiwyg [data-node-id] {
+html:not([data-whisper-text-half-bg="false"]) .protyle-wysiwyg [data-node-id] {
 	@for $i from 1 through 12 {
 		@include half-height-bg($i);
 	}

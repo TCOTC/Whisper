@@ -93,8 +93,10 @@ $rainbow-tones-dark-bg: (
 
 // ── § 默认：原生文本变量 ──────────────────────────────────────────────
 //
-// 无 data-whisper-text 时模块仍引用 --wh-*；此处提供回退值（引用思源 --b3-*）。
-// 自定义方案（rainbow）通过 emit-text 覆盖；--wh-protyle-inline-s-color_50 在 rainbow 下由编译期色值覆盖。
+// data-whisper-text="native"（或自定义方案未覆盖的变量）时模块仍引用 --wh-*；
+// 此处提供回退值（引用思源 --b3-*）。
+// 默认方案（rainbow）内置在 § 方案，无属性（未安装插件）时也生效；
+// --wh-protyle-inline-s-color_50 在 rainbow 下由编译期色值覆盖。
 
 html {
   // 文字颜色（--wh-* 派生引用默认主题 CSS 变量）
@@ -149,12 +151,13 @@ html {
 
 // ── § 方案：rainbow / 虹彩 ─────────────────────────────────────────────
 //
-// 仅在有 data-whisper-text="rainbow" 时附加文本配色；无属性时回退思源默认（原生）。
+// 默认方案（内置）：无 data-whisper-text 属性（未安装插件）时也生效；
+// 插件显式写入 data-whisper-text="native" 时才回退思源默认（原生）。
 
-html[data-theme-mode="light"][data-whisper-text="rainbow"] {
+html[data-theme-mode="light"]:not([data-whisper-text="native"]) {
   @include emit-text(derive-rainbow(light));
 }
 
-html[data-theme-mode="dark"][data-whisper-text="rainbow"] {
+html[data-theme-mode="dark"]:not([data-whisper-text="native"]) {
   @include emit-text(derive-rainbow(dark));
 }
