@@ -1,5 +1,7 @@
 This is a personally styled SiYuan Note theme, designed to provide SiYuan users with a smoother and more comfortable writing experience. Inspired by minimalism and modern aesthetics, it emphasizes the balance between content and visuals, helping users focus on creation while minimizing unnecessary distractions.
 
+> **Prerequisite**: The theme's JS features (color schemes, feature toggles, settings menus, anonymous analytics) have been migrated to the companion plugin [Whisper-Plus](https://github.com/TCOTC/Whisper-Plus). Please install it to enable these features.
+
 ### Features
 
 - **Focus**: Clean typography and soft color tones enhance comfort for long-form writing.
@@ -31,4 +33,4 @@ This theme uses Google Analytics to collect anonymous usage statistics, includin
 
 This information helps improve the theme quality. All data is collected anonymously and does not include any personal information.
 
-No data is collected during the first day after installing the theme. You can disable anonymous analytics in the theme settings menu.
+No data is collected during the first day after installing the theme. You can disable anonymous analytics in the Whisper-Plus plugin settings menu.
