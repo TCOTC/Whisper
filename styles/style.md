@@ -20,10 +20,12 @@
 方法: 使用 JS（伴生插件「Whisper-Plus」）给根元素添加属性，然后使用属性选择器：
 
 ```scss
-html[data-theme-mode="light"]:not([data-whisper-appearance="native"]) {
+html[data-theme-mode="light"]:not([data-whisper-appearance]),
+html[data-theme-mode="light"][data-whisper-appearance="blush"] {
   // 界面配色（默认方案）
 }
-html[data-theme-mode="light"]:not([data-whisper-text="native"]) {
+html[data-theme-mode="light"]:not([data-whisper-text]),
+html[data-theme-mode="light"][data-whisper-text="rainbow"] {
   // 文本配色（虹彩，默认方案）
 }
 html:not([data-whisper-text-half-bg="false"]) {

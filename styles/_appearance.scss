@@ -195,8 +195,9 @@ html {
 
 // ── § 方案：blush / 胭脂 ─────────────────────────────────────────────
 //
-// 默认方案（内置）：无 data-whisper-appearance 属性（未安装插件）时也生效；
+// 默认方案（内置）：无 data-whisper-appearance 属性（未安装插件）或 data-whisper-appearance="blush" 时生效；
 // 插件显式写入 data-whisper-appearance="native" 时才回退思源默认（原生）。
+// 新增方案：复制本块并把 data-whisper-appearance 值换成新方案名，无需改动既有选择器（排除型 :not 会误匹配未知值）。
 // 明亮模式种子色（OKLCH 源色，编译期输出 rgb / rgba）
 //
 // OKLCH 配色体系：
@@ -209,7 +210,8 @@ html {
 // 主色阶梯（primary-light / lighter / lightest）由 primary-ladder-profile 派生。
 // 与思源 daylight 对比：卡片语义色差异明显，故保留自定义 b3-card-*。
 
-html[data-theme-mode="light"]:not([data-whisper-appearance="native"]) {
+html[data-theme-mode="light"]:not([data-whisper-appearance]),
+html[data-theme-mode="light"][data-whisper-appearance="blush"] {
   $seeds: (
     primary-ladder-profile: whisper-light,
 
@@ -244,6 +246,8 @@ html[data-theme-mode="light"]:not([data-whisper-appearance="native"]) {
 
 // ── § 方案：graphite / 石墨 ───────────────────────────────────────────
 //
+// 默认方案（内置）：无 data-whisper-appearance 属性（未安装插件）或 data-whisper-appearance="graphite" 时生效；
+// 插件显式写入 data-whisper-appearance="native" 时才回退思源默认（原生）。
 // 暗黑模式种子色（OKLCH 源色，编译期输出 rgb / rgba）
 //
 // OKLCH 配色体系：
@@ -256,7 +260,8 @@ html[data-theme-mode="light"]:not([data-whisper-appearance="native"]) {
 // 主色阶梯（primary-light / lighter / lightest）由 primary-ladder-profile 派生。
 // 与思源 midnight 对比：卡片语义色差异明显，故保留自定义 b3-card-*。
 
-html[data-theme-mode="dark"]:not([data-whisper-appearance="native"]) {
+html[data-theme-mode="dark"]:not([data-whisper-appearance]),
+html[data-theme-mode="dark"][data-whisper-appearance="graphite"] {
   $seeds: (
     primary-ladder-profile: whisper-dark,
 

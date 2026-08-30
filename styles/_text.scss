@@ -151,13 +151,16 @@ html {
 
 // ── § 方案：rainbow / 虹彩 ─────────────────────────────────────────────
 //
-// 默认方案（内置）：无 data-whisper-text 属性（未安装插件）时也生效；
+// 默认方案（内置）：无 data-whisper-text 属性（未安装插件）或 data-whisper-text="rainbow" 时生效；
 // 插件显式写入 data-whisper-text="native" 时才回退思源默认（原生）。
+// 新增方案：复制本块并把 data-whisper-text 值换成新方案名，无需改动既有选择器（排除型 :not 会误匹配未知值）。
 
-html[data-theme-mode="light"]:not([data-whisper-text="native"]) {
+html[data-theme-mode="light"]:not([data-whisper-text]),
+html[data-theme-mode="light"][data-whisper-text="rainbow"] {
   @include emit-text(derive-rainbow(light));
 }
 
-html[data-theme-mode="dark"]:not([data-whisper-text="native"]) {
+html[data-theme-mode="dark"]:not([data-whisper-text]),
+html[data-theme-mode="dark"][data-whisper-text="rainbow"] {
   @include emit-text(derive-rainbow(dark));
 }
