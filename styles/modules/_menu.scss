@@ -36,10 +36,13 @@ button {
 }
 
 // 有的带搜索框的 .b3-menu__items[style*="overflow: initial"] 不是滚动容器，子元素才是滚动容器 https://github.com/TCOTC/Whisper/issues/19#issuecomment-5252790111
-.b3-menu__items:not(.b3-menu__groups):not([style*="overflow: initial"]) {
-	scrollbar-gutter: stable;
-	padding-right: 0;
-	padding-left: scrollbar.$scrollbar-width;
+// 仅桌面端生效：移动端底部弹出的 sheet 菜单（.b3-menu--sheet）的滚动容器与布局不同，不适用此内边距
+@include desktop-only {
+	.b3-menu__items:not(.b3-menu__groups):not([style*="overflow: initial"]) {
+		scrollbar-gutter: stable;
+		padding-right: 0;
+		padding-left: scrollbar.$scrollbar-width;
+	}
 }
 
 // 选项菜单
