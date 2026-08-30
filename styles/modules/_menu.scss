@@ -137,30 +137,6 @@ button {
 		font-size: 18px;
 		font-weight: bold; // 字体加粗更清晰
 	}
-
-	$orders: 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13;
-
-	@for $i from 1 through 12 {
-		&[style*="--b3-font-color#{$i}"],
-		&[style*="--b3-font-background#{$i}"] {
-			order: list.nth($orders, $i);
-		}
-	}
-
-	&[style*="--b3-font-color13"],
-	&[style*="--b3-font-background13"] {
-		order: 7; // 把 13 号颜色排到默认色正下方；在数据库选项颜色弹窗里是第一行最右边
-
-		&[data-type="color"] {
-			color: var(--b3-theme-on-background) !important;
-			-webkit-text-stroke: .4px var(--b3-theme-on-background);
-			-webkit-text-fill-color: transparent;
-		}
-	}
-
-	&[data-color="14"] {
-		order: 14; // 数据库选项专有颜色
-	}
 }
 
 // 表情选择器最近使用的表情只显示两行
