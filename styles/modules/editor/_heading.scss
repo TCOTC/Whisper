@@ -48,8 +48,11 @@
 	@at-root .protyle-wysiwyg[data-heading-number-scope] [data-node-id][data-type="NodeHeading"]:not([title]) > :first-child[spellcheck] {
 		padding-inline-start: calc(var(--wh-heading-icon-pad, 0px) + var(--b3-protyle-heading-number-offset, 0px));
 
+		// 编号起点跟随思源的“行首裁剪” https://github.com/siyuan-note/siyuan/issues/19112：
+		// 思源对“（一）”这类全角括号编号会把起点左移 .5em（--b3-protyle-heading-number-trim-start），
+		// 若仍把 inset-inline-start 钉在图标右缘，会与收窄后的内边距重叠，故同步减去该变量
 		&::before {
-			inset-inline-start: var(--wh-heading-icon-pad, 0px);
+			inset-inline-start: calc(var(--wh-heading-icon-pad, 0px) - var(--b3-protyle-heading-number-trim-start, 0px));
 		}
 	}
 
