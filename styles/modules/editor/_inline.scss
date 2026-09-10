@@ -175,6 +175,9 @@ a,
 	span[data-type~=block-ref][data-subtype="s"]:not(.av__celltext),
 	.av__celltext--ref[data-subtype="s"] { // TODO跟进 数据库的锚文本类型是写死的，需要修复 https://github.com/siyuan-note/siyuan/issues/13889
 		border-bottom: 0.15em dashed var(--wh-color-blue-light);
+		// 适配 https://github.com/siyuan-note/siyuan/issues/19278
+		background-color: inherit;
+		border-radius: unset;
 	}
 
 	// PDF 标注
@@ -182,6 +185,12 @@ a,
 		color: var(--b3-protyle-inline-fileref-color);
 		opacity: 1;
 		transition: unset;
+
+		&:hover {
+			// 适配 https://github.com/siyuan-note/siyuan/issues/19278
+			background-color: inherit;
+			border-radius: unset;
+		}
 	}
 }
 
