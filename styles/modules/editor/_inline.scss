@@ -73,9 +73,11 @@
 	color: var(--b3-protyle-inline-tag-color); // 在大纲中也显示默认颜色
 
 	// 行级标签前添加井号。
-	// 使用零宽连字（zero-width joiner，ZWJ）避免在井号后换行，但只在导出时有效，因为 protyle 中的行级标签前有零宽空格导致换行
+	// 使用零宽连字（zero-width joiner，ZWJ）避免在井号后换行，主要在导出时起效，
+	// 因为 protyle 中的行级标签内部前有 Word Joiner ( https://github.com/siyuan-note/siyuan/issues/11248 )，所以在井号后面不会换行，或者说井号不会单独留在上一行的末尾，
+	// 但导出时行级标签元素里没有 Word Joiner，所以得在伪元素文本井号后面加上 Word Joiner，保证井号跟随标签一起换行。
 	&::before {
-		content: "#\200D";
+		content: "#\2060";
 	}
 }
 
