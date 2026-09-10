@@ -172,14 +172,17 @@ a,
 		opacity: 1;
 		border-bottom: 0.15em solid var(--wh-color-blue-light); // 用 box-shadow 的话会跟标记样式冲突，所以用 border-bottom 直接覆盖下划线样式
 		transition: unset;
+
+		&:hover {
+			// 适配 https://github.com/siyuan-note/siyuan/issues/19278
+			background-color: inherit;
+			border-radius: unset;
+		}
 	}
 	// 块引用静态锚文本用虚线下划线
 	span[data-type~=block-ref][data-subtype="s"]:not(.av__celltext),
 	.av__celltext--ref[data-subtype="s"] { // TODO跟进 数据库的锚文本类型是写死的，需要修复 https://github.com/siyuan-note/siyuan/issues/13889
 		border-bottom: 0.15em dashed var(--wh-color-blue-light);
-		// 适配 https://github.com/siyuan-note/siyuan/issues/19278
-		background-color: inherit;
-		border-radius: unset;
 	}
 
 	// PDF 标注
