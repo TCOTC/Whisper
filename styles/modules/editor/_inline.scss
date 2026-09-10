@@ -150,6 +150,8 @@ a, // 全局的链接都使用同样的颜色
 	color: var(--b3-protyle-inline-link-color);
 	opacity: 1;
 	transition: unset;
+	// 适配 https://github.com/siyuan-note/siyuan/issues/19278
+	text-decoration: unset;
 }
 
 a,
