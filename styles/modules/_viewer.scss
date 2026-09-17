@@ -1,13 +1,22 @@
 // 图片预览 viewerjs 组件的样式
 
 .viewer-container {
-  // 原生配色
-  html[data-theme-mode="light"] & {
-    --b3-tooltips-background: #312f35;
-    --b3-tooltips-color: #dfe0e1;
-  }
-  html[data-theme-mode="dark"] & {
-    --b3-tooltips-background: #030303;
-    --b3-tooltips-color: #bababa;
+  // 底部工具栏按钮
+  .viewer-toolbar > ul > li {
+    // 聚焦或悬停时改用主色底，与左右切图按钮的悬停态一致
+    &:focus,
+    &:hover {
+      background-color: var(--b3-theme-primary);
+    }
+
+    // 按钮颜色：深底浅字的反色气泡，两种模式下都与图像内容保持对比
+    html[data-theme-mode="light"] & {
+      --b3-tooltips-background: var(--b3-theme-on-background);
+      --b3-tooltips-color: var(--b3-theme-background-light);
+    }
+    html[data-theme-mode="dark"] & {
+      --b3-tooltips-background: var(--b3-theme-background);
+      --b3-tooltips-color: var(--b3-theme-on-surface-light);
+    }
   }
 }
