@@ -3,11 +3,6 @@
 
 // 标题块
 
-// 展开标题块时一闪而过的 loading-pure.svg
-[data-node-id][data-type="NodeHeading"] > div[spin] {
-	display: none;
-}
-
 // 标题块前的图标。图标设计参考了粉色小屋主题 https://github.com/StarDustSheep/pink-room
 // 当前图标用 figma 设计 https://www.figma.com/design/ZVi3rMLjzsDfnhBvZYI1S1/ ，导出为 svg、去掉 width 和 height、添加 preserveAspectRatio="none"
 //
