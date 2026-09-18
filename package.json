@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "node builder/build.mjs --watch",
     "build": "node builder/build.mjs && node builder/zip-package.mjs",
+    "theme:link": "node builder/link.mjs",
     "lint": "pnpm exec eslint --config builder/eslint.config.mjs",
     "push": "git push origin HEAD --tags"
   },

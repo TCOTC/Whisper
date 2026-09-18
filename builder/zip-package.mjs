@@ -1,22 +1,11 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+// 打包主题发布包：从 dist/ 读取，保证 package.zip 与链接出去、供思源加载的产物完全一致。
 import zip from 'bestzip';
-
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-
-/** @type {string[]} 思源主题发布包内包含的文件（相对主题根目录） */
-const PACKAGE_FILES = [
-  'theme.css',
-  'theme.json',
-  'icon.png',
-  'preview.png',
-  'README*.md',
-];
+import { distDir, packageFiles, packageZip } from './config.mjs';
 
 await zip({
-  cwd: root,
-  destination: 'package.zip',
-  source: PACKAGE_FILES,
+  cwd: distDir,
+  destination: packageZip,
+  source: packageFiles(),
 });
 
 console.log('✓ package.zip\t zipped');
