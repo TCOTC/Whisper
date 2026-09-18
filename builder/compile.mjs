@@ -11,9 +11,20 @@ import {
 } from 'node:fs';
 import { resolve } from 'node:path';
 import { compileAsync } from 'sass';
-import { distDir, iconsDir, root, staticFiles } from './config.mjs';
+import { distDir, iconsDir, packageFiles, root, staticFiles } from './config.mjs';
 
 const themeScss = resolve(root, 'styles/theme.scss');
+
+// 生产构建清理 dist/ 中不属于发布包的残留文件（开发构建留下的 theme.css.map、已从仓库删除的文件）；
+// 发布包内的文件由随后的编译与复制覆盖，因此无需删除并重建整个目录，思源读取主题期间不会出现目录缺失
+function cleanUnpackedFiles() {
+  const packed = new Set(packageFiles());
+  for (const entry of readdirSync(distDir, { withFileTypes: true })) {
+    if (!packed.has(entry.name)) {
+      rmSync(resolve(distDir, entry.name), { recursive: true, force: true });
+    }
+  }
+}
 
 // 递归收集 icons 目录下的全部 SVG 文件内容
 function readIconFiles() {
@@ -49,12 +60,9 @@ function inlineIcons(css, iconFiles) {
 
 /** 编译主题并把静态文件同步进 dist/，使 dist/ 本身就是可被思源识别的完整主题目录 */
 export async function compileTheme({ dev = false } = {}) {
-  if (dev) {
-    mkdirSync(distDir, { recursive: true });
-  } else {
-    // 生产构建先清空产物目录，避免残留上一次开发构建的 theme.css.map 或已从仓库删除的文件
-    rmSync(distDir, { recursive: true, force: true });
-    mkdirSync(distDir, { recursive: true });
+  mkdirSync(distDir, { recursive: true });
+  if (!dev) {
+    cleanUnpackedFiles();
   }
   const result = await compileAsync(themeScss, {
     style: dev ? 'expanded' : 'compressed',
