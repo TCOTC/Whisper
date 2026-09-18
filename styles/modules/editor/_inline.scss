@@ -174,6 +174,7 @@ a,
 		opacity: 1;
 		border-bottom: 0.15em solid var(--wh-color-blue-light); // 用 box-shadow 的话会跟标记样式冲突，所以用 border-bottom 直接覆盖下划线样式
 		transition: unset;
+		padding-bottom: 0; // 适配 https://github.com/siyuan-note/siyuan/issues/19278
 
 		&:hover {
 			// 适配 https://github.com/siyuan-note/siyuan/issues/19278
