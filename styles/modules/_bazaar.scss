@@ -9,27 +9,16 @@
 		text-autospace: normal;
 	}
 
-	// 已下载页面的列表（仅桌面端生效；移动端由思源原生 grid 布局接管，主题的绝对定位操作栏会遮挡卡片导致无法点击打开详情页）
+	// 已下载页面的列表（仅桌面端生效；移动端由思源原生 grid 布局接管，避免卡片的操作栏遮挡无法点击打开详情页）
 	// 用思源 html 上的 data-frontend 属性判断，移动端不会误用桌面端样式
 	@include desktop-only-append {
 		&[data-type="downloaded"] .config-bazaar__content.b3-cards--nowrap {
-			grid-template-columns: repeat(auto-fill, minmax(min(100%, 342px), 1fr)); // 跟原生的在线集市列表卡片布局一致
+			// 卡片比在线集市更宽，避免操作栏按钮换行
+			grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
 
-			.b3-card {
-				&__info {
-					white-space: nowrap;
-
-					&--left {
-						padding-right: 16px;
-					}
-				}
-
-				&__actions {
-					position: absolute;
-					bottom: 16px;
-					right: 0;
-					padding-right: 16px;
-				}
+			// 操作栏由思源原生的两行网格排在名称・描述下方，主题不再绝对定位，避免与描述重叠
+			.b3-card__info {
+				white-space: nowrap; // 名称・描述一行显示，卡片高度更整齐
 			}
 		}
 	}
@@ -41,17 +30,17 @@
 	.item__preview {
 		border-radius: var(--b3-border-radius-b);
 		transition: unset; // 移除放大和缩小预览图时的过渡动画
+	}
 
-		// 简介描述
-		& + .b3-typography > blockquote {
-			border-radius: var(--b3-border-radius-b);
-			background-color: var(--b3-theme-surface);
-			padding: 9px 14px;
-			text-autospace: normal;
-	
-			&::before {
-				display: none;
-			}
+	// 简介描述（没有预览图时同样存在）
+	.item__desc > blockquote {
+		border-radius: var(--b3-border-radius-b);
+		background-color: var(--b3-theme-surface);
+		padding: 9px 14px;
+		text-autospace: normal;
+
+		&::before {
+			display: none;
 		}
 	}
 }
