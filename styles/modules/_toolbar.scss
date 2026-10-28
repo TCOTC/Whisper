@@ -1,10 +1,10 @@
 // 顶栏
 // 备注：需要确保对顶栏的更改不跟全屏模式冲突：编辑器全屏、关系图全屏
 
-// 思源原生顶栏不融合时的高度
-$toolbar-height: 32px;
-// 思源原生顶栏融合时的高度
-$toolbar-height--hide: 42px;
+// 思源原生顶栏不融合时的高度。跟随界面密度；Windows 窗口控件覆盖层可能高于顶栏，此时跟随窗口控件高度
+$toolbar-height: max(var(--b3-ui-toolbar-height, 32px), var(--b3-window-controls-height, 0px));
+// 思源原生顶栏融合时的高度。窗口控件覆盖层生效时由思源按窗口控件高度撑开
+$toolbar-height--hide: var(--b3-window-controls-top-height, var(--b3-ui-panel-height, 42px));
 
 // 主菜单
 #barWorkspace {

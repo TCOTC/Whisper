@@ -1,8 +1,10 @@
 // 代码块
 
 // 代码块背景色强制统一，覆盖代码块主题；代码块文本颜色遵循代码块主题
+// .mindmap-view__content 是思维导图（含全屏）中的节点内容，不在 .protyle-wysiwyg 内
 .b3-typography .code-block,
-.protyle-wysiwyg .code-block {
+.protyle-wysiwyg .code-block,
+.mindmap-view__content .code-block {
 	background: var(--b3-protyle-code-background);
 }
 

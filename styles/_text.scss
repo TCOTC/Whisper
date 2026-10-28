@@ -139,7 +139,6 @@ html {
   --b3-protyle-inline-link-s-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-link-s-color))}; // 思源 3.7.0 已弃用；Whisper 用于删除线链接
   --b3-protyle-inline-mark-background: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-mark-background))}; // 行内标记（高亮）背景
   --b3-protyle-inline-tag-color: var(--b3-card-success-color); // 行内标签字色（思源默认半透明黑；Whisper 改为成功色）
-  --b3-protyle-inline-blockref-color: inherit; // 块引字色 inherit；下划线样式见 --wh-color-blue-light
   --b3-protyle-inline-fileref-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-fileref-color))}; // 文件引字色
   --b3-protyle-inline-fileref-s-color: #{fn.to-rgb(fn.theme-get($colors, b3-protyle-inline-fileref-s-color))}; // 思源 3.7.0 已弃用；Whisper 用于删除线文件引
   // --b3-protyle-inline-strong-color: 粗体字色（默认 inherit）
@@ -147,6 +146,22 @@ html {
   // --b3-protyle-inline-u-color: 下划线字色（默认 inherit）
   // --b3-protyle-inline-mark-color: 行内标记（高亮）字色
   // --b3-protyle-code-background: 行内代码 / 代码块背景
+}
+
+// ── § 块引字色 ──────────────────────────────────────────────
+//
+// 块引字色跟随正文：把变量置为 initial，引用它的 color 失效后回退为继承。
+// 下划线样式见 _inline.scss（--wh-color-blue-light）。
+//
+// 为什么写在 body 而不是 html：自定义属性的 var() 在声明它的元素上就解析完成，后代拿到的是算好的值。
+// 默认主题在 :root 上写了 --b3-callout-important: var(--b3-protyle-inline-blockref-color)，
+// 若在 html 上覆盖源变量，根元素无父级可继承，值变成 guaranteed-invalid，派生色随之中断
+// （IMPORTANT 提示块因此没有背景色）；覆盖下沉到 body 则根元素保留原值，派生色不受影响。
+// 用 initial 而非 unset：自定义属性本身可继承，unset 等于 inherit，会让块引取到原生的紫色。
+// 文本配色为原生时不写该变量，块引恢复原生色。
+html:not([data-whisper-text]) body,
+html[data-whisper-text="rainbow"] body {
+  --b3-protyle-inline-blockref-color: initial;
 }
 
 // ── § 方案：rainbow / 虹彩 ─────────────────────────────────────────────

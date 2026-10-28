@@ -31,7 +31,8 @@
 }
 
 // 原生样式
-[data-node-id] {
+// .protyle 自身也带 data-node-id（文档块），排除后编辑器工具栏的按钮（同为 data-type=sup/sub 等）不会被行级标记样式命中
+[data-node-id]:not(.protyle) {
 	[data-type~=sup],
 	[data-type~=sub] {
 		position: relative;
