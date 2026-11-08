@@ -16,6 +16,7 @@
 样式特性（顶层 boolean 配置；样式写在对应 `modules/` 文件，用属性选择器门控）：
 - 文本半高背景：`text_half_bg`（默认 `true`）→ `data-whisper-text-half-bg`（**默认开启，内置**；`="false"` 时关闭）
 - 隐藏文档面包屑：`hide_doc_breadcrumb`（默认 `false`）→ `data-whisper-hide-doc-breadcrumb="true"`（仅插件写入 `"true"` 时生效）
+- 状态栏状态：`data-whisper-status="show|hide"`（插件观察 `#status` 写入，非配置项；隐藏状态栏或启用「显示浮动状态栏」时为 `hide`，浮动停靠栏据此贴齐编辑器底边）
 
 方法: 使用 JS（伴生插件「Whisper-Plus」）给根元素添加属性，然后使用属性选择器：
 

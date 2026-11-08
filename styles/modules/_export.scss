@@ -6,6 +6,13 @@
     font-size: calc(var(--b3-font-size-editor) - 2px);
 }
 
+// 富文本标题预览（文档树、页签、菜单、大纲、标题冲突对话框）复用 .b3-typography 渲染行级标记，字号应跟随所在界面
+.b3-typography.document-title-preview,
+.b3-typography.outline-document-title,
+.b3-typography.document-title-conflict__preview {
+    font-size: inherit;
+}
+
 // 导出 PDF 或图片时显示内容块备注
 body > #preview .protyle-attr,
 .export-img .protyle-attr {

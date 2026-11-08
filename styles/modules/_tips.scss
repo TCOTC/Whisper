@@ -13,7 +13,6 @@
 
     .b3-snackbar--error & {
         padding-left: 30px;
-        padding-right: 16px;
     
         &::after {
             left: 6px;
@@ -26,9 +25,9 @@
         }
     }
 
-    // 隐藏关闭按钮之后减小右边距
+    // 关闭按钮被本主题隐藏，抵消原生为按钮预留的右边距，与左边距保持对称
     &--close {
-        padding-right: 16px;
+        padding-right: 8px;
     }
 }
 

@@ -34,6 +34,7 @@
 			top: toolbar.$toolbar-height--hide;
 		}
 
+		// 状态栏隐藏或改为悬停浮动显示时由插件写入 data-whisper-status="hide"，与思源的编辑器底边距一致
 		html[data-whisper-status="hide"] & {
 			bottom: var(--b3-layout-space);
 		}

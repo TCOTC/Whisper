@@ -41,6 +41,11 @@ html[data-whisper-hide-doc-breadcrumb="true"] {
 				display: none;
 			}
 
+			// 原生只在路径栏存在时把间距压到 8px，路径栏隐藏后需要恢复弹性空间，把右侧按钮推到末尾
+			.protyle-breadcrumb__space {
+				flex: 1;
+			}
+
 			.protyle-breadcrumb__icon,
 			.block__icon {
 				pointer-events: auto;

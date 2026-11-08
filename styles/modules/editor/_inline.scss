@@ -183,9 +183,9 @@ a,
 			border-radius: unset;
 		}
 	}
-	// 块引用静态锚文本用虚线下划线
+	// 块引用静态锚文本用虚线下划线；数据库的块引同样按锚文本类型输出 data-subtype
 	span[data-type~=block-ref][data-subtype="s"]:not(.av__celltext),
-	.av__celltext--ref[data-subtype="s"] { // TODO跟进 数据库的锚文本类型是写死的，需要修复 https://github.com/siyuan-note/siyuan/issues/13889
+	.av__celltext--ref[data-subtype="s"] {
 		border-bottom: 0.15em dashed var(--wh-color-blue-light);
 	}
 
@@ -208,20 +208,6 @@ a,
 		img {
 			border-radius: var(--b3-border-radius);
 			box-shadow: 0 0 2px var(--b3-scroll-color);
-		}
-
-		// 隐藏空标题
-		// TODO跟进 等待 https://github.com/siyuan-note/siyuan/pull/18177 合并后可以删掉这个样式
-		.protyle-action__title {
-			padding: 0;
-
-			& > span {
-				padding: 4px 0;
-
-				&:empty {
-					display: none;
-				}
-			}
 		}
 	}
 }
